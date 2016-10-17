@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Launchpad.Services
+namespace Launchpad.Models
 {
-    public class Class1
+    public class WidgetModel
     {
+        public int Id { get; set; }
     }
 }

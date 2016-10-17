@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Services", "Launc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Data", "Launchpad.Data\Launchpad.Data.csproj", "{7ACF3840-25CC-4A96-824A-8AB6B28781FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models", "Launchpad.Models\Launchpad.Models.csproj", "{D2013160-5E92-4EB0-8A10-3B89C44E8572}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7ACF3840-25CC-4A96-824A-8AB6B28781FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ACF3840-25CC-4A96-824A-8AB6B28781FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ACF3840-25CC-4A96-824A-8AB6B28781FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
