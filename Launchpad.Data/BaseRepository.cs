@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data
@@ -14,6 +13,8 @@ namespace Launchpad.Data
         }
 
         public abstract IQueryable<TModel> GetAll();
+
+        public abstract TModel Get(object id);
 
         public int SaveChanges()
         {

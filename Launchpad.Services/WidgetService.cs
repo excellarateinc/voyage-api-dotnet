@@ -1,10 +1,10 @@
 ﻿using Launchpad.Services.Interfaces;
-using System.Linq;
 using Launchpad.Models;
 using Launchpad.Data.Interfaces;
 using AutoMapper;
 using Launchpad.Models.EntityFramework;
 using System.Collections.Generic;
+using System;
 
 namespace Launchpad.Services
 {
@@ -23,6 +23,12 @@ namespace Launchpad.Services
         {
             var widgets = _widgetRepository.GetAll();
             return _mapper.Map<IEnumerable<Widget>, IEnumerable<WidgetModel>>(widgets);
+        }
+
+        public WidgetModel GetWidget(int id)
+        {
+            var widget = _widgetRepository.Get(id);
+            return _mapper.Map<WidgetModel>(widget);
         }
     }
 }

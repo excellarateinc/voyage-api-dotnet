@@ -10,7 +10,7 @@ namespace Launchpad.Data.Interfaces
     public interface IRepository<TModel> : IRepository
     {
         IQueryable<TModel> GetAll();
-
+        TModel Get(object key);
     
     }
 }

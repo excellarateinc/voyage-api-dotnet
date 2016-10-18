@@ -32,10 +32,6 @@ namespace Launchpad.Services.UnitTests
             //Arrange
             var fakeWidgets = Fixture.CreateMany<Widget>().ToList();
 
-            var w = Fixture.Create<Widget>();
-            var mappedW = _mappingFixture.MapperInstance.Map<WidgetModel>(w);
-
-
             _mockWidgetRepository.Setup(_ => _.GetAll())
                 .Returns(fakeWidgets.AsQueryable());
             
@@ -54,6 +50,24 @@ namespace Launchpad.Services.UnitTests
             widgets.Should().HaveSameCount(fakeWidgets);
             widgets.All(_ => fakeWidgets.Any(fake => fake.Id.Equals(_.Id) && fake.Name.Equals(_.Name))).Should().BeTrue();
             
+
+        }
+
+        [Fact]
+        public void GetWidget_Should_Call_WidgetRepository()
+        {
+            //Arrange
+            var fakeWidget = Fixture.Create<Widget>();
+
+            _mockWidgetRepository.Setup(_ => _.Get(fakeWidget.Id)).Returns(fakeWidget);
+
+            //Act
+            var widget = _widgetService.GetWidget(fakeWidget.Id);
+
+            //Assert
+            Mock.VerifyAll();
+            widget.Name.Should().Be(fakeWidget.Name);
+            widget.Id.Should().Be(fakeWidget.Id);
 
         }
     }

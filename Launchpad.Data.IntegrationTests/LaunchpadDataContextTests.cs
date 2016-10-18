@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Transactions;
 using Xunit;
+using Launchpad.Data.IntegrationTests.Extensions;
 
 namespace Launchpad.Data.IntegrationTests
 {
@@ -26,9 +27,8 @@ namespace Launchpad.Data.IntegrationTests
 
                     //Arrange
 
-                    //Create a widget (in case the database is empty
-                    context.Widgets.Add(new Models.EntityFramework.Widget { Name = "My Test Widget" });
-                    context.SaveChanges();
+                    //Create a widget (in case the database is empty)
+                    context.AddWidget();
 
                     //Act
                     var widget = context.Widgets.First();

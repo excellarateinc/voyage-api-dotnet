@@ -18,5 +18,10 @@ namespace Launchpad.Web.Controllers.API
         {
             return _widgetService.GetWidgets();
         }
+
+        public WidgetModel Get(int id)
+        {
+            return _widgetService.GetWidget(id);
+        }
     }
 }

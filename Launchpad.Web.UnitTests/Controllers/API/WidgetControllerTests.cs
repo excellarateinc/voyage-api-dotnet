@@ -39,6 +39,23 @@ namespace Launchpad.Web.UnitTests.Controllers.API
 
         }
 
+        [Fact]
+        public void Get_By_Id_Should_Call_WidgetService()
+        {
+            //Arrange
 
+            var fakeWidget = Fixture.Create<WidgetModel>();
+
+            _mockWidgetService.Setup(_ => _.GetWidget(fakeWidget.Id)).Returns(fakeWidget);
+
+            //Act
+            var widget = _widgetController.Get(fakeWidget.Id);
+
+            //Assert
+            _mockWidgetService.Verify(_ => _.GetWidget(fakeWidget.Id), Times.Once());
+            Mock.VerifyAll();
+            widget.Should().Be(fakeWidget);
+
+        }
     }
 }
