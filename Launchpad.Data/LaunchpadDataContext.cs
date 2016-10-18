@@ -5,7 +5,7 @@ namespace Launchpad.Data
 {
   
 
-    public class LaunchpadDataContext : DbContext 
+    public class LaunchpadDataContext : DbContext, ILaunchpadDataContext
     {
 
         #region DbSets
@@ -23,8 +23,8 @@ namespace Launchpad.Data
         /// <summary>
         /// Pass in the connection string to eliminate the "magic string" above
         /// </summary>
-        /// <param name="connectionStringName">Name of the connection string from the web.config or app.config</param>
-        public LaunchpadDataContext(string connectionStringName) : base(connectionStringName)
+        /// <param name="connectionString">Connection string from the web.config or app.config</param>
+        public LaunchpadDataContext(string connectionString) : base(connectionString)
         {
         }
 

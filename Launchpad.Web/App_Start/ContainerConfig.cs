@@ -2,6 +2,9 @@
 using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
+using Launchpad.Services;
+using Launchpad.Data;
+using System.Configuration;
 
 namespace Launchpad.Web.App_Start
 {
@@ -12,13 +15,15 @@ namespace Launchpad.Web.App_Start
             var builder = new ContainerBuilder();
 
             //Register the types in the container
+            builder.RegisterModule(new DataModule(ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString));
+            builder.RegisterModule<ServicesModule>();
             builder.RegisterModule<WebModule>();
 
             // Get your HttpConfiguration.
             var config = System.Web.Http.GlobalConfiguration.Configuration;
 
             // Register your Web API controllers.
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             // OPTIONAL: Register the Autofac filter provider.
             builder.RegisterWebApiFilterProvider(config);
