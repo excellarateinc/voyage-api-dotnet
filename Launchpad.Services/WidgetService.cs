@@ -5,6 +5,7 @@ using AutoMapper;
 using Launchpad.Models.EntityFramework;
 using System.Collections.Generic;
 using System;
+using Launchpad.Core;
 
 namespace Launchpad.Services
 {
@@ -15,8 +16,8 @@ namespace Launchpad.Services
 
         public WidgetService(IWidgetRepository widgetRepository, IMapper mapper)
         {
-            _widgetRepository = widgetRepository;
-            _mapper = mapper;
+            _widgetRepository = widgetRepository.ThrowIfNull(nameof(widgetRepository));
+            _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
         public IEnumerable<WidgetModel> GetWidgets()

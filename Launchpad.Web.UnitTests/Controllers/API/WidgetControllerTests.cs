@@ -5,6 +5,7 @@ using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -56,6 +57,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             Mock.VerifyAll();
             widget.Should().Be(fakeWidget);
 
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_Service_Is_Null()
+        {
+            Action throwAction = () => new WidgetController(null);
+            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("widgetService");
         }
     }
 }

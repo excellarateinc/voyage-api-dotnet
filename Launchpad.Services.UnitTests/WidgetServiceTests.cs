@@ -9,6 +9,7 @@ using FluentAssertions;
 using AutoMapper;
 using Launchpad.Services.Fixture;
 using Launchpad.Models;
+using System;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -69,6 +70,20 @@ namespace Launchpad.Services.UnitTests
             widget.Name.Should().Be(fakeWidget.Name);
             widget.Id.Should().Be(fakeWidget.Id);
 
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Is_Null()
+        {
+            Action throwAction = () => new WidgetService(null, null);
+            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("widgetRepository");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_Is_Null()
+        {
+            Action throwAction = () => new WidgetService(_mockWidgetRepository.Object, null);
+            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("mapper");
         }
     }
 }

@@ -183,6 +183,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+      <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
+      <Name>Launchpad.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Launchpad.Data\Launchpad.Data.csproj">
       <Project>{7ACF3840-25CC-4A96-824A-8AB6B28781FD}</Project>
       <Name>Launchpad.Data</Name>

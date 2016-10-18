@@ -1,4 +1,5 @@
-﻿using Launchpad.Models;
+﻿using Launchpad.Core;
+using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -11,7 +12,7 @@ namespace Launchpad.Web.Controllers.API
 
         public WidgetController(IWidgetService widgetService)
         {
-            _widgetService = widgetService;
+            _widgetService = widgetService.ThrowIfNull(nameof(widgetService));
         }
 
         public IEnumerable<WidgetModel> Get()
