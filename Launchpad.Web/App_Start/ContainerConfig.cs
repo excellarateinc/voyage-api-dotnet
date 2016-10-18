@@ -9,6 +9,10 @@ using Launchpad.Models.Map;
 
 namespace Launchpad.Web.App_Start
 {
+    /// <summary>
+    /// This is vanilla autofac configuration based on:
+    /// http://docs.autofac.org/en/latest/integration/webapi.html#quick-start
+    /// </summary>
     public class ContainerConfig
     {
         public static void Register()

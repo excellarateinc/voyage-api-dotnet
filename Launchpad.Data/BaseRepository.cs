@@ -4,6 +4,10 @@ using Launchpad.Core;
 
 namespace Launchpad.Data
 {
+    /// <summary>
+    /// Abstract implementation of the repository interface
+    /// </summary>
+    /// <typeparam name="TModel">Generic TModel which the repository will work with</typeparam>
     public abstract class BaseRepository<TModel> : IRepository<TModel>
     {
         protected ILaunchpadDataContext Context;

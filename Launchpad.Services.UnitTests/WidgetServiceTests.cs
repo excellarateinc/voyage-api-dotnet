@@ -69,6 +69,23 @@ namespace Launchpad.Services.UnitTests
             widget.Id.Should().Be(fakeWidget.Id);
 
         }
+        
+        [Fact]
+        public void GetWidget_Should_Return_Null_When_Id_Not_Found()
+        {
+            //Arrange
+            Widget fakeWidget = null;
+            const int id = -1;
+
+            _mockWidgetRepository.Setup(_ => _.Get(id)).Returns(fakeWidget);
+
+            //Act
+            var widget = _widgetService.GetWidget(id);
+
+            //Assert
+            Mock.VerifyAll();
+            widget.Should().BeNull();
+        }
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Is_Null()
