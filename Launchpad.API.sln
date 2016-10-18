@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Data", "Launchpad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models", "Launchpad.Models\Launchpad.Models.csproj", "{D2013160-5E92-4EB0-8A10-3B89C44E8572}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Data.IntegrationTests", "Launchpad.Data.IntegrationTests\Launchpad.Data.IntegrationTests.csproj", "{A3C937F4-726C-4893-A9FC-E328DCEF513C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +37,15 @@ Global
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3C937F4-726C-4893-A9FC-E328DCEF513C} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
 	EndGlobalSection
 EndGlobal
