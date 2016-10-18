@@ -27,7 +27,7 @@ namespace Launchpad.Data.IntegrationTests
                     //Arrange
 
                     //Create a widget (in case the database is empty
-                    context.Widgets.Add(new Models.Widget { Name = "My Test Widget" });
+                    context.Widgets.Add(new Models.EntityFramework.Widget { Name = "My Test Widget" });
                     context.SaveChanges();
 
                     //Act

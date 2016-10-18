@@ -1,4 +1,4 @@
-﻿using Launchpad.Models;
+﻿using Launchpad.Models.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;

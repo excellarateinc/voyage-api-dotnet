@@ -1,10 +1,11 @@
 ﻿using Launchpad.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Launchpad.Services.Interfaces
 {
     public interface IWidgetService
     {
-        IQueryable<WidgetModel> GetWidgets();
+        IEnumerable<WidgetModel> GetWidgets();
     }
 }

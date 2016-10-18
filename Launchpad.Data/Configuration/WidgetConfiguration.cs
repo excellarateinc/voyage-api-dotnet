@@ -1,4 +1,4 @@
-﻿using Launchpad.Models;
+﻿using Launchpad.Models.EntityFramework;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 

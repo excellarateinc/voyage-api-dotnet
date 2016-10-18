@@ -1,5 +1,5 @@
 ﻿using Launchpad.Data.Interfaces;
-using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
 using System.Linq;
 
 namespace Launchpad.Data

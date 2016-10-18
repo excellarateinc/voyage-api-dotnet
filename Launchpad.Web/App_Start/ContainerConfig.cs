@@ -5,6 +5,7 @@ using System.Reflection;
 using Launchpad.Services;
 using Launchpad.Data;
 using System.Configuration;
+using Launchpad.Models.Map;
 
 namespace Launchpad.Web.App_Start
 {
@@ -16,6 +17,7 @@ namespace Launchpad.Web.App_Start
 
             //Register the types in the container
             builder.RegisterModule(new DataModule(ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString));
+            builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
             builder.RegisterModule<WebModule>();
 

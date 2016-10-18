@@ -2,23 +2,28 @@
 using Moq;
 using Launchpad.UnitTests.Common;
 using Launchpad.Data.Interfaces;
-using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
 using Ploeh.AutoFixture;
 using System.Linq;
 using FluentAssertions;
+using AutoMapper;
+using Launchpad.Services.Fixture;
+using Launchpad.Models;
 
 namespace Launchpad.Services.UnitTests
 {
-
+    [Collection(AutoMapperCollection.CollectionName)]
     public class WidgetServiceTests : BaseUnitTest
     {
         private WidgetService _widgetService;
         private Mock<IWidgetRepository> _mockWidgetRepository;
+        private AutoMapperFixture _mappingFixture;
 
-        public WidgetServiceTests()
+        public WidgetServiceTests(AutoMapperFixture mappingFixture)
         {
+            _mappingFixture = mappingFixture;
             _mockWidgetRepository = Mock.Create<IWidgetRepository>();
-            _widgetService = new WidgetService(_mockWidgetRepository.Object);
+            _widgetService = new WidgetService(_mockWidgetRepository.Object, _mappingFixture.MapperInstance);
         }
 
         [Fact]
@@ -27,9 +32,13 @@ namespace Launchpad.Services.UnitTests
             //Arrange
             var fakeWidgets = Fixture.CreateMany<Widget>().ToList();
 
+            var w = Fixture.Create<Widget>();
+            var mappedW = _mappingFixture.MapperInstance.Map<WidgetModel>(w);
+
+
             _mockWidgetRepository.Setup(_ => _.GetAll())
                 .Returns(fakeWidgets.AsQueryable());
-         
+            
             //Act
             var widgets = _widgetService.GetWidgets();
 

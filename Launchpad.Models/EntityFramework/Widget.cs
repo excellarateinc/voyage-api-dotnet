@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Models
+﻿namespace Launchpad.Models.EntityFramework
 {
     public class Widget
     {

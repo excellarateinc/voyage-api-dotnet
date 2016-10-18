@@ -2,21 +2,27 @@
 using System.Linq;
 using Launchpad.Models;
 using Launchpad.Data.Interfaces;
+using AutoMapper;
+using Launchpad.Models.EntityFramework;
+using System.Collections.Generic;
 
 namespace Launchpad.Services
 {
     public class WidgetService : IWidgetService
     {
         private IWidgetRepository _widgetRepository;
+        private IMapper _mapper;
 
-        public WidgetService(IWidgetRepository widgetRepository)
+        public WidgetService(IWidgetRepository widgetRepository, IMapper mapper)
         {
             _widgetRepository = widgetRepository;
+            _mapper = mapper;
         }
 
-        public IQueryable<WidgetModel> GetWidgets()
+        public IEnumerable<WidgetModel> GetWidgets()
         {
-            return _widgetRepository.GetAll().Select(_ => new WidgetModel { Id = _.Id, Name = _.Name });
+            var widgets = _widgetRepository.GetAll();
+            return _mapper.Map<IEnumerable<Widget>, IEnumerable<WidgetModel>>(widgets);
         }
     }
 }
