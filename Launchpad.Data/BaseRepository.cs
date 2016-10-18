@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Launchpad.Data.Interfaces;
+using Launchpad.Core;
 
 namespace Launchpad.Data
 {
@@ -9,7 +10,7 @@ namespace Launchpad.Data
 
         public BaseRepository(ILaunchpadDataContext context)
         {
-            Context = context;
+            Context = context.ThrowIfNull(nameof(context));
         }
 
         public abstract IQueryable<TModel> GetAll();

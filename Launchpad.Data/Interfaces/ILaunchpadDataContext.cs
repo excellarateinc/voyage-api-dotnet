@@ -8,5 +8,6 @@ namespace Launchpad.Data.Interfaces
         IDbSet<Widget> Widgets { get; set; }
 
         int SaveChanges();
+       
     }
 }

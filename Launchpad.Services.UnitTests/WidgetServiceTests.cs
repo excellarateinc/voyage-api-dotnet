@@ -6,9 +6,7 @@ using Launchpad.Models.EntityFramework;
 using Ploeh.AutoFixture;
 using System.Linq;
 using FluentAssertions;
-using AutoMapper;
 using Launchpad.Services.Fixture;
-using Launchpad.Models;
 using System;
 
 namespace Launchpad.Services.UnitTests

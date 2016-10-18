@@ -75,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+      <Project>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</Project>
+      <Name>Launchpad.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
       <Project>{D2013160-5E92-4EB0-8A10-3B89C44E8572}</Project>
       <Name>Launchpad.Models</Name>
