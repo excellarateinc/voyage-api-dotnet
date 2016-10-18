@@ -4,12 +4,14 @@ namespace Launchpad.Models.Map
 {
     public static class MappingConfig
     {
-        public static void ConfigureMapper()
+        public static IMapper ConfigureMapper()
         {
-            Mapper.Initialize(config =>
+            var config = new MapperConfiguration(c =>
             {
-                config.AddProfiles(typeof(MappingConfig).Assembly);
+                c.AddProfiles(typeof(MappingConfig).Assembly);
             });
+
+            return config.CreateMapper();
         }
     }
 }

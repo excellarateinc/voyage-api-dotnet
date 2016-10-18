@@ -8,7 +8,6 @@ using Moq;
 
 namespace Launchpad.Data.UnitTests
 {
-    [TestClass]
     public class WidgetRepositoryTests : BaseUnitTest
     {
         private Mock<ILaunchpadDataContext> _mockContext;

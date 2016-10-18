@@ -7,9 +7,9 @@ namespace Launchpad.Models.Map
     {
         protected override void Load(ContainerBuilder builder)
         {
-            MappingConfig.ConfigureMapper();
+            var instance = MappingConfig.ConfigureMapper();
 
-            builder.RegisterInstance(Mapper.Instance)
+            builder.RegisterInstance(instance)
                 .SingleInstance();
         }
 

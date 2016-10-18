@@ -2,7 +2,7 @@
 using Launchpad.Models.Map;
 using System;
 
-namespace Launchpad.Services.Fixture
+namespace Launchpad.Models.UnitTests.Fixture
 {
     public class AutoMapperFixture
     {
