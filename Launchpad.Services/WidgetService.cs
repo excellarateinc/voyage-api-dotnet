@@ -1,22 +1,22 @@
 ﻿using Launchpad.Services.Interfaces;
 using System.Linq;
 using Launchpad.Models;
-using Launchpad.Data;
+using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Services
 {
     public class WidgetService : IWidgetService
     {
-        private ILaunchpadDataContext _context;
+        private IWidgetRepository _widgetRepository;
 
-        public WidgetService(ILaunchpadDataContext context)
+        public WidgetService(IWidgetRepository widgetRepository)
         {
-            _context = context;
+            _widgetRepository = widgetRepository;
         }
 
         public IQueryable<WidgetModel> GetWidgets()
         {
-            return _context.Widgets.Select(_ => new WidgetModel { Id = _.Id, Name = _.Name });
+            return _widgetRepository.GetAll().Select(_ => new WidgetModel { Id = _.Id, Name = _.Name });
         }
     }
 }

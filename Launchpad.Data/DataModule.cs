@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data
 {
@@ -22,6 +23,12 @@ namespace Launchpad.Data
             //Concrete Type: LaunchpadDataContext
             builder.RegisterType<LaunchpadDataContext>()
                 .WithParameter("connectionString", _connectionString)
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            //Shortcut to register all repositories using a marker interface
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .AssignableTo<IRepository>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
