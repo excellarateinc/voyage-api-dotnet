@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
@@ -162,6 +163,22 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
             Action throwAction = () => new WidgetController(null);
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("widgetService");
+        }
+        
+        [Fact]
+        public void DeleteWidget_Should_Have_HttpDelete_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.DeleteWidget(1)).Should().BeDecoratedWith<HttpDeleteAttribute>();
+        }
+
+        public void AddWidget_Should_Have_HttpPost_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel())).Should().BeDecoratedWith<HttpPostAttribute>();
+        }
+
+        public void UpdateWidget_Should_Have_HttpPost_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel())).Should().BeDecoratedWith<HttpPutAttribute>();
         }
     }
 }

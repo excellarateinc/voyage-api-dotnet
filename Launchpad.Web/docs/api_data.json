@@ -59,7 +59,26 @@
       {
         "url": "/api/widget"
       }
-    ]
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>The input did not pass the model validation.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400: Bad Request\n{\n    \"message\": \"The request is invalid.\",\n    \"modelState\": {\n        \"widget.Name\": [\n            \"A widget must have a name\"\n        ]\n    }\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "delete",
@@ -382,12 +401,25 @@
             "field": "WidgetNotFound",
             "description": "<p>The Widget with the requested id was not found.</p>"
           }
+        ],
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>The input did not pass the model validation.</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Widget with ID 33 not found\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400: Bad Request\n{\n    \"message\": \"The request is invalid.\",\n    \"modelState\": {\n        \"widget.Name\": [\n            \"A widget must have a name\"\n        ]\n    }\n}",
           "type": "json"
         }
       ]

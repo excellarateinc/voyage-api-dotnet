@@ -1,6 +1,7 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using Launchpad.Web.Filters;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,7 +17,7 @@ namespace Launchpad.Web.Controllers.API
         {
             _widgetService = widgetService.ThrowIfNull(nameof(widgetService));
         }
-   /**
+        /**
          * @api {get} /widget Get all widgets
          * @apiVersion 0.1.1
          * @apiName GetWidgets
@@ -104,6 +105,8 @@ namespace Launchpad.Web.Controllers.API
          *           "id": 70,
          *           "name": "Small Widget"
          *      }
+         *      
+         *@apiUse BadRequestError
          */
         [HttpPost]
         public HttpResponseMessage AddWidget([FromBody] WidgetModel widget)
@@ -151,7 +154,10 @@ namespace Launchpad.Web.Controllers.API
          *     {
          *       "message": "Widget with ID 33 not found"
          *     }
+         *
+         * @apiUse BadRequestError   
          */
+
         [HttpPut]
         public HttpResponseMessage UpdateWidget([FromBody] WidgetModel widget)
         {

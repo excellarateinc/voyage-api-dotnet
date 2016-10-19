@@ -10,6 +10,22 @@
 // ------------------------------------------------------------------------------------------
 // Current Errors.
 // ------------------------------------------------------------------------------------------
+/**
+ * @apiDefine BadRequestError
+ *
+ * @apiError BadRequest The input did not pass the model validation.
+ *
+ * @apiErrorExample Error-Response:
+    HTTP/1.1 400: Bad Request
+    {
+        "message": "The request is invalid.",
+        "modelState": {
+            "widget.Name": [
+                "A widget must have a name"
+            ]
+        }
+    }
+ */
 
 // ------------------------------------------------------------------------------------------
 // Current Permissions.
