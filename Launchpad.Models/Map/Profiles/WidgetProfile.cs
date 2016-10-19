@@ -15,7 +15,8 @@ namespace Launchpad.Models.Map.Profiles
             CreateMap<Widget, WidgetModel>();
 
             //Map WidgetModel to EF Widget
-            CreateMap<WidgetModel, Widget>();
+            CreateMap<WidgetModel, Widget>()
+                .ForMember(_ => _.Id, opt => opt.Ignore());
         }
 
     }

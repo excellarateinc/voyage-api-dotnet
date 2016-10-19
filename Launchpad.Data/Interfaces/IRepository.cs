@@ -17,7 +17,14 @@ namespace Launchpad.Data.Interfaces
     public interface IRepository<TModel> : IRepository
     {
         IQueryable<TModel> GetAll();
+
         TModel Get(object key);
+
+        TModel Add(TModel model);
+
+        TModel Update(TModel model);
+
+        void Delete(object key);
     
     }
 }

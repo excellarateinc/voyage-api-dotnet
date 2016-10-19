@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"name": "LaunchpadDotNetApi",
+  "private": true,
+  "scripts": {
+    "doc": "apidoc -o docs -i Controllers"
+  },
+	"devDependencies": {
+	}
+}
