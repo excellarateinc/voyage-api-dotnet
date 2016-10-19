@@ -10,7 +10,15 @@ Once you have the source code:
 4. Run Update-Database from the console
   1. The connection string in LaunchPad.Web determines where the database will be created
   2. The default is localhost/sqlexpress, initial catalog Launchpad
-  
+
+#Generate Documentation
+To generate the api docs after a change:
+
+1. (One Time) Run: npm install apidoc -g
+2. npm run doc
+
+The default route is setup to redirect to the documentation. 
+
 # API Endpoints
 
 ## Widget
