@@ -17,9 +17,15 @@ namespace Launchpad.Data
             Context = context.ThrowIfNull(nameof(context));
         }
 
+        public abstract TModel Add(TModel model);
+
+        public abstract TModel Update(TModel model);
+
         public abstract IQueryable<TModel> GetAll();
 
         public abstract TModel Get(object id);
+
+        public abstract void Delete(object id);
 
         public int SaveChanges()
         {

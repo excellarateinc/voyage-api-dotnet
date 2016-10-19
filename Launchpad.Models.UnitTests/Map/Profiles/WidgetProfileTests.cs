@@ -26,7 +26,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
 
             widget.Should().NotBeNull();
             widget.Name.Should().Be(widgetModel.Name);
-            widget.Id.Should().Be(widgetModel.Id);
+            widget.Id.Should().Be(0);
         }
 
         [Fact]

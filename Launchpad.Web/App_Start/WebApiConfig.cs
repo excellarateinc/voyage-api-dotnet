@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
+﻿using Launchpad.Web.Filters;
+using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 
 namespace Launchpad.Web
@@ -8,7 +9,9 @@ namespace Launchpad.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-  
+
+            config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
+
             //Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
