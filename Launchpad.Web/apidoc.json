@@ -1,0 +1,12 @@
+{
+  "name": "Launchpad .Net API",
+  "description": "Sample ASP.Net Web API Project - Including the usage of EntityFramework",
+  "version": "0.1.0",
+  "title": "Launchpad .Net API",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "url": "/api",
+  "sampleUrl": "/api"   
+}
