@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using Launchpad.Data.IntegrationTests.Extensions;
+using Launchpad.Models.EntityFramework;
+using System;
 using System.Transactions;
 using Xunit;
 
@@ -59,5 +61,51 @@ namespace Launchpad.Data.IntegrationTests
                 }
             }
         }
+
+        [Fact]
+        public void Add_Should_Create_New_Widget()
+        {
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var context = new LaunchpadDataContext())
+                {
+                    var repository = new WidgetRepository(context);
+                    var newWidget = new Widget { Name = "Super Widget" };
+
+                    var widget = repository.Add(newWidget);
+
+                    widget.Should().NotBeNull();
+                    widget.Id.Should().BeGreaterThan(0);
+
+                    var retrievedWidget = repository.Get(newWidget.Id);
+                    retrievedWidget.Should().NotBeNull();
+                    retrievedWidget.Name.Should().Be(widget.Name);
+                    retrievedWidget.Id.Should().Be(widget.Id);
+                    
+                }
+            }
+        }
+
+        [Fact]
+        public void Update_Should_Modify_Widget()
+        {
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var context = new LaunchpadDataContext())
+                {
+                    var repository = new WidgetRepository(context);
+                    var widget = context.AddWidget();
+                    var name = DateTime.Now.ToString();
+                    widget.Name = name;
+
+                    repository.Update(widget);
+
+                    var retrievedWidget = repository.Get(widget.Id);
+                    retrievedWidget.Name.Should().Be(name);
+                }
+            }
+
+        }
+        
     }
 }

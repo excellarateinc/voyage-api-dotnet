@@ -13,6 +13,7 @@ namespace Launchpad.Services.Interfaces
         /// </summary>
         /// <returns>Enumerable of widgets</returns>
         IEnumerable<WidgetModel> GetWidgets();
+        WidgetModel AddWidget(WidgetModel widget);
 
         /// <summary>
         /// Retrieve a single widget by ID
@@ -20,5 +21,6 @@ namespace Launchpad.Services.Interfaces
         /// <param name="id">ID of the target widget</param>
         /// <returns>Instance of the target widget if it exists, otherwise null</returns>
         WidgetModel GetWidget(int id);
+        WidgetModel UpdateWidget(WidgetModel widget);
     }
 }

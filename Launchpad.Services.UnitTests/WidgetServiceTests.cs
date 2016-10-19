@@ -8,6 +8,7 @@ using System.Linq;
 using FluentAssertions;
 using Launchpad.Services.Fixture;
 using System;
+using Launchpad.Models;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -99,6 +100,52 @@ namespace Launchpad.Services.UnitTests
         {
             Action throwAction = () => new WidgetService(_mockWidgetRepository.Object, null);
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("mapper");
+        }
+
+        [Fact]
+        public void AddWidget_Should_Call_Repository()
+        {
+            var model = Fixture.Create<WidgetModel>();
+            var addResult = Fixture.Create<Widget>();
+
+            _mockWidgetRepository.Setup(_ => _.Add(It.IsAny<Widget>())).Returns(addResult);
+
+            var result = _widgetService.AddWidget(model);
+
+            Mock.VerifyAll();
+            result.Should().NotBeNull();
+            result.Name.Should().Be(addResult.Name);
+            result.Id.Should().Be(addResult.Id);
+        }
+
+        [Fact]
+        public void UpdateWidget_Should_Call_Repository_And_Return_Null_When_Not_Found()
+        {
+            var model = Fixture.Create<WidgetModel>();
+            Widget getResult = null;
+            _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(getResult);
+
+            var result = _widgetService.UpdateWidget(model);
+
+            Mock.VerifyAll();
+            result.Should().BeNull();
+        }
+        
+        [Fact]
+        public void UpdateWidget_Should_Call_Repository_And_Return_Model_When_Found()
+        {
+            var model = Fixture.Create<WidgetModel>();
+            Widget getResult = Fixture.Create<Widget>();
+            _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(getResult);
+            _mockWidgetRepository.Setup(_ => _.Update(getResult)).Returns(getResult);
+
+            var result = _widgetService.UpdateWidget(model);
+
+            Mock.VerifyAll();
+            result.Should().NotBeNull();
+            result.Name.Should().Be(getResult.Name);
+            result.Id.Should().Be(getResult.Id);
+
         }
     }
 }

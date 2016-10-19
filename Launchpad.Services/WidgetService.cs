@@ -5,6 +5,7 @@ using AutoMapper;
 using Launchpad.Models.EntityFramework;
 using System.Collections.Generic;
 using Launchpad.Core;
+using System;
 
 namespace Launchpad.Services
 {
@@ -29,6 +30,26 @@ namespace Launchpad.Services
         {
             var widget = _widgetRepository.Get(id);
             return _mapper.Map<WidgetModel>(widget);
+        }
+
+        public WidgetModel AddWidget(WidgetModel widget)
+        {
+            var target = _mapper.Map<Widget>(widget);
+            var result = _widgetRepository.Add(target);
+            return _mapper.Map<WidgetModel>(result);
+        }
+
+        public WidgetModel UpdateWidget(WidgetModel widget)
+        {
+            WidgetModel result = null;
+            var target = _widgetRepository.Get(widget.Id);
+            if (target != null)
+            {
+                _mapper.Map<WidgetModel, Widget>(widget, target, opts => { });
+                _widgetRepository.Update(target);
+                result = _mapper.Map<WidgetModel>(target);
+            }
+            return result;
         }
     }
 }
