@@ -106,6 +106,24 @@ namespace Launchpad.Data.IntegrationTests
             }
 
         }
+
+        [Fact]
+        public void Delete_Should_Remove_Widget()
+        {
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var context = new LaunchpadDataContext())
+                {
+                    var repository = new WidgetRepository(context);
+                    var widget = context.AddWidget();
+
+                    repository.Delete(widget.Id);
+
+                    var retrievedWidget = repository.Get(widget.Id);
+                    retrievedWidget.Should().BeNull();
+                }
+            }
+        }
         
     }
 }

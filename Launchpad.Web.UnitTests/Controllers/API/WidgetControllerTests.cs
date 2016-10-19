@@ -28,6 +28,20 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
+        public void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
+        {
+            const int id = 55;
+
+            _mockWidgetService.Setup(_ => _.DeleteWidget(id));
+
+            var message = _widgetController.DeleteWidget(id);
+
+            Mock.VerifyAll();
+            message.Should().NotBeNull();
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
         public void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
         {
             //Arrange

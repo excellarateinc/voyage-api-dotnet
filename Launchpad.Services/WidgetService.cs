@@ -42,7 +42,7 @@ namespace Launchpad.Services
         public WidgetModel UpdateWidget(WidgetModel widget)
         {
             WidgetModel result = null;
-            var target = _widgetRepository.Get(widget.Id);
+            var target = _widgetRepository.Get(widget.Id); //Mapping in the services comes back to bite me, alternative is to attach the entity
             if (target != null)
             {
                 _mapper.Map<WidgetModel, Widget>(widget, target, opts => { });
@@ -50,6 +50,11 @@ namespace Launchpad.Services
                 result = _mapper.Map<WidgetModel>(target);
             }
             return result;
+        }
+
+        public void DeleteWidget(int id)
+        {
+            _widgetRepository.Delete(id);
         }
     }
 }

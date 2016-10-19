@@ -147,5 +147,16 @@ namespace Launchpad.Services.UnitTests
             result.Id.Should().Be(getResult.Id);
 
         }
+
+        [Fact]
+        public void DeleteWidget_Should_Call_Repository()
+        {
+            const int id = 33;
+            _mockWidgetRepository.Setup(_ => _.Delete(id));
+
+            _widgetService.DeleteWidget(id);
+
+            Mock.VerifyAll();
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace Launchpad.Data.Interfaces
         TModel Add(TModel model);
 
         TModel Update(TModel model);
+
+        void Delete(object key);
     
     }
 }
