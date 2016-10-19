@@ -7,6 +7,8 @@ using Moq;
 using Ploeh.AutoFixture;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
@@ -20,6 +22,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
             _mockWidgetService = Mock.Create<IWidgetService>();
             _widgetController = new WidgetController(_mockWidgetService.Object);
+            _widgetController.Request = new System.Net.Http.HttpRequestMessage();
+            _widgetController.Configuration = new System.Web.Http.HttpConfiguration();
+
         }
 
         [Fact]
@@ -50,12 +55,33 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _mockWidgetService.Setup(_ => _.GetWidget(fakeWidget.Id)).Returns(fakeWidget);
 
             //Act
-            var widget = _widgetController.Get(fakeWidget.Id);
+            var response = _widgetController.Get(fakeWidget.Id);
 
             //Assert
             _mockWidgetService.Verify(_ => _.GetWidget(fakeWidget.Id), Times.Once());
             Mock.VerifyAll();
-            widget.Should().Be(fakeWidget);
+
+
+            WidgetModel widget;
+            response.TryGetContentValue<WidgetModel>(out widget).Should().BeTrue(); //Deserialize response content
+            widget.ShouldBeEquivalentTo(fakeWidget);
+
+        }
+
+        [Fact]
+        public void Get_By_Id_Should_Return_404_When_Widget_Not_Found()
+        {
+            //Arrange
+            const int id = -1;
+            WidgetModel model = null;
+            _mockWidgetService.Setup(_ => _.GetWidget(id)).Returns(model);
+
+            //Act
+            var response = _widgetController.Get(id);
+
+            //Assert
+            Mock.VerifyAll();
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
         }
 
