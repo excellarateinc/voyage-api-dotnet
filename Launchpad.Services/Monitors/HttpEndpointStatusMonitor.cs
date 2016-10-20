@@ -33,7 +33,7 @@ namespace Launchpad.Services.Monitors
         {
 
             //These could come from DI or a custom config
-            string[] testUrls = new[] { "http://www.google.com", "http://www.yahoo.com", "http://thisisnotavalidurl.io" };
+            string[] testUrls = new[] { "http://thisisnotavalidurl.io", "http://www.yahoo.com", "http://thisisnotavalidurl.io" };
             List<StatusModel> statuses = new List<StatusModel>();
 
             foreach (var url in testUrls)

@@ -2,9 +2,9 @@ define({ "api": [
   {
     "type": "get",
     "url": "/status",
-    "title": "Get statuses from all monitors",
+    "title": "Get status from all monitors",
     "version": "0.1.0",
-    "name": "GetStatuses",
+    "name": "GetStatus",
     "group": "Status",
     "success": {
       "fields": {
@@ -79,9 +79,9 @@ define({ "api": [
   {
     "type": "get",
     "url": "/status/:id",
-    "title": "Get statuses by monitor type",
+    "title": "Get status by monitor type",
     "version": "0.1.1",
-    "name": "GetStatusesByType",
+    "name": "GetStatusByType",
     "group": "Status",
     "parameter": {
       "fields": {

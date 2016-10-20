@@ -29,6 +29,10 @@ namespace Launchpad.Services
                 .AssignableTo<IStatusMonitor>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
+
+            builder.RegisterType<RequestMetricsService>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
                 
         }
     }

@@ -105,6 +105,7 @@
     <Compile Include="Controllers\API\StatusControllerTests.cs" />
     <Compile Include="Controllers\API\WidgetControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Handlers\RequestMetricsHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

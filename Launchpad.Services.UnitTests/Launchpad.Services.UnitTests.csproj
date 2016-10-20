@@ -93,10 +93,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Monitors\ActivityMonitorTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="Monitors\DbStatusMonitorTests.cs" />
     <Compile Include="Monitors\HttpEndpointStatusMonitorTests.cs" />
+    <Compile Include="RequestMetricsServiceTests.cs" />
     <Compile Include="StatusCollectorServiceTests.cs" />
     <Compile Include="WidgetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -54,9 +54,11 @@
     <Compile Include="Enum\StatusCode.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
+    <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="StatusAggregateModel.cs" />
     <Compile Include="StatusModel.cs" />
+    <Compile Include="RequestDataPointModel.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -17,9 +17,9 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-        * @api {get} /status/:id Get statuses by monitor type
+        * @api {get} /status/:id Get status by monitor type
         * @apiVersion 0.1.1
-        * @apiName GetStatusesByType
+        * @apiName GetStatusByType
         * @apiGroup Status
         *
         * @apiParam {Number} id Monitor type
@@ -54,9 +54,9 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-         * @api {get} /status Get statuses from all monitors
+         * @api {get} /status Get status from all monitors
          * @apiVersion 0.1.0
-         * @apiName GetStatuses
+         * @apiName GetStatus
          * @apiGroup Status
          * 
          * @apiSuccess {Object[]} statusAggregate List of status aggregates.

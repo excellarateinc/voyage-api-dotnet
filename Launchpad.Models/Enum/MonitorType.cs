@@ -5,6 +5,7 @@
         Database,
         HttpEndpoint,
         Error,
+        Activity,
         Other,
     }
 }
