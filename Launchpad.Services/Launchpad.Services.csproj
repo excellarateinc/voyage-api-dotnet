@@ -57,7 +57,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Monitors\DbStatusMonitor.cs" />
+    <Compile Include="Interfaces\IStatusCollector.cs" />
+    <Compile Include="Interfaces\IStatusMonitor.cs" />
+    <Compile Include="Monitors\HttpEndpointStatusMonitor.cs" />
     <Compile Include="ServicesModule.cs" />
+    <Compile Include="StatusCollectorService.cs" />
     <Compile Include="WidgetService.cs" />
     <Compile Include="Interfaces\IWidgetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -56,6 +56,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="DataModule.cs" />
+    <Compile Include="Interfaces\IDbConnectionStatus.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IWidgetRepository.cs" />
@@ -66,6 +67,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlConnectionStatus.cs" />
     <Compile Include="WidgetRepository.cs" />
   </ItemGroup>
   <ItemGroup>
