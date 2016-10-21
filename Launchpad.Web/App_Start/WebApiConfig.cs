@@ -6,6 +6,7 @@ using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 using Autofac;
 using Launchpad.Services.Interfaces;
+using Microsoft.Owin.Security.OAuth;
 
 namespace Launchpad.Web
 {
@@ -14,9 +15,12 @@ namespace Launchpad.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            // Configure Web API to use only bearer token authentication.
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             //Service locator - not ideal
-             var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
+            var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
             config.MessageHandlers.Add(new RequestMetricsHandler(metricsService));
 
             config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation

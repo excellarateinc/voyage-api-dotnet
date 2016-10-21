@@ -8,6 +8,7 @@ using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V2
 {
+    [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V2)]
     public class StatusV2Controller : ApiController
     {
