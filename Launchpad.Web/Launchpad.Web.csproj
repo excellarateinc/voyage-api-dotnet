@@ -161,8 +161,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
-    <Compile Include="Controllers\API\StatusController.cs" />
-    <Compile Include="Controllers\API\WidgetController.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\API\v1\StatusController.cs" />
+    <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
+    <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
+    <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">

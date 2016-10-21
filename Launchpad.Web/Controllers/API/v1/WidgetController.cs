@@ -1,14 +1,17 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
-using Launchpad.Web.Filters;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace Launchpad.Web.Controllers.API
+namespace Launchpad.Web.Controllers.API.V1
 {
+
+
+
+    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class WidgetController : ApiController
     {
         private IWidgetService _widgetService;
@@ -17,9 +20,10 @@ namespace Launchpad.Web.Controllers.API
         {
             _widgetService = widgetService.ThrowIfNull(nameof(widgetService));
         }
+
         /**
-         * @api {get} /widget Get all widgets
-         * @apiVersion 0.1.1
+         * @api {get} /v1/widget Get all widgets
+         * @apiVersion 0.1.0
          * @apiName GetWidgets
          * @apiGroup Widget
          * 
@@ -41,6 +45,7 @@ namespace Launchpad.Web.Controllers.API
          *      ]
          * 
          */
+        [Route("widget")]
         public IEnumerable<WidgetModel> Get()
         {
             return _widgetService.GetWidgets();
@@ -48,8 +53,8 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-         * @api {get} /widget/:id Get a widget
-         * @apiVersion 0.1.1
+         * @api {get} /v1/widget/:id Get a widget
+         * @apiVersion 0.1.0
          * @apiName GetWidget
          * @apiGroup Widget
          *
@@ -73,6 +78,7 @@ namespace Launchpad.Web.Controllers.API
          *       "message": "Widget with ID 33 not found"
          *     }
          */
+        [Route("widget/{id:int}")]
         public HttpResponseMessage Get(int id)
         {
             var widget = _widgetService.GetWidget(id);
@@ -88,7 +94,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-         * @api {post} /widget Create a new widget
+         * @api {post} /v1/widget Create a new widget
          * @apiVersion 0.1.0
          * @apiName CreateWidget
          * @apiGroup Widget
@@ -108,6 +114,7 @@ namespace Launchpad.Web.Controllers.API
          *      
          *@apiUse BadRequestError
          */
+        [Route("widget")]
         [HttpPost]
         public HttpResponseMessage AddWidget([FromBody] WidgetModel widget)
         {
@@ -116,7 +123,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-         * @api {delete} /widget/:id Delete a widget
+         * @api {delete} /v1/widget/:id Delete a widget
          * @apiVersion 0.1.0 
          * @apiName DeleteWidget
          * @apiGroup Widget
@@ -127,6 +134,7 @@ namespace Launchpad.Web.Controllers.API
          *      HTTP/1.1 204
          * 
          */ 
+        [Route("widget/{id:int}")]
         [HttpDelete]
         public HttpResponseMessage DeleteWidget(int id)
         {
@@ -135,7 +143,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-         * @api {put} /widget Update an existing widget
+         * @api {put} /v1/widget Update an existing widget
          * @apiVersion 0.1.0
          * @apiName UpdateWidget
          * @apiGroup Widget
@@ -157,7 +165,7 @@ namespace Launchpad.Web.Controllers.API
          *
          * @apiUse BadRequestError   
          */
-
+        [Route("widget")]
         [HttpPut]
         public HttpResponseMessage UpdateWidget([FromBody] WidgetModel widget)
         {

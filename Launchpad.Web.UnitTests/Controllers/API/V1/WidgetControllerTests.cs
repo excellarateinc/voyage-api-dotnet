@@ -2,7 +2,7 @@
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
-using Launchpad.Web.Controllers.API;
+using Launchpad.Web.Controllers.API.V1;
 using Moq;
 using Ploeh.AutoFixture;
 using System;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Xunit;
 
-namespace Launchpad.Web.UnitTests.Controllers.API
+namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class WidgetControllerTests : BaseUnitTest
     {
@@ -168,17 +168,78 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public void DeleteWidget_Should_Have_HttpDelete_Attribute()
         {
-            ReflectionHelper.GetMethod<WidgetController>(_ => _.DeleteWidget(1)).Should().BeDecoratedWith<HttpDeleteAttribute>();
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.DeleteWidget(1))
+                .Should()
+                .BeDecoratedWith<HttpDeleteAttribute>();
         }
 
+        [Fact]
         public void AddWidget_Should_Have_HttpPost_Attribute()
         {
-            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel())).Should().BeDecoratedWith<HttpPostAttribute>();
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel()))
+                .Should()
+                .BeDecoratedWith<HttpPostAttribute>();
         }
 
-        public void UpdateWidget_Should_Have_HttpPost_Attribute()
+        [Fact]
+        public void UpdateWidget_Should_Have_HttpPut_Attribute()
         {
-            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel())).Should().BeDecoratedWith<HttpPutAttribute>();
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.UpdateWidget(new WidgetModel()))
+                .Should()
+                .BeDecoratedWith<HttpPutAttribute>();
         }
+
+        [Fact]
+        public void Class_Should_Have_V1RoutePrefix_Attribute()
+        {
+            typeof(WidgetController).Should()
+                .BeDecoratedWith<RoutePrefixAttribute>(
+                _ => _.Prefix.Equals(Constants.RoutePrefixes.V1));
+        }
+
+        [Fact]
+        public void Get_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.Get())
+                .Should()
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+        }
+
+        [Fact]
+        public void GetById_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.Get(1))
+                    .Should()
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget/{id:int}"));
+
+        }
+
+        [Fact]
+        public void AddWidget_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel()))
+                    .Should()
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+
+        }
+
+        [Fact]
+        public void Delete_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.DeleteWidget(1))
+                    .Should()
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget/{id:int}"));
+
+        }
+
+        [Fact]
+        public void UpdateWidget_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<WidgetController>(_ => _.UpdateWidget(new WidgetModel()))
+                    .Should()
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+
+        }
+
     }
 }

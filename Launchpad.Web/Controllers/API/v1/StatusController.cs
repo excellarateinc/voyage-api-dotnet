@@ -5,8 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace Launchpad.Web.Controllers.API
+namespace Launchpad.Web.Controllers.API.V1
 {
+    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class StatusController : ApiController
     {
         private readonly IStatusCollector _statusCollector;
@@ -17,8 +18,8 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-        * @api {get} /status/:id Get status by monitor type
-        * @apiVersion 0.1.1
+        * @api {get} /v1/status/:id Get status by monitor type
+        * @apiVersion 0.1.0
         * @apiName GetStatusByType
         * @apiGroup Status
         *
@@ -48,13 +49,14 @@ namespace Launchpad.Web.Controllers.API
         *          }
         *      ]
         */
+        [Route("status/{id:int}")]
         public HttpResponseMessage Get(MonitorType id)
         {
             return Request.CreateResponse(HttpStatusCode.OK, _statusCollector.Collect(id));
         }
 
         /**
-         * @api {get} /status Get status from all monitors
+         * @api {get} /v1/status Get status from all monitors
          * @apiVersion 0.1.0
          * @apiName GetStatus
          * @apiGroup Status
@@ -99,6 +101,7 @@ namespace Launchpad.Web.Controllers.API
          *          }
          *      ]
          */
+        [Route("status")]
         public HttpResponseMessage Get()
         {
             var status = _statusCollector.Collect();

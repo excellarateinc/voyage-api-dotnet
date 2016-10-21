@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
-using Launchpad.Web.Controllers.API;
+using Launchpad.Web.Controllers.API.V2;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -12,18 +12,20 @@ using Launchpad.Models;
 using System.Net;
 using System.Net.Http;
 using Launchpad.Models.Enum;
+using System.Web.Http;
 
-namespace Launchpad.Web.UnitTests.Controllers.API
+
+namespace Launchpad.Web.UnitTests.Controllers.API.V2
 {
-    public class StatusControllerTests : BaseUnitTest
+    public class StatusV2ControllerTests : BaseUnitTest
     {
-        private StatusController _controller;
+        private StatusV2Controller _controller;
         private Mock<IStatusCollector> _mockStatusCollector;
 
-        public StatusControllerTests()
+        public StatusV2ControllerTests()
         {
             _mockStatusCollector = Mock.Create<IStatusCollector>();
-            _controller = new StatusController(_mockStatusCollector.Object);
+            _controller = new StatusV2Controller(_mockStatusCollector.Object);
             _controller.Request = new System.Net.Http.HttpRequestMessage();
             _controller.Configuration = new System.Web.Http.HttpConfiguration();
         }
@@ -31,7 +33,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_when_StatusCollector_Is_Null()
         {
-            Action throwAction = () => new StatusController(null);
+            Action throwAction = () => new StatusV2Controller(null);
 
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("statusCollector");
         }
@@ -76,6 +78,30 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             IEnumerable<StatusAggregateModel> models;
             message.TryGetContentValue(out models).Should().BeTrue();
             models.ShouldBeEquivalentTo(fakeStatuses);
+        }
+
+        [Fact]
+        public void Class_Should_Have_V2RoutePrefix_Attribute()
+        {
+            typeof(StatusV2Controller).Should()
+                .BeDecoratedWith<RoutePrefixAttribute>(
+                _ => _.Prefix.Equals(Constants.RoutePrefixes.V2));
+        }
+
+        [Fact]
+        public void GetByMonitorType_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<StatusV2Controller>(_ => _.Get(MonitorType.Activity))
+                .Should()
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("status/{id:int}"));
+        }
+
+        [Fact]
+        public void Get_Should_Have_Route_Attribute()
+        {
+            ReflectionHelper.GetMethod<StatusV2Controller>(_ => _.Get())
+             .Should()
+             .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("status"));
         }
     }
 }
