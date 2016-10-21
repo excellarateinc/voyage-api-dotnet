@@ -20,10 +20,11 @@ namespace Launchpad.Web.App_Start
             var builder = new ContainerBuilder();
 
             //Register the types in the container
-            builder.RegisterModule(new DataModule(ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString));
+            var connectionString = ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString;
+            builder.RegisterModule(new DataModule(connectionString));
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
-            builder.RegisterModule<WebModule>();
+            builder.RegisterModule(new WebModule(connectionString));
 
             // Get your HttpConfiguration.
             var config = System.Web.Http.GlobalConfiguration.Configuration;

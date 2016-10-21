@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace Launchpad.Data
 {
-  
+
 
     public class LaunchpadDataContext : DbContext, ILaunchpadDataContext
     {
@@ -12,7 +12,7 @@ namespace Launchpad.Data
         #region DbSets
 
         public IDbSet<Widget> Widgets { get; set; }
-
+        public IDbSet<LaunchpadLog> Logs {get;set;}
         #endregion 
 
 

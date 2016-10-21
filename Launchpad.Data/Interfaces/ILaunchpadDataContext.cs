@@ -7,6 +7,8 @@ namespace Launchpad.Data.Interfaces
     {
         IDbSet<Widget> Widgets { get; set; }
 
+        IDbSet<LaunchpadLog> Logs { get; set; }
+
         int SaveChanges();
        
     }

@@ -1,6 +1,7 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models.Enum;
 using Launchpad.Services.Interfaces;
+using Serilog;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -11,10 +12,12 @@ namespace Launchpad.Web.Controllers.API.V2
     public class StatusV2Controller : ApiController
     {
         private readonly IStatusCollector _statusCollector;
+        private readonly ILogger _log;
 
-        public StatusV2Controller(IStatusCollector statusCollector)
+        public StatusV2Controller(IStatusCollector statusCollector, ILogger log)
         {
             _statusCollector = statusCollector.ThrowIfNull(nameof(statusCollector));
+            _log = log.ThrowIfNull(nameof(log));
         }
 
         /**
@@ -52,6 +55,8 @@ namespace Launchpad.Web.Controllers.API.V2
         [Route("status/{id:int}")]
         public HttpResponseMessage Get(MonitorType id)
         {
+            _log.Information("Request for MonitorType -> {id}", id);
+
             return Request.CreateResponse(HttpStatusCode.OK, _statusCollector.Collect(id));
         }
 

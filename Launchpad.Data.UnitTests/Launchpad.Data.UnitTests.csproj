@@ -88,6 +88,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LaunchpadLogRepositoryTests.cs" />
     <Compile Include="SqlConnectionStatusTests.cs" />
     <Compile Include="WidgetRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +100,10 @@
     <ProjectReference Include="..\Launchpad.Data\Launchpad.Data.csproj">
       <Project>{7ACF3840-25CC-4A96-824A-8AB6B28781FD}</Project>
       <Name>Launchpad.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
+      <Project>{D2013160-5E92-4EB0-8A10-3B89C44E8572}</Project>
+      <Name>Launchpad.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Launchpad.UnitTests.Common\Launchpad.UnitTests.Common.csproj">
       <Project>{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}</Project>

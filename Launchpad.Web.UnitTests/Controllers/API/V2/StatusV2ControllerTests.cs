@@ -21,21 +21,31 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
     {
         private StatusV2Controller _controller;
         private Mock<IStatusCollector> _mockStatusCollector;
+        private Mock<Serilog.ILogger> _mockLog;
 
         public StatusV2ControllerTests()
         {
             _mockStatusCollector = Mock.Create<IStatusCollector>();
-            _controller = new StatusV2Controller(_mockStatusCollector.Object);
+            _mockLog = Mock.Create<Serilog.ILogger>();
+            _controller = new StatusV2Controller(_mockStatusCollector.Object, _mockLog.Object);
             _controller.Request = new System.Net.Http.HttpRequestMessage();
             _controller.Configuration = new System.Web.Http.HttpConfiguration();
         }
 
         [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_when_StatusCollector_Is_Null()
+        public void Ctor_Should_Throw_ArgumentNullException_When_StatusCollector_Is_Null()
         {
-            Action throwAction = () => new StatusV2Controller(null);
+            Action throwAction = () => new StatusV2Controller(null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("statusCollector");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_Log_Is_Null()
+        {
+            Action throwAction = () => new StatusV2Controller(_mockStatusCollector.Object, null);
+
+            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("log");
         }
 
         [Fact]
@@ -45,6 +55,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
             var fakeStatuses = Fixture.CreateMany<StatusAggregateModel>().ToList();
             MonitorType type = MonitorType.Error;
             _mockStatusCollector.Setup(_ => _.Collect(type)).Returns(fakeStatuses);
+            _mockLog.Setup(_ => _.Information(It.IsAny<string>(), type));
 
             //Act
             var message = _controller.Get(type);

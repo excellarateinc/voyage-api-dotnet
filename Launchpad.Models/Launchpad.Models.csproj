@@ -49,13 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityFramework\LaunchpadLog.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\StatusCode.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
+    <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
+    <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
     <Compile Include="StatusAggregateModel.cs" />
     <Compile Include="StatusModel.cs" />
     <Compile Include="RequestDataPointModel.cs" />

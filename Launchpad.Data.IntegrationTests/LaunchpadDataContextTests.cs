@@ -18,11 +18,11 @@ namespace Launchpad.Data.IntegrationTests
         {
 
             //Create a new transaction scope
-            using(var scope = new TransactionScope())
+            using (var scope = new TransactionScope())
             {
 
                 //Create a data context
-                using(var context = new LaunchpadDataContext())
+                using (var context = new LaunchpadDataContext())
                 {
 
                     //Arrange
@@ -36,9 +36,28 @@ namespace Launchpad.Data.IntegrationTests
 
                     //Assert
                     widget.Should().NotBeNull();
-        
+
                 }
 
+            }
+        }
+
+        [Fact]
+        public void Logs_Should_Query_Database()
+        {
+            //Create a new transaction scope
+            using (var scope = new TransactionScope())
+            {
+
+                //Create a data context
+                using (var context = new LaunchpadDataContext())
+                {
+
+                    //Just force a database query
+                    var results = context.Logs.Take(10);
+
+                    results.Should().NotBeNull();
+                }
             }
         }
     }
