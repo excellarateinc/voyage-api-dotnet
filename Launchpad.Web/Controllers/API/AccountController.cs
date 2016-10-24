@@ -52,7 +52,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {post} /api/account Register a new account
+        * @api {post} /account/register Register a new account
         * @apiVersion 0.1.0
         * @apiName CreateAccount
         * @apiGroup Account
@@ -61,6 +61,9 @@ namespace Launchpad.Web.Controllers.API
         * @apiParam {String} password User's password
         * @apiParam {String} confirmPassword User's password (x2) 
         * 
+        * @apiSuccessExample Success-Response:
+        *      HTTP/1.1 200 OK
+        *      
         * @apiUse BadRequestError
         */
         [AllowAnonymous]
