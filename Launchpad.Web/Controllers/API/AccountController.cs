@@ -50,15 +50,23 @@ namespace Launchpad.Web.Controllers.API
             return null;
         }
 
+
+        /**
+        * @api {post} /api/account Register a new account
+        * @apiVersion 0.1.0
+        * @apiName CreateAccount
+        * @apiGroup Account
+        * 
+        * @apiParam {String} email User's email
+        * @apiParam {String} password User's password
+        * @apiParam {String} confirmPassword User's password (x2) 
+        * 
+        * @apiUse BadRequestError
+        */
         [AllowAnonymous]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -69,6 +77,7 @@ namespace Launchpad.Web.Controllers.API
             }
 
             return Ok();
+
         }
     }
 }

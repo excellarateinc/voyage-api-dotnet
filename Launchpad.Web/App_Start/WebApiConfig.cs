@@ -18,12 +18,13 @@ namespace Launchpad.Web
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-
+            config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
+            
             //Service locator - not ideal
             var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
             config.MessageHandlers.Add(new RequestMetricsHandler(metricsService));
 
-            config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
+           
 
             //Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
