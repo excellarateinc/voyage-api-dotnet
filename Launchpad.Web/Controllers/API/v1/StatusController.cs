@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
+   
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class StatusController : ApiController
     {
