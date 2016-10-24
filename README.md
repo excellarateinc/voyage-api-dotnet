@@ -49,7 +49,28 @@ The default route is setup to redirect to the documentation.
 }
 ```
 
-  
+# Logging
+The application is configured to use [Serilog](https://serilog.net/). It is configured in the container as a singleton and the current sink is a SQL Server table. 
+
+## Usage
+To utilize logging, add it as a constructor dependency and the container will resolve it.
+````
+public StatusV2Controller(IStatusCollector statusCollector, ILogger log)
+{
+  _statusCollector = statusCollector.ThrowIfNull(nameof(statusCollector));
+  _log = log.ThrowIfNull(nameof(log));
+}
+````
+
+````
+[Route("status/{id:int}")]
+public IHttpActionResult Get(MonitorType id)
+{
+  _log.Information("Request for MonitorType -> {id}", id);
+  return Ok(_statusCollector.Collect(id));
+}
+````
+
 # Unit Testing
 The unit testing libraries are:
 
