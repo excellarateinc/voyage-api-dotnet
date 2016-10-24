@@ -54,18 +54,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="DataModule.cs" />
+    <Compile Include="Interfaces\IDbConnectionStatus.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
+    <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IWidgetRepository.cs" />
     <Compile Include="LaunchpadDataContext.cs" />
+    <Compile Include="LaunchpadLogRepository.cs" />
     <Compile Include="Migrations\201610172218460_Initial.cs" />
     <Compile Include="Migrations\201610172218460_Initial.Designer.cs">
       <DependentUpon>201610172218460_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211325564_NewColumnWidgetColor.cs" />
+    <Compile Include="Migrations\201610211325564_NewColumnWidgetColor.Designer.cs">
+      <DependentUpon>201610211325564_NewColumnWidgetColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211515399_CreateTableLaunchpadLog.cs" />
+    <Compile Include="Migrations\201610211515399_CreateTableLaunchpadLog.Designer.cs">
+      <DependentUpon>201610211515399_CreateTableLaunchpadLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlConnectionStatus.cs" />
     <Compile Include="WidgetRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +100,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610172218460_Initial.resx">
       <DependentUpon>201610172218460_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211325564_NewColumnWidgetColor.resx">
+      <DependentUpon>201610211325564_NewColumnWidgetColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211515399_CreateTableLaunchpadLog.resx">
+      <DependentUpon>201610211515399_CreateTableLaunchpadLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

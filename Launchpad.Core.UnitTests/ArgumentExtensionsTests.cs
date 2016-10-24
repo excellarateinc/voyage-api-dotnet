@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Launchpad.Core.UnitTests
 {
-    public class ArgumentExtensionTests
+    public class ArgumentExtensionsTests
     {
         [Fact]
         public void ThrowIfNull_Should_Return_Object_When_Not_Null()

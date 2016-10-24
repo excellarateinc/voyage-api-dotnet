@@ -11,13 +11,15 @@ namespace Launchpad.Data.Configuration
     {
         public WidgetConfiguration()
         {
+            ToTable("Widget");
+
             //Configure the entity key
             HasKey(_ => _.Id);
             
             //Configure the entity properties
             Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(_ => _.Name).HasMaxLength(60);
-
+            Property(_ => _.Color).HasMaxLength(60);
         }
     }
 }

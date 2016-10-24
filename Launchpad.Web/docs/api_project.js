@@ -1,6 +1,6 @@
 define({
   "name": "Launchpad .Net API",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Sample ASP.Net Web API Project - Including the usage of EntityFramework",
   "title": "Launchpad .Net API",
   "template": {
@@ -12,7 +12,7 @@ define({
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2016-10-19T18:56:37.545Z",
+    "time": "2016-10-24T17:42:27.661Z",
     "url": "http://apidocjs.com",
     "version": "0.16.1"
   }

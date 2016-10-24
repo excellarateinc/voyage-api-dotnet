@@ -68,7 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentExtensionTests.cs" />
+    <Compile Include="ArgumentExtensionsTests.cs" />
+    <Compile Include="ExceptionExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,10 @@
     <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
       <Project>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</Project>
       <Name>Launchpad.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Launchpad.UnitTests.Common\Launchpad.UnitTests.Common.csproj">
+      <Project>{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}</Project>
+      <Name>Launchpad.UnitTests.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

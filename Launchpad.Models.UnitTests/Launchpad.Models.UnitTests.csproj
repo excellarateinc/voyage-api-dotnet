@@ -88,8 +88,13 @@
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="AutoMapperValidationTests.cs" />
+    <Compile Include="Map\Profiles\LaunchpadLogProfileTests.cs" />
+    <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfileTests.cs" />
+    <Compile Include="Map\Resolvers\LogLevelResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistrationModelTests.cs" />
+    <Compile Include="RequestDataPointModelTests.cs" />
     <Compile Include="ValidationTestExtensions.cs" />
     <Compile Include="WidgetModelTests.cs" />
   </ItemGroup>

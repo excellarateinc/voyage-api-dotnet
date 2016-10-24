@@ -15,15 +15,19 @@ namespace Launchpad.Web.App_Start
     /// </summary>
     public class ContainerConfig
     {
+
+        public static IContainer Container { get; private set; }
+
         public static void Register()
         {
             var builder = new ContainerBuilder();
 
             //Register the types in the container
-            builder.RegisterModule(new DataModule(ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString));
+            var connectionString = ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString;
+            builder.RegisterModule(new DataModule(connectionString));
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
-            builder.RegisterModule<WebModule>();
+            builder.RegisterModule(new WebModule(connectionString));
 
             // Get your HttpConfiguration.
             var config = System.Web.Http.GlobalConfiguration.Configuration;
@@ -35,10 +39,10 @@ namespace Launchpad.Web.App_Start
             builder.RegisterWebApiFilterProvider(config);
 
             // Set the dependency resolver to be Autofac.
-            var container = builder.Build();
+            Container = builder.Build();
 
 
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
         }
     }
 }

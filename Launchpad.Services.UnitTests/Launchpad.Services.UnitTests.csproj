@@ -60,6 +60,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -92,8 +93,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Monitors\ActivityMonitorTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
+    <Compile Include="Monitors\DbStatusMonitorTests.cs" />
+    <Compile Include="Monitors\HttpEndpointStatusMonitorTests.cs" />
+    <Compile Include="Monitors\LogMonitorTests.cs" />
+    <Compile Include="RequestMetricsServiceTests.cs" />
+    <Compile Include="StatusCollectorServiceTests.cs" />
     <Compile Include="WidgetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -118,6 +125,7 @@
       <Name>Launchpad.UnitTests.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

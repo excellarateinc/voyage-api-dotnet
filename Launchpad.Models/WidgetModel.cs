@@ -8,5 +8,7 @@ namespace Launchpad.Models
 
         [Required(AllowEmptyStrings =false, ErrorMessage ="A widget must have a name")]
         public string Name { get; set; }
+
+        public string Color { get; set; }
     }
 }

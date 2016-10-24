@@ -1,6 +1,12 @@
-﻿using Launchpad.Web.Filters;
+﻿using Launchpad.Services;
+using Launchpad.Web.App_Start;
+using Launchpad.Web.Filters;
+using Launchpad.Web.Handlers;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using Autofac;
+using Launchpad.Services.Interfaces;
+using Microsoft.Owin.Security.OAuth;
 
 namespace Launchpad.Web
 {
@@ -9,8 +15,16 @@ namespace Launchpad.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
+            // Configure Web API to use only bearer token authentication.
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
+            
+            //Service locator - not ideal
+            var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
+            config.MessageHandlers.Add(new RequestMetricsHandler(metricsService));
+
+           
 
             //Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
