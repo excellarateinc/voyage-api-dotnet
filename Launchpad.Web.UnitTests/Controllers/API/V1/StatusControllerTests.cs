@@ -13,6 +13,8 @@ using System.Net;
 using System.Net.Http;
 using Launchpad.Models.Enum;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Threading;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -38,20 +40,25 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void Get_Should_Call_StatusCollection_With_MontiorTypeParameter()
+        public async void Get_Should_Call_StatusCollection_With_MontiorTypeParameter()
         {
             //Arrange
             var fakeStatuses = Fixture.CreateMany<StatusAggregateModel>().ToList();
             MonitorType type = MonitorType.Error;
             _mockStatusCollector.Setup(_ => _.Collect(type)).Returns(fakeStatuses);
-
+            
             //Act
-            var message = _controller.Get(type);
+            var result = _controller.Get(type);
 
+
+            //Assert
             Mock.VerifyAll();
 
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<StatusAggregateModel>>>();
 
+            var message = await result.ExecuteAsync(CancellationToken.None);
+
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
             IEnumerable<StatusAggregateModel> models;
             message.TryGetContentValue(out models).Should().BeTrue();
             models.ShouldBeEquivalentTo(fakeStatuses);
@@ -59,18 +66,23 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void Get_Should_Call_StatusCollector()
+        public async void Get_Should_Call_StatusCollector()
         {
             //Arrange
             var fakeStatuses = Fixture.CreateMany<StatusAggregateModel>().ToList();
             _mockStatusCollector.Setup(_ => _.Collect()).Returns(fakeStatuses);
 
             //Act
-            var message = _controller.Get();
+            var result = _controller.Get();
 
 
             //Assert
             Mock.VerifyAll();
+
+            result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<StatusAggregateModel>>>();
+
+
+            var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 

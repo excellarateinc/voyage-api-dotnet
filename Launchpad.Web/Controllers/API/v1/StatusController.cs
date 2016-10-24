@@ -50,9 +50,9 @@ namespace Launchpad.Web.Controllers.API.V1
         *      ]
         */
         [Route("status/{id:int}")]
-        public HttpResponseMessage Get(MonitorType id)
+        public IHttpActionResult Get(MonitorType id)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, _statusCollector.Collect(id));
+            return Ok(_statusCollector.Collect(id));
         }
 
         /**
@@ -102,10 +102,10 @@ namespace Launchpad.Web.Controllers.API.V1
          *      ]
          */
         [Route("status")]
-        public HttpResponseMessage Get()
+        public IHttpActionResult Get()
         {
             var status = _statusCollector.Collect();
-            return Request.CreateResponse(HttpStatusCode.OK, status);
+            return Ok(status);
         }
 
     }

@@ -1,9 +1,12 @@
 ﻿using Launchpad.Core;
+using Launchpad.Models;
 using Launchpad.Models.Enum;
 using Launchpad.Services.Interfaces;
 using Serilog;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V2
@@ -54,11 +57,10 @@ namespace Launchpad.Web.Controllers.API.V2
         *      ]
         */
         [Route("status/{id:int}")]
-        public HttpResponseMessage Get(MonitorType id)
+        public IHttpActionResult Get(MonitorType id)
         {
             _log.Information("Request for MonitorType -> {id}", id);
-
-            return Request.CreateResponse(HttpStatusCode.OK, _statusCollector.Collect(id));
+            return Ok(_statusCollector.Collect(id));
         }
 
         /**
@@ -108,10 +110,10 @@ namespace Launchpad.Web.Controllers.API.V2
          *      ]
          */
         [Route("status")]
-        public HttpResponseMessage Get()
+        public IHttpActionResult Get()
         {
             var status = _statusCollector.Collect();
-            return Request.CreateResponse(HttpStatusCode.OK, status);
+            return Ok(status);
         }
 
     }
