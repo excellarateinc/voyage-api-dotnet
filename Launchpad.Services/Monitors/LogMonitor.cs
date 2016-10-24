@@ -5,6 +5,7 @@ using Launchpad.Models.Enum;
 using Launchpad.Data.Interfaces;
 using Launchpad.Core;
 using AutoMapper;
+using System.Linq;
 
 namespace Launchpad.Services.Monitors
 {
@@ -24,7 +25,7 @@ namespace Launchpad.Services.Monitors
 
         public IEnumerable<StatusModel> GetStatus()
         {
-            return _mapper.Map<IEnumerable<StatusModel>>(_logRepository.GetRecentActivity());
+            return _mapper.Map<IEnumerable<StatusModel>>(_logRepository.GetRecentActivity().OrderByDescending(order => order.TimeStamp));
         }
     }
 }
