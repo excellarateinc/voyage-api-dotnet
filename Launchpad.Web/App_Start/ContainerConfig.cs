@@ -15,6 +15,9 @@ namespace Launchpad.Web.App_Start
     /// </summary>
     public class ContainerConfig
     {
+
+        public static IContainer Container { get; private set; }
+
         public static void Register()
         {
             var builder = new ContainerBuilder();
@@ -36,10 +39,10 @@ namespace Launchpad.Web.App_Start
             builder.RegisterWebApiFilterProvider(config);
 
             // Set the dependency resolver to be Autofac.
-            var container = builder.Build();
+            Container = builder.Build();
 
 
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
         }
     }
 }

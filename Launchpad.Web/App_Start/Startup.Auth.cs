@@ -1,4 +1,5 @@
-﻿using Launchpad.Web.AppMembership;
+﻿using Launchpad.Web.App_Start;
+using Launchpad.Web.AppIdentity;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -18,10 +19,8 @@ namespace Launchpad.Web
 
         public static void Configure(IAppBuilder app)
         {
-            //TODO: Can this use autofac?
-            // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            //Add autofac to the pipeline
+            app.UseAutofacMiddleware(ContainerConfig.Container);
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
@@ -30,6 +29,7 @@ namespace Launchpad.Web
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
+
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),

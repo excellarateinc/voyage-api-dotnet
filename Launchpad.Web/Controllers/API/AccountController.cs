@@ -1,52 +1,25 @@
-﻿using Launchpad.Web.AppMembership;
+﻿using Launchpad.Core;
+using Launchpad.Models;
+using Launchpad.Web.AppIdentity;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API
 {
-    public class RegisterBindingModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
-    }
 
     [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
         private ApplicationUserManager _userManager;
 
-        public ApplicationUserManager UserManager
+        public AccountController(ApplicationUserManager userManager)
         {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            _userManager = userManager.ThrowIfNull(nameof(userManager));
         }
 
+        
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
@@ -79,7 +52,7 @@ namespace Launchpad.Web.Controllers.API
 
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -88,7 +61,7 @@ namespace Launchpad.Web.Controllers.API
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {

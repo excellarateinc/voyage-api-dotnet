@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Autofac;
+using Autofac.Integration.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace Launchpad.Web.AppMembership
+namespace Launchpad.Web.AppIdentity
 {
+    /// <summary>
+    /// This provider is a singleton - since our dependency are per request, we cannot inject the dependencies via the constructor
+    /// Use the service locator pattern to resolve dependencies here
+    /// Reference: http://stackoverflow.com/questions/29591545/resolve-autofac-service-within-instanceperlifetimescope-on-owin-startup
+    /// </summary>
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
@@ -27,7 +31,8 @@ namespace Launchpad.Web.AppMembership
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+            var scope = context.OwinContext.GetAutofacLifetimeScope();
+            var userManager = scope.Resolve<ApplicationUserManager>(); //context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
 

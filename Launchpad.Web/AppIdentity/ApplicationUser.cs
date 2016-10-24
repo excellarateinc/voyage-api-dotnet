@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Launchpad.Web.AppMembership
+namespace Launchpad.Web.AppIdentity
 {
     public class ApplicationUser : IdentityUser
     {

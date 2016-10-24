@@ -1,7 +1,16 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Launchpad.Core;
+using Launchpad.Web.AppIdentity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
+using Microsoft.Owin.Security;
+using System.Web;
+using Autofac.Core;
+using System.Data.Entity;
 
 namespace Launchpad.Web.App_Start
 {
@@ -19,10 +28,46 @@ namespace Launchpad.Web.App_Start
 
         protected override void Load(ContainerBuilder builder)
         {
+            //Configure and register Serilog 
             var log = ConfigureLogging();
             builder.RegisterInstance(log)
                 .As<ILogger>()
                 .SingleInstance();
+
+            //Register Identity services
+            ConfigureIdentityServices(builder);
+
+            
+        }
+
+        private void ConfigureIdentityServices(ContainerBuilder builder)
+        {
+
+
+            //Database context that manages the identity tables
+            builder.RegisterType<ApplicationDbContext>()
+                .WithParameter("connectionString", _connectionString)
+                .AsSelf()
+                .InstancePerRequest();
+       
+            //Register the user store (wrapper around the identity tables)
+            builder.RegisterType<UserStore<ApplicationUser>>()
+                .WithParameter(new ResolvedParameter( (pi, ctx)=> pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<ApplicationDbContext>()))
+                .As<IUserStore<ApplicationUser>>()
+                .InstancePerRequest();
+
+            //Options
+            builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
+            {
+                DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(Constants.ApplicationName)
+            });
+
+            builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
+                          
+
+            builder.RegisterType<ApplicationUserManager>()
+                .AsSelf()
+                .InstancePerRequest();
         }
 
         /// <summary>
