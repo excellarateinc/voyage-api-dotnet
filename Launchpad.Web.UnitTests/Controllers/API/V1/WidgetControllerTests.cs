@@ -6,9 +6,11 @@ using Launchpad.Web.Controllers.API.V1;
 using Moq;
 using Ploeh.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Xunit;
 
@@ -29,21 +31,22 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
+        public async void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
         {
             const int id = 55;
 
             _mockWidgetService.Setup(_ => _.DeleteWidget(id));
 
-            var message = _widgetController.DeleteWidget(id);
+            var result = _widgetController.DeleteWidget(id);
 
+            var message = await result.ExecuteAsync(CancellationToken.None);
             Mock.VerifyAll();
             message.Should().NotBeNull();
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]
-        public void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
+        public async void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
         {
             //Arrange
             var fakeWidget = Fixture.Create<WidgetModel>();
@@ -51,10 +54,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.AddWidget(fakeWidget)).Returns(fakeResult);
 
             //Act
-            var message = _widgetController.AddWidget(fakeWidget);
+            var result = _widgetController.AddWidget(fakeWidget);
         
             //Assert
             Mock.VerifyAll();
+
+            var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.Created);
 
             WidgetModel widget;
@@ -63,7 +68,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void UpdateWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
+        public async void UpdateWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
         {
             //Arrange
             var fakeWidget = Fixture.Create<WidgetModel>();
@@ -71,10 +76,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget)).Returns(fakeResult);
 
             //Act
-            var message = _widgetController.UpdateWidget(fakeWidget);
+            var result = _widgetController.UpdateWidget(fakeWidget);
 
             //Assert
             Mock.VerifyAll();
+            var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             WidgetModel widget;
@@ -83,7 +89,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void UpdateWidget_Should_Call_WidgetService_And_Return_NotFound_On_Failure()
+        public async void UpdateWidget_Should_Call_WidgetService_And_Return_NotFound_On_Failure()
         {
             //Arrange
             var fakeWidget = Fixture.Create<WidgetModel>();
@@ -91,17 +97,18 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget)).Returns(fakeResult);
 
             //Act
-            var message = _widgetController.UpdateWidget(fakeWidget);
+            var result = _widgetController.UpdateWidget(fakeWidget);
 
             //Assert
             Mock.VerifyAll();
+            var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
         }
 
 
         [Fact]
-        public void Get_Should_Call_WidgetService()
+        public async void Get_Should_Call_WidgetService()
         {
             //Arrange
             var fakeWidgets = Fixture.CreateMany<WidgetModel>();
@@ -109,9 +116,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.GetWidgets()).Returns(fakeWidgets.AsQueryable());
 
             //Act
-            var widgets = _widgetController.Get();
+            var result = _widgetController.Get();
 
             //Assert
+            var message = await result.ExecuteAsync(CancellationToken.None);
+            IEnumerable<WidgetModel> widgets;
+            message.TryGetContentValue<IEnumerable<WidgetModel>>(out widgets).Should().BeTrue();
             _mockWidgetService.Verify(_ => _.GetWidgets(), Times.Once());
             Mock.VerifyAll();
             widgets.Should().BeEquivalentTo(fakeWidgets);
@@ -119,7 +129,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void Get_By_Id_Should_Call_WidgetService()
+        public async void Get_By_Id_Should_Call_WidgetService()
         {
             //Arrange
 
@@ -128,21 +138,22 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.GetWidget(fakeWidget.Id)).Returns(fakeWidget);
 
             //Act
-            var response = _widgetController.Get(fakeWidget.Id);
+            var result = _widgetController.Get(fakeWidget.Id);
 
             //Assert
             _mockWidgetService.Verify(_ => _.GetWidget(fakeWidget.Id), Times.Once());
+            var message = await result.ExecuteAsync(CancellationToken.None);
             Mock.VerifyAll();
 
 
             WidgetModel widget;
-            response.TryGetContentValue<WidgetModel>(out widget).Should().BeTrue(); //Deserialize response content
+            message.TryGetContentValue<WidgetModel>(out widget).Should().BeTrue(); //Deserialize response content
             widget.ShouldBeEquivalentTo(fakeWidget);
 
         }
 
         [Fact]
-        public void Get_By_Id_Should_Return_404_When_Widget_Not_Found()
+        public async void Get_By_Id_Should_Return_404_When_Widget_Not_Found()
         {
             //Arrange
             const int id = -1;
@@ -150,11 +161,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockWidgetService.Setup(_ => _.GetWidget(id)).Returns(model);
 
             //Act
-            var response = _widgetController.Get(id);
+            var result = _widgetController.Get(id);
 
             //Assert
             Mock.VerifyAll();
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+            var message = await result.ExecuteAsync(CancellationToken.None);
+            message.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
         }
 

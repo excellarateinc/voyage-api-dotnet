@@ -707,32 +707,32 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "WidgetNotFound",
-            "description": "<p>The Widget with the requested id was not found.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Widget with ID 33 not found\"\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
     "groupTitle": "Widget",
     "sampleRequest": [
       {
         "url": "/api/v2/widget/:id"
       }
-    ]
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The requested resource was not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "HTTP/1.1 404: Not Found",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "get",
@@ -781,32 +781,32 @@ define({ "api": [
         }
       ]
     },
-    "error": {
-      "fields": {
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "WidgetNotFound",
-            "description": "<p>The Widget with the requested id was not found.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Widget with ID 33 not found\"\n}",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "Controllers/API/v1/WidgetController.cs",
     "groupTitle": "Widget",
     "sampleRequest": [
       {
         "url": "/api/v1/widget/:id"
       }
-    ]
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The requested resource was not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "HTTP/1.1 404: Not Found",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "get",
@@ -988,17 +988,22 @@ define({ "api": [
         }
       ]
     },
+    "filename": "Controllers/API/v2/WidgetV2Controller.cs",
+    "groupTitle": "Widget",
+    "sampleRequest": [
+      {
+        "url": "/api/v2/widget"
+      }
+    ],
     "error": {
       "fields": {
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "WidgetNotFound",
-            "description": "<p>The Widget with the requested id was not found.</p>"
-          }
-        ],
         "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The requested resource was not found</p>"
+          },
           {
             "group": "Error 4xx",
             "optional": false,
@@ -1009,8 +1014,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Widget with ID 33 not found\"\n}",
+          "title": "Error-Response",
+          "content": "HTTP/1.1 404: Not Found",
           "type": "json"
         },
         {
@@ -1019,14 +1024,7 @@ define({ "api": [
           "type": "json"
         }
       ]
-    },
-    "filename": "Controllers/API/v2/WidgetV2Controller.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget"
-      }
-    ]
+    }
   },
   {
     "type": "put",
@@ -1082,17 +1080,22 @@ define({ "api": [
         ]
       }
     },
+    "filename": "Controllers/API/v1/WidgetController.cs",
+    "groupTitle": "Widget",
+    "sampleRequest": [
+      {
+        "url": "/api/v1/widget"
+      }
+    ],
     "error": {
       "fields": {
-        "Error 404": [
-          {
-            "group": "Error 404",
-            "optional": false,
-            "field": "WidgetNotFound",
-            "description": "<p>The Widget with the requested id was not found.</p>"
-          }
-        ],
         "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The requested resource was not found</p>"
+          },
           {
             "group": "Error 4xx",
             "optional": false,
@@ -1103,8 +1106,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Widget with ID 33 not found\"\n}",
+          "title": "Error-Response",
+          "content": "HTTP/1.1 404: Not Found",
           "type": "json"
         },
         {
@@ -1113,13 +1116,6 @@ define({ "api": [
           "type": "json"
         }
       ]
-    },
-    "filename": "Controllers/API/v1/WidgetController.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget"
-      }
-    ]
+    }
   }
 ] });

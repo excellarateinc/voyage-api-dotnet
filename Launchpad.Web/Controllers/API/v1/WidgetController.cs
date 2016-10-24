@@ -1,9 +1,7 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V1
@@ -46,9 +44,9 @@ namespace Launchpad.Web.Controllers.API.V1
          * 
          */
         [Route("widget")]
-        public IEnumerable<WidgetModel> Get()
+        public IHttpActionResult Get()
         {
-            return _widgetService.GetWidgets();
+            return Ok(_widgetService.GetWidgets());
         }
 
 
@@ -70,26 +68,19 @@ namespace Launchpad.Web.Controllers.API.V1
          *        "name": "Large Widget"
          *     }
          *
-         * @apiError (Error 404) WidgetNotFound The Widget with the requested id was not found.
-         * 
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 404 Not Found
-         *     {
-         *       "message": "Widget with ID 33 not found"
-         *     }
+         * @apiUse NotFoundError
          */
         [Route("widget/{id:int}")]
-        public HttpResponseMessage Get(int id)
+        public IHttpActionResult Get(int id)
         {
             var widget = _widgetService.GetWidget(id);
             if (widget == null)
             {
-                var httpError = new HttpError($"Widget with ID {id} not found");
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, httpError);
+                return NotFound();
             }
             else
             {
-                return Request.CreateResponse(widget);
+                return Ok(widget);
             }
         }
 
@@ -116,10 +107,11 @@ namespace Launchpad.Web.Controllers.API.V1
          */
         [Route("widget")]
         [HttpPost]
-        public HttpResponseMessage AddWidget([FromBody] WidgetModel widget)
+        public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
         {
             WidgetModel model = _widgetService.AddWidget(widget);
-            return Request.CreateResponse(HttpStatusCode.Created, model);
+            
+            return Created($"/api/widget/{model.Id}", model);
         }
 
         /**
@@ -136,10 +128,10 @@ namespace Launchpad.Web.Controllers.API.V1
          */ 
         [Route("widget/{id:int}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteWidget(int id)
+        public IHttpActionResult DeleteWidget(int id)
         {
             _widgetService.DeleteWidget(id);
-            return Request.CreateResponse(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         /**
@@ -155,30 +147,22 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiSuccess {String} widget.name Name of the widget
          * @apiSuccess {Number} widget.id ID of the widget
          * 
-         * @apiError (Error 404) WidgetNotFound The Widget with the requested id was not found.
-         * 
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 404 Not Found
-         *     {
-         *       "message": "Widget with ID 33 not found"
-         *     }
-         *
+         * @apiUse NotFoundError
          * @apiUse BadRequestError   
          */
         [Route("widget")]
         [HttpPut]
-        public HttpResponseMessage UpdateWidget([FromBody] WidgetModel widget)
+        public IHttpActionResult UpdateWidget([FromBody] WidgetModel widget)
         {
             WidgetModel model = _widgetService.UpdateWidget(widget);
 
             if (model == null)
             {
-                var httpError = new HttpError($"Widget with ID {widget.Id} not found");
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, httpError);
+                return NotFound();
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.OK, model);
+                return Ok(model);
             }
         }
 
