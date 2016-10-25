@@ -44,11 +44,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/AccountController.cs",
     "groupTitle": "Account",
-    "sampleRequest": [
-      {
-        "url": "/api/account/register"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -139,12 +134,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v2/StatusV2Controller.cs",
-    "groupTitle": "Status",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/status"
-      }
-    ]
+    "groupTitle": "Status"
   },
   {
     "type": "get",
@@ -216,12 +206,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v1/StatusController.cs",
-    "groupTitle": "Status",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/status"
-      }
-    ]
+    "groupTitle": "Status"
   },
   {
     "type": "get",
@@ -306,12 +291,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v2/StatusV2Controller.cs",
-    "groupTitle": "Status",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/status/:id"
-      }
-    ]
+    "groupTitle": "Status"
   },
   {
     "type": "get",
@@ -396,12 +376,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v1/StatusController.cs",
-    "groupTitle": "Status",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/status/:id"
-      }
-    ]
+    "groupTitle": "Status"
   },
   {
     "type": "post",
@@ -473,11 +448,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -554,11 +524,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v1/WidgetController.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -609,12 +574,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget/:id"
-      }
-    ]
+    "groupTitle": "Widget"
   },
   {
     "type": "delete",
@@ -646,12 +606,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v1/WidgetController.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget/:id"
-      }
-    ]
+    "groupTitle": "Widget"
   },
   {
     "type": "get",
@@ -709,11 +664,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget/:id"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -783,11 +733,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v1/WidgetController.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget/:id"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -857,12 +802,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget"
-      }
-    ]
+    "groupTitle": "Widget"
   },
   {
     "type": "get",
@@ -906,12 +846,7 @@ define({ "api": [
       ]
     },
     "filename": "Controllers/API/v1/WidgetController.cs",
-    "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget"
-      }
-    ]
+    "groupTitle": "Widget"
   },
   {
     "type": "put",
@@ -990,11 +925,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v2/WidgetV2Controller.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v2/widget"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -1082,11 +1012,6 @@ define({ "api": [
     },
     "filename": "Controllers/API/v1/WidgetController.cs",
     "groupTitle": "Widget",
-    "sampleRequest": [
-      {
-        "url": "/api/v1/widget"
-      }
-    ],
     "error": {
       "fields": {
         "Error 4xx": [

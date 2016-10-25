@@ -20,10 +20,8 @@ namespace Launchpad.Web.UnitTests.Controllers
         {
             var result = _homeController.Index();
 
-            (result is RedirectResult).Should().BeTrue();
-
-            var redirectResult = (RedirectResult)result;
-            redirectResult.Url.Should().Be("~/docs/");
+            result.Should().BeOfType<ViewResult>();
+            
         }
 
     }

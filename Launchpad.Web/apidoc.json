@@ -7,6 +7,5 @@
     "withCompare": true,
     "withGenerator": true
   },
-  "url": "/api",
-  "sampleUrl": "/api"   
+  "url": "/api"
 }
