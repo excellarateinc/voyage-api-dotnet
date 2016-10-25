@@ -19,7 +19,7 @@
         function request(config) { 
             var token = authorizationService.getToken();
             if(token){
-            config.headers.Authorization = 'bearer ' + token;
+                config.headers.Authorization = 'bearer ' + token;
             }
             return config;
         }

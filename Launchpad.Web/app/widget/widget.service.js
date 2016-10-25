@@ -17,13 +17,13 @@
         function getWidgets() { 
             var deferred = $q.defer();
             $http.get("/api/v2/widget")
-                .success(function(response){
-                    deferred.resolve(response);
-                })
-                .error(function(error){
-                    deferred.reject(error);
-                });
-
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(response){
+                    deferred.reject(response.status);
+                }
+                );
             return deferred.promise;
         }
     }

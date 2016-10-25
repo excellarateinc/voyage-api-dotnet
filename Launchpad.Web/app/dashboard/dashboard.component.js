@@ -21,7 +21,7 @@
     DashboardController.$inject = ['widgetService'];
     function DashboardController(widgetService) {
         var vm = this;
-        //vm.widgets = [];
+     
 
         ////////////////
 

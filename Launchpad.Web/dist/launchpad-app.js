@@ -63,9 +63,6 @@
             .success(function(response){
                 authorizationService.setToken(response.access_token);
                 deferred.resolve(true);
-            })
-            .error(function(error){
-                deferred.reject(error);
             });
             return deferred.promise;
         }
@@ -93,8 +90,6 @@
     LoginController.$inject = ['accountService', '$state'];
     function LoginController(accountService, $state) {
         var vm = this;
-        
-        vm.greeting = 'Hello and Welcome!';
         vm.login = login;
         vm.username = 'fred@fred.com';
         vm.password = 'Hello123!';
@@ -106,6 +101,7 @@
         vm.$onDestory = function() { };
 
         function login(){
+            
             accountService.login(vm.username, vm.password)
             .then(function(result){
                 $state.go('dashboard');
@@ -133,7 +129,7 @@
         function request(config) { 
             var token = authorizationService.getToken();
             if(token){
-            config.headers.Authorization = 'bearer ' + token;
+                config.headers.Authorization = 'bearer ' + token;
             }
             return config;
         }
@@ -196,7 +192,7 @@
     DashboardController.$inject = ['widgetService'];
     function DashboardController(widgetService) {
         var vm = this;
-        //vm.widgets = [];
+     
 
         ////////////////
 
@@ -259,13 +255,13 @@
         function getWidgets() { 
             var deferred = $q.defer();
             $http.get("/api/v2/widget")
-                .success(function(response){
-                    deferred.resolve(response);
-                })
-                .error(function(error){
-                    deferred.reject(error);
-                });
-
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(response){
+                    deferred.reject(response.status);
+                }
+                );
             return deferred.promise;
         }
     }

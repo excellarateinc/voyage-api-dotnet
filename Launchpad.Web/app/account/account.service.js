@@ -25,9 +25,6 @@
             .success(function(response){
                 authorizationService.setToken(response.access_token);
                 deferred.resolve(true);
-            })
-            .error(function(error){
-                deferred.reject(error);
             });
             return deferred.promise;
         }

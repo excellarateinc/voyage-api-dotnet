@@ -21,8 +21,6 @@
     LoginController.$inject = ['accountService', '$state'];
     function LoginController(accountService, $state) {
         var vm = this;
-        
-        vm.greeting = 'Hello and Welcome!';
         vm.login = login;
         vm.username = 'fred@fred.com';
         vm.password = 'Hello123!';
@@ -34,6 +32,7 @@
         vm.$onDestory = function() { };
 
         function login(){
+            
             accountService.login(vm.username, vm.password)
             .then(function(result){
                 $state.go('dashboard');

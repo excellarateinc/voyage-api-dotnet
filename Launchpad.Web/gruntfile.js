@@ -7,7 +7,7 @@
                 separator: ';'
             },
             dist: {
-                src: ['app/app.module.js', 'app/app.config.js', 'app/**/*.js', 'app/!**/*.spec.js'],
+                src: ['app/app.module.js', 'app/app.config.js', 'app/**/*.js', '!app/**/*.spec.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             },
             vendor:{
