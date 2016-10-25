@@ -1,11 +1,22 @@
 <div>
-    <h1>This is the dashboard</h1>
+    <div class="row">
+        <div class="col-sm-12 page-header">
+            <h1>Dashboard</h1>
+        </div>
+    </div>
 
-    <h2>Widgets</h2>
-    <ul>
-        <li ng-repeat="widget in vm.widgets">
-            <widget data-widget="widget"></widget>
-        </li>
-    </ul>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Active Widgets</h3>
+            <div class="well">
+                <ul>
+                    <li ng-repeat="widget in vm.widgets">
+                        <widget data-widget="widget"></widget>
+                    </li>
+                </ul>
 
+            </div>
+        </div>
+    </div>
+    
 </div>

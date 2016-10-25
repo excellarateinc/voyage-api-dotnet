@@ -2,6 +2,26 @@
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        copy: {
+            boostrap: {
+                files: [
+                    { 
+                        expand: true,
+                        cwd: 'node_modules/bootstrap/dist/css/',
+                        src: ['bootstrap.css'], 
+                        dest: 'dist/bootstrap/css/', 
+                        filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'app/',
+                        src: ['app.css'],
+                        dest: 'dist/css',
+                        filter: 'isFile'
+                    }
+                ]
+            }
+        },
         concat: {
             options: {
                 separator: ';'

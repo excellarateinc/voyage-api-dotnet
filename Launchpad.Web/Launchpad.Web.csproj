@@ -206,24 +206,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\account\account.service.js" />
+    <Content Include="app\account\account.service.spec.js" />
     <Content Include="app\account\login.component.html" />
     <Content Include="app\account\login.component.js" />
+    <Content Include="app\account\login.component.spec.js" />
     <Content Include="app\app.config.js" />
+    <Content Include="app\app.css" />
     <Content Include="app\app.module.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
+    <Content Include="app\core\authorizationInterceptor.js" />
+    <Content Include="app\core\authorizationInterceptor.spec.js" />
+    <Content Include="app\core\authorizationService.js" />
+    <Content Include="app\core\authorizationService.spec.js" />
+    <Content Include="app\dashboard\dashboard.component.html" />
+    <Content Include="app\dashboard\dashboard.component.js" />
+    <Content Include="app\dashboard\dashboard.component.spec.js" />
+    <Content Include="app\widget\widget.component.html" />
+    <Content Include="app\widget\widget.component.js" />
+    <Content Include="app\widget\widget.component.spec.js" />
+    <Content Include="app\widget\widget.service.js" />
+    <Content Include="app\widget\widget.service.spec.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="gruntfile.js" />
-    <Content Include="scripts\ai.0.22.9-build00167.js" />
-    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
-    <Content Include="scripts\bootstrap.js" />
-    <Content Include="scripts\bootstrap.min.js" />
-    <None Include="scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="scripts\jquery-1.10.2.js" />
-    <Content Include="scripts\jquery-1.10.2.min.js" />
-    <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
     <Content Include="Controllers\_apidoc.js" />
   </ItemGroup>
@@ -265,7 +270,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -274,7 +278,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\widget\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
