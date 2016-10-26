@@ -214,8 +214,8 @@
     <Content Include="app\app.config.js" />
     <Content Include="app\app.css" />
     <Content Include="app\app.module.js" />
-    <Content Include="app\core\authorizationInterceptor.js" />
-    <Content Include="app\core\authorizationInterceptor.spec.js" />
+    <Content Include="app\core\authorization.interceptor.js" />
+    <Content Include="app\core\authorization.interceptor.spec.js" />
     <Content Include="app\core\authorizationService.js" />
     <Content Include="app\core\authorizationService.spec.js" />
     <Content Include="app\dashboard\dashboard.component.html" />

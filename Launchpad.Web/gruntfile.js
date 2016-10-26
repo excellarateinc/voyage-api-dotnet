@@ -64,6 +64,11 @@
             files: ['<%= jshint.files %>'],
             tasks: ['build']
         },
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -71,9 +76,10 @@
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    
-    grunt.registerTask('test', ['jshint', 'qunit']);
-    grunt.registerTask('build', ['jshint', 'concat']);
+    grunt.loadNpmTasks('grunt-karma');
+
+    grunt.registerTask('test', ['jshint', 'karma']);
+    grunt.registerTask('build', ['copy', 'jshint', 'concat']);
     grunt.registerTask('default', ['build']);
 
 };
