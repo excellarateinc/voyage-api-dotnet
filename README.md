@@ -130,11 +130,9 @@ are roughly as follows:
 ## Client Development Notes
 There is a simple client UI within ***Launchpad.Web***. It supports the following scenarios:
 
+- As a user, I want to be able to register so I can access secure data.
 - As a user, I want to login so I can see secure data.
 - As a user, I want to see a list of widgets.
-
-The following scenarios are incomplete:
-
 - As a user, I want to logout so that other parties cannot access secure data.
 
 ### Client Build Commands
