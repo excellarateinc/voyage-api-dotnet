@@ -15,14 +15,30 @@
         var states = [
         { 
             name: 'login', 
-            url: '/login', 
-            // Using component: instead of template:
-            component: 'lssLogin'  
+            url: '/login',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssLogin'
+                },
+                header: {
+                    component: 'lssHeader'
+                }
+            }
+             
         },
         {
             name: 'dashboard',
             url: '/dashboard',
-            component: 'lssDashboard'
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssDashboard'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                }
+            }
         }];
 
         // Loop over the state definitions and register them

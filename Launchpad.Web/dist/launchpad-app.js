@@ -21,14 +21,30 @@
         var states = [
         { 
             name: 'login', 
-            url: '/login', 
-            // Using component: instead of template:
-            component: 'lssLogin'  
+            url: '/login',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssLogin'
+                },
+                header: {
+                    component: 'lssHeader'
+                }
+            }
+             
         },
         {
             name: 'dashboard',
             url: '/dashboard',
-            component: 'lssDashboard'
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssDashboard'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                }
+            }
         }];
 
         // Loop over the state definitions and register them
@@ -204,6 +220,73 @@
         };
         vm.$onChanges = function(changesObj) { };
         vm.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssHeader', {
+            //template:'htmlTemplate',
+            templateUrl: '/app/header/header.component.html',
+            controller: HeaderController,
+            controllerAs: 'vm',
+            bindings: {
+                Binding: '=',
+            },
+        });
+
+    function HeaderController() {
+        var vm = this;
+        
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssSecureHeader', {
+            //template:'htmlTemplate',
+            templateUrl: '/app/header/secure.header.component.html',
+            controller: HeaderController,
+            controllerAs: 'vm',
+            bindings: {
+                Binding: '=',
+            },
+        });
+
+    HeaderController.$inject = ['authorizationService', '$state'];
+    function HeaderController(authorizationService, $state) {
+        var vm = this;
+        
+        vm.logout = logout;
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function logout(){
+            authorizationService.setToken(null);
+            $state.go("login");
+        }
     }
 })();;(function() {
 'use strict';
