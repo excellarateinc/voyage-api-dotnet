@@ -200,7 +200,7 @@
                 .then(
                     function(result){
                         vm.registrationErrors = [];
-                        $state.go("login");
+                        $state.go('login');
                     },
                     function(failure){
                         var errors = errorService.getModelStateErrors(failure);
@@ -209,7 +209,7 @@
                 );
             }
             else{
-                vm.registrationErrors = ["Passwords must match"];
+                vm.registrationErrors = ['Passwords must match'];
             }
         }
     }
@@ -404,6 +404,76 @@
         function logout(){
             authorizationService.setToken(null);
             $state.go("login");
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssStatusList', {
+            //template:'htmlTemplate',
+            templateUrl: '/app/status/status-list.component.html',
+            controller: StatusListController,
+            controllerAs: 'vm',
+            bindings: {
+                Binding: '=',
+            },
+        });
+
+    StatusListController.$inject = ['statusService'];
+    function StatusListController(statusService) {
+        var vm = this;
+        vm.statuses = [];
+
+        ////////////////
+
+        vm.$onInit = function() { 
+            statusService.getStatus()
+                .then(
+                    function(statuses){
+                        vm.statuses = statuses;
+                    },
+                    function(error){
+
+                    }
+                );
+        };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('statusService', StatusService);
+
+    StatusService.$inject = ['$http', '$q'];
+    function StatusService($http, $q) {
+        var service = {
+            getStatus: getStatus
+        };
+        
+        return service;
+
+        ////////////////
+        function getStatus() { 
+             var deferred = $q.defer();
+            $http.get("/api/v2/status")
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(response){
+                    deferred.reject(response.status);
+                }
+                );
+            return deferred.promise;
         }
     }
 })();;(function() {
