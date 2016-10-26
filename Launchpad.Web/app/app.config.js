@@ -27,6 +27,20 @@
             }
              
         },
+        { 
+            name: 'register', 
+            url: '/register',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssRegister'
+                },
+                header: {
+                    component: 'lssHeader'
+                }
+            }
+             
+        },
         {
             name: 'dashboard',
             url: '/dashboard',

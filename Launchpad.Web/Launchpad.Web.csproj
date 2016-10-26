@@ -221,6 +221,12 @@
     <Content Include="app\dashboard\dashboard.component.html" />
     <Content Include="app\dashboard\dashboard.component.js" />
     <Content Include="app\dashboard\dashboard.component.spec.js" />
+    <Content Include="app\header\header.component.html" />
+    <Content Include="app\header\header.component.js" />
+    <Content Include="app\header\header.component.spec.js" />
+    <Content Include="app\header\secure.header.component.html" />
+    <Content Include="app\header\secure.header.component.js" />
+    <Content Include="app\header\secure.header.component.spec.js" />
     <Content Include="app\widget\widget.component.html" />
     <Content Include="app\widget\widget.component.js" />
     <Content Include="app\widget\widget.component.spec.js" />

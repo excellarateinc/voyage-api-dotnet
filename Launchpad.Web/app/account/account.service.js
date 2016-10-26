@@ -8,7 +8,8 @@
     AccountService.$inject = ['$q', '$http', 'authorizationService'];
     function AccountService($q, $http, authorizationService) {
         var service = {
-            login:login
+            login:login,
+            register: register
         };
         
         return service;
@@ -26,6 +27,26 @@
                 authorizationService.setToken(response.access_token);
                 deferred.resolve(true);
             });
+            return deferred.promise;
+        }
+
+        function register(username, password){
+            var deferred = $q.defer();
+
+            var user = {
+                email: username,
+                password: password,
+                confirmPassword: password
+            };
+
+            $http.post("/api/account/register", user)
+                .then(function(response){
+                    deferred.resolve(response.data);
+                }, 
+                function(response){
+                    deferred.reject(response.data);
+                });
+
             return deferred.promise;
         }
     }

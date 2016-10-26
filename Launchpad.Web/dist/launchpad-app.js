@@ -33,6 +33,20 @@
             }
              
         },
+        { 
+            name: 'register', 
+            url: '/register',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssRegister'
+                },
+                header: {
+                    component: 'lssHeader'
+                }
+            }
+             
+        },
         {
             name: 'dashboard',
             url: '/dashboard',
@@ -62,7 +76,8 @@
     AccountService.$inject = ['$q', '$http', 'authorizationService'];
     function AccountService($q, $http, authorizationService) {
         var service = {
-            login:login
+            login:login,
+            register: register
         };
         
         return service;
@@ -80,6 +95,26 @@
                 authorizationService.setToken(response.access_token);
                 deferred.resolve(true);
             });
+            return deferred.promise;
+        }
+
+        function register(username, password){
+            var deferred = $q.defer();
+
+            var user = {
+                email: username,
+                password: password,
+                confirmPassword: password
+            };
+
+            $http.post("/api/account/register", user)
+                .then(function(response){
+                    deferred.resolve(response.data);
+                }, 
+                function(response){
+                    deferred.reject(response.data);
+                });
+
             return deferred.promise;
         }
     }
@@ -122,6 +157,60 @@
             .then(function(result){
                 $state.go('dashboard');
             });
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssRegister', {
+            //template:'htmlTemplate',
+            templateUrl: '/app/account/register.component.html',
+            controller: RegisterController,
+            controllerAs: 'vm',
+            bindings: {
+                Binding: '=',
+            },
+        });
+
+    RegisterController.$inject = ['accountService', '$state', 'errorService'];
+    function RegisterController(accountService, $state, errorService) {
+        var vm = this;
+        vm.username = '';
+        vm.password = '';
+        vm.confirmPassword = '';
+        vm.register = register;
+        vm.registrationErrors = [];
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function register(){
+            if(vm.password == vm.confirmPassword){
+                accountService.register(vm.username, vm.password)
+                .then(
+                    function(result){
+                        vm.registrationErrors = [];
+                        $state.go("login");
+                    },
+                    function(failure){
+                        var errors = errorService.getModelStateErrors(failure);
+                        vm.registrationErrors = errors;
+                    }
+                );
+            }
+            else{
+                vm.registrationErrors = ["Passwords must match"];
+            }
         }
     }
 })();;(function() {
@@ -183,6 +272,35 @@
         }
         function getToken() {
             return accessToken;
+        }
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('errorService', ErrorService);
+    
+    //This could be an interceptor
+    function ErrorService() {
+        var service = {
+            getModelStateErrors:getModelStateErrors
+        };
+        
+        return service;
+
+        ////////////////
+        function getModelStateErrors(failure) { 
+            var errors = [];
+            if(failure.modelState){
+                for(var key in failure.modelState){
+                    var states = failure.modelState[key];
+                    for(var i = 0; i < states.length; ++i){
+                        errors.push(states[i]);
+                    }
+                }
+            }
+            return errors;
         }
     }
 })();;(function() {

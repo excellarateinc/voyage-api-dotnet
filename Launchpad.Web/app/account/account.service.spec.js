@@ -60,4 +60,51 @@ describe('account.service', function(){
         });
     });
 
+    describe("register", function(){
+        it("should call register endpoint and call resolve on success", function(){
+            var user = { 
+                email: "test@test.com",
+                password: "p1",
+                confirmPassword: "p1"
+
+            };
+
+            $httpBackend.when('POST', '/api/account/register', user)
+                .respond(true);
+
+            var promise = service.register(user.email, user.password);
+
+            promise.then(function(value){
+                expect(value).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+
+        
+        it("should call register endpoint and call reject on failure", function(){
+            var user = { 
+                email: "test@test.com",
+                password: "p1",
+                confirmPassword: "p1"
+
+            };
+
+            $httpBackend.when('POST', '/api/account/register', user)
+                .respond(400, {data: "error"});
+
+            var promise = service.register(user.email, user.password);
+
+            promise.then(function(){
+                expect(false).toBe(true);
+            }, function(value){
+                expect(value.data).toBe("error");
+            });
+
+            $httpBackend.flush();
+        });
+
+        
+    });
+
 });
