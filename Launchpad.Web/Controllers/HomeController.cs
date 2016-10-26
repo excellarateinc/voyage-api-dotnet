@@ -7,7 +7,7 @@ namespace Launchpad.Web.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return RedirectPermanent("~/docs/");
+            return View();
         }
     }
 }

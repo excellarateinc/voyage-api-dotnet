@@ -1,0 +1,22 @@
+<div>
+    <div class="row">
+        <div class="col-sm-12 page-header">
+            <h1>Dashboard</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Active Widgets</h3>
+            <div class="well">
+                <ul>
+                    <li ng-repeat="widget in vm.widgets">
+                        <widget data-widget="widget"></widget>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    
+</div>

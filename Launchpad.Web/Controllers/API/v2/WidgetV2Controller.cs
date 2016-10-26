@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V2
 {
-    //TODO: Fix route attributes + fix apidocsjs
+    [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V2)]
     public class WidgetV2Controller : ApiController
     {

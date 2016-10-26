@@ -8,11 +8,11 @@ define({
     "withGenerator": true
   },
   "url": "/api",
-  "sampleUrl": "/api",
+  "sampleUrl": false,
   "apidoc": "0.2.0",
   "generator": {
     "name": "apidoc",
-    "time": "2016-10-24T17:42:27.661Z",
+    "time": "2016-10-25T20:33:42.223Z",
     "url": "http://apidocjs.com",
     "version": "0.16.1"
   }

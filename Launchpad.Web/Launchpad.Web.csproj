@@ -206,9 +206,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\account\account.service.js" />
+    <Content Include="app\account\account.service.spec.js" />
+    <Content Include="app\account\login.component.html" />
+    <Content Include="app\account\login.component.js" />
+    <Content Include="app\account\login.component.spec.js" />
+    <Content Include="app\app.config.js" />
+    <Content Include="app\app.css" />
+    <Content Include="app\app.module.js" />
+    <Content Include="app\core\authorization.interceptor.js" />
+    <Content Include="app\core\authorization.interceptor.spec.js" />
+    <Content Include="app\core\authorizationService.js" />
+    <Content Include="app\core\authorizationService.spec.js" />
+    <Content Include="app\dashboard\dashboard.component.html" />
+    <Content Include="app\dashboard\dashboard.component.js" />
+    <Content Include="app\dashboard\dashboard.component.spec.js" />
+    <Content Include="app\header\header.component.html" />
+    <Content Include="app\header\header.component.js" />
+    <Content Include="app\header\header.component.spec.js" />
+    <Content Include="app\header\secure.header.component.html" />
+    <Content Include="app\header\secure.header.component.js" />
+    <Content Include="app\header\secure.header.component.spec.js" />
+    <Content Include="app\widget\widget.component.html" />
+    <Content Include="app\widget\widget.component.js" />
+    <Content Include="app\widget\widget.component.spec.js" />
+    <Content Include="app\widget\widget.service.js" />
+    <Content Include="app\widget\widget.service.spec.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="scripts\ai.0.22.9-build00167.js" />
-    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="gruntfile.js" />
     <Content Include="Web.config" />
     <Content Include="Controllers\_apidoc.js" />
   </ItemGroup>
@@ -244,6 +270,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="apidoc.json" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -253,7 +285,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
