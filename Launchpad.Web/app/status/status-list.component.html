@@ -1,11 +1,10 @@
 <div>
-    <ul>
-        <li ng-repeat="status in vm.statuses">
-            <strong>{{status.name}}</strong>
-            <ul>
-                <li ng-repeat="message in status.status">
-                    <span>[{{message.time | date : 'short' }}]</span>
-                    <span>{{message.message}}</span>
+    <ul class="list-unstyled">
+        <li ng-repeat="statusAggregate in vm.statuses">
+            <strong>{{statusAggregate.name}}</strong>
+            <ul class="list-unstyled">
+                <li ng-repeat="status in statusAggregate.status">
+                  <lss-status data-status="status"/>
                 </li>
             </ul>
         </li>
