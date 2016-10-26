@@ -1,0 +1,13 @@
+<div>
+    <ul>
+        <li ng-repeat="status in vm.statuses">
+            <strong>{{status.name}}</strong>
+            <ul>
+                <li ng-repeat="message in status.status">
+                    <span>[{{message.time | date : 'short' }}]</span>
+                    <span>{{message.message}}</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -39,7 +39,7 @@
                 .then(
                     function(result){
                         vm.registrationErrors = [];
-                        $state.go("login");
+                        $state.go('login');
                     },
                     function(failure){
                         var errors = errorService.getModelStateErrors(failure);
@@ -48,7 +48,7 @@
                 );
             }
             else{
-                vm.registrationErrors = ["Passwords must match"];
+                vm.registrationErrors = ['Passwords must match'];
             }
         }
     }
