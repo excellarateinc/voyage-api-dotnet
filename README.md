@@ -24,6 +24,8 @@ After pulling the source code install the required packages:
 2. Perform a Nuget package restore
 3. Perform a npm package restore in folder ***Launchpad.Web***
 
+# Building
+
 ## Database
 The application uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
 
@@ -33,6 +35,27 @@ The application uses a SQL Database and Code First Migrations. This migration st
    - The connection string in ***Launchpad.Web*** web.config determines where the database will be created
    - The default is localhost/sqlexpress with initial catalog Launchpad
    - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
+
+## Users
+Currently, there is not an UI for adding users. However, a user can be added using a REST request:
+
+1. Build and start the application
+2. Open a rest client (For example: Postman)
+3. Create a post request
+   - The first time the IdentityContext is used, it will create the ASP.Net Identity schema in the database
+   - This should return a 200
+
+```
+POST http://localhost:52431/api/account/Register HTTP/1.1
+Content-Type: application/json
+Accept: */*
+
+{
+	"email":"someemail@agreatdomain.com",
+	"password":"SuperTopSecret123!",
+	"confirmPassword": "SuperTopSecret123!"
+}
+```
 
 ## Generating Documentation
 The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For 
@@ -89,60 +112,9 @@ To generate the api docs after a change:
    - Script: apidoc -o docs -i Controllers
    - This will scan the Controllers folder for endpoints and place the output in \docs
 
+To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
 
-
-
-
-# Setup
-Once you have the source code:
-
-1. Package restore
-2. Switch to Package Manager Console
-3. Set Default project to Launchpad.Data
-4. Run Update-Database from the console
-1. The connection string in LaunchPad.Web determines where the database will be created
-2. The default is localhost/sqlexpress, initial catalog Launchpad
-
-# Generate Documentation
-To generate the api docs after a change:
-
-1. (One Time) Run: npm install apidoc -g
-2. npm run doc
-
-The default route is setup to redirect to the documentation. 
-
-# API Endpoints
-
-## Widget
-### Sample - Get Widgets
-#### URL [http://localhost:52431/api/widget](http://localhost:52431/api/widget)
-#### Output
-
-```
-[
-  {
-    "id": 3,
-    "name": "Large Widget"
-  },
-  {
-    "id": 7,
-    "name": "Medium Widget"
-  }
-]
-```
-
-### Sample - Get Widget
-#### URL [http://localhost:52431/api/widget/3](http://localhost:52431/api/widget/3)
-#### Output
-```
-{
-  "id": 3,
-  "name": "Large Widget"
-}
-```
-
-  
-# Unit Testing
+# Testing
 The unit testing libraries are:
 
 1. [Xunit] (https://xunit.github.io/)
