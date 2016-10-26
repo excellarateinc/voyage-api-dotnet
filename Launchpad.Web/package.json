@@ -3,7 +3,9 @@
   "name": "launchpad-app",
   "private": true,
   "scripts": {
-    "doc": "apidoc -o docs -i Controllers"
+    "doc": "apidoc -o docs -i Controllers",
+    "test": "grunt test",
+    "build": "grunt build"
   },
   "devDependencies": {
     "angular": "^1.5.8",
