@@ -1,7 +1,6 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
-using Launchpad.Web.AppIdentity;
+using Launchpad.Services.Interfaces;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -13,11 +12,11 @@ namespace Launchpad.Web.Controllers.API
     [RoutePrefix("api/account")]
     public class AccountController : ApiController
     {
-        private ApplicationUserManager _userManager;
+        private IUserService _userService;
 
-        public AccountController(ApplicationUserManager userManager)
+        public AccountController(IUserService userService)
         {
-            _userManager = userManager.ThrowIfNull(nameof(userManager));
+            _userService = userService.ThrowIfNull(nameof(userService));
         }
 
         
@@ -71,9 +70,8 @@ namespace Launchpad.Web.Controllers.API
         [Route("register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await _userService.RegisterAsync(model);
 
             if (!result.Succeeded)
             {

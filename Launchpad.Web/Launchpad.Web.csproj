@@ -240,7 +240,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppIdentity\ApplicationOAuthProvider.cs" />
-    <Compile Include="AppIdentity\ApplicationUserManager.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

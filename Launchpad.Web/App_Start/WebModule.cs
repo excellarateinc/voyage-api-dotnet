@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using System.Web;
 using Autofac.Core;
 using System.Data.Entity;
+using Launchpad.Services.IdentityManagers;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Web.App_Start
 {
@@ -52,6 +54,18 @@ namespace Launchpad.Web.App_Start
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
             {
                 DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(Constants.ApplicationName)
+            });
+
+            builder.Register(c =>
+            {
+                IUserTokenProvider<ApplicationUser, string> tokenProvider = null;
+                var options = c.Resolve<IdentityFactoryOptions<ApplicationUserManager>>();
+                var dataProtectionProvider = options.DataProtectionProvider;
+                if (options.DataProtectionProvider != null)
+                {
+                    tokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
+                }
+                return tokenProvider;
             });
 
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();

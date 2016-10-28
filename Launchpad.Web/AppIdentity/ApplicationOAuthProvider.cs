@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
@@ -33,22 +34,20 @@ namespace Launchpad.Web.AppIdentity
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var scope = context.OwinContext.GetAutofacLifetimeScope();
-            var userManager = scope.Resolve<ApplicationUserManager>(); //context.OwinContext.GetUserManager<ApplicationUserManager>();
+            var userService = scope.Resolve<IUserService>(); //context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            var valid = await userService.IsValidCredential(context.UserName, context.Password);
 
-            if (user == null)
+            if (!valid)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-                CookieAuthenticationDefaults.AuthenticationType);
+            ClaimsIdentity oAuthIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, OAuthDefaults.AuthenticationType);
+            ClaimsIdentity cookiesIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            AuthenticationProperties properties = CreateProperties(context.UserName);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);

@@ -15,24 +15,21 @@ using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.Interfaces;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
     public class AccountControllerTests : BaseUnitTest
     {
-        private ApplicationUserManager _userManager;
         private AccountController _accountController;
-        private Mock<IUserStore<ApplicationUser>> _mockStore;
+        private Mock<IUserService> _mockUserService;
 
         public AccountControllerTests()
         {
-            _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
-            _mockStore.As<IUserPasswordStore<ApplicationUser>>();
+            _mockUserService = Mock.Create<IUserService>();
 
-            //Cannot moq the interface directly, consider creating a facade around the manager class
-            _userManager = new ApplicationUserManager(_mockStore.Object);
-
-            _accountController = new AccountController(_userManager);
+         
+            _accountController = new AccountController(_mockUserService.Object);
             _accountController.Request = new System.Net.Http.HttpRequestMessage();
             _accountController.Configuration = new System.Web.Http.HttpConfiguration();
         }
@@ -47,17 +44,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var identityResult = new IdentityResult();
-
-            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
-                .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Returns(Task.Delay(0));
-
-            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))
-                .ReturnsAsync(null);
-
-            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(match => match.Email == model.Email && match.UserName == model.Email)))
-                .Returns(Task.Delay(0));
+            var identityResult = IdentityResult.Success;
+        
+            _mockUserService.Setup(_ => _.RegisterAsync(model))
+                .ReturnsAsync(identityResult);
 
             //ACT
             var result = await _accountController.Register(model);
@@ -65,6 +55,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
 
             //ASSERT
             Mock.VerifyAll();
+
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -82,14 +73,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var identityResult = new IdentityResult();
+            var identityResult = new IdentityResult("My error");
 
-            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
-                .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Returns(Task.Delay(0));
 
-            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))
-                .ReturnsAsync(new ApplicationUser());
+            _mockUserService.Setup(_ => _.RegisterAsync(model))
+                .ReturnsAsync(identityResult);
 
             //ACT
             var result = await _accountController.Register(model);
@@ -104,7 +92,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
+        public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
             Action throwAction = () => new AccountController(null);
 
@@ -112,7 +100,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
                 .And
                 .ParamName
                 .Should()
-                .Be("userManager");
+                .Be("userService");
         }
 
         [Fact]
