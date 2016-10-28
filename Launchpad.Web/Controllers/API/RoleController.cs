@@ -31,5 +31,13 @@ namespace Launchpad.Web.Controllers.API
             }
         }
 
+        [Route("role/claim")]
+        [HttpPost]
+        public async Task<IHttpActionResult> AddClaim(RoleModel role, ClaimModel claim)
+        {
+            await _roleService.AddClaimAsync(role, claim);
+            return StatusCode(HttpStatusCode.Created);
+        }
+
     }
 }

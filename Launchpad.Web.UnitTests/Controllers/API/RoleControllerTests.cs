@@ -101,9 +101,46 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public void CreateRole_Should_Have_HttpPost_Attribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             ReflectionHelper.GetMethod<RoleController>(_ => _.CreateRole(new Models.RoleModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
+        [Fact]
+        public void AddClaim_Should_Have_HttpPost_Attribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleModel(), new ClaimModel()))
+                .Should().BeDecoratedWith<HttpPostAttribute>();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void AddClaim_Should_Have_Known_Route()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleModel(), new ClaimModel()))
+               .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "role/claim");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public async void AddClaim_Should_Call_RoleService_And_Return_Created()
+        {
+            var role = Fixture.Create<RoleModel>();
+            var claim = Fixture.Create<ClaimModel>();
+
+            _mockRoleService.Setup(_ => _.AddClaimAsync(role, claim))
+                .Returns(Task.Delay(0));
+
+            var result  = await _roleController.AddClaim(role, claim);
+
+            var message = await result.ExecuteAsync(new CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.Created);
+        }
     }
 }
