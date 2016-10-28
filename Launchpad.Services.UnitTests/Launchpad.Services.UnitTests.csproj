@@ -110,6 +110,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="Monitors\ActivityMonitorTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
