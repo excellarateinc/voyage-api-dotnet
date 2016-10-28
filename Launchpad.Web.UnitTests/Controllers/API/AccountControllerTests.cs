@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
@@ -10,11 +7,9 @@ using Ploeh.AutoFixture;
 using Launchpad.UnitTests.Common;
 using System.Web.Http;
 using Launchpad.Web.Controllers.API;
-using Launchpad.Web.AppIdentity;
 using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
-using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Interfaces;
 
 namespace Launchpad.Web.UnitTests.Controllers.API

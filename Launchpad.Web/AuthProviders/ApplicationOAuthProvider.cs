@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Launchpad.Web.AppIdentity
+namespace Launchpad.Web.AuthProviders
 {
     /// <summary>
     /// This provider is a singleton - since our dependency are per request, we cannot inject the dependencies via the constructor

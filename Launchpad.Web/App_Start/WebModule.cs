@@ -1,16 +1,11 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Launchpad.Core;
-using Launchpad.Web.AppIdentity;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using Microsoft.Owin.Security;
 using System.Web;
-using Autofac.Core;
-using System.Data.Entity;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Models.EntityFramework;
 
