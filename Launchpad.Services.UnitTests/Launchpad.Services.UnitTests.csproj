@@ -118,6 +118,7 @@
     <Compile Include="Monitors\HttpEndpointStatusMonitorTests.cs" />
     <Compile Include="Monitors\LogMonitorTests.cs" />
     <Compile Include="RequestMetricsServiceTests.cs" />
+    <Compile Include="RoleServiceTests.cs" />
     <Compile Include="StatusCollectorServiceTests.cs" />
     <Compile Include="UserServiceTests.cs" />
     <Compile Include="WidgetServiceTests.cs" />

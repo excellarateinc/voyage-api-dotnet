@@ -50,6 +50,13 @@ namespace Launchpad.Data
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
                 .As<IUserStore<ApplicationUser>>()
                 .InstancePerRequest();
+
+            builder.RegisterType<RoleStore<IdentityRole>>()
+               .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
+               .As<IRoleStore<IdentityRole>>()
+               .InstancePerRequest();
+
+
         }
 
     }
