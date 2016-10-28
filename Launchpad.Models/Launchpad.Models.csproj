@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClaimModel.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
     <Compile Include="EntityFramework\LaunchpadLog.cs" />

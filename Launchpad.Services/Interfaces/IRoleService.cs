@@ -7,5 +7,7 @@ namespace Launchpad.Services.Interfaces
     public interface IRoleService
     {
         Task<IdentityResult> CreateRoleAsync(RoleModel model);
+    
+        Task AddClaimAsync(RoleModel role, ClaimModel claim); 
     }
 }
