@@ -44,17 +44,9 @@ namespace Launchpad.Web.App_Start
         {
 
 
-            //Database context that manages the identity tables
-            builder.RegisterType<ApplicationDbContext>()
-                .WithParameter("connectionString", _connectionString)
-                .AsSelf()
-                .InstancePerRequest();
+   
        
-            //Register the user store (wrapper around the identity tables)
-            builder.RegisterType<UserStore<ApplicationUser>>()
-                .WithParameter(new ResolvedParameter( (pi, ctx)=> pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<ApplicationDbContext>()))
-                .As<IUserStore<ApplicationUser>>()
-                .InstancePerRequest();
+           
 
             //Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>

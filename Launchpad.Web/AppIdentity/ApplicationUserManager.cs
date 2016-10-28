@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace Launchpad.Web.AppIdentity

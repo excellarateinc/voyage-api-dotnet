@@ -1,5 +1,6 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
 using Launchpad.Web.AppIdentity;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;

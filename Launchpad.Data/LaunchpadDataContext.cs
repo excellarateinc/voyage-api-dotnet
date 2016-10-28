@@ -1,12 +1,13 @@
 ﻿using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Data
 {
 
 
-    public class LaunchpadDataContext : DbContext, ILaunchpadDataContext
+    public class LaunchpadDataContext : IdentityDbContext<ApplicationUser>, ILaunchpadDataContext
     {
 
         #region DbSets

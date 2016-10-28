@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
+using Launchpad.Models.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;

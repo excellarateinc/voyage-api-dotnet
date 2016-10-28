@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace Launchpad.Web.AppIdentity
+namespace Launchpad.Models.EntityFramework
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser 
     {
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

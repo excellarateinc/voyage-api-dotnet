@@ -14,6 +14,7 @@ using Launchpad.Web.AppIdentity;
 using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
