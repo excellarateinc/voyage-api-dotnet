@@ -9,7 +9,7 @@ namespace Launchpad.Web.Controllers.API
 {
 
 
-    [RoutePrefix("api/account")]
+    [RoutePrefix(Constants.RoutePrefixes.Account)]
     public class AccountController : ApiController
     {
         private IUserService _userService;
