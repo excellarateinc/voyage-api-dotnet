@@ -12,6 +12,7 @@ using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -19,11 +20,11 @@ namespace Launchpad.Services.UnitTests
     {
         private RoleService _roleService;
         private ApplicationRoleManager _roleManager;
-        private Mock<IRoleStore<IdentityRole>> _mockRoleStore;
+        private Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
 
         public RoleServiceTests()
         {
-            _mockRoleStore = Mock.Create<IRoleStore<IdentityRole>>();
+            _mockRoleStore = Mock.Create<IRoleStore<ApplicationRole>>();
             _roleManager = new ApplicationRoleManager(_mockRoleStore.Object);
             _roleService = new RoleService(_roleManager);
         }
@@ -36,7 +37,7 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
                 .ReturnsAsync(null);
 
-            _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<IdentityRole>(value => value.Name == model.Name)))
+            _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<ApplicationRole>(value => value.Name == model.Name)))
                 .Returns(Task.FromResult(0));
 
             var result = await _roleService.CreateRoleAsync(model);

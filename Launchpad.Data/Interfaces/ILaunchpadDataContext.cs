@@ -9,6 +9,8 @@ namespace Launchpad.Data.Interfaces
 
         IDbSet<LaunchpadLog> Logs { get; set; }
 
+        IDbSet<RoleClaim> RoleClaims { get; set; }
+
         int SaveChanges();
        
     }

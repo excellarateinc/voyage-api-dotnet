@@ -7,13 +7,15 @@ namespace Launchpad.Data
 {
 
 
-    public class LaunchpadDataContext : IdentityDbContext<ApplicationUser>, ILaunchpadDataContext
+    public class LaunchpadDataContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
 
         #region DbSets
 
         public IDbSet<Widget> Widgets { get; set; }
         public IDbSet<LaunchpadLog> Logs {get;set;}
+
+        public IDbSet<RoleClaim> RoleClaims { get; set; }
         #endregion 
 
 

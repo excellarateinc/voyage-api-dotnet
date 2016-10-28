@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Services.IdentityManagers
 {
-    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    public class ApplicationRoleManager : RoleManager<ApplicationRole>
     {
-        public ApplicationRoleManager(IRoleStore<IdentityRole, string> store) : base(store)
+        public ApplicationRoleManager(IRoleStore<ApplicationRole, string> store) : base(store)
         {
         }
     }

@@ -46,14 +46,15 @@ namespace Launchpad.Data
 
 
             //Register the user store (wrapper around the identity tables)
-            builder.RegisterType<UserStore<ApplicationUser>>()
+            builder.RegisterType<UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>>()
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
-                .As<IUserStore<ApplicationUser>>()
+                .As<IUserStore<ApplicationUser, string>>()
+                .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<RoleStore<IdentityRole>>()
+            builder.RegisterType<RoleStore<ApplicationRole>>()
                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
-               .As<IRoleStore<IdentityRole>>()
+               .As<IRoleStore<ApplicationRole, string>>()
                .InstancePerRequest();
 
 

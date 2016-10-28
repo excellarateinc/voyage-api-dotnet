@@ -5,6 +5,7 @@ using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Launchpad.Core;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Services
 {
@@ -19,7 +20,7 @@ namespace Launchpad.Services
 
         public async Task<IdentityResult> CreateRoleAsync(RoleModel model)
         {
-            var role = new IdentityRole();
+            var role = new ApplicationRole();
             role.Name = model.Name;
 
             var result = await _roleManager.CreateAsync(role);

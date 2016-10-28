@@ -63,12 +63,14 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
+    <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Interfaces\IDbConnectionStatus.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IRoleClaimRepository.cs" />
     <Compile Include="Interfaces\IWidgetRepository.cs" />
     <Compile Include="LaunchpadDataContext.cs" />
     <Compile Include="LaunchpadLogRepository.cs" />
@@ -88,8 +90,13 @@
     <Compile Include="Migrations\201610281500076_Identity_Tables.Designer.cs">
       <DependentUpon>201610281500076_Identity_Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610281946586_RoleClaims_Table.cs" />
+    <Compile Include="Migrations\201610281946586_RoleClaims_Table.Designer.cs">
+      <DependentUpon>201610281946586_RoleClaims_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleClaimRepository.cs" />
     <Compile Include="SqlConnectionStatus.cs" />
     <Compile Include="WidgetRepository.cs" />
   </ItemGroup>
@@ -121,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610281500076_Identity_Tables.resx">
       <DependentUpon>201610281500076_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610281946586_RoleClaims_Table.resx">
+      <DependentUpon>201610281946586_RoleClaims_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
