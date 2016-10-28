@@ -1,5 +1,10 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Launchpad.Data.Interfaces;
+using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
 namespace Launchpad.Data
 {
@@ -23,6 +28,7 @@ namespace Launchpad.Data
             //Concrete Type: LaunchpadDataContext
             builder.RegisterType<LaunchpadDataContext>()
                 .WithParameter("connectionString", _connectionString)
+                .AsSelf()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
@@ -38,6 +44,12 @@ namespace Launchpad.Data
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
+
+            //Register the user store (wrapper around the identity tables)
+            builder.RegisterType<UserStore<ApplicationUser>>()
+                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
+                .As<IUserStore<ApplicationUser>>()
+                .InstancePerRequest();
         }
 
     }

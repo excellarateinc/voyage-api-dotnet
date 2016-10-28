@@ -1,5 +1,5 @@
 ﻿using Launchpad.Web.App_Start;
-using Launchpad.Web.AppIdentity;
+using Launchpad.Web.AuthProviders;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;

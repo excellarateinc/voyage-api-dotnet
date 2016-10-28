@@ -1,16 +1,13 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Launchpad.Core;
-using Launchpad.Web.AppIdentity;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using Microsoft.Owin.Security;
 using System.Web;
-using Autofac.Core;
-using System.Data.Entity;
+using Launchpad.Services.IdentityManagers;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Web.App_Start
 {
@@ -44,22 +41,26 @@ namespace Launchpad.Web.App_Start
         {
 
 
-            //Database context that manages the identity tables
-            builder.RegisterType<ApplicationDbContext>()
-                .WithParameter("connectionString", _connectionString)
-                .AsSelf()
-                .InstancePerRequest();
+   
        
-            //Register the user store (wrapper around the identity tables)
-            builder.RegisterType<UserStore<ApplicationUser>>()
-                .WithParameter(new ResolvedParameter( (pi, ctx)=> pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<ApplicationDbContext>()))
-                .As<IUserStore<ApplicationUser>>()
-                .InstancePerRequest();
+           
 
             //Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
             {
                 DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(Constants.ApplicationName)
+            });
+
+            builder.Register(c =>
+            {
+                IUserTokenProvider<ApplicationUser, string> tokenProvider = null;
+                var options = c.Resolve<IdentityFactoryOptions<ApplicationUserManager>>();
+                var dataProtectionProvider = options.DataProtectionProvider;
+                if (options.DataProtectionProvider != null)
+                {
+                    tokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
+                }
+                return tokenProvider;
             });
 
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();

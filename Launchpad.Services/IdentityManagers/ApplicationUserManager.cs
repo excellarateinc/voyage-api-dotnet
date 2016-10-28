@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
+﻿using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Web.AppIdentity
+namespace Launchpad.Services.IdentityManagers
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
@@ -9,7 +9,7 @@ namespace Launchpad.Web.AppIdentity
         {
         }
 
-        public ApplicationUserManager(IUserStore<ApplicationUser> store, IdentityFactoryOptions<ApplicationUserManager> options) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IUserTokenProvider<ApplicationUser, string> tokenProvider) : base(store)
         {
             this.UserValidator = new UserValidator<ApplicationUser>(this)
             {
@@ -26,13 +26,7 @@ namespace Launchpad.Web.AppIdentity
                 RequireUppercase = true,
             };
 
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                this.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
-            }
-
-
+            this.UserTokenProvider = tokenProvider;
         }
 
       

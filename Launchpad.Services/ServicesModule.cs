@@ -33,6 +33,10 @@ namespace Launchpad.Services
             builder.RegisterType<RequestMetricsService>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterType<UserService>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
                 
         }
     }
