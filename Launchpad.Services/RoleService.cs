@@ -50,5 +50,12 @@ namespace Launchpad.Services
             var roles =  _roleManager.Roles.ToList();
             return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
+
+        public IEnumerable<ClaimModel> GetRoleClaims(string name)
+        {
+            var claims = _roleClaimRepository.GetClaimsByRole(name);
+            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
+            
+        }
     }
 }

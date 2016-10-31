@@ -12,6 +12,8 @@ using Launchpad.Models;
 using System.Text;
 using Launchpad.Services.Fixture;
 using System.Linq;
+using Launchpad.Services.Interfaces;
+using System.Security.Claims;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -21,18 +23,125 @@ namespace Launchpad.Services.UnitTests
         private UserService _userService;
         private ApplicationUserManager _userManager;
         private Mock<IUserStore<ApplicationUser>> _mockStore;
+        private Mock<IRoleService> _mockRoleService;
         private AutoMapperFixture _mapperFixture;
+
         public UserServiceTests(AutoMapperFixture mapperFixture)
         {
             _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
             _mockStore.As<IUserPasswordStore<ApplicationUser>>();
             _mockStore.As<IQueryableUserStore<ApplicationUser>>();
+            _mockStore.As<IUserRoleStore<ApplicationUser>>();
+            _mockStore.As<IUserClaimStore<ApplicationUser>>();    
 
+            _mockRoleService = Mock.Create<IRoleService>();
             _mapperFixture = mapperFixture;
 
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
-            _userService = new UserService(_userManager, _mapperFixture.MapperInstance);
+            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object);
+        }
+
+        [Fact]
+
+        public async void AssignUserRoleAsync_Should_Call_User_Manager_Return_IdentityResult_Success_When_Sucessful()
+        {
+            //arrange
+
+            var userModel = Fixture.Build<UserModel>()
+                .With(_ => _.Name, "bob@bob.com")
+                .Create(); ;
+
+        
+
+            var roleModel = Fixture.Create<RoleModel>();
+            var applicationUser = new ApplicationUser { Id = userModel.Id, UserName = userModel.Name };
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.FindByIdAsync(userModel.Id))
+                .ReturnsAsync(applicationUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(applicationUser))
+                .ReturnsAsync(new string[0]);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.AddToRoleAsync(applicationUser, roleModel.Name))
+                .Returns(Task.Delay(0));
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(applicationUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(applicationUser))
+                .Returns(Task.Delay(0));
+
+         
+
+            //act
+            var result = await _userService.AssignUserRoleAsync(roleModel, userModel);
+
+
+            //assert
+            Mock.VerifyAll();
+            result.Should().NotBeNull();
+            result.Succeeded.Should().BeTrue();
+
+        }
+
+        [Fact]
+        public void ConfigureUserClaims_Should_Call_User_Manager_And_Add_Remove_Claims()
+        {
+            //arrange
+            var existingClaims = new[] { new Claim("permission", "update.widget") };
+            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.widget" } };
+
+            var userModel = Fixture.Build<UserModel>()
+                    .With(_ => _.Name, "bob@bob.com")
+                    .Create();
+
+            var appUser = new ApplicationUser
+            {
+                Id = userModel.Id,
+                UserName = userModel.Name
+            };
+
+            var existingRoles = new string[] { "Admin"};
+
+            //While identity is getting better at being testable, the underlying interfaces that the manager
+            //relies on is verbose when it comes to setup
+            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(appUser))
+                .Returns(Task.Delay(0));
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(appUser))
+                .ReturnsAsync(existingRoles);
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+                .Setup(_ => _.GetClaimsAsync(appUser))
+                .ReturnsAsync(existingClaims);
+
+            _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
+                .Returns(roleClaims);
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+                .Setup(_ => _.RemoveClaimAsync(appUser, existingClaims[0]))
+                .Returns(Task.Delay(0));
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+              .Setup(_ => _.AddClaimAsync(appUser, It.Is<Claim>(cl => cl.Value == "delete.widget" && cl.Type == "permission")))
+              .Returns(Task.Delay(0));
+
+            //act
+            _userService.ConfigureUserClaims(userModel);
+            
+
+            //assert
+            Mock.VerifyAll();
         }
 
         [Fact]
@@ -42,12 +151,25 @@ namespace Launchpad.Services.UnitTests
             string user = "bob@bob.com";
             var model = new ApplicationUser() { UserName = user };
 
-            _mockStore.Setup(_ => _.FindByNameAsync(user))
+            _mockStore.Setup(_ => _.FindByIdAsync(model.Id))
                 .ReturnsAsync(model);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(model))
+                .ReturnsAsync(new string[] { "Admin" });
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+                .Setup(_ => _.GetClaimsAsync(model))
+                .ReturnsAsync(new[] { new Claim("permission", "view.widget") });
+
+            _mockStore.Setup(_ => _.FindByNameAsync(user))
+               .ReturnsAsync(model);
 
             var result = await _userService.CreateClaimsIdentityAsync(user, "OAuth");
 
             result.Should().NotBeNull();
+            result.HasClaim("permission", "view.widget");
+            result.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
             result.HasClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user).Should().BeTrue();
 
             Mock.VerifyAll();
@@ -111,7 +233,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null, null);
+            Action throwAction = () => new UserService(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -123,13 +245,25 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, null);
+            Action throwAction = () => new UserService(_userManager, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName
                 .Should()
                 .Be("mapper");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_RoleService_IsNull()
+        {
+            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null);
+
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName
+                .Should()
+                .Be("roleService");
         }
 
         [Fact]

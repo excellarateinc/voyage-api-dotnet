@@ -15,14 +15,50 @@ namespace Launchpad.Services
 {
     public class UserService : IUserService
     {
+        private IRoleService _roleService;
         private ApplicationUserManager _userManager;
         private IMapper _mapper;
 
 
-        public UserService(ApplicationUserManager userManager, IMapper mapper)
+        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService)
         {
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
+            _roleService = roleService.ThrowIfNull(nameof(roleService));
+        }
+
+        public async Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel)
+        {
+
+            var result = await _userManager.AddToRoleAsync(userModel.Id, roleModel.Name);
+            return result;
+        }
+
+        public void ConfigureUserClaims(UserModel userModel)
+        {
+            var userRoles = _userManager.GetRoles(userModel.Id);
+
+            //Load all existing claims for the user
+            var existingClaims = _userManager.GetClaims(userModel.Id);
+
+            //Load all claims for the assigned roles
+            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_)).SelectMany(_ => _)
+                             .Where(_ => !existingClaims.Any(c => c.Type == _.ClaimType && c.Value == _.ClaimValue));
+
+
+            var oldClaims = existingClaims.Where(_ => !roleClaims.Any(r => r.ClaimValue == _.Value && r.ClaimType == _.Type)).ToList();
+
+            foreach (var oldClaim in oldClaims)
+            {
+                _userManager.RemoveClaim(userModel.Id, oldClaim);
+            }
+
+            //Foreach claim that does not exist, assign it
+            foreach (var claim in roleClaims)
+            {
+                _userManager.AddClaim(userModel.Id, new Claim(claim.ClaimType, claim.ClaimValue));
+
+            }
         }
 
         public IEnumerable<UserModel> GetUsers()

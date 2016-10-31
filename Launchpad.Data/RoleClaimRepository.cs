@@ -1,6 +1,8 @@
 ﻿using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Launchpad.Data
 {
@@ -33,6 +35,13 @@ namespace Launchpad.Data
         public override IQueryable<RoleClaim> GetAll()
         {
             return Context.RoleClaims;
+        }
+
+        public IQueryable<RoleClaim> GetClaimsByRole(string roleName)
+        {
+            return Context.RoleClaims
+                     .Where(_ => _.Role.Name == roleName);
+
         }
 
         public override RoleClaim Update(RoleClaim model)

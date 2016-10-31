@@ -11,6 +11,7 @@ using System.Net;
 using System.Web.Http;
 using Xunit;
 using System.Net.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -55,15 +56,52 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
-        public async void Assign_Should_Return_Ok()
+        public async void Assign_Should_Call_User_Service_And_Return_Ok_When_Successful()
         {
-            var model = new UserRoleModel();
-            var result = _userController.AssignRole(model);
+            //arrange
+            var model = Fixture.Create<UserRoleModel>();
+            _mockUserService.Setup(_ => _.AssignUserRoleAsync(model.Role, model.User))
+                .ReturnsAsync(IdentityResult.Success);
+
+
+            _mockUserService.Setup(_ => _.ConfigureUserClaims(model.User));
+
+
+            //act
+            var result = await _userController.AssignRole(model);
+
+            
+
+            //assert
+            Mock.VerifyAll();
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
             
+        }
+
+        [Fact]
+        public async void Assign_Should_Call_User_Service_And_Return_BadRequest_When_Role_Assignment_Fails()
+        {
+            //arrange
+            var model = Fixture.Create<UserRoleModel>();
+
+            _mockUserService.Setup(_ => _.AssignUserRoleAsync(model.Role, model.User))
+                .ReturnsAsync(new IdentityResult());
+
+
+            //act
+            var result = await _userController.AssignRole(model);
+
+
+            //assert
+            Mock.VerifyAll();
+
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
         }
 
         [Fact]

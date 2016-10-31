@@ -15,5 +15,9 @@ namespace Launchpad.Services.Interfaces
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
 
         IEnumerable<UserModel> GetUsers();
+
+        Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel);
+
+        void ConfigureUserClaims(UserModel userModel);
     }
 }

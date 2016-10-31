@@ -1,6 +1,7 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API
@@ -24,8 +25,19 @@ namespace Launchpad.Web.Controllers.API
 
         [HttpPost]
         [Route("user/assign")]
-        public IHttpActionResult AssignRole(UserRoleModel userRole)
+        public async Task<IHttpActionResult> AssignRole(UserRoleModel userRole)
         {
+            var identityResult = await _userService.AssignUserRoleAsync(userRole.Role, userRole.User);
+
+            if (identityResult.Succeeded)
+            {
+                _userService.ConfigureUserClaims(userRole.User);
+            }
+            else
+            {
+                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+            }
+
             return Ok();
         }
     }

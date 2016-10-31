@@ -29,6 +29,25 @@ namespace Launchpad.Data.IntegrationTests
         }
 
         [Fact]
+        public void GetClaimsByRole_Should_Return_Claims()
+        {
+            using (var scope = new TransactionScope())
+            {
+                using (var ctx = new LaunchpadDataContext())
+                {
+                    var repository = new RoleClaimRepository(ctx);
+
+                    var role = ctx.AddRole();
+                    var claim = ctx.AddRoleClaim(role);
+
+                    var claims = repository.GetClaimsByRole(role.Name);
+                    claims.Should().NotBeNullOrEmpty();
+                }
+
+            }
+        }
+
+        [Fact]
         public void Get_Should_Return_RoleClaim()
         {
             using (var scope = new TransactionScope())

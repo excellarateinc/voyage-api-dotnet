@@ -42,6 +42,23 @@ namespace Launchpad.Services.UnitTests
             
         }
 
+
+        [Fact]
+        public void GetRoleClaims_Should_Call_Repository()
+        {
+            var roleName = "admin";
+            var claims = new[] { new RoleClaim { ClaimType = "type", ClaimValue = "value" } };
+
+            _mockRepository.Setup(_ => _.GetClaimsByRole(roleName))
+                .Returns(claims.AsQueryable());
+
+            var results = _roleService.GetRoleClaims(roleName);
+
+            Mock.VerifyAll();
+
+            results.ShouldBeEquivalentTo(claims);
+        }
+
         [Fact]
         public async void AddClaim_Should_Call_Manager_And_Repository()
         {

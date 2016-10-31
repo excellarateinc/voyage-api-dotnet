@@ -10,7 +10,9 @@ namespace Launchpad.Services.Interfaces
         Task<IdentityResult> CreateRoleAsync(RoleModel model);
 
         IEnumerable<RoleModel> GetRoles();
-    
+
+        IEnumerable<ClaimModel> GetRoleClaims(string name);
+
         Task AddClaimAsync(RoleModel role, ClaimModel claim); 
     }
 }
