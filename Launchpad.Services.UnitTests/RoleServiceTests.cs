@@ -14,22 +14,32 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
+using Launchpad.Services.Fixture;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Collection(AutoMapperCollection.CollectionName)]
     public class RoleServiceTests : BaseUnitTest
     {
         private RoleService _roleService;
         private ApplicationRoleManager _roleManager;
         private Mock<IRoleClaimRepository> _mockRepository;
         private Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
+        private AutoMapperFixture _mapperFixture;
 
-        public RoleServiceTests()
+        public RoleServiceTests(AutoMapperFixture mapperFixture)
         {
             _mockRoleStore = Mock.Create<IRoleStore<ApplicationRole>>();
+            _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>();
+
             _mockRepository = Mock.Create<IRoleClaimRepository>();
+
             _roleManager = new ApplicationRoleManager(_mockRoleStore.Object);
-            _roleService = new RoleService(_roleManager, _mockRepository.Object);
+
+            _mapperFixture = mapperFixture;
+
+            _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance);
+            
         }
 
         [Fact]
@@ -94,7 +104,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleManager_Is_Null()
         {
-            Action throwAction = () => new RoleService(null, null);
+            Action throwAction = () => new RoleService(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -104,11 +114,47 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleClaimRepository_Is_Null()
         {
-            Action throwAction = () => new RoleService(_roleManager, null);
+            Action throwAction = () => new RoleService(_roleManager, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName.Should().Be("roleClaimRepository");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_Null_Argument_Exception_when_Mapper_Is_Null()
+        {
+            Action throwAction = () => new RoleService(_roleManager, _mockRepository.Object, null);
+
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName.Should().Be("mapper");
+        }
+
+        [Fact]
+        public void GetRoles_Should_Return_All_Roles()
+        {
+            var roles = new ApplicationRole[] {
+                    new ApplicationRole() {Name="Role1" },
+                    new ApplicationRole() {Name="Role2" }
+                };
+
+
+            _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>()
+                .Setup(_ => _.Roles)
+                .Returns(roles.AsQueryable());        
+
+            var result = _roleService.GetRoles();
+
+            Mock.Verify();
+            result.Should().NotBeNull();
+            result.Should().HaveCount(roles.Length);
+
+            roles.All(_ => result.Any(r => r.Name == _.Name))
+                .Should()
+                .BeTrue();
+
+
         }
     }
 }

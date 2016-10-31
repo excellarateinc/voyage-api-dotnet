@@ -6,6 +6,10 @@ using Microsoft.AspNet.Identity;
 using Launchpad.Core;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
+using System;
+using System.Linq;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace Launchpad.Services
 {
@@ -13,12 +17,13 @@ namespace Launchpad.Services
     {
         private ApplicationRoleManager _roleManager;
         private IRoleClaimRepository _roleClaimRepository;
+        private IMapper _mapper;
 
-
-        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository)
+        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper)
         {
             _roleManager = roleManager.ThrowIfNull(nameof(roleManager));
             _roleClaimRepository = roleClaimRepository.ThrowIfNull(nameof(roleClaimRepository));
+            _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
         public async Task AddClaimAsync(RoleModel role, ClaimModel claim)
@@ -38,6 +43,12 @@ namespace Launchpad.Services
             var result = await _roleManager.CreateAsync(role);
 
             return result;
+        }
+
+        public IEnumerable<RoleModel> GetRoles()
+        {
+            var roles =  _roleManager.Roles.ToList();
+            return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
     }
 }

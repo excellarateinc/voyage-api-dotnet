@@ -77,9 +77,11 @@
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
+    <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
     <Compile Include="RegistrationModel.cs" />
+    <Compile Include="RoleClaimModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="StatusAggregateModel.cs" />
     <Compile Include="StatusModel.cs" />

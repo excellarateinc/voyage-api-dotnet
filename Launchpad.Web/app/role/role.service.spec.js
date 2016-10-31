@@ -27,10 +27,64 @@ describe('roleService', function(){
         expect(service).toBeDefined();
     });
 
+    describe('addClaim', function(){
+        it('should call role endpoint and call resolve on success', function(){
+            var roleClaim = {
+                    claim: {
+                        claimType: 'claimType1',
+                        claimValue: 'claimValue1'
+                    },
+                    role: {
+                        name: 'role1',
+                        id: 'id1'
+                    }
+                };
+
+            $httpBackend.when('POST', '/api/role/claim', roleClaim)
+                .respond(true);
+            
+            var promise = service.addClaim(roleClaim.role, roleClaim.claim.claimType, roleClaim.claim.claimValue);
+
+            promise.then(function(value){
+                expect(value).toBe(true);
+            }, function(err){
+                expect(false).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+
+        it('should call role endpoint and call reject on failure', function(){
+             var roleClaim = {
+                    claim: {
+                        claimType: 'claimType1',
+                        claimValue: 'claimValue1'
+                    },
+                    role: {
+                        name: 'role1',
+                        id: 'id1'
+                    }
+                };
+
+             $httpBackend.when('POST', '/api/role/claim', roleClaim)
+                .respond(400, {data: "error"});
+
+            var promise = service.addClaim(roleClaim.role, roleClaim.claim.claimType, roleClaim.claim.claimValue);
+
+               promise.then(function(){
+                expect(false).toBe(true);
+            }, function(value){
+                expect(value.data).toBe("error");
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
     describe('addRole', function(){
         it('should call role endpoint and call resolve on success', function(){
             var role = {
-                name: "Terrific Role"
+                name: 'Terrific Role'
             };
 
             $httpBackend.when('POST', '/api/role', role)

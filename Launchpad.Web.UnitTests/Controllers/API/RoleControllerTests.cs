@@ -12,6 +12,8 @@ using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Threading;
 using System.Net;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -109,7 +111,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleModel(), new ClaimModel()))
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleClaimModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
@@ -119,9 +121,38 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleModel(), new ClaimModel()))
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleClaimModel()))
                .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "role/claim");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void GetRoles_Should_Have_HttpGetAttribute() {
+            ReflectionHelper.GetMethod<RoleController>(_ => _.GetRoles())
+                .Should()
+                .BeDecoratedWith<HttpGetAttribute>();
+        }
+
+        [Fact]
+        public async void GetRoles_Should_Call_RoleService()
+        {
+            var roles = Fixture.CreateMany<RoleModel>();
+
+            _mockRoleService.Setup(_ => _.GetRoles())
+                .Returns(roles);
+
+            var result = _roleController.GetRoles();
+
+            var message = await result.ExecuteAsync(new CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            IEnumerable<RoleModel> models;
+            message.TryGetContentValue(out models).Should().BeTrue();
+            models.ShouldBeEquivalentTo(roles);
+
+            Mock.VerifyAll();
+
         }
 
         [Fact]
@@ -129,11 +160,16 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
             var role = Fixture.Create<RoleModel>();
             var claim = Fixture.Create<ClaimModel>();
+            var roleClaim = new RoleClaimModel
+            {
+                Role = role,
+                Claim = claim
+            };
 
             _mockRoleService.Setup(_ => _.AddClaimAsync(role, claim))
                 .Returns(Task.Delay(0));
 
-            var result  = await _roleController.AddClaim(role, claim);
+            var result  = await _roleController.AddClaim(roleClaim);
 
             var message = await result.ExecuteAsync(new CancellationToken());
 

@@ -78,6 +78,22 @@
                     component: 'lssSecureNav'
                 }
             }
+        },
+        {
+            name: 'addClaim',
+            url: '/addClaim',
+               views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddClaim'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
         }
         ];
 

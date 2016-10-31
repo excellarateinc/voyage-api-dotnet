@@ -15,7 +15,7 @@
             },
         });
 
-    function EmptyNavController(dependency1) {
+    function EmptyNavController() {
         var $ctrl = this;
         
 

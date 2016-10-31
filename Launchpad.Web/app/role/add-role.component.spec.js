@@ -23,15 +23,11 @@ describe('add-role.component', function(){
         var service = $injector.get('roleService');
         mockRoleService = sandbox.mock(service);
 
-        //var errorService = $injector.get('errorService');
-        //mockErrorService = sandbox.mock(errorService);
 
         controller = $componentController('lssAddRole', 
             {
                 $scope: scope, 
                 roleService: service,
-                //errorService: errorService, 
-                //$state: stubState
             });
     }));
 
@@ -39,7 +35,7 @@ describe('add-role.component', function(){
         expect(controller).toBeDefined();
     });
 
-    describe('addRole', function(){
+    describe('save', function(){
         it('should call the roleService', function(){
             var deferred = $q.defer();
 

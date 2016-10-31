@@ -18,6 +18,13 @@ namespace Launchpad.Web.Controllers.API
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        [HttpGet]
+        public IHttpActionResult GetRoles()
+        {
+            var result = _roleService.GetRoles();
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
@@ -33,9 +40,9 @@ namespace Launchpad.Web.Controllers.API
 
         [Route("role/claim")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddClaim(RoleModel role, ClaimModel claim)
+        public async Task<IHttpActionResult> AddClaim(RoleClaimModel model)
         {
-            await _roleService.AddClaimAsync(role, claim);
+            await _roleService.AddClaimAsync(model.Role, model.Claim);
             return StatusCode(HttpStatusCode.Created);
         }
 
