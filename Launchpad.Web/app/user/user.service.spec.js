@@ -27,6 +27,25 @@ describe('user.service', function(){
     
     }));
 
+    describe('getClaims', function(){
+        it('should call user endpoint and return the active user\'s claims', function(){
+
+            var claims = [{claimValue: "v1", claimType: "t1"}];
+
+            $httpBackend.when('GET', 'api/user/claims')
+                .respond(claims);
+
+
+            var promise = service.getClaims();
+
+            promise.then(function(data){
+                expect(data.length).toBe(claims.length);
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
     describe('getUsers', function(){
 
         it('should call user endpoint and return users', function(){

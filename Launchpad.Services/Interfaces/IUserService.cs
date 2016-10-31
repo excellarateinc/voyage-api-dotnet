@@ -18,6 +18,6 @@ namespace Launchpad.Services.Interfaces
 
         Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel);
 
-        void ConfigureUserClaims(UserModel userModel);
+       
     }
 }

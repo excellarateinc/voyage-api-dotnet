@@ -823,6 +823,10 @@
                     vm.users = users;
                     vm.selectedUser = vm.users[0];
                 });
+            userService.getClaims()
+                .then(function(claims){
+                    vm.claims = claims;
+                });
         };
         vm.$onChanges = function(changesObj) { };
         vm.$onDestory = function() { };
@@ -846,7 +850,8 @@
     function UserService($q, $http) {
         var service = {
             getUsers: getUsers,
-            assign: assign
+            assign: assign,
+            getClaims: getClaims
         };
         
         return service;
@@ -874,6 +879,16 @@
             $http.post('/api/user/assign', userRole)
                 .then(function(response)
                 {
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+        }
+
+        function getClaims(){
+            var deferred = $q.defer();
+
+            $http.get('api/user/claims')
+                .then(function(response){
                     deferred.resolve(response.data);
                 });
             return deferred.promise;

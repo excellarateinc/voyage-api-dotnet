@@ -34,32 +34,7 @@ namespace Launchpad.Services
             return result;
         }
 
-        public void ConfigureUserClaims(UserModel userModel)
-        {
-            var userRoles = _userManager.GetRoles(userModel.Id);
-
-            //Load all existing claims for the user
-            var existingClaims = _userManager.GetClaims(userModel.Id);
-
-            //Load all claims for the assigned roles
-            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_)).SelectMany(_ => _)
-                             .Where(_ => !existingClaims.Any(c => c.Type == _.ClaimType && c.Value == _.ClaimValue));
-
-
-            var oldClaims = existingClaims.Where(_ => !roleClaims.Any(r => r.ClaimValue == _.Value && r.ClaimType == _.Type)).ToList();
-
-            foreach (var oldClaim in oldClaims)
-            {
-                _userManager.RemoveClaim(userModel.Id, oldClaim);
-            }
-
-            //Foreach claim that does not exist, assign it
-            foreach (var claim in roleClaims)
-            {
-                _userManager.AddClaim(userModel.Id, new Claim(claim.ClaimType, claim.ClaimValue));
-
-            }
-        }
+       
 
         public IEnumerable<UserModel> GetUsers()
         {
@@ -92,8 +67,13 @@ namespace Launchpad.Services
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await _userManager.CreateIdentityAsync(user, authenticationType);
 
-            // Add custom user claims here
-
+            //Add in role claims
+            var userRoles = _userManager.GetRoles(user.Id);
+            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
+                .SelectMany(_ => _)
+                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
+            userIdentity.AddClaims(roleClaims);
+                            
             return userIdentity;
         }
     }

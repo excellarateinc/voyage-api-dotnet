@@ -11,5 +11,10 @@
             public const string Role = "api";
             public const string User = "api";
         }
+
+        public static class LssClaims
+        {
+            public const string Type = "lss.permission";
+        }
     }
 }

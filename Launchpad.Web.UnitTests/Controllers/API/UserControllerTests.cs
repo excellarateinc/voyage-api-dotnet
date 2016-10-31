@@ -12,6 +12,8 @@ using System.Web.Http;
 using Xunit;
 using System.Net.Http;
 using Microsoft.AspNet.Identity;
+using System.Security.Claims;
+using System.Linq;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -19,15 +21,38 @@ namespace Launchpad.Web.UnitTests.Controllers.API
     {
         private UserController _userController;
         private Mock<IUserService> _mockUserService;
-
+        private ClaimsIdentity _claimIdentity;
         public UserControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
             _userController = new UserController(_mockUserService.Object);
             _userController.Request = new System.Net.Http.HttpRequestMessage();
             _userController.Configuration = new System.Web.Http.HttpConfiguration();
+
+            _claimIdentity = new ClaimsIdentity();
+            _claimIdentity.AddClaim(new Claim("fakeClaim", "fake"));
+            _claimIdentity.AddClaim(new Claim(Constants.LssClaims.Type, "view.widget"));
+            _userController.User = new ClaimsPrincipal(_claimIdentity);
         }
 
+        [Fact]
+        public async void GetClaims_Should_Return_Lss_Claims_From_Identity()
+        {
+            var result = _userController.GetClaims();
+
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            IEnumerable<ClaimModel> models;
+            message.TryGetContentValue(out models).Should().BeTrue();
+
+            models.Should().HaveCount(1);
+            var claim = models.First();
+            claim.ClaimType.Should().Be(Constants.LssClaims.Type);
+            claim.ClaimValue.Should().Be("view.widget");
+
+        }
 
         [Fact]
         public async void GetUsers_Should_Call_UserService()
@@ -62,10 +87,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             var model = Fixture.Create<UserRoleModel>();
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(model.Role, model.User))
                 .ReturnsAsync(IdentityResult.Success);
-
-
-            _mockUserService.Setup(_ => _.ConfigureUserClaims(model.User));
-
 
             //act
             var result = await _userController.AssignRole(model);
@@ -114,15 +135,21 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public void AssignRole_Should_Be_Decorated_With_HttpGetAttribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole(new UserRoleModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
         }
 
         [Fact]
         public void AssignRole_Should_Be_Decorated_With_RouteAttribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole(new UserRoleModel()))
                 .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "user/assign");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
         }
 
 
@@ -144,6 +171,29 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             typeof(UserController).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
                 _ => _.Prefix.Equals(Constants.RoutePrefixes.User));
+        }
+
+        [Fact]
+        public void Class_Should_Have_Authorize_Attribute()
+        {
+            typeof(UserController).Should()
+                .BeDecoratedWith<AuthorizeAttribute>();
+        }
+
+        [Fact]
+        public void GetClaims_Should_Have_HttpGetAttribute()
+        {
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims())
+                .Should()
+                .BeDecoratedWith<HttpGetAttribute>();
+        }
+
+        [Fact]
+        public void GetClaims_Should_Have_RouteAttribute()
+        {
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims())
+              .Should()
+              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "user/claims");
         }
     }
 }

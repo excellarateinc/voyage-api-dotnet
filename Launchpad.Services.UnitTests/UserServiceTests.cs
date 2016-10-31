@@ -88,65 +88,12 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
-        public void ConfigureUserClaims_Should_Call_User_Manager_And_Add_Remove_Claims()
-        {
-            //arrange
-            var existingClaims = new[] { new Claim("permission", "update.widget") };
-            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.widget" } };
-
-            var userModel = Fixture.Build<UserModel>()
-                    .With(_ => _.Name, "bob@bob.com")
-                    .Create();
-
-            var appUser = new ApplicationUser
-            {
-                Id = userModel.Id,
-                UserName = userModel.Name
-            };
-
-            var existingRoles = new string[] { "Admin"};
-
-            //While identity is getting better at being testable, the underlying interfaces that the manager
-            //relies on is verbose when it comes to setup
-            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
-                .ReturnsAsync(appUser);
-
-            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
-                .ReturnsAsync(appUser);
-
-            _mockStore.Setup(_ => _.UpdateAsync(appUser))
-                .Returns(Task.Delay(0));
-
-            _mockStore.As<IUserRoleStore<ApplicationUser>>()
-                .Setup(_ => _.GetRolesAsync(appUser))
-                .ReturnsAsync(existingRoles);
-
-            _mockStore.As<IUserClaimStore<ApplicationUser>>()
-                .Setup(_ => _.GetClaimsAsync(appUser))
-                .ReturnsAsync(existingClaims);
-
-            _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
-                .Returns(roleClaims);
-
-            _mockStore.As<IUserClaimStore<ApplicationUser>>()
-                .Setup(_ => _.RemoveClaimAsync(appUser, existingClaims[0]))
-                .Returns(Task.Delay(0));
-
-            _mockStore.As<IUserClaimStore<ApplicationUser>>()
-              .Setup(_ => _.AddClaimAsync(appUser, It.Is<Claim>(cl => cl.Value == "delete.widget" && cl.Type == "permission")))
-              .Returns(Task.Delay(0));
-
-            //act
-            _userService.ConfigureUserClaims(userModel);
-            
-
-            //assert
-            Mock.VerifyAll();
-        }
-
-        [Fact]
         public async void CreateClaimsIdentity_Should_Return_Identity()
         {
+            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.widget" } };
+
+            _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
+             .Returns(roleClaims);
 
             string user = "bob@bob.com";
             var model = new ApplicationUser() { UserName = user };
@@ -169,6 +116,7 @@ namespace Launchpad.Services.UnitTests
 
             result.Should().NotBeNull();
             result.HasClaim("permission", "view.widget");
+            result.HasClaim("permission", "delete.widget");
             result.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
             result.HasClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user).Should().BeTrue();
 
