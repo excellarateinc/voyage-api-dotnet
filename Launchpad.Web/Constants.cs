@@ -9,6 +9,7 @@
             public const string V2 = "api/v2";
             public const string Account = "api/account";
             public const string Role = "api";
+            public const string User = "api";
         }
     }
 }

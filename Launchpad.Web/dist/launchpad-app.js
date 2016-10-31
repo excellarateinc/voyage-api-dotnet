@@ -100,7 +100,24 @@
                     component: 'lssSecureNav'
                 }
             }
+        },
+        {
+            name: 'userDashboard',
+            url: '/userDashboard',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAssignRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
         }
+
         ];
 
         // Loop over the state definitions and register them
@@ -120,6 +137,7 @@
         var service = {
             login:login,
             register: register
+           
         };
         
         return service;
@@ -139,6 +157,9 @@
             });
             return deferred.promise;
         }
+
+
+      
 
         function register(username, password){
             var deferred = $q.defer();
@@ -762,6 +783,102 @@
                 );
             return deferred.promise;
         }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssAssignRole', {
+            templateUrl: '/app/user/assign-role.component.html',
+            controller: AssignRoleController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+    AssignRoleController.$inject = ['roleService', 'userService'];
+    function AssignRoleController(roleService, userService) {
+        var vm = this;
+        
+        vm.users = [];
+        vm.roles = [];
+        vm.assign = assign;
+
+        ////////////////
+
+        vm.$onInit = function() { 
+            roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                    vm.selectedRole = vm.roles[0];
+                });
+            userService.getUsers()
+                .then(function(users){
+                    vm.users = users;
+                    vm.selectedUser = vm.users[0];
+                });
+        };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function assign(){
+            userService.assign(vm.selectedRole, vm.selectedUser)
+                .then(function(result){
+
+                });
+        }
+
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('userService', UserService);
+
+    UserService.$inject = ['$q', '$http'];
+    function UserService($q, $http) {
+        var service = {
+            getUsers: getUsers,
+            assign: assign
+        };
+        
+        return service;
+
+        ////////////////
+        function getUsers(){
+            var deferred = $q.defer();
+
+            $http.get('/api/user')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function assign(role, user){
+            var deferred = $q.defer();
+
+            var userRole = {
+                role: role,
+                user: user
+            };
+
+            $http.post('/api/user/assign', userRole)
+                .then(function(response)
+                {
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+        }
+        
     }
 })();;(function() {
 'use strict';

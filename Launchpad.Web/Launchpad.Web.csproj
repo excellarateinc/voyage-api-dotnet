@@ -255,6 +255,11 @@
     <Content Include="app\status\status.component.spec.js" />
     <Content Include="app\status\status.service.js" />
     <Content Include="app\status\status.service.spec.js" />
+    <Content Include="app\user\assign-role.component.html" />
+    <Content Include="app\user\assign-role.component.js" />
+    <Content Include="app\user\assign-role.component.spec.js" />
+    <Content Include="app\user\user.service.js" />
+    <Content Include="app\user\user.service.spec.js" />
     <Content Include="app\widget\widget.component.html" />
     <Content Include="app\widget\widget.component.js" />
     <Content Include="app\widget\widget.component.spec.js" />
@@ -275,6 +280,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
     <Compile Include="Controllers\API\RoleController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\v1\StatusController.cs" />
     <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />

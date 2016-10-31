@@ -94,7 +94,24 @@
                     component: 'lssSecureNav'
                 }
             }
+        },
+        {
+            name: 'userDashboard',
+            url: '/userDashboard',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAssignRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
         }
+
         ];
 
         // Loop over the state definitions and register them

@@ -184,6 +184,7 @@
     <Compile Include="Controllers\API\V2\StatusV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Controllers\API\UserControllerTests.cs" />
     <Compile Include="Handlers\RequestMetricsHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

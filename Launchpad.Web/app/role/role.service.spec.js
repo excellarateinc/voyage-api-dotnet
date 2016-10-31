@@ -5,7 +5,7 @@ describe('roleService', function(){
 
     var service;
 
-      afterEach(function(){
+    afterEach(function(){
         sandbox.restore();
     });
 
@@ -22,6 +22,25 @@ describe('roleService', function(){
         service = $injector.get('roleService');
     
     }));
+
+    describe('getRoles', function(){
+
+        it('should call roles endpoint and return roles', function(){
+            var roles = [{name: 'role1'},{name: 'role2'}];
+
+            $httpBackend.when('GET', '/api/role')
+                .respond(roles);
+
+            var promise = service.getRoles();
+
+            promise.then(function(data){
+                expect(data.length).toBe(roles.length);
+            });
+
+            $httpBackend.flush();
+        });
+
+    });
 
     it('should exist', function(){
         expect(service).toBeDefined();

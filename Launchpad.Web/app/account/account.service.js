@@ -10,6 +10,7 @@
         var service = {
             login:login,
             register: register
+           
         };
         
         return service;
@@ -29,6 +30,9 @@
             });
             return deferred.promise;
         }
+
+
+      
 
         function register(username, password){
             var deferred = $q.defer();
