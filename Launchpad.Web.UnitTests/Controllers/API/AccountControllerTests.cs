@@ -11,6 +11,8 @@ using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
 using Launchpad.Services.Interfaces;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -27,6 +29,36 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _accountController = new AccountController(_mockUserService.Object);
             _accountController.Request = new System.Net.Http.HttpRequestMessage();
             _accountController.Configuration = new System.Web.Http.HttpConfiguration();
+        }
+
+        [Fact]
+        public async void GetUsers_Should_Call_UserService()
+        {
+            //Arrange 
+            var users = Fixture.CreateMany<UserModel>();
+
+            _mockUserService.Setup(_ => _.GetUsers())
+                .Returns(users);
+
+            var result = _accountController.GetUsers();
+
+           
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            IEnumerable<UserModel> models;
+            message.TryGetContentValue(out models).Should().BeTrue();
+
+
+            Mock.VerifyAll();
+            models.ShouldBeEquivalentTo(users);
+        }
+
+        [Fact]
+        public void GetUsers_Should_Be_Decorated_With_HttpGetAttribute()
+        {
+            ReflectionHelper.GetMethod<AccountController>(_ => _.GetUsers())
+                .Should().BeDecoratedWith<HttpGetAttribute>();
         }
 
         [Fact]

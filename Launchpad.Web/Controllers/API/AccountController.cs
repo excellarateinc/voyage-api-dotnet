@@ -50,6 +50,11 @@ namespace Launchpad.Web.Controllers.API
             return null;
         }
 
+        [HttpGet]
+        public IHttpActionResult GetUsers() {
+            return  Ok(_userService.GetUsers());
+        }
+
 
         /**
         * @api {post} /account/register Register a new account
