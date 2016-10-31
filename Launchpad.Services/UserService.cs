@@ -7,16 +7,27 @@ using Launchpad.Models.EntityFramework;
 using Launchpad.Core;
 using System;
 using System.Security.Claims;
+using System.Collections.Generic;
+using AutoMapper;
+using System.Linq;
 
 namespace Launchpad.Services
 {
     public class UserService : IUserService
     {
         private ApplicationUserManager _userManager;
+        private IMapper _mapper;
 
-        public UserService(ApplicationUserManager userManager)
+
+        public UserService(ApplicationUserManager userManager, IMapper mapper)
         {
             _userManager = userManager.ThrowIfNull(nameof(userManager));
+            _mapper = mapper.ThrowIfNull(nameof(mapper));
+        }
+
+        public IEnumerable<UserModel> GetUsers()
+        {
+            return _mapper.Map<IEnumerable<UserModel>>(_userManager.Users.ToList());
         }
 
         public async Task<bool> IsValidCredential(string userName, string password)

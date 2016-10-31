@@ -107,6 +107,7 @@
     <Compile Include="Map\Profiles\LaunchpadLogProfileTests.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfileTests.cs" />
+    <Compile Include="Map\Profiles\UserProfileTests.cs" />
     <Compile Include="Map\Profiles\WidgetProfileTests.cs" />
     <Compile Include="Map\Resolvers\LogLevelResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,23 +10,29 @@ using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 using Launchpad.Models;
 using System.Text;
+using Launchpad.Services.Fixture;
+using System.Linq;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Collection(AutoMapperCollection.CollectionName)]
     public class UserServiceTests : BaseUnitTest
     {
         private UserService _userService;
         private ApplicationUserManager _userManager;
         private Mock<IUserStore<ApplicationUser>> _mockStore;
-
-        public UserServiceTests()
+        private AutoMapperFixture _mapperFixture;
+        public UserServiceTests(AutoMapperFixture mapperFixture)
         {
             _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
             _mockStore.As<IUserPasswordStore<ApplicationUser>>();
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>();
+
+            _mapperFixture = mapperFixture;
 
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
-            _userService = new UserService(_userManager);
+            _userService = new UserService(_userManager, _mapperFixture.MapperInstance);
         }
 
         [Fact]
@@ -105,13 +111,50 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null);
+            Action throwAction = () => new UserService(null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName
                 .Should()
                 .Be("userManager");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
+        {
+            Action throwAction = () => new UserService(_userManager, null);
+
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName
+                .Should()
+                .Be("mapper");
+        }
+
+        [Fact]
+        public void GetUsers_Should_Call_UserManager()
+        {
+            var user1 = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Id = "abc"
+            };
+
+            var userResults = new[] { user1 };
+
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>()
+                .Setup(_ => _.Users)
+                .Returns(userResults.AsQueryable());
+
+            var result = _userService.GetUsers();
+
+            Mock.VerifyAll();
+            result.Should().HaveSameCount(userResults);
+
+            userResults.All(_ => result.Any(r => r.Name == _.UserName))
+               .Should()
+               .BeTrue();
         }
 
         [Fact]
