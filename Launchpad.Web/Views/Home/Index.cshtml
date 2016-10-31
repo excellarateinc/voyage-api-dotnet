@@ -8,9 +8,18 @@
 
     </ui-view>
 
-    <div class="body-content">
-        <ui-view name="content">
+    <div class="body-content">  
+        <div class="row">
+            <div>
+                <ui-view name="nav">
 
-        </ui-view>
+                </ui-view>
+            </div>
+            <div>
+                <ui-view name="content">
+
+                </ui-view>
+            </div>
+        </div>
     </div>
 </div>

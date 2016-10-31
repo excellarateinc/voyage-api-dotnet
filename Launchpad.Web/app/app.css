@@ -8,3 +8,7 @@ body { padding-top: 70px; }
     background-color: #f9f2f4;
     color: #c7254e;
 }
+
+.page-header.compact {
+    margin-top: 0px;
+}

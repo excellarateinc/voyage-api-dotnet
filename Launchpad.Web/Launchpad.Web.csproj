@@ -233,6 +233,15 @@
     <Content Include="app\header\secure.header.component.html" />
     <Content Include="app\header\secure.header.component.js" />
     <Content Include="app\header\secure.header.component.spec.js" />
+    <Content Include="app\nav\empty-nav.component.html" />
+    <Content Include="app\nav\empty-nav.component.js" />
+    <Content Include="app\nav\secure-nav.component.html" />
+    <Content Include="app\nav\secure-nav.component.js" />
+    <Content Include="app\role\add-role.component.html" />
+    <Content Include="app\role\add-role.component.js" />
+    <Content Include="app\role\add-role.component.spec.js" />
+    <Content Include="app\role\role.service.js" />
+    <Content Include="app\role\role.service.spec.js" />
     <Content Include="app\status\status-list.component.html" />
     <Content Include="app\status\status-list.component.js" />
     <Content Include="app\status\status-list.component.spec.js" />

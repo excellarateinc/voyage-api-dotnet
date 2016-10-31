@@ -29,6 +29,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    templateUrl: '/app/nav/empty-nav.component.html'
                 }
             }
              
@@ -43,6 +46,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    templateUrl: '/app/nav/empty-nav.component.html'
                 }
             }
              
@@ -57,9 +63,29 @@
                 },
                 header: {
                     component: 'lssSecureHeader'
+                },
+                nav: {
+                    templateUrl: 'app/nav/secure-nav.component.html'
                 }
             }
-        }];
+        },
+        {
+            name: 'addRole',
+            url: '/addRole',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    templateUrl: 'app/nav/secure-nav.component.html'
+                }
+            }
+        }
+        ];
 
         // Loop over the state definitions and register them
         states.forEach(function(state) {
@@ -404,6 +430,84 @@
         function logout(){
             authorizationService.setToken(null);
             $state.go("login");
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssAddRole', {
+            templateUrl:'/app/role/add-role.component.html',
+            controller: AddRoleController,
+            controllerAs: 'vm',
+            bindings: {
+                //Binding: '=',
+            },
+        });
+
+    AddRoleController.$inject = ['roleService'];
+    function AddRoleController(roleService) {
+        var vm = this;
+        
+        vm.roleName = "";
+        vm.save = save;
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function save(){
+            roleService.addRole(vm.roleName)
+                .then(
+                  function(data){
+                      vm.roleName = "";
+                  },
+                  function(err){
+
+                  }
+                );
+        }
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('roleService', RoleService);
+
+    RoleService.$inject = ['$http', '$q'];
+    function RoleService($http, $q) {
+        var service = {
+            addRole:addRole
+        };
+        
+        return service;
+
+        ////////////////
+        function addRole(roleName) { 
+            var deferred = $q.defer();
+
+            var role = {
+                name: roleName
+            };
+
+            $http.post("/api/role", role)
+                .then(function(response){
+                    deferred.resolve(true);
+                }, 
+                function(response){
+                    deferred.reject(response.data);
+                });
+
+            return deferred.promise;
         }
     }
 })();;(function() {
