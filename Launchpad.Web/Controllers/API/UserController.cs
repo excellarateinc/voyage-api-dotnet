@@ -1,10 +1,12 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using Launchpad.Web.Filters;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API
 {
@@ -20,12 +22,14 @@ namespace Launchpad.Web.Controllers.API
 
         }
 
+        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
         [HttpGet]
         public IHttpActionResult GetUsers()
         {
             return Ok(_userService.GetUsers());
         }
 
+        [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
         [HttpGet]
         [Route("user/claims")]
         public IHttpActionResult GetClaims()
@@ -38,6 +42,7 @@ namespace Launchpad.Web.Controllers.API
             return Ok(clientFacingClaims);
         }
 
+        [ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
         [HttpPost]
         [Route("user/assign")]
         public async Task<IHttpActionResult> AssignRole(UserRoleModel userRole)

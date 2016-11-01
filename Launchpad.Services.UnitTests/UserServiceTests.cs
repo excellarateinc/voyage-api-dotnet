@@ -244,7 +244,7 @@ namespace Launchpad.Services.UnitTests
         {
 
             //ARRANGE
-
+            string userId = string.Empty;
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
@@ -252,8 +252,21 @@ namespace Launchpad.Services.UnitTests
 
             var identityResult = new IdentityResult();
 
+            var applicationUser = new ApplicationUser();
+
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
                 .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Returns(Task.Delay(0));
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(applicationUser))
+                .ReturnsAsync(new string[0]);
+
+            _mockStore.Setup(_ => _.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(applicationUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.AddToRoleAsync(applicationUser, "Basic"))
                 .Returns(Task.Delay(0));
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))

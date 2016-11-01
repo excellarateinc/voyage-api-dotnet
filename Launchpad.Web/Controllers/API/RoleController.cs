@@ -1,14 +1,16 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using Launchpad.Web.Filters;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API
 {
     [Authorize]
-    [RoutePrefix(Constants.RoutePrefixes.Role)]
+    [RoutePrefix(RoutePrefixes.Role)]
     public class RoleController : ApiController
     {
         private IRoleService _roleService;
@@ -18,6 +20,7 @@ namespace Launchpad.Web.Controllers.API
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        [ClaimAuthorize(ClaimValue = LssClaims.ListRoles)]
         [HttpGet]
         public IHttpActionResult GetRoles()
         {
@@ -25,6 +28,7 @@ namespace Launchpad.Web.Controllers.API
             return Ok(result);
         }
 
+        [ClaimAuthorize(ClaimValue = LssClaims.CreateRole)]
         [HttpPost]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
@@ -38,6 +42,7 @@ namespace Launchpad.Web.Controllers.API
             }
         }
 
+        [ClaimAuthorize(ClaimValue = LssClaims.CreateClaim)]
         [Route("role/claim")]
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim(RoleClaimModel model)

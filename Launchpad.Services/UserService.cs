@@ -50,8 +50,13 @@ namespace Launchpad.Services
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
+          
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                result = await _userManager.AddToRoleAsync(user.Id, "Basic");
+            }
 
             return result;
         }

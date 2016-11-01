@@ -14,6 +14,8 @@ using System.Threading;
 using System.Net;
 using System.Collections.Generic;
 using System.Net.Http;
+using static Launchpad.Web.Constants;
+
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -28,6 +30,24 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _roleController = new RoleController(_mockRoleService.Object);
             _roleController.Request = new System.Net.Http.HttpRequestMessage();
             _roleController.Configuration = new HttpConfiguration();
+        }
+
+        [Fact]
+        public void GetRoles_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.GetRoles(), LssClaims.ListRoles);
+        }
+
+        [Fact]
+        public void CreateRole_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_=>_.CreateRole(new RoleModel()), LssClaims.CreateRole);
+        }
+
+        [Fact]
+        public void AddClaim_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.AddClaim(new RoleClaimModel()), LssClaims.CreateClaim);
         }
 
         [Fact]

@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using Xunit;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V2
 {
@@ -31,6 +32,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
             _widgetController.Request = new System.Net.Http.HttpRequestMessage();
             _widgetController.Configuration = new System.Web.Http.HttpConfiguration();
 
+        }
+
+        [Fact]
+        public void Get_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.Get(), LssClaims.ListWidgets);
         }
 
         [Fact]

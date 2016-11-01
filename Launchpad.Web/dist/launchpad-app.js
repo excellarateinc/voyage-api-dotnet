@@ -205,7 +205,7 @@
     function LoginController(accountService, $state, authorizationService, constants, $log, userService) {
         var vm = this;
         vm.login = login;
-        vm.username = 'fred@fred.com';
+        vm.username = 'admin@admin.com';
         vm.password = 'Hello123!';
         
         ////////////////

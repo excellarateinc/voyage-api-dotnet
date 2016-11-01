@@ -1,8 +1,10 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using Launchpad.Web.Filters;
 using System.Net;
 using System.Web.Http;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API.V2
 {
@@ -44,6 +46,7 @@ namespace Launchpad.Web.Controllers.API.V2
          *      ]
          * 
          */
+        [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
         [Route("widget")]
         public IHttpActionResult Get()
         {

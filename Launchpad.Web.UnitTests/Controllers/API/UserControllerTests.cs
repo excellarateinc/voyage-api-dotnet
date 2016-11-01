@@ -14,6 +14,8 @@ using System.Net.Http;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Linq;
+using static Launchpad.Web.Constants;
+
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {
@@ -34,6 +36,32 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _claimIdentity.AddClaim(new Claim(Constants.LssClaims.Type, "view.widget"));
             _userController.User = new ClaimsPrincipal(_claimIdentity);
         }
+
+        [Fact]
+        public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _userController.AssertClaim(_ => _.GetUsers(), 
+                LssClaims.ListUsers);
+
+        }
+
+        [Fact]
+        public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _userController.AssertClaim(_ => _.GetClaims(), LssClaims.ListUserClaims);
+        }
+
+        [Fact]
+        public void AssignRole_Should_Have_ClaimAuthorizeAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertClaim(_ => _.AssignRole(new UserRoleModel()), LssClaims.AssignRole);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+        }
+
+
+
 
         [Fact]
         public async void GetClaims_Should_Return_Lss_Claims_From_Identity()

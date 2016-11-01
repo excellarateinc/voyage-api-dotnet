@@ -99,8 +99,29 @@ namespace Launchpad.Data.Migrations
             #region Claim-Role assignment
 
             SeedRoleClaim(context, basicRole.Id, claimType, "login");
+            SeedRoleClaim(context, basicRole.Id, claimType, "list.user-claims");
+
+
             SeedRoleClaim(context, adminRole.Id, claimType, "assign.role");
+            SeedRoleClaim(context, adminRole.Id, claimType, "create.role");
+            SeedRoleClaim(context, adminRole.Id, claimType, "list.roles");
+
+            SeedRoleClaim(context, adminRole.Id, claimType, "list.users");
+
+
             SeedRoleClaim(context, adminRole.Id, claimType, "create.claim");
+            
+            SaveChanges(context);
+            #endregion
+
+            #region Widget
+
+            context.Widgets.AddOrUpdate(_ => _.Name, new Widget
+            {
+                Name = "Seed Widget",
+                Color = "Green"
+            });
+
             SaveChanges(context);
             #endregion 
 
