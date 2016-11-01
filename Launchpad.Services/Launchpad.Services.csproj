@@ -65,8 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdentityManagers\ApplicationRoleManager.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IRequestMetricsService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Monitors\ActivityMonitor.cs" />
     <Compile Include="Monitors\DbStatusMonitor.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Interfaces\IStatusMonitor.cs" />
     <Compile Include="Monitors\HttpEndpointStatusMonitor.cs" />
     <Compile Include="Monitors\LogMonitor.cs" />
+    <Compile Include="RoleService.cs" />
     <Compile Include="ServicesModule.cs" />
     <Compile Include="StatusCollectorService.cs" />
     <Compile Include="RequestMetricsService.cs" />

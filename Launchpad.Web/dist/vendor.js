@@ -40108,4 +40108,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-//# sourceMappingURL=angular-ui-router.js.map
+//# sourceMappingURL=vendor.js.map

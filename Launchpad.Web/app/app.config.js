@@ -23,6 +23,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    component: 'lssEmptyNav'
                 }
             }
              
@@ -37,6 +40,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    component: 'lssEmptyNav'
                 }
             }
              
@@ -51,9 +57,62 @@
                 },
                 header: {
                     component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
                 }
             }
-        }];
+        },
+        {
+            name: 'addRole',
+            url: '/addRole',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        },
+        {
+            name: 'addClaim',
+            url: '/addClaim',
+               views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddClaim'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        },
+        {
+            name: 'userDashboard',
+            url: '/userDashboard',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAssignRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        }
+
+        ];
 
         // Loop over the state definitions and register them
         states.forEach(function(state) {

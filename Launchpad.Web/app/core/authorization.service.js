@@ -5,22 +5,40 @@
         .module('lss-launchpad')
         .factory('authorizationService', AuthorizationService);
 
+ 
     function AuthorizationService() {
-        var accessToken = null;
+        var _accessToken = null;
+        var _claimsMap = {};
 
         var service = {
            setToken : setToken,
-           getToken : getToken
+           getToken : getToken,
+           hasClaim : hasClaim,
+           setClaims: setClaims
         };
         
         return service;
 
-        ////////////////
-        function setToken(token) { 
-            accessToken = token;
+        function setClaims(claimsMap){
+            _claimsMap = claimsMap;
         }
+
+
+        function hasClaim(claimType, claimValue){
+            var hasClaim = _claimsMap[claimType + "->" + claimValue] === true;       
+            return hasClaim;
+        }
+
+        function setToken(token) { 
+            _accessToken = token;
+            if(_accessToken === null){
+               
+                _claimsMap = {};
+            }
+        }
+
         function getToken() {
-            return accessToken;
+            return _accessToken;
         }
     }
 })();

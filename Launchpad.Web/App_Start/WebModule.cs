@@ -66,9 +66,7 @@ namespace Launchpad.Web.App_Start
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
                           
 
-            builder.RegisterType<ApplicationUserManager>()
-                .AsSelf()
-                .InstancePerRequest();
+           
         }
 
         /// <summary>

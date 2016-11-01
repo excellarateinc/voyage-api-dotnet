@@ -11,6 +11,8 @@ using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
 using Launchpad.Services.Interfaces;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Launchpad.Web.UnitTests.Controllers.API
 {

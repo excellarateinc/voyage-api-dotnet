@@ -60,5 +60,19 @@ namespace Launchpad.Data.IntegrationTests
                 }
             }
         }
+
+        [Fact]
+        public void RoleClaims_Should_Query_Database()
+        {
+            using(var scope = new TransactionScope())
+            {
+                using(var context = new LaunchpadDataContext())
+                {
+                    var results = context.RoleClaims.Take(10).ToList();
+                    results.Should().NotBeNull();
+
+                }
+            }
+        }
     }
 }

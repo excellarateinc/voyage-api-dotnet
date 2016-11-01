@@ -24,7 +24,9 @@
         },
         concat: {
             options: {
-                separator: ';'
+                separator: ';', 
+                sourceMap : true
+  
             },
             dist: {
                 src: ['app/app.module.js', 'app/app.config.js', 'app/**/*.js', '!app/**/*.spec.js'],
@@ -37,7 +39,10 @@
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+                sourceMap: true,
+                sourceMapIncludeSources : true,
+                sourceMapIn : 'dist/<%= pkg.name %>.js.map'
             },
             dist: {
                 files: {

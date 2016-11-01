@@ -177,12 +177,16 @@
   <ItemGroup>
     <Compile Include="AuthProviders\ApplicationOAuthProviderTests.cs" />
     <Compile Include="ConstantsTests.cs" />
+    <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Controllers\API\AccountControllerTests.cs" />
+    <Compile Include="Controllers\API\RoleControllerTests.cs" />
     <Compile Include="Controllers\API\V1\StatusControllerTests.cs" />
     <Compile Include="Controllers\API\V1\WidgetControllerTests.cs" />
     <Compile Include="Controllers\API\V2\StatusV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
+    <Compile Include="Controllers\API\UserControllerTests.cs" />
+    <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />
     <Compile Include="Handlers\RequestMetricsHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

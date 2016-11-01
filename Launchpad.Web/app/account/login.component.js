@@ -18,11 +18,11 @@
             },
         });
 
-    LoginController.$inject = ['accountService', '$state'];
-    function LoginController(accountService, $state) {
+    LoginController.$inject = ['accountService', '$state', 'authorizationService', 'lssConstants', '$log', 'userService'];
+    function LoginController(accountService, $state, authorizationService, constants, $log, userService) {
         var vm = this;
         vm.login = login;
-        vm.username = 'fred@fred.com';
+        vm.username = 'admin@admin.com';
         vm.password = 'Hello123!';
         
         ////////////////
@@ -34,9 +34,19 @@
         function login(){
             
             accountService.login(vm.username, vm.password)
-            .then(function(result){
-                $state.go('dashboard');
-            });
+                .then(_loginCallback);
+        }
+
+        function _loginCallback(result){
+            userService.getClaimsMap()
+                .then(function(claimsMap){
+                    authorizationService.setClaims(claimsMap);
+                    if(authorizationService.hasClaim(constants.lssClaimType, constants.claims.login)){
+                        $state.go('dashboard');
+                    }else{
+                        $log.info('User does not have required claim: ' + constants.claims.login);
+                    }
+                });
         }
     }
 })();

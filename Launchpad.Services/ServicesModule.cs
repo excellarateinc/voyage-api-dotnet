@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
 using System.Net.Http;
 
@@ -37,7 +38,19 @@ namespace Launchpad.Services
             builder.RegisterType<UserService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-                
+
+            builder.RegisterType<RoleService>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            builder.RegisterType<ApplicationUserManager>()
+               .AsSelf()
+               .InstancePerRequest();
+
+            builder.RegisterType<ApplicationRoleManager>()
+                .AsSelf()
+                .InstancePerRequest();
+
         }
     }
 }

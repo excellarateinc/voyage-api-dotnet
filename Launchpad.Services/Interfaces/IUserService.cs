@@ -1,5 +1,6 @@
 ﻿using Launchpad.Models;
 using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,5 +13,11 @@ namespace Launchpad.Services.Interfaces
         Task<bool> IsValidCredential(string userName, string password);
 
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
+
+        IEnumerable<UserModel> GetUsers();
+
+        Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel);
+
+       
     }
 }

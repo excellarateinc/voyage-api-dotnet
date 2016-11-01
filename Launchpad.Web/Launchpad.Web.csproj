@@ -233,6 +233,20 @@
     <Content Include="app\header\secure.header.component.html" />
     <Content Include="app\header\secure.header.component.js" />
     <Content Include="app\header\secure.header.component.spec.js" />
+    <Content Include="app\nav\empty-nav.component.html" />
+    <Content Include="app\nav\empty-nav.component.js" />
+    <Content Include="app\nav\empty-nav.component.spec.js" />
+    <Content Include="app\nav\secure-nav.component.html" />
+    <Content Include="app\nav\secure-nav.component.js" />
+    <Content Include="app\nav\secure-nav.component.spec.js" />
+    <Content Include="app\role\add-claim.component.html" />
+    <Content Include="app\role\add-claim.component.js" />
+    <Content Include="app\role\add-claim.component.spec.js" />
+    <Content Include="app\role\add-role.component.html" />
+    <Content Include="app\role\add-role.component.js" />
+    <Content Include="app\role\add-role.component.spec.js" />
+    <Content Include="app\role\role.service.js" />
+    <Content Include="app\role\role.service.spec.js" />
     <Content Include="app\status\status-list.component.html" />
     <Content Include="app\status\status-list.component.js" />
     <Content Include="app\status\status-list.component.spec.js" />
@@ -241,6 +255,11 @@
     <Content Include="app\status\status.component.spec.js" />
     <Content Include="app\status\status.service.js" />
     <Content Include="app\status\status.service.spec.js" />
+    <Content Include="app\user\assign-role.component.html" />
+    <Content Include="app\user\assign-role.component.js" />
+    <Content Include="app\user\assign-role.component.spec.js" />
+    <Content Include="app\user\user.service.js" />
+    <Content Include="app\user\user.service.spec.js" />
     <Content Include="app\widget\widget.component.html" />
     <Content Include="app\widget\widget.component.js" />
     <Content Include="app\widget\widget.component.spec.js" />
@@ -260,11 +279,14 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\API\AccountController.cs" />
+    <Compile Include="Controllers\API\RoleController.cs" />
+    <Compile Include="Controllers\API\UserController.cs" />
     <Compile Include="Controllers\API\v1\StatusController.cs" />
     <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
     <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

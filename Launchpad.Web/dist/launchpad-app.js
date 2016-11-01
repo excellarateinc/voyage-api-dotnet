@@ -29,6 +29,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    component: 'lssEmptyNav'
                 }
             }
              
@@ -43,6 +46,9 @@
                 },
                 header: {
                     component: 'lssHeader'
+                },
+                nav: {
+                    component: 'lssEmptyNav'
                 }
             }
              
@@ -57,9 +63,62 @@
                 },
                 header: {
                     component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
                 }
             }
-        }];
+        },
+        {
+            name: 'addRole',
+            url: '/addRole',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        },
+        {
+            name: 'addClaim',
+            url: '/addClaim',
+               views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAddClaim'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        },
+        {
+            name: 'userDashboard',
+            url: '/userDashboard',
+            views: {
+                content: {
+                    // Using component: instead of template:
+                    component: 'lssAssignRole'
+                },
+                header: {
+                    component: 'lssSecureHeader'
+                },
+                nav: {
+                    component: 'lssSecureNav'
+                }
+            }
+        }
+
+        ];
 
         // Loop over the state definitions and register them
         states.forEach(function(state) {
@@ -78,6 +137,7 @@
         var service = {
             login:login,
             register: register
+           
         };
         
         return service;
@@ -97,6 +157,9 @@
             });
             return deferred.promise;
         }
+
+
+      
 
         function register(username, password){
             var deferred = $q.defer();
@@ -138,11 +201,11 @@
             },
         });
 
-    LoginController.$inject = ['accountService', '$state'];
-    function LoginController(accountService, $state) {
+    LoginController.$inject = ['accountService', '$state', 'authorizationService', 'lssConstants', '$log', 'userService'];
+    function LoginController(accountService, $state, authorizationService, constants, $log, userService) {
         var vm = this;
         vm.login = login;
-        vm.username = 'fred@fred.com';
+        vm.username = 'admin@admin.com';
         vm.password = 'Hello123!';
         
         ////////////////
@@ -154,9 +217,19 @@
         function login(){
             
             accountService.login(vm.username, vm.password)
-            .then(function(result){
-                $state.go('dashboard');
-            });
+                .then(_loginCallback);
+        }
+
+        function _loginCallback(result){
+            userService.getClaimsMap()
+                .then(function(claimsMap){
+                    authorizationService.setClaims(claimsMap);
+                    if(authorizationService.hasClaim(constants.lssClaimType, constants.claims.login)){
+                        $state.go('dashboard');
+                    }else{
+                        $log.info('User does not have required claim: ' + constants.claims.login);
+                    }
+                });
         }
     }
 })();;(function() {
@@ -256,25 +329,58 @@
         .module('lss-launchpad')
         .factory('authorizationService', AuthorizationService);
 
+ 
     function AuthorizationService() {
-        var accessToken = null;
+        var _accessToken = null;
+        var _claimsMap = {};
 
         var service = {
            setToken : setToken,
-           getToken : getToken
+           getToken : getToken,
+           hasClaim : hasClaim,
+           setClaims: setClaims
         };
         
         return service;
 
-        ////////////////
-        function setToken(token) { 
-            accessToken = token;
+        function setClaims(claimsMap){
+            _claimsMap = claimsMap;
         }
+
+
+        function hasClaim(claimType, claimValue){
+            var hasClaim = _claimsMap[claimType + "->" + claimValue] === true;       
+            return hasClaim;
+        }
+
+        function setToken(token) { 
+            _accessToken = token;
+            if(_accessToken === null){
+               
+                _claimsMap = {};
+            }
+        }
+
         function getToken() {
-            return accessToken;
+            return _accessToken;
         }
     }
 })();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .constant('lssConstants', {
+            lssClaimType : 'lss.permission',
+            claims: {
+                login: 'login',
+                createClaim: 'create.claim',
+                assignRole: 'assign.role'
+            }    
+        });
+})();
+
+    ;(function() {
 'use strict';
 
     angular
@@ -416,6 +522,241 @@
 
     angular
         .module('lss-launchpad')
+        .component('lssEmptyNav', {
+            templateUrl: '/app/nav/empty-nav.component.html',
+            controller: EmptyNavController,
+            bindings: {
+            },
+        });
+
+    function EmptyNavController() {
+        var $ctrl = this;
+        
+
+        ////////////////
+
+        $ctrl.$onInit = function() { };
+        $ctrl.$onChanges = function(changesObj) { };
+        $ctrl.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+
+    angular
+        .module('lss-launchpad')
+        .component('lssSecureNav', {
+            templateUrl: '/app/nav/secure-nav.component.html',
+            controller: SecureNavController,
+            controllerAs: 'vm',
+            bindings: {
+
+            },
+        });
+
+    SecureNavController.$inject = ['authorizationService', 'lssConstants'];
+    function SecureNavController(authorizationService, constants) {
+        var vm = this;
+        vm.states = [];
+
+
+        ////////////////
+
+
+        vm.$onInit = function() { 
+            _refreshNavigation();
+        };
+
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function _refreshNavigation(){
+            vm.states = [];
+            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claims', 'addClaim');
+            _addState(constants.lssClaimType, constants.claims.assignRole, 'Users', 'userDashboard');
+        }
+
+        function _addState(claimType, claimName, stateDisplayName, state){
+            if(authorizationService.hasClaim(claimType, claimName)){
+                vm.states.push({name: stateDisplayName, state: state});
+            }
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssAddClaim', {
+            templateUrl:'/app/role/add-claim.component.html',
+            controller: AddClaimController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+    AddClaimController.$inject = ['roleService'];
+    function AddClaimController(roleService) {
+        var vm = this;
+        
+        vm.claimType = "";
+        vm.claimValue = "";
+        vm.roles = [];
+        vm.save = save;
+
+        ////////////////
+
+        vm.$onInit = function() { 
+            roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                    vm.selectedRole = vm.roles[0];
+                });
+        };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function save(){
+
+            roleService.addClaim(vm.selectedRole, vm.claimType, vm.claimValue)
+                .then(function(data){
+                    vm.claimType = '';
+                    vm.claimValue = '';
+                });
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssAddRole', {
+            templateUrl:'/app/role/add-role.component.html',
+            controller: AddRoleController,
+            controllerAs: 'vm',
+            bindings: {
+                //Binding: '=',
+            },
+        });
+
+    AddRoleController.$inject = ['roleService'];
+    function AddRoleController(roleService) {
+        var vm = this;
+        
+        vm.roleName = "";
+        vm.save = save;
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function save(){
+            roleService.addRole(vm.roleName)
+                .then(
+                  function(data){
+                      vm.roleName = "";
+                  },
+                  function(err){
+
+                  }
+                );
+        }
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('roleService', RoleService);
+
+    RoleService.$inject = ['$http', '$q'];
+    function RoleService($http, $q) {
+        var service = {
+            addRole: addRole,
+            getRoles: getRoles,
+            addClaim: addClaim
+        };
+        
+        return service;
+
+        ////////////////
+        function addRole(roleName) { 
+            var deferred = $q.defer();
+
+            var role = {
+                name: roleName
+            };
+
+            $http.post('/api/role', role)
+                 .then(function(response){
+                     deferred.resolve(true);
+                 }, 
+                 function(response){
+                     deferred.reject(response.data);
+                 });
+
+            return deferred.promise;
+        }
+
+        function getRoles(){
+            var deferred = $q.defer();
+
+            $http.get('/api/role')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function addClaim(role, claimType, claimValue){
+            var deferred = $q.defer();
+            var roleClaim = {
+                role: role,
+                claim: {
+                    claimType: claimType,
+                    claimValue: claimValue
+                }
+            };
+
+            $http.post('/api/role/claim', roleClaim)
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(err){
+                    deferred.reject(err.data);
+                });
+
+            return deferred.promise;
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
         .component('lssStatusList', {
             //template:'htmlTemplate',
             templateUrl: '/app/status/status-list.component.html',
@@ -516,6 +857,132 @@
 
     angular
         .module('lss-launchpad')
+        .component('lssAssignRole', {
+            templateUrl: '/app/user/assign-role.component.html',
+            controller: AssignRoleController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+    AssignRoleController.$inject = ['roleService', 'userService'];
+    function AssignRoleController(roleService, userService) {
+        var vm = this;
+        
+        vm.users = [];
+        vm.roles = [];
+        vm.assign = assign;
+
+        ////////////////
+
+        vm.$onInit = function() { 
+            roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                    vm.selectedRole = vm.roles[0];
+                });
+            userService.getUsers()
+                .then(function(users){
+                    vm.users = users;
+                    vm.selectedUser = vm.users[0];
+                });
+        };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function assign(){
+            userService.assign(vm.selectedRole, vm.selectedUser)
+                .then(function(result){
+                    
+                });
+        }
+
+    }
+})();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .factory('userService', UserService);
+
+    UserService.$inject = ['$q', '$http'];
+    function UserService($q, $http) {
+        var service = {
+            getUsers: getUsers,
+            assign: assign,
+            getClaims: getClaims,
+            getClaimsMap: getClaimsMap
+        };
+        
+        return service;
+
+        ////////////////
+        function getUsers(){
+            var deferred = $q.defer();
+
+            $http.get('/api/user')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function assign(role, user){
+            var deferred = $q.defer();
+
+            var userRole = {
+                role: role,
+                user: user
+            };
+
+            $http.post('/api/user/assign', userRole)
+                .then(function(response)
+                {
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+        }
+
+        function getClaims(){
+            var deferred = $q.defer();
+
+            $http.get('api/user/claims')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+        }
+
+        function getClaimsMap(){
+            var deferred = $q.defer();
+
+            getClaims().then(
+                function(claims){
+                    var map = {};
+                    claims.reduce(
+                        function(previous, current){
+                                previous[current.claimType + "->" + current.claimValue] = true;
+                                return previous;
+                            }, 
+                            map);
+                   deferred.resolve(map);
+                });   
+
+            return deferred.promise;
+        }
+        
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
         .component('widget', {
             //template:'htmlTemplate',
             templateUrl: '/app/widget/widget.component.html',
@@ -567,3 +1034,4 @@
         }
     }
 })();
+//# sourceMappingURL=launchpad-app.js.map
