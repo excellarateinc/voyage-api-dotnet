@@ -42,6 +42,49 @@ namespace Launchpad.Services.UnitTests
             
         }
 
+        [Fact]
+        public async void RemoveRole_Calls_Role_Manager()
+        {
+            //Arrange
+            var model = new RoleModel { Name = "A Role to Remember" };
+            var appRole = new ApplicationRole
+            {
+                Name = model.Name
+            };
+
+            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+                .ReturnsAsync(appRole);
+            _mockRoleStore.Setup(_ => _.DeleteAsync(appRole))
+                .Returns(Task.Delay(0));
+
+
+
+
+            //Act
+            var result = await _roleService.RemoveRoleAsync(model);
+
+
+            //Assert
+            Mock.VerifyAll();
+            result.Succeeded.Should().BeTrue();
+
+        }
+
+        [Fact]
+        public async void RemoveRole_Calls_Role_Manager_And_Returns_Failed_Result_When_Role_Does_Not_Exist()
+        {
+            var model = new RoleModel { Name = "A Role to Remember" };
+            
+            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+                .ReturnsAsync(null);
+
+
+            var result = await _roleService.RemoveRoleAsync(model);
+
+            Mock.VerifyAll();
+            result.Succeeded.Should().BeFalse();
+        }
+
 
         [Fact]
         public void GetRoleClaims_Should_Call_Repository()

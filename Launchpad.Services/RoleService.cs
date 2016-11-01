@@ -35,6 +35,20 @@ namespace Launchpad.Services
             }
         }
 
+        public async Task<IdentityResult> RemoveRoleAsync(RoleModel role)
+        {
+            IdentityResult result;
+            var roleEntity = await _roleManager.FindByNameAsync(role.Name);
+            if (roleEntity != null)
+            {
+                result = await _roleManager.DeleteAsync(roleEntity);
+            }else
+            {
+                result = new IdentityResult($"Unable to find role with name {role.Name}");
+            }
+            return result;
+        }
+
         public async Task<IdentityResult> CreateRoleAsync(RoleModel model)
         {
             var role = new ApplicationRole();
