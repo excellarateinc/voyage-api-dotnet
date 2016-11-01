@@ -37,6 +37,12 @@ namespace Launchpad.Data
             return Context.RoleClaims;
         }
 
+        public RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue)
+        {
+            return Context.RoleClaims
+                     .FirstOrDefault(_ => _.Role.Name == roleName && _.ClaimType == claimType && _.ClaimValue == claimValue);
+        }
+
         public IQueryable<RoleClaim> GetClaimsByRole(string roleName)
         {
             return Context.RoleClaims
