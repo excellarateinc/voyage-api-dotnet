@@ -329,8 +329,8 @@
         .module('lss-launchpad')
         .factory('authorizationService', AuthorizationService);
 
-    AuthorizationService.$inject = ['$q'];
-    function AuthorizationService($q) {
+ 
+    function AuthorizationService() {
         var _accessToken = null;
         var _claimsMap = {};
 
@@ -371,9 +371,11 @@
     angular
         .module('lss-launchpad')
         .constant('lssConstants', {
-            lssClaimType : "lss.permission",
+            lssClaimType : 'lss.permission',
             claims: {
-                login: "login"
+                login: 'login',
+                createClaim: 'create.claim',
+                assignRole: 'assign.role'
             }    
         });
 })();
@@ -575,7 +577,8 @@
 
         function _refreshNavigation(){
             vm.states = [];
-            _addState(constants.lssClaimType, constants.claims.addClaim, "Claims", "addClaim");
+            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claims', 'addClaim');
+            _addState(constants.lssClaimType, constants.claims.assignRole, 'Users', 'userDashboard');
         }
 
         function _addState(claimType, claimName, stateDisplayName, state){

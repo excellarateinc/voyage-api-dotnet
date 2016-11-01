@@ -4,9 +4,11 @@
     angular
         .module('lss-launchpad')
         .constant('lssConstants', {
-            lssClaimType : "lss.permission",
+            lssClaimType : 'lss.permission',
             claims: {
-                login: "login"
+                login: 'login',
+                createClaim: 'create.claim',
+                assignRole: 'assign.role'
             }    
         });
 })();

@@ -2,7 +2,7 @@
     <div>
         <ul class="nav nav-pills nav-stacked">
            <li ng-repeat="state in vm.states track by state.state">
-               <a ui-sref="state.state">{{state.name}}</a>
+               <a ui-sref="{{state.state}}">{{state.name}}</a>
            </li>
             <!--<li><a ui-sref="userDashboard">Users</a></li>
             <li><a ui-sref="addRole">Roles</a></li>

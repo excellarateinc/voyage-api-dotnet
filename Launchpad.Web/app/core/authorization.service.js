@@ -5,8 +5,8 @@
         .module('lss-launchpad')
         .factory('authorizationService', AuthorizationService);
 
-    AuthorizationService.$inject = ['$q'];
-    function AuthorizationService($q) {
+ 
+    function AuthorizationService() {
         var _accessToken = null;
         var _claimsMap = {};
 
