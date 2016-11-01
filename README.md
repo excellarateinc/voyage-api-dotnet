@@ -37,25 +37,10 @@ The application uses a SQL Database and Code First Migrations. This migration st
    - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
 
 ## Users
-Currently, there is not an UI for adding users. However, a user can be added using a REST request:
+A default user will be seeded into the database when Update-Database is run. The user is *admin@admin.com* / *Hello123!* - new users can be created using the Register link. 
 
-1. Build and start the application
-2. Open a rest client (For example: Postman)
-3. Create a post request
-   - The first time the IdentityContext is used, it will create the ASP.Net Identity schema in the database
-   - This should return a 200
+Each new user will be created with a 'Basic' role whcih allows them to log in. You may notice on the dashboard a 403 (Forbidden) is generated. The basic role does not have the 'list.widgets' claim. To resolve this and see the widgets, login as the admin and select Add Claim. Choose 'Basic' as the role and enter 'lss.permission' and 'list.widgets' for the claim type and claim value respectively. 
 
-```
-POST http://localhost:52431/api/account/Register HTTP/1.1
-Content-Type: application/json
-Accept: */*
-
-{
-	"email":"someemail@agreatdomain.com",
-	"password":"SuperTopSecret123!",
-	"confirmPassword": "SuperTopSecret123!"
-}
-```
 
 ## Server Side Development Notes
 The server exposes 3 endpoints:
