@@ -6,24 +6,43 @@
     // Creates:
     // 
 
+
     angular
         .module('lss-launchpad')
         .component('lssSecureNav', {
             templateUrl: '/app/nav/secure-nav.component.html',
             controller: SecureNavController,
+            controllerAs: 'vm',
             bindings: {
 
             },
         });
 
-    function SecureNavController() {
-        var $ctrl = this;
-        
+    SecureNavController.$inject = ['authorizationService', 'lssConstants'];
+    function SecureNavController(authorizationService, constants) {
+        var vm = this;
+        vm.states = [];
+
 
         ////////////////
 
-        $ctrl.$onInit = function() { };
-        $ctrl.$onChanges = function(changesObj) { };
-        $ctrl.$onDestory = function() { };
+
+        vm.$onInit = function() { 
+            _refreshNavigation();
+        };
+
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function _refreshNavigation(){
+            vm.states = [];
+            _addState(constants.lssClaimType, constants.claims.addClaim, "Claims", "addClaim");
+        }
+
+        function _addState(claimType, claimName, stateDisplayName, state){
+            if(authorizationService.hasClaim(claimType, claimName)){
+                vm.states.push({name: stateDisplayName, state: state});
+            }
+        }
     }
 })();

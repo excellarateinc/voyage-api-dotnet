@@ -10,7 +10,8 @@
         var service = {
             getUsers: getUsers,
             assign: assign,
-            getClaims: getClaims
+            getClaims: getClaims,
+            getClaimsMap: getClaimsMap
         };
         
         return service;
@@ -50,6 +51,24 @@
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
+            return deferred.promise;
+        }
+
+        function getClaimsMap(){
+            var deferred = $q.defer();
+
+            getClaims().then(
+                function(claims){
+                    var map = {};
+                    claims.reduce(
+                        function(previous, current){
+                                previous[current.claimType + "->" + current.claimValue] = true;
+                                return previous;
+                            }, 
+                            map);
+                   deferred.resolve(map);
+                });   
+
             return deferred.promise;
         }
         

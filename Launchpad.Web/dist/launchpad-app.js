@@ -201,8 +201,8 @@
             },
         });
 
-    LoginController.$inject = ['accountService', '$state'];
-    function LoginController(accountService, $state) {
+    LoginController.$inject = ['accountService', '$state', 'authorizationService', 'lssConstants', '$log', 'userService'];
+    function LoginController(accountService, $state, authorizationService, constants, $log, userService) {
         var vm = this;
         vm.login = login;
         vm.username = 'fred@fred.com';
@@ -217,9 +217,19 @@
         function login(){
             
             accountService.login(vm.username, vm.password)
-            .then(function(result){
-                $state.go('dashboard');
-            });
+                .then(_loginCallback);
+        }
+
+        function _loginCallback(result){
+            userService.getClaimsMap()
+                .then(function(claimsMap){
+                    authorizationService.setClaims(claimsMap);
+                    if(authorizationService.hasClaim(constants.lssClaimType, constants.claims.login)){
+                        $state.go('dashboard');
+                    }else{
+                        $log.info('User does not have required claim: ' + constants.claims.login);
+                    }
+                });
         }
     }
 })();;(function() {
@@ -319,25 +329,56 @@
         .module('lss-launchpad')
         .factory('authorizationService', AuthorizationService);
 
-    function AuthorizationService() {
-        var accessToken = null;
+    AuthorizationService.$inject = ['$q'];
+    function AuthorizationService($q) {
+        var _accessToken = null;
+        var _claimsMap = {};
 
         var service = {
            setToken : setToken,
-           getToken : getToken
+           getToken : getToken,
+           hasClaim : hasClaim,
+           setClaims: setClaims
         };
         
         return service;
 
-        ////////////////
-        function setToken(token) { 
-            accessToken = token;
+        function setClaims(claimsMap){
+            _claimsMap = claimsMap;
         }
+
+
+        function hasClaim(claimType, claimValue){
+            var hasClaim = _claimsMap[claimType + "->" + claimValue] === true;       
+            return hasClaim;
+        }
+
+        function setToken(token) { 
+            _accessToken = token;
+            if(_accessToken === null){
+               
+                _claimsMap = {};
+            }
+        }
+
         function getToken() {
-            return accessToken;
+            return _accessToken;
         }
     }
 })();;(function() {
+'use strict';
+
+    angular
+        .module('lss-launchpad')
+        .constant('lssConstants', {
+            lssClaimType : "lss.permission",
+            claims: {
+                login: "login"
+            }    
+        });
+})();
+
+    ;(function() {
 'use strict';
 
     angular
@@ -504,25 +545,44 @@
     // Creates:
     // 
 
+
     angular
         .module('lss-launchpad')
         .component('lssSecureNav', {
             templateUrl: '/app/nav/secure-nav.component.html',
             controller: SecureNavController,
+            controllerAs: 'vm',
             bindings: {
 
             },
         });
 
-    function SecureNavController() {
-        var $ctrl = this;
-        
+    SecureNavController.$inject = ['authorizationService', 'lssConstants'];
+    function SecureNavController(authorizationService, constants) {
+        var vm = this;
+        vm.states = [];
+
 
         ////////////////
 
-        $ctrl.$onInit = function() { };
-        $ctrl.$onChanges = function(changesObj) { };
-        $ctrl.$onDestory = function() { };
+
+        vm.$onInit = function() { 
+            _refreshNavigation();
+        };
+
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function _refreshNavigation(){
+            vm.states = [];
+            _addState(constants.lssClaimType, constants.claims.addClaim, "Claims", "addClaim");
+        }
+
+        function _addState(claimType, claimName, stateDisplayName, state){
+            if(authorizationService.hasClaim(claimType, claimName)){
+                vm.states.push({name: stateDisplayName, state: state});
+            }
+        }
     }
 })();;(function() {
 'use strict';
@@ -823,10 +883,6 @@
                     vm.users = users;
                     vm.selectedUser = vm.users[0];
                 });
-            userService.getClaims()
-                .then(function(claims){
-                    vm.claims = claims;
-                });
         };
         vm.$onChanges = function(changesObj) { };
         vm.$onDestory = function() { };
@@ -834,7 +890,7 @@
         function assign(){
             userService.assign(vm.selectedRole, vm.selectedUser)
                 .then(function(result){
-
+                    
                 });
         }
 
@@ -851,7 +907,8 @@
         var service = {
             getUsers: getUsers,
             assign: assign,
-            getClaims: getClaims
+            getClaims: getClaims,
+            getClaimsMap: getClaimsMap
         };
         
         return service;
@@ -891,6 +948,24 @@
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
+            return deferred.promise;
+        }
+
+        function getClaimsMap(){
+            var deferred = $q.defer();
+
+            getClaims().then(
+                function(claims){
+                    var map = {};
+                    claims.reduce(
+                        function(previous, current){
+                                previous[current.claimType + "->" + current.claimValue] = true;
+                                return previous;
+                            }, 
+                            map);
+                   deferred.resolve(map);
+                });   
+
             return deferred.promise;
         }
         

@@ -44,7 +44,7 @@
         function assign(){
             userService.assign(vm.selectedRole, vm.selectedUser)
                 .then(function(result){
-
+                    
                 });
         }
 
