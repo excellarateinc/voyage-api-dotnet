@@ -64,12 +64,12 @@
             }
         },
         {
-            name: 'addRole',
-            url: '/addRole',
+            name: 'roleDashboard',
+            url: '/roleDashboard',
             views: {
                 content: {
                     // Using component: instead of template:
-                    component: 'lssAddRole'
+                    component: 'lssRoleDashboard'
                 },
                 header: {
                     component: 'lssSecureHeader'
@@ -80,12 +80,12 @@
             }
         },
         {
-            name: 'addClaim',
-            url: '/addClaim',
+            name: 'claimDashboard',
+            url: '/claimDashboard',
                views: {
                 content: {
                     // Using component: instead of template:
-                    component: 'lssAddClaim'
+                    component: 'lssClaimDashboard'
                 },
                 header: {
                     component: 'lssSecureHeader'

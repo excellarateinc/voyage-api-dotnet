@@ -72,10 +72,10 @@ namespace Launchpad.Services
             
         }
 
-        public void RemoveClaim(RoleModel roleModel, ClaimModel claimModel)
+        public void RemoveClaim(string roleName, string claimType, string claimValue)
         {
-            var claim = _roleClaimRepository.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
-            if(claim != null)
+            var claim = _roleClaimRepository.GetByRoleAndClaim(roleName, claimType, claimValue);
+            if (claim != null)
             {
                 _roleClaimRepository.Delete(claim.Id);
             }

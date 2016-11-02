@@ -11,5 +11,7 @@ namespace Launchpad.Models
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public IEnumerable<ClaimModel> Claims { get; set; }
     }
 }

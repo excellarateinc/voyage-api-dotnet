@@ -1,5 +1,5 @@
-describe('userService', function(){
-     var controller;
+describe('assign-role.component', function(){
+    var controller;
     var scope;
     var $q;
     var $rootScope;
@@ -66,6 +66,41 @@ describe('userService', function(){
             expect(controller.selectedUser).toBe(users[0]);
             expect(controller.roles).toBe(roles);
             expect(controller.selectedRole).toBe(roles[0]);
+        });
+    });
+
+    describe('assign', function(){
+        it('should call userService.assign when the operation is assign', function(){
+            var role = {name: 'role'};
+            var user = {name: 'bob'};
+            controller.selectedRole = role;
+            controller.selectedUser = user;
+            $rootScope.$digest();
+
+            mockUserService.expects('assign')
+                .once()
+                .withArgs(role, user);
+
+            controller.assign();
+
+            mockUserService.verify();
+        });
+
+        it('should call userService.revoke when the operation is revoke', function(){
+            var role = {name: 'role'};
+            var user = {name: 'bob'};
+            controller.operation = 'revoke';
+            controller.selectedRole = role;
+            controller.selectedUser = user;
+            $rootScope.$digest();
+
+            mockUserService.expects('revoke')
+                .once()
+                .withArgs(role, user);
+
+            controller.assign();
+
+            mockUserService.verify();
         });
     });
 

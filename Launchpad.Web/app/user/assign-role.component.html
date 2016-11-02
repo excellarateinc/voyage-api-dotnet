@@ -35,7 +35,23 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" ng-click="vm.assign()" class="btn btn-primary">Assign</button>
+                    <div >
+                        <span>
+                            <label for="assignOption">Assign</label>
+                            <input id="assignOption" type="radio" ng-model="vm.operation" value="assign"/>
+                        </span>
+                        <span>
+                            <label for="revokeOption">Revoke</label>
+                            <input type="radio" id="revokeOption" ng-model="vm.operation" value="revoke"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" ng-click="vm.assign()" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

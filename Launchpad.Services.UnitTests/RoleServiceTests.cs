@@ -84,7 +84,7 @@ namespace Launchpad.Services.UnitTests
                 
 
             //act
-            _roleService.RemoveClaim(roleModel, claimModel);
+            _roleService.RemoveClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
 
             Mock.VerifyAll();
         }
@@ -99,11 +99,12 @@ namespace Launchpad.Services.UnitTests
             _mockRepository.Setup(_ => _.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue))
                 .Returns(roleClaim);
 
-          
+
 
 
             //act
-            _roleService.RemoveClaim(roleModel, claimModel);
+            _roleService.RemoveClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
+
 
             Mock.VerifyAll();
         }

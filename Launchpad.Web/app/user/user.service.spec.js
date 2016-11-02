@@ -111,4 +111,30 @@ describe('user.service', function(){
         });
     });
 
+       describe('revoke', function(){
+        it('should call user endpoint', function(){
+            var model = {
+                role: {
+                    name: 'role1',
+                    id: '123'
+                },
+                user: {
+                    name: 'user1',
+                    id: '456'
+                }
+            };
+
+            $httpBackend.when('POST', '/api/user/revoke', model)
+                .respond(true);
+            
+            var promise = service.revoke(model.role, model.user);
+
+            promise.then(function(data){
+                expect(data).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
 });

@@ -30,6 +30,7 @@ namespace Launchpad.Services
         
         public async Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel)
         {
+           
             var result = await _userManager.RemoveFromRoleAsync(userModel.Id, roleModel.Name);
             return result;
         }

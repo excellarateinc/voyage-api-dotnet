@@ -197,21 +197,21 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
-        public void RemoveClaim_Should_Have_HttpPostAttribute()
+        public void RemoveClaim_Should_Have_HttpDeleteAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpPostAttribute>(_ => _.RemoveClaim(new RoleClaimModel()));
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveClaim("1,", "2", "3"));
         }
 
         [Fact]
-        public void RemoveRole_Should_Have_HttpPostAttribute()
+        public void RemoveRole_Should_Have_HttpDeleteAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpPostAttribute>(_ => _.RemoveRole(new RoleModel()));
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveRole(new RoleModel()));
         }
 
         [Fact]
         public void RemoveClaim_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.RemoveClaim(new RoleClaimModel()), "role/claim");
+            _roleController.AssertRoute(_ => _.RemoveClaim("1", "2", "3"), "role/claim");
         }
 
 
@@ -222,10 +222,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             //Arrange
             var model = Fixture.Create<RoleClaimModel>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(model.Role, model.Claim));
+            _mockRoleService.Setup(_ => _.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue));
 
             //Act
-            var result = _roleController.RemoveClaim(model);
+            var result = _roleController.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue);
 
 
             //Assert

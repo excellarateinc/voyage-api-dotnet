@@ -140,4 +140,94 @@ describe('roleService', function(){
         });
     });
 
+    describe('removeClaim', function(){
+        it('should call role endpoint and resolve on success', function(){
+            var role = { 
+                name: 'role1',
+                id: 'id'
+            }
+
+            var claim = {
+                claimType: 't1',
+                claimValue: 'v1'
+            };
+
+            $httpBackend.when('DELETE', '/api/role/claim?claimType=t1&claimValue=v1&roleName=role1')
+                .respond(200, true);
+            
+            var promise = service.removeClaim(role, claim);
+
+            promise.then(function(data){
+                expect(data).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+
+        it('should call role endpoint and resolve on success', function(){
+            var role = { 
+                name: 'role1',
+                id: 'id'
+            }
+
+            var claim = {
+                claimType: 't1',
+                claimValue: 'v1'
+            };
+
+            $httpBackend.when('DELETE', '/api/role/claim?claimType=t1&claimValue=v1&roleName=role1')
+                .respond(400, 'Failure');
+            
+            var promise = service.removeClaim(role, claim);
+
+            promise.then(function(data){
+                expect(data).toBe(false);
+            }, function(data){
+                expect(data).toBe('Failure');
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('removeRole', function(){
+        it('should call role endpoint and call resolve on success', function(){
+            var role = { 
+                name: 'role1',
+                id: 'id'
+            }
+
+            $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
+                .respond(200);
+            
+            var promise = service.removeRole(role);
+
+            promise.then(function(data){
+                expect(data).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+
+        it('should call role endpoint and call reject on failure', function(){
+            var role = { 
+                name: 'role1',
+                id: 'id'
+            }
+
+            $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
+                .respond(400, 'Failure');
+            
+            var promise = service.removeRole(role);
+
+            promise.then(function(data){
+                expect(data).toBe(false);
+            }, function(data){
+                expect(data).toBe('Failure');
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
 });

@@ -30,6 +30,8 @@ namespace Launchpad.Web
             // Configure the application for OAuth based flow
             PublicClientId = "self";
 
+
+            //TODO: Add ApiDoc annotations
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),

@@ -16,6 +16,8 @@
             },
         });
 
+    var _assignValue = "assign";
+    var _revokeValue = "revoke";
     AssignRoleController.$inject = ['roleService', 'userService'];
     function AssignRoleController(roleService, userService) {
         var vm = this;
@@ -23,6 +25,7 @@
         vm.users = [];
         vm.roles = [];
         vm.assign = assign;
+        vm.operation = _assignValue;
 
         ////////////////
 
@@ -42,10 +45,12 @@
         vm.$onDestory = function() { };
 
         function assign(){
-            userService.assign(vm.selectedRole, vm.selectedUser)
-                .then(function(result){
-                    
-                });
+            if(vm.operation === _assignValue){
+            userService.assign(vm.selectedRole, vm.selectedUser);
+            }
+            else{
+                userService.revoke(vm.selectedRole, vm.selectedUser);
+            }
         }
 
     }
