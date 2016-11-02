@@ -222,6 +222,8 @@
     <Content Include="app\core\authorization.interceptor.spec.js" />
     <Content Include="app\core\authorization.service.js" />
     <Content Include="app\core\authorization.service.spec.js" />
+    <Content Include="app\core\constants.js" />
+    <Content Include="app\core\constants.spec.js" />
     <Content Include="app\core\error.service.js" />
     <Content Include="app\core\error.service.spec.js" />
     <Content Include="app\dashboard\dashboard.component.html" />
@@ -245,6 +247,18 @@
     <Content Include="app\role\add-role.component.html" />
     <Content Include="app\role\add-role.component.js" />
     <Content Include="app\role\add-role.component.spec.js" />
+    <Content Include="app\role\claim-dashboard.component.html" />
+    <Content Include="app\role\claim-dashboard.component.js" />
+    <Content Include="app\role\claim-dashboard.component.spec.js" />
+    <Content Include="app\role\remove-claim.component.html" />
+    <Content Include="app\role\remove-claim.component.js" />
+    <Content Include="app\role\remove-claim.component.spec.js" />
+    <Content Include="app\role\remove-role.component.html" />
+    <Content Include="app\role\remove-role.component.js" />
+    <Content Include="app\role\remove-role.component.spec.js" />
+    <Content Include="app\role\role-dashboard.component.html" />
+    <Content Include="app\role\role-dashboard.component.js" />
+    <Content Include="app\role\role-dashboard.component.spec.js" />
     <Content Include="app\role\role.service.js" />
     <Content Include="app\role\role.service.spec.js" />
     <Content Include="app\status\status-list.component.html" />
