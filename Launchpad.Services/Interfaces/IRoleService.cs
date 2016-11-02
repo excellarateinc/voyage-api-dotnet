@@ -16,5 +16,7 @@ namespace Launchpad.Services.Interfaces
         Task AddClaimAsync(RoleModel role, ClaimModel claim);
 
         Task<IdentityResult> RemoveRoleAsync(RoleModel role);
+
+        void RemoveClaim(RoleModel roleModel, ClaimModel claimModel);
     }
 }

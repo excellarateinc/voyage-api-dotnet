@@ -43,6 +43,44 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void RemoveUserFromRoleAsync_Should_Call_User_Manager()
+        {
+            var userModel = Fixture.Build<UserModel>()
+                .With(_ => _.Name, "bob@bob.com")
+                .Create(); ;
+
+            var appUser = new ApplicationUser
+            {
+                UserName = userModel.Name,
+                Email = userModel.Name
+            };
+
+            var roleModel = Fixture.Create<RoleModel>();
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.IsInRoleAsync(appUser, roleModel.Name))
+                .ReturnsAsync(true);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.RemoveFromRoleAsync(appUser, roleModel.Name))
+                .Returns(Task.Delay(0));
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(appUser))
+                .Returns(Task.Delay(0));
+
+            var result = await _userService.RemoveUserFromRoleAsync(roleModel, userModel);
+
+            Mock.VerifyAll();
+            result.Succeeded.Should().BeTrue();
+        }
+
+        [Fact]
 
         public async void AssignUserRoleAsync_Should_Call_User_Manager_Return_IdentityResult_Success_When_Sucessful()
         {

@@ -71,6 +71,44 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public void RemoveClaim_Calls_Repository_And_Manager_When_RoleClaim_Exists()
+        {
+            var roleModel = Fixture.Create<RoleModel>();
+            var claimModel = Fixture.Create<ClaimModel>();
+            var roleClaim = new RoleClaim() { Id = 1 };
+
+            _mockRepository.Setup(_ => _.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue))
+                .Returns(roleClaim);
+
+            _mockRepository.Setup(_ => _.Delete(roleClaim.Id));
+                
+
+            //act
+            _roleService.RemoveClaim(roleModel, claimModel);
+
+            Mock.VerifyAll();
+        }
+
+        [Fact]
+        public void RemoveClaim_Calls_Repository_And_Does_Not_Call_Manager_When_RoleClaim_Does_Not_Exist()
+        {
+            var roleModel = Fixture.Create<RoleModel>();
+            var claimModel = Fixture.Create<ClaimModel>();
+            RoleClaim roleClaim = null;
+
+            _mockRepository.Setup(_ => _.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue))
+                .Returns(roleClaim);
+
+          
+
+
+            //act
+            _roleService.RemoveClaim(roleModel, claimModel);
+
+            Mock.VerifyAll();
+        }
+
+        [Fact]
         public async void RemoveRole_Calls_Role_Manager_And_Returns_Failed_Result_When_Role_Does_Not_Exist()
         {
             var model = new RoleModel { Name = "A Role to Remember" };

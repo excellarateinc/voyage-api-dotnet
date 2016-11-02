@@ -27,6 +27,13 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        
+        public async Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel)
+        {
+            var result = await _userManager.RemoveFromRoleAsync(userModel.Id, roleModel.Name);
+            return result;
+        }
+
         public async Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel)
         {
 

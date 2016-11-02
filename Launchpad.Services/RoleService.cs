@@ -71,5 +71,14 @@ namespace Launchpad.Services
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
             
         }
+
+        public void RemoveClaim(RoleModel roleModel, ClaimModel claimModel)
+        {
+            var claim = _roleClaimRepository.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
+            if(claim != null)
+            {
+                _roleClaimRepository.Delete(claim.Id);
+            }
+        }
     }
 }
