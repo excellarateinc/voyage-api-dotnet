@@ -195,5 +195,60 @@ namespace Launchpad.Web.UnitTests.Controllers.API
 
             message.StatusCode.Should().Be(HttpStatusCode.Created);
         }
+
+        [Fact]
+        public void RemoveClaim_Should_Have_HttpPostAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpPostAttribute>(_ => _.RemoveClaim(new RoleClaimModel()));
+        }
+
+        [Fact]
+        public void RemoveRole_Should_Have_HttpPostAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpPostAttribute>(_ => _.RemoveRole(new RoleModel()));
+        }
+
+        [Fact]
+        public void RemoveClaim_Should_Have_RouteAttribute()
+        {
+            _roleController.AssertRoute(_ => _.RemoveClaim(new RoleClaimModel()), "role/claim");
+        }
+
+
+
+        [Fact]
+        public async void RemoveClaim_Should_Call_RoleService()
+        {
+            //Arrange
+            var model = Fixture.Create<RoleClaimModel>();
+
+            _mockRoleService.Setup(_ => _.RemoveClaim(model.Role, model.Claim));
+
+            //Act
+            var result = _roleController.RemoveClaim(model);
+
+
+            //Assert
+            var message = await result.ExecuteAsync(new CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            Mock.VerifyAll();
+        }
+
+        [Fact]
+        public async void RemoveRole_Should_Call_RoleService()
+        {
+            //Arrange
+            var model = Fixture.Create<RoleModel>();
+            _mockRoleService.Setup(_ => _.RemoveRoleAsync(model))
+                .ReturnsAsync(IdentityResult.Success);
+
+            //Act
+            var result = await _roleController.RemoveRole(model);
+
+            //Assert
+            var message = await result.ExecuteAsync(new CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            Mock.VerifyAll();
+        }
     }
 }

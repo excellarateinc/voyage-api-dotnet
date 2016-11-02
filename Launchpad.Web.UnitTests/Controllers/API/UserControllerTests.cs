@@ -223,5 +223,33 @@ namespace Launchpad.Web.UnitTests.Controllers.API
               .Should()
               .BeDecoratedWith<RouteAttribute>(_=>_.Template == "user/claims");
         }
+
+        [Fact]
+        public void RemoveRole_Should_Have_HttpPostAttribute()
+        {
+            _userController.AssertAttribute<UserController, HttpPostAttribute>(_ => _.RemoveRole(new UserRoleModel()));
+        }
+
+        [Fact]
+        public void RemoveRole_Should_Have_RouteAttribute()
+        {
+            _userController.AssertRoute(_ => _.RemoveRole(new UserRoleModel()), "user/revoke");
+        }
+
+        [Fact]
+        public async void RemoveRole_Should_Call_UserService()
+        {
+            var model = Fixture.Create<UserRoleModel>();
+
+            _mockUserService.Setup(_ => _.RemoveUserFromRoleAsync(model.Role, model.User))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var result = await _userController.RemoveRole(model);
+
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        }
     }
 }
