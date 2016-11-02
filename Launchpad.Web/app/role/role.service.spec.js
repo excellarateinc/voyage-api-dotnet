@@ -145,7 +145,7 @@ describe('roleService', function(){
             var role = { 
                 name: 'role1',
                 id: 'id'
-            }
+            };
 
             var claim = {
                 claimType: 't1',
@@ -168,7 +168,7 @@ describe('roleService', function(){
             var role = { 
                 name: 'role1',
                 id: 'id'
-            }
+            };
 
             var claim = {
                 claimType: 't1',
@@ -195,7 +195,7 @@ describe('roleService', function(){
             var role = { 
                 name: 'role1',
                 id: 'id'
-            }
+            };
 
             $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
                 .respond(200);
@@ -213,7 +213,7 @@ describe('roleService', function(){
             var role = { 
                 name: 'role1',
                 id: 'id'
-            }
+            };
 
             $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
                 .respond(400, 'Failure');
