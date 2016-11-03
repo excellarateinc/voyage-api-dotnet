@@ -6,7 +6,6 @@ The following web service patterns are implemented within Launchpad API and shou
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Errors](#errors)
-* [Deleting Optional Data](#deleting-optional-data)
 
 ## HTTP Methods
 
