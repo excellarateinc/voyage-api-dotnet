@@ -5,6 +5,7 @@ The following web service patterns are implemented within Launchpad API and shou
 * [HTTP Methods](#http-methods)
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
+* [Errors](#errors)
 
 **NOTE:** 
 If a new pattern emerges during development, then this page must be updated to reflect the OLD pattern and the NEW pattern 
@@ -57,7 +58,7 @@ Returned when a request is made for specific data, usually using an ID, and the 
 Returned when an unexpected error occurs within the app for any reason. This is usually accompanied by an application stack trace.
 
 
-## JSON Error Object
+## Errors
 What pattern do we follow if there are "faults" or errors that need to be communicated back to the caller. 
 
 ```
