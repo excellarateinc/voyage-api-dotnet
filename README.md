@@ -1,9 +1,9 @@
-## Table of Contents
-* [About](#about)
-* [Web Services Patterns](WEB-SERVICES-PATTERNS.md)
-
-## About
+## Overview
 Web Services API for the Launchpad app
+
+## Table of Contents
+* [Web Services Patterns](WEB-SERVICES-PATTERNS.md)
+* [Development Environment](#development-environment)
 
 ## Development Environment
 
