@@ -5,6 +5,7 @@ The following web service patterns are implemented within Launchpad API and shou
 * [HTTP Methods](#http-methods)
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
+* [Response Status](#response-status)
 * [Errors](#errors)
 
 ## HTTP Methods
@@ -52,6 +53,27 @@ Returned when a request is made for specific data, usually using an ID, and the 
 
 #### 500 Internal Server Error
 Returned when an unexpected error occurs within the app for any reason. This is usually accompanied by an application stack trace.
+
+## Response Status
+Web service responses might need to contain a "status" that notifies the consumer that the action completed, partially completed, or some other status that instructs the consumer on next steps. 
+
+The following example is a situation with a POST request to /users which resulted in a successful saving to the database
+```
+{
+    id: 1,
+    firstName: "John",
+    lastName: "Doe",
+    email: "blah",
+    status: {
+        code: "success", 
+        message: "User was saved successfully!"
+    }
+}
+```
+
+The 'status' object has the following structure:
+* code (enum/text, required): 'success', 'partial'
+* message (text, required): any text describing the status
 
 ## Errors
 When an anticipated error occurs within the app, like a required field or format error, it is necessary to communicate back to the consumer the errors that occured in a standard format. All web services should follow the same pattern so that the consumers can reliably expect to find the error information in a consistent location and structure.  
