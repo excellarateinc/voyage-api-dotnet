@@ -1,9 +1,13 @@
-# launchpad-dotnet-api
-Launchpad API
+## Table of Contents
+* [About](#about)
+* [Web Services Patterns](WEB-SERVICES-PATTERNS.md)
 
-# Development Environment
+## About
+Web Services API for the Launchpad app
 
-## Tools
+## Development Environment
+
+### Tools
 
 The following tools should be installed on the development machine:
 
@@ -17,16 +21,16 @@ The following tools should be installed on the development machine:
 5. [apiDocJs](http://apidocjs.com/)
    - npm install -g apidoc 
 
-## Source code
+### Source code
 After pulling the source code install the required packages: 
 
 1. Pull the source code from github repo
 2. Perform a Nuget package restore
 3. Perform a npm install in folder ***Launchpad.Web***
 
-# Building
+## Build
 
-## Database
+### Database
 The application uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
 
 1. In Visual Studio, open the package manager console
@@ -36,19 +40,19 @@ The application uses a SQL Database and Code First Migrations. This migration st
    - The default is localhost/sqlexpress with initial catalog Launchpad
    - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
 
-## Users
+### Users
 A default user will be seeded into the database when Update-Database is run. The user is *admin@admin.com* / *Hello123!* - new users can be created using the Register link. 
 
 Each new user will be created with a 'Basic' role whcih allows them to log in. You may notice on the dashboard a 403 (Forbidden) is generated. The basic role does not have the 'list.widgets' claim. To resolve this and see the widgets, login as the admin and select Add Claim. Choose 'Basic' as the role and enter 'lss.permission' and 'list.widgets' for the claim type and claim value respectively. 
 
 
-## Server Side Development Notes
+### Server Side Development Notes
 The server exposes 3 endpoints:
 - api/account: Used for user management
 - api/{v}/widget: Simple example of CRUD operations on an entity
 - api/status: Used to query application statuses 
 
-### Dependency Injection
+#### Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
 components with the container. The overall container is setup in the ContainerConfig in ***Launchpad.Web***.
 
@@ -65,13 +69,13 @@ are registered using scanning. This can simplify the container configuration thr
                 .InstancePerRequest();
 ```
 
-### Logging
+#### Logging
 Logging has been configured to use [Serilog](https://serilog.net/) with a SQL Server sink. It is registered as a singleton. 
 
 This is a structure logging library which allows additional
 functionality when searching for events. For more information see the website. 
 
-#### Usage
+##### Usage
 To utilize logging, add it as a constructor dependency and the container will resolve it.
 ````
 public StatusV2Controller(IStatusCollector statusCollector, ILogger log)
@@ -90,7 +94,7 @@ public IHttpActionResult Get(MonitorType id)
 }
 ````
 
-### API Versioning
+#### API Versioning
 API versioning is handled through URL versioning. Each version of the an api will have a new controller source file and a unique 
 url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API
 are roughly as follows:
@@ -102,7 +106,7 @@ are roughly as follows:
 4. Add the RoutePrefix attribute at the class level
 5. Add the Route attribute to each operation, specifying the route template
 
-### Server Stack
+#### Server Stack
 - Autofac
 - EntityFramework
 - Asp.Net Identity
@@ -112,7 +116,7 @@ are roughly as follows:
 - Serilog  
 
 
-## Client Development Notes
+### Client Development Notes
 There is a simple client UI within ***Launchpad.Web***. It supports the following scenarios:
 
 - As a user, I want to be able to register so I can access secure data.
@@ -120,13 +124,13 @@ There is a simple client UI within ***Launchpad.Web***. It supports the followin
 - As a user, I want to see a list of widgets.
 - As a user, I want to logout so that other parties cannot access secure data.
 
-### Client Build Commands
+#### Client Build Commands
 Currently, the client is built using Grunt tasks. These tasks have been wrapped in NPM scripts to support removing the Grunt dependency.
 
 - npm test: This will run JSLint and the Karma test
 - npm run build: This will run JSLint and build the output files to /dist/ (at this time it does not minify)
 
-### Client Stack 
+#### Client Stack 
 The following components are used in the client:
 
 1. [Bootstrap](http://getbootstrap.com/)
@@ -138,11 +142,11 @@ The following components are used in the client:
 5. [Sinon](http://sinonjs.org/) 
    - Mocking library for JavaScript
 
-## Generating Documentation
+### Generating Documentation
 The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For 
 more details see the [documentation](http://apidocjs.com/).
 
-### Sample Documentation Comments
+#### Sample Documentation Comments
 Below is an example of the comments used to document an endpoint.
 
 ```
@@ -173,20 +177,20 @@ Below is an example of the comments used to document an endpoint.
         ...
 ```
 
-### Reusable apiDoc blocks
+#### Reusable apiDoc blocks
 apiDoc supports creating reusuable documentation blocks using [@apiDefine](http://apidocjs.com/#param-api-define). This 
 cuts down on repeated comment blocks for shared elements such as errors. 
 All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js***
 
 
-#### Current @apiDefine blocks
+##### Current @apiDefine blocks
 
 1. BadRequestError
    - Used when an endpoint can return a 400
 2.  NotFoundError
     - Used when an endpoint can return a 404
 
-### Generating documentation
+#### Generating documentation
 To generate the api docs after a change:
 1. In ***Launchpad.Web*** execute npm run doc
    - This is an npm script that is defined in package.json
@@ -195,10 +199,10 @@ To generate the api docs after a change:
 
 To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
 
-# Testing
+## Testing
 The project has both client and server tests. 
 
-## Client Testing
+### Client Testing
 1. The tests use behavior and state verification
    - Use Sinon to setup expectations and verify the behavior
    - Use a Sinon sandbox for easy teardown of mocked components
@@ -209,7 +213,7 @@ The project has both client and server tests.
 5. For continuous testing use: karma start --singleRun=false
 
 
-### Sinon Sandbox Setup
+#### Sinon Sandbox Setup
 ```
   beforeEach(function(){
         sandbox = sinon.sandbox.create();
@@ -221,7 +225,7 @@ The project has both client and server tests.
   
 ```
 
-## Server Testing 
+### Server Testing 
 1. Integration tests exist for the Launchpad.Data
    - The primary goal of these tests is to excercise the EntityFramework configuration and repositories
 2. There should be a mirrored structure between project files and test files
@@ -238,15 +242,15 @@ The project has both client and server tests.
     
 
 
-## Testing Stack
+### Testing Stack
 The current testing stack for client and server are found below. 
 
-### Client Tests
+#### Client Tests
 1. [Karma](https://karma-runner.github.io/1.0/index.html)
 2. [Jasmine](http://jasmine.github.io/) 
 3. [Sinon](http://sinonjs.org/) 
 
-### Server Tests
+#### Server Tests
 1. [Xunit](https://xunit.github.io/)
 2. [AutoFixture](https://github.com/AutoFixture/AutoFixture)
 3. [FluentAssertions](http://www.fluentassertions.com/)
