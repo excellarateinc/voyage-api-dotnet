@@ -259,6 +259,9 @@
     <Content Include="app\role\role-dashboard.component.html" />
     <Content Include="app\role\role-dashboard.component.js" />
     <Content Include="app\role\role-dashboard.component.spec.js" />
+    <Content Include="app\role\role-list.component.html" />
+    <Content Include="app\role\role-list.component.js" />
+    <Content Include="app\role\role-list.component.spec.js" />
     <Content Include="app\role\role.service.js" />
     <Content Include="app\role\role.service.spec.js" />
     <Content Include="app\status\status-list.component.html" />
@@ -272,6 +275,9 @@
     <Content Include="app\user\assign-role.component.html" />
     <Content Include="app\user\assign-role.component.js" />
     <Content Include="app\user\assign-role.component.spec.js" />
+    <Content Include="app\user\user-list.component.html" />
+    <Content Include="app\user\user-list.component.js" />
+    <Content Include="app\user\user-list.component.spec.js" />
     <Content Include="app\user\user.service.js" />
     <Content Include="app\user\user.service.spec.js" />
     <Content Include="app\widget\widget.component.html" />
