@@ -69,7 +69,7 @@ describe('account.service', function(){
 
             };
 
-            $httpBackend.when('POST', '/api/account/register', user)
+            $httpBackend.when('POST', '/api/v1/account/register', user)
                 .respond(true);
 
             var promise = service.register(user.email, user.password);
@@ -90,7 +90,7 @@ describe('account.service', function(){
 
             };
 
-            $httpBackend.when('POST', '/api/account/register', user)
+            $httpBackend.when('POST', '/api/v1/account/register', user)
                 .respond(400, {data: "error"});
 
             var promise = service.register(user.email, user.password);

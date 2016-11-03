@@ -28,7 +28,7 @@ describe('roleService', function(){
         it('should call roles endpoint and return roles', function(){
             var roles = [{name: 'role1'},{name: 'role2'}];
 
-            $httpBackend.when('GET', '/api/role')
+            $httpBackend.when('GET', '/api/v1/role')
                 .respond(roles);
 
             var promise = service.getRoles();
@@ -59,7 +59,7 @@ describe('roleService', function(){
                     }
                 };
 
-            $httpBackend.when('POST', '/api/role/claim', roleClaim)
+            $httpBackend.when('POST', '/api/v1/role/claim', roleClaim)
                 .respond(true);
             
             var promise = service.addClaim(roleClaim.role, roleClaim.claim.claimType, roleClaim.claim.claimValue);
@@ -85,7 +85,7 @@ describe('roleService', function(){
                     }
                 };
 
-             $httpBackend.when('POST', '/api/role/claim', roleClaim)
+             $httpBackend.when('POST', '/api/v1/role/claim', roleClaim)
                 .respond(400, {data: "error"});
 
             var promise = service.addClaim(roleClaim.role, roleClaim.claim.claimType, roleClaim.claim.claimValue);
@@ -106,7 +106,7 @@ describe('roleService', function(){
                 name: 'Terrific Role'
             };
 
-            $httpBackend.when('POST', '/api/role', role)
+            $httpBackend.when('POST', '/api/v1/role', role)
                 .respond(true);
             
             var promise = service.addRole(role.name);
@@ -125,7 +125,7 @@ describe('roleService', function(){
                 name: "Terrific Role"
             };
 
-             $httpBackend.when('POST', '/api/role', role)
+             $httpBackend.when('POST', '/api/v1/role', role)
                 .respond(400, {data: "error"});
 
             var promise = service.addRole(role.name);
@@ -152,7 +152,7 @@ describe('roleService', function(){
                 claimValue: 'v1'
             };
 
-            $httpBackend.when('DELETE', '/api/role/claim?claimType=t1&claimValue=v1&roleName=role1')
+            $httpBackend.when('DELETE', '/api/v1/role/claim?claimType=t1&claimValue=v1&roleName=role1')
                 .respond(200, true);
             
             var promise = service.removeClaim(role, claim);
@@ -175,7 +175,7 @@ describe('roleService', function(){
                 claimValue: 'v1'
             };
 
-            $httpBackend.when('DELETE', '/api/role/claim?claimType=t1&claimValue=v1&roleName=role1')
+            $httpBackend.when('DELETE', '/api/v1/role/claim?claimType=t1&claimValue=v1&roleName=role1')
                 .respond(400, 'Failure');
             
             var promise = service.removeClaim(role, claim);
@@ -197,7 +197,7 @@ describe('roleService', function(){
                 id: 'id'
             };
 
-            $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
+            $httpBackend.when('DELETE', 'api/v1/role?id=id&name=role1')
                 .respond(200);
             
             var promise = service.removeRole(role);
@@ -215,7 +215,7 @@ describe('roleService', function(){
                 id: 'id'
             };
 
-            $httpBackend.when('DELETE', 'api/role?id=id&name=role1')
+            $httpBackend.when('DELETE', 'api/v1/role?id=id&name=role1')
                 .respond(400, 'Failure');
             
             var promise = service.removeRole(role);

@@ -43,7 +43,7 @@
                 confirmPassword: password
             };
 
-            $http.post("/api/account/register", user)
+            $http.post("/api/v1/account/register", user)
                 .then(function(response){
                     deferred.resolve(response.data);
                 }, 

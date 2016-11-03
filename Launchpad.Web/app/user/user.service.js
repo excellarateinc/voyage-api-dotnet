@@ -23,7 +23,7 @@
         function getUsers(){
             var deferred = $q.defer();
 
-            $http.get('/api/user')
+            $http.get('/api/v1/user')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -34,7 +34,7 @@
         function getUsersWithRoles(){
             var deferred = $q.defer();
 
-            $http.get('/api/user/roles')
+            $http.get('/api/v1/user/roles')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -50,7 +50,7 @@
                 user: user
             };
 
-            $http.post('/api/user/assign', userRole)
+            $http.post('/api/v1/user/assign', userRole)
                 .then(function(response)
                 {
                     deferred.resolve(response.data);
@@ -66,7 +66,7 @@
                 user: user
             };
 
-            $http.post('/api/user/revoke', userRole)
+            $http.post('/api/v1/user/revoke', userRole)
                 .then(function(response)
                 {
                     deferred.resolve(response.data);
@@ -77,7 +77,7 @@
         function getClaims(){
             var deferred = $q.defer();
 
-            $http.get('api/user/claims')
+            $http.get('api/v1/user/claims')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });

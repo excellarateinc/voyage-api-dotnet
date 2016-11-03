@@ -32,7 +32,7 @@ describe('user.service', function(){
 
             var claims = [{claimValue: "v1", claimType: "t1"}];
 
-            $httpBackend.when('GET', 'api/user/claims')
+            $httpBackend.when('GET', 'api/v1/user/claims')
                 .respond(claims);
 
 
@@ -51,7 +51,7 @@ describe('user.service', function(){
 
             var claims = [{claimValue: "v1", claimType: "t1"}];
 
-            $httpBackend.when('GET', 'api/user/claims')
+            $httpBackend.when('GET', 'api/v1/user/claims')
                 .respond(claims);
 
 
@@ -71,7 +71,7 @@ describe('user.service', function(){
         it('should call user endpoint and return users', function(){
             var users = [{name: 'user1'},{name: 'user2'}];
 
-            $httpBackend.when('GET', '/api/user')
+            $httpBackend.when('GET', '/api/v1/user')
                 .respond(users);
 
             var promise = service.getUsers();
@@ -90,7 +90,7 @@ describe('user.service', function(){
         it('should call user endpoint and return users', function(){
             var users = [{name: 'user1'},{name: 'user2'}];
 
-            $httpBackend.when('GET', '/api/user/roles')
+            $httpBackend.when('GET', '/api/v1/user/roles')
                 .respond(users);
 
             var promise = service.getUsersWithRoles();
@@ -117,7 +117,7 @@ describe('user.service', function(){
                 }
             };
 
-            $httpBackend.when('POST', '/api/user/assign', model)
+            $httpBackend.when('POST', '/api/v1/user/assign', model)
                 .respond(true);
             
             var promise = service.assign(model.role, model.user);
@@ -143,7 +143,7 @@ describe('user.service', function(){
                 }
             };
 
-            $httpBackend.when('POST', '/api/user/revoke', model)
+            $httpBackend.when('POST', '/api/v1/user/revoke', model)
                 .respond(true);
             
             var promise = service.revoke(model.role, model.user);

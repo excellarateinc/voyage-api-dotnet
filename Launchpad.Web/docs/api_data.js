@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "post",
-    "url": "/account/register",
+    "url": "/v1/account/register",
     "title": "Register a new account",
     "version": "0.1.0",
     "name": "CreateAccount",
@@ -47,7 +47,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/AccountController.cs",
+    "filename": "./Controllers/API/v1/AccountController.cs",
     "groupTitle": "Account",
     "error": {
       "fields": {
@@ -71,7 +71,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/role/claim",
+    "url": "/v1/role/claim",
     "title": "Create a role claim",
     "version": "0.1.0",
     "name": "AddRoleClaim",
@@ -145,7 +145,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/RoleController.cs",
+    "filename": "./Controllers/API/v1/RoleController.cs",
     "groupTitle": "Role",
     "header": {
       "fields": {
@@ -200,7 +200,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/role",
+    "url": "/v1/role",
     "title": "Create a role",
     "version": "0.1.0",
     "name": "CreateRole",
@@ -246,7 +246,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/RoleController.cs",
+    "filename": "./Controllers/API/v1/RoleController.cs",
     "groupTitle": "Role",
     "header": {
       "fields": {
@@ -301,7 +301,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/roles",
+    "url": "/v1/role",
     "title": "Get all roles",
     "version": "0.1.0",
     "name": "GetRoles",
@@ -366,7 +366,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/RoleController.cs",
+    "filename": "./Controllers/API/v1/RoleController.cs",
     "groupTitle": "Role",
     "header": {
       "fields": {
@@ -410,7 +410,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/role",
+    "url": "/v1/role",
     "title": "Delete a role",
     "version": "0.1.0",
     "name": "RemoveRole",
@@ -456,7 +456,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/RoleController.cs",
+    "filename": "./Controllers/API/v1/RoleController.cs",
     "groupTitle": "Role",
     "header": {
       "fields": {
@@ -511,7 +511,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/role/claim",
+    "url": "/v1/role/claim",
     "title": "Remove a role claim",
     "version": "0.1.0",
     "name": "RemoveRoleClaim",
@@ -557,7 +557,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/RoleController.cs",
+    "filename": "./Controllers/API/v1/RoleController.cs",
     "groupTitle": "Role",
     "header": {
       "fields": {
@@ -1034,7 +1034,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/user/assign",
+    "url": "/v1/user/assign",
     "title": "Assign role to user",
     "version": "0.1.0",
     "name": "AssignRole",
@@ -1108,7 +1108,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/UserController.cs",
+    "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
     "header": {
       "fields": {
@@ -1163,7 +1163,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/user/claims",
+    "url": "/v1/user/claims",
     "title": "Get the authenticated user's claims",
     "version": "0.1.0",
     "name": "Claims",
@@ -1207,7 +1207,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/UserController.cs",
+    "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
     "header": {
       "fields": {
@@ -1251,7 +1251,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/user",
+    "url": "/v1/user",
     "title": "Get all users",
     "version": "0.1.0",
     "name": "GetUsers",
@@ -1295,7 +1295,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/UserController.cs",
+    "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
     "header": {
       "fields": {
@@ -1339,7 +1339,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/user/revoke",
+    "url": "/v1/user/revoke",
     "title": "Remove role from user",
     "version": "0.1.0",
     "name": "RevokeRole",
@@ -1413,7 +1413,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/UserController.cs",
+    "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
     "header": {
       "fields": {
@@ -1468,7 +1468,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/user/roles",
+    "url": "/v1/user/roles",
     "title": "Get all users and their roles",
     "version": "0.1.0",
     "name": "User",
@@ -1525,7 +1525,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./Controllers/API/UserController.cs",
+    "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
     "header": {
       "fields": {
@@ -2183,7 +2183,7 @@ define({ "api": [
     "group": "Widget",
     "permission": [
       {
-        "name": "lss.permission->list-widgets"
+        "name": "lss.permission->list.widgets"
       }
     ],
     "success": {

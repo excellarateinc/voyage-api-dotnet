@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
 
-namespace Launchpad.Web.Controllers.API
+namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
-    [RoutePrefix(RoutePrefixes.Role)]
+    [RoutePrefix(RoutePrefixes.V1)]
     public class RoleController : ApiController
     {
         private IRoleService _roleService;
@@ -23,7 +23,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {get} /roles Get all roles
+        * @api {get} /v1/role Get all roles
         * @apiVersion 0.1.0
         * @apiName GetRoles
         * @apiGroup Role
@@ -62,6 +62,7 @@ namespace Launchpad.Web.Controllers.API
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ListRoles)]
         [HttpGet]
+        [Route("role")]
         public IHttpActionResult GetRoles()
         {
             var result = _roleService.GetRoles();
@@ -69,7 +70,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-        * @api {post} /role Create a role 
+        * @api {post} /v1/role Create a role 
         * @apiVersion 0.1.0
         * @apiName CreateRole
         * @apiGroup Role
@@ -91,6 +92,7 @@ namespace Launchpad.Web.Controllers.API
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.CreateRole)]
         [HttpPost]
+        [Route("role")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
             var result = await _roleService.CreateRoleAsync(model);
@@ -105,7 +107,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-       * @api {post} /role/claim Create a role claim 
+       * @api {post} /v1/role/claim Create a role claim 
        * @apiVersion 0.1.0
        * @apiName AddRoleClaim
        * @apiGroup Role
@@ -141,7 +143,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {delete} /role/claim Remove a role claim 
+        * @api {delete} /v1/role/claim Remove a role claim 
         * @apiVersion 0.1.0
         * @apiName RemoveRoleClaim
         * @apiGroup Role
@@ -170,7 +172,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-        * @api {delete} /role Delete a role 
+        * @api {delete} /v1/role Delete a role 
         * @apiVersion 0.1.0
         * @apiName RemoveRole
         * @apiGroup Role
@@ -192,6 +194,7 @@ namespace Launchpad.Web.Controllers.API
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = LssClaims.DeleteRole)]
+        [Route("role")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] RoleModel role)
         {
             var result = await _roleService.RemoveRoleAsync(role);

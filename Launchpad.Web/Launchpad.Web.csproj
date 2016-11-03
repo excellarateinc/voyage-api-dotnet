@@ -299,9 +299,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\API\AccountController.cs" />
-    <Compile Include="Controllers\API\RoleController.cs" />
-    <Compile Include="Controllers\API\UserController.cs" />
+    <Compile Include="Controllers\API\v1\AccountController.cs" />
+    <Compile Include="Controllers\API\v1\RoleController.cs" />
+    <Compile Include="Controllers\API\v1\UserController.cs" />
     <Compile Include="Controllers\API\v1\StatusController.cs" />
     <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />

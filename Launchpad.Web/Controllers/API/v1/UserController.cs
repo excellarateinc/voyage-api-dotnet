@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
 
-namespace Launchpad.Web.Controllers.API
+namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
-    [RoutePrefix(Constants.RoutePrefixes.User)]
+    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class UserController : ApiController
     {
         private IUserService _userService;
@@ -24,7 +24,7 @@ namespace Launchpad.Web.Controllers.API
         }
 
         /**
-        * @api {get} /user Get all users
+        * @api {get} /v1/user Get all users
         * @apiVersion 0.1.0
         * @apiName GetUsers
         * @apiGroup User
@@ -50,6 +50,7 @@ namespace Launchpad.Web.Controllers.API
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
         [HttpGet]
+        [Route("user")]
         public IHttpActionResult GetUsers()
         {
             return Ok(_userService.GetUsers());
@@ -57,7 +58,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {get} /user/roles Get all users and their roles 
+        * @api {get} /v1/user/roles Get all users and their roles 
         * @apiVersion 0.1.0
         * @apiName User
         * @apiGroup User
@@ -98,7 +99,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {get} /user/claims Get the authenticated user's claims 
+        * @api {get} /v1/user/claims Get the authenticated user's claims 
         * @apiVersion 0.1.0
         * @apiName Claims
         * @apiGroup User
@@ -141,7 +142,7 @@ namespace Launchpad.Web.Controllers.API
 
 
          /**
-         * @api {post} /user/assign Assign role to user 
+         * @api {post} /v1/user/assign Assign role to user 
          * @apiVersion 0.1.0
          * @apiName AssignRole
          * @apiGroup User
@@ -182,7 +183,7 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {post} /user/revoke Remove role from user 
+        * @api {post} /v1/user/revoke Remove role from user 
         * @apiVersion 0.1.0
         * @apiName RevokeRole
         * @apiGroup User
