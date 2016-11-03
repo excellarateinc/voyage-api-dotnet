@@ -76,6 +76,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
+        public void GetUsersWithRoles_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _userController.AssertClaim(_ => _.GetUsersWithRoles(),
+                LssClaims.ListUsers);
+
+        }
+
+        [Fact]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
         {
             _userController.AssertClaim(_ => _.GetClaims(), LssClaims.ListUserClaims);
@@ -266,6 +274,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _userController.AssertRoute(_ => _.RemoveRole(new UserRoleModel()), "user/revoke");
         }
 
+        [Fact]
+
+        public void RevokeRole_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _userController.AssertClaim(_ => _.RemoveRole(new UserRoleModel()), LssClaims.RevokeRole);
+        }
         [Fact]
         public async void RemoveRole_Should_Call_UserService()
         {

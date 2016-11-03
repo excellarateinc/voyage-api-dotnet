@@ -33,6 +33,18 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
+        public void RemoveClaim_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.RemoveClaim("a", "b", "c"), LssClaims.DeleteRoleClaim);
+        }
+
+        [Fact]
+        public void RemoveRole_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.RemoveRole(new RoleModel()), LssClaims.DeleteRole);
+        }
+
+        [Fact]
         public void GetRoles_Should_Have_ClaimAuthorizeAttribute()
         {
             _roleController.AssertClaim(_ => _.GetRoles(), LssClaims.ListRoles);

@@ -110,7 +110,7 @@ namespace Launchpad.Web.Controllers.API
        * @apiName AddRoleClaim
        * @apiGroup Role
        * 
-       * @apiPermission lss.permission->create.role-claim
+       * @apiPermission lss.permission->create.claim
        * 
        * @apiUse AuthHeader
        *   
@@ -160,6 +160,7 @@ namespace Launchpad.Web.Controllers.API
         * @apiUse UnauthorizedError
         * 
         **/
+        [ClaimAuthorize(ClaimValue = LssClaims.DeleteRoleClaim)]
         [HttpDelete]
         [Route("role/claim")]
         public IHttpActionResult RemoveClaim(string roleName, string claimType, string claimValue)
@@ -190,6 +191,7 @@ namespace Launchpad.Web.Controllers.API
         * @apiUse BadRequestError  
         **/
         [HttpDelete]
+        [ClaimAuthorize(ClaimValue = LssClaims.DeleteRole)]
         public async Task<IHttpActionResult> RemoveRole([FromUri] RoleModel role)
         {
             var result = await _roleService.RemoveRoleAsync(role);

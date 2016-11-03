@@ -57,37 +57,38 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-       * @api {get} /user/roles Get all users and their roles 
-       * @apiVersion 0.1.0
-       * @apiName User
-       * @apiGroup User
-       * 
-       * @apiPermission lss.permission->list.users
-       * 
-       * @apiUse AuthHeader
-       *   
-       * @apiSuccess {Object[]} users List of users 
-       * @apiSuccess {String} users.id User ID
-       * @apiSuccess {String} users.name Name of the user
-       * @apiSuccess {Object[]} users.roles List of user roles
-       * @apiSuccess users.roles.name Role name
-       * 
-       * @apiSuccessExample Success-Response:
-       *   HTTP/1.1 200 OK
-       *   [
-       *       {   
-       *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-       *           "name": "admin@admin.com",
-       *           "roles": [ 
-       *                    {
-       *                        "name": "Admin"
-       *                    }
-       *            ]
-       *       }
-       *   ]
-       *   
-       * @apiUse UnauthorizedError  
-       **/
+        * @api {get} /user/roles Get all users and their roles 
+        * @apiVersion 0.1.0
+        * @apiName User
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->list.users
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiSuccess {Object[]} users List of users 
+        * @apiSuccess {String} users.id User ID
+        * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {Object[]} users.roles List of user roles
+        * @apiSuccess users.roles.name Role name
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   [
+        *       {   
+        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *           "name": "admin@admin.com",
+        *           "roles": [ 
+        *                    {
+        *                        "name": "Admin"
+        *                    }
+        *            ]
+        *       }
+        *   ]
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]        
         [Route("user/roles")]
         [HttpGet]
         public IHttpActionResult GetUsersWithRoles()
@@ -102,7 +103,7 @@ namespace Launchpad.Web.Controllers.API
         * @apiName Claims
         * @apiGroup User
         * 
-        * @apiPermission lss.permission->login
+        * @apiPermission lss.permission->list.user-claims
         * 
         * @apiUse AuthHeader
         *   
@@ -205,6 +206,7 @@ namespace Launchpad.Web.Controllers.API
         * 
         * @apiUse BadRequestError  
         **/
+        [ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
         [HttpPost]
         [Route("user/revoke")]
         public async Task<IHttpActionResult> RemoveRole(UserRoleModel model)
