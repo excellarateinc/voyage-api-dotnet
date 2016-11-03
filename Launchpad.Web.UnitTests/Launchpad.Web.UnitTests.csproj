@@ -187,6 +187,7 @@
     <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />
+    <Compile Include="Filters\CoventionAuthrorizeAttributeTests.cs" />
     <Compile Include="Handlers\RequestMetricsHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

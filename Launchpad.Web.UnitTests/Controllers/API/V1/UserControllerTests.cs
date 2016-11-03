@@ -15,7 +15,7 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Linq;
 using static Launchpad.Web.Constants;
-
+using Launchpad.Web.Filters;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -73,7 +73,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             models.Should().BeEquivalentTo(users);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
         {
             _userController.AssertClaim(_ => _.GetUsers(), 
@@ -81,7 +81,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void GetUsersWithRoles_Should_Have_ClaimAuthorizeAttribute()
         {
             _userController.AssertClaim(_ => _.GetUsersWithRoles(),
@@ -89,13 +89,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
         {
             _userController.AssertClaim(_ => _.GetClaims(), LssClaims.ListUserClaims);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void AssignRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -284,7 +284,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
 
         public void RevokeRole_Should_Have_ClaimAuthorizeAttribute()
         {
@@ -306,6 +306,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
+        }
+
+        [Fact]
+        public void Class_Should_Have_CoventionAuthorizeAttribute()
+        {
+            typeof(UserController)
+                .Should()
+                .BeDecoratedWith<ConventionAuthorizeAttribute>();
         }
     }
 }

@@ -10,6 +10,7 @@ using static Launchpad.Web.Constants;
 namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
+    [ConventionAuthorize]
     [RoutePrefix(RoutePrefixes.V1)]
     public class RoleController : ApiController
     {
@@ -60,7 +61,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListRoles)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.ListRoles)]
         [HttpGet]
         [Route("role")]
         public IHttpActionResult GetRoles()
@@ -90,7 +91,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.CreateRole)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.CreateRole)]
         [HttpPost]
         [Route("role")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
@@ -106,32 +107,32 @@ namespace Launchpad.Web.Controllers.API.V1
             }
         }
 
-        /**
-       * @api {post} /v1/role/claim Create a role claim 
-       * @apiVersion 0.1.0
-       * @apiName AddRoleClaim
-       * @apiGroup Role
-       * 
-       * @apiPermission lss.permission->create.claim
-       * 
-       * @apiUse AuthHeader
-       *   
-       * @apiParam {Object} roleClaim Association between a role and a claim 
-       * @apiParam {Object} roleClaim.role Role
-       * @apiParam {String} roleClaim.role.id Role ID
-       * @apiParam {String} roleClaim.role.name Name of the role
-       * @apiParam {Object} roleClaim.claim Claim 
-       * @apiParam {String} roleClaim.claim.claimType Type of the claim 
-       * @apiParam {String} roleClaim.claim.claimValue Value of the claim
-       * 
-       * @apiSuccessExample Success-Response:
-       *   HTTP/1.1 201 Created
-       *
-       * @apiUse UnauthorizedError
-       * 
-       * @apiUse BadRequestError  
-       **/
-        [ClaimAuthorize(ClaimValue = LssClaims.CreateClaim)]
+         /**
+        * @api {post} /v1/role/claim Create a role claim 
+        * @apiVersion 0.1.0
+        * @apiName AddRoleClaim
+        * @apiGroup Role
+        * 
+        * @apiPermission lss.permission->create.claim
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiParam {Object} roleClaim Association between a role and a claim 
+        * @apiParam {Object} roleClaim.role Role
+        * @apiParam {String} roleClaim.role.id Role ID
+        * @apiParam {String} roleClaim.role.name Name of the role
+        * @apiParam {Object} roleClaim.claim Claim 
+        * @apiParam {String} roleClaim.claim.claimType Type of the claim 
+        * @apiParam {String} roleClaim.claim.claimValue Value of the claim
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 201 Created
+        *
+        * @apiUse UnauthorizedError
+        * 
+        * @apiUse BadRequestError  
+        **/
+        //[ClaimAuthorize(ClaimValue = LssClaims.CreateClaim)]
         [Route("role/claim")]
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim(RoleClaimModel model)
@@ -162,7 +163,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * 
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.DeleteRoleClaim)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.DeleteRoleClaim)]
         [HttpDelete]
         [Route("role/claim")]
         public IHttpActionResult RemoveClaim(string roleName, string claimType, string claimValue)
@@ -193,7 +194,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse BadRequestError  
         **/
         [HttpDelete]
-        [ClaimAuthorize(ClaimValue = LssClaims.DeleteRole)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.DeleteRole)]
         [Route("role")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] RoleModel role)
         {

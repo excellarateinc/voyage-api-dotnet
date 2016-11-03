@@ -309,6 +309,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
+    <Compile Include="Filters\ConventionAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

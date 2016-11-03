@@ -3,6 +3,7 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V2;
+using Launchpad.Web.Filters;
 using Moq;
 using Ploeh.AutoFixture;
 using System;
@@ -34,37 +35,44 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
 
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void Get_Should_Have_ClaimAuthorizeAttribute()
         {
             _widgetController.AssertClaim(_ => _.Get(), LssClaims.ListWidgets);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void GetById_Should_Have_ClaimAuthorizeAttribute()
         {
             _widgetController.AssertClaim(_ => _.Get(1), LssClaims.ViewWidget);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void AddWidget_Should_Have_ClaimAuthorizeAttribute()
         {
             _widgetController.AssertClaim(_ => _.AddWidget(new WidgetModel()), LssClaims.CreateWidget);
         }
 
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void DeleteWidget_Should_Have_ClaimAuthorizeAttribute()
         {
             _widgetController.AssertClaim(_ => _.DeleteWidget(1), LssClaims.DeleteWidget);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void UpdateWidget_Should_Have_ClaimAuthorizeAttribute()
         {
             _widgetController.AssertClaim(_ => _.UpdateWidget(new WidgetModel()), LssClaims.UpdateWidget);
         }
 
+        [Fact]
+        public void Class_Should_Have_CoventionAuthorizeAttribute()
+        {
+            typeof(WidgetV2Controller)
+                .Should()
+                .BeDecoratedWith<ConventionAuthorizeAttribute>();
+        }
 
 
         [Fact]

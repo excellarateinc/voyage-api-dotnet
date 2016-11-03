@@ -12,6 +12,7 @@ using static Launchpad.Web.Constants;
 namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
+    [ConventionAuthorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class UserController : ApiController
     {
@@ -48,7 +49,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
         [HttpGet]
         [Route("user")]
         public IHttpActionResult GetUsers()
@@ -89,7 +90,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]        
+        //[ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]        
         [Route("user/roles")]
         [HttpGet]
         public IHttpActionResult GetUsersWithRoles()
@@ -127,7 +128,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
+        //[ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
         [HttpGet]
         [Route("user/claims")]
         public IHttpActionResult GetClaims()
@@ -166,7 +167,7 @@ namespace Launchpad.Web.Controllers.API.V1
          * 
          * @apiUse BadRequestError  
          **/
-        [ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
         [HttpPost]
         [Route("user/assign")]
         public async Task<IHttpActionResult> AssignRole(UserRoleModel userRole)
@@ -207,7 +208,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
+        //[ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
         [HttpPost]
         [Route("user/revoke")]
         public async Task<IHttpActionResult> RemoveRole(UserRoleModel model)

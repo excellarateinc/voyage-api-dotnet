@@ -15,7 +15,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Net.Http;
 using static Launchpad.Web.Constants;
-
+using Launchpad.Web.Filters;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -46,7 +46,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void RemoveClaim_Should_Have_ClaimAuthorizeAttribute()
         {
             _roleController.AssertClaim(_ => _.RemoveClaim("a", "b", "c"), LssClaims.DeleteRoleClaim);
@@ -58,7 +58,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _roleController.AssertRoute(_ => _.GetRoles(), "role");
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void RemoveRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -66,13 +66,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void GetRoles_Should_Have_ClaimAuthorizeAttribute()
         {
             _roleController.AssertClaim(_ => _.GetRoles(), LssClaims.ListRoles);
         }
 
-        [Fact]
+        [Fact(Skip = "Spike on convention based claims")]
         public void CreateRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -80,7 +80,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-        [Fact]
+        [Fact(Skip ="Spike on convention based claims")]
         public void AddClaim_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -145,6 +145,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             typeof(RoleController)
                 .Should()
                 .BeDecoratedWith<AuthorizeAttribute>();
+        }
+
+        [Fact]
+        public void Class_Should_Have_CoventionAuthorizeAttribute()
+        {
+            typeof(RoleController)
+                .Should()
+                .BeDecoratedWith<ConventionAuthorizeAttribute>();
         }
 
         [Fact]

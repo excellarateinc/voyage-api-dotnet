@@ -9,6 +9,7 @@ using static Launchpad.Web.Constants;
 namespace Launchpad.Web.Controllers.API.V2
 {
     [Authorize]
+    [ConventionAuthorize]
     [RoutePrefix(Constants.RoutePrefixes.V2)]
     public class WidgetV2Controller : ApiController
     {
@@ -51,7 +52,8 @@ namespace Launchpad.Web.Controllers.API.V2
          * 
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
+        [ConventionAuthorize]
         [Route("widget")]
         public IHttpActionResult Get()
         {
@@ -86,7 +88,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
         [Route("widget/{id:int}")]
         public IHttpActionResult Get(int id)
         {
@@ -129,7 +131,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.CreateWidget)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.CreateWidget)]
         [Route("widget")]
         [HttpPost]
         public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
@@ -154,7 +156,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.DeleteWidget)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.DeleteWidget)]
         [Route("widget/{id:int}")]
         [HttpDelete]
         public IHttpActionResult DeleteWidget(int id)
@@ -195,7 +197,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError 
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
+        //[ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
         [Route("widget")]
         [HttpPut]
         public IHttpActionResult UpdateWidget([FromBody] WidgetModel widget)
