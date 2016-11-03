@@ -62,7 +62,7 @@ Returned when an unexpected error occurs within the app for any reason. This is 
 What pattern do we follow if there are "faults" or errors that need to be communicated back to the caller. 
 
 ```
-errors [
+errors: [
    {type: "format", message: "email is not formatted correctly. ex: text@text.ext"}
    {type: "required", message: "firstName is a required field"}
 ]
