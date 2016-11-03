@@ -90,6 +90,7 @@
     <Compile Include="RequestDataPointModel.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="UserRoleModel.cs" />
+    <Compile Include="UserWithRolesModel.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

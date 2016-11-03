@@ -42,7 +42,16 @@ namespace Launchpad.Services
             return result;
         }
 
-       
+        public IEnumerable<UserWithRolesModel> GetUsersWithRoles()
+        {
+            var applicationUsers = _userManager.Users.ToList();
+            var users = _mapper.Map<IEnumerable<UserWithRolesModel>>(applicationUsers);
+            foreach(var user in users)
+            {
+                user.Roles = _userManager.GetRoles(user.Id).Select(_ => new RoleModel { Name = _ }); 
+            }
+            return users;
+        } 
 
         public IEnumerable<UserModel> GetUsers()
         {

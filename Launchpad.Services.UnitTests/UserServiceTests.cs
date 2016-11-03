@@ -277,6 +277,42 @@ namespace Launchpad.Services.UnitTests
                .BeTrue();
         }
 
+
+        [Fact]
+        public void GetUsersWithRoles_Should_Call_UserManager()
+        {
+            var user1 = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Id = "abc"
+            };
+
+            var roles = new[] { "r1", "r2" };
+
+            var userResults = new[] { user1 };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(user1.Id))
+                .ReturnsAsync(user1);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(user1))
+                .ReturnsAsync(roles);
+
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>()
+                .Setup(_ => _.Users)
+                .Returns(userResults.AsQueryable());
+
+            var result = _userService.GetUsersWithRoles();
+
+            Mock.VerifyAll();
+            result.Should().HaveSameCount(userResults);
+
+            userResults.All(_ => result.Any(r => r.Name == _.UserName))
+               .Should()
+               .BeTrue();
+
+            result.All(_ => _.Roles.All(r => roles.Contains(r.Name)));
+        }
         [Fact]
         public async Task Register_Should_Call_UserManager()
         {

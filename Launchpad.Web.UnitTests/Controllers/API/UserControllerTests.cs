@@ -38,6 +38,36 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         }
 
         [Fact]
+        public void GetUsersWithRoles_Should_Have_HttpGetAttribute()
+        {
+            _userController.AssertAttribute<UserController, HttpGetAttribute>(_ => _.GetUsersWithRoles());
+        }
+
+        [Fact]
+        public void GetUsersWithRoles_Should_Have_RouteAttribute()
+        {
+            _userController.AssertRoute(_ => _.GetUsersWithRoles(), "user/roles");
+        }
+
+        [Fact]
+        public async void GetUsersWithRoles_Should_Call_UserService()
+        {
+            var users = Fixture.CreateMany<UserWithRolesModel>();
+
+            _mockUserService.Setup(_ => _.GetUsersWithRoles())
+                .Returns(users);
+
+            var result = _userController.GetUsersWithRoles();
+
+            var message =await result.ExecuteAsync(new System.Threading.CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            IEnumerable<UserWithRolesModel> models;
+            message.TryGetContentValue(out models).Should().BeTrue();
+            models.Should().BeEquivalentTo(users);
+        }
+
+        [Fact]
         public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
         {
             _userController.AssertClaim(_ => _.GetUsers(), 

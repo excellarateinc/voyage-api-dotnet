@@ -20,6 +20,7 @@ namespace Launchpad.Services.Interfaces
 
         Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel);
 
+        IEnumerable<UserWithRolesModel> GetUsersWithRoles();
 
     }
 }

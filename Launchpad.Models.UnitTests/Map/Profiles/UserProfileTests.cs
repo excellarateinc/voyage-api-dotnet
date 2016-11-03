@@ -19,6 +19,22 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
         }
 
         [Fact]
+        public void ApplicationUser_Should_Map_To_UserWithRolesModel()
+        {
+            var appUser = new ApplicationUser();
+            appUser.UserName = "user1";
+            appUser.Id = "123";
+           
+
+            var user = _mappingFixture.MapperInstance.Map<UserWithRolesModel>(appUser);
+
+            user.Should().NotBeNull();
+            user.Name.Should().Be(appUser.UserName);
+            user.Id.Should().Be(appUser.Id);
+            user.Roles.Should().BeNull();
+        }
+
+        [Fact]
         public void ApplicationUser_Should_Map_To_UserModel()
         {
             var appUser = new ApplicationUser();

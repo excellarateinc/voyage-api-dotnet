@@ -30,6 +30,13 @@ namespace Launchpad.Web.Controllers.API
             return Ok(_userService.GetUsers());
         }
 
+        [Route("user/roles")]
+        [HttpGet]
+        public IHttpActionResult GetUsersWithRoles()
+        {
+            return Ok(_userService.GetUsersWithRoles());
+        }
+
         [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
         [HttpGet]
         [Route("user/claims")]

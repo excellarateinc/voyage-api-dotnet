@@ -85,6 +85,25 @@ describe('user.service', function(){
 
     });
 
+    describe('getUsersWithRoles', function(){
+
+        it('should call user endpoint and return users', function(){
+            var users = [{name: 'user1'},{name: 'user2'}];
+
+            $httpBackend.when('GET', '/api/user/roles')
+                .respond(users);
+
+            var promise = service.getUsersWithRoles();
+
+            promise.then(function(data){
+                expect(data.length).toBe(users.length);
+            });
+
+            $httpBackend.flush();
+        });
+
+    });
+
     describe('assign', function(){
         it('should call user endpoint', function(){
             var model = {
