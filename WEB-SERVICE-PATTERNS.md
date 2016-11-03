@@ -6,7 +6,7 @@ The following web service patterns are implemented within Launchpad API and shou
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Response Status](#response-status)
-* [Errors](#errors)
+* [Response Errors](#response-errors)
 
 ## HTTP Methods
 
@@ -75,7 +75,7 @@ The 'status' object has the following structure:
 * code (enum/text, required): 'success', 'partial'
 * message (text, required): any text describing the status
 
-## Errors
+## Response Errors
 When an anticipated error occurs within the app, like a required field or format error, it is necessary to communicate back to the consumer the errors that occured in a standard format. All web services should follow the same pattern so that the consumers can reliably expect to find the error information in a consistent location and structure.  
 
 The following example is a situation with a PUT request to /users/1 resulted in rejected request due to invalid data
