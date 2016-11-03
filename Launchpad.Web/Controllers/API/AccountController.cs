@@ -59,6 +59,8 @@ namespace Launchpad.Web.Controllers.API
         * @apiName CreateAccount
         * @apiGroup Account
         * 
+        * @apiPermission none
+        * 
         * @apiParam {String} email User's email
         * @apiParam {String} password User's password
         * @apiParam {String} confirmPassword User's password (x2) 

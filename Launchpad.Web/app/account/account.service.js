@@ -21,7 +21,7 @@
  
             var content = "grant_type=password&username=" + username + "&password=" + password;  
          
-            $http.post("/Token", content, {
+            $http.post("/api/Token", content, {
                 headers: { 'Content-Type' :  'application/x-www-form-urlencoded'  }
             })
             .success(function(response){

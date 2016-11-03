@@ -35,12 +35,12 @@ describe('account.service', function(){
     });
 
     describe("login", function(){
-        it('should call /Token endpoint', function(){
+        it('should call /api/Token endpoint', function(){
             var token = 'a token';
             var user = 'user';
             var password = 'word';
 
-            $httpBackend.when('POST', '/Token', 
+            $httpBackend.when('POST', '/api/Token', 
                 "grant_type=password&username=user&password=word", 
                 function(headers){
                     expect(headers['Content-Type']).toBe('application/x-www-form-urlencoded');
