@@ -72,7 +72,7 @@ The following example is a situation with a POST request to /users which resulte
 ```
 
 The 'status' object has the following structure:
-* code (enum/text, required): 'success', 'partial'
+* code (enum/text, required): 'success', 'partial', 'error'
 * message (text, required): any text describing the status
 
 ## Response Errors
@@ -86,6 +86,10 @@ The following example is a situation with a PUT request to /users/1 resulted in 
     firstName: "",
     lastName: "Doe",
     email: "blah",
+    status: {
+        code: "error", 
+        message: "Errors occurred while updating the user record"
+    },
     errors: [
        {type: "format", message: "email is not formatted correctly. ex: text@text.ext"}
        {type: "required", message: "firstName is a required field"}
