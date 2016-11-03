@@ -6,6 +6,7 @@ The following web service patterns are implemented within Launchpad API and shou
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Errors](#errors)
+* [Deleting Optional Data](#deleting-optional-data)
 
 ## HTTP Methods
 
@@ -53,13 +54,20 @@ Returned when a request is made for specific data, usually using an ID, and the 
 #### 500 Internal Server Error
 Returned when an unexpected error occurs within the app for any reason. This is usually accompanied by an application stack trace.
 
-
 ## Errors
-What pattern do we follow if there are "faults" or errors that need to be communicated back to the caller. 
+When an anticipated error occurs within the app, like a required field or format error, it is necessary to communicate back to the consumer the errors that occured in a standard format. All web services should follow the same pattern so that the consumers can reliably expect to find the error information in a consistent location and structure.  
+
+The following example is a situation with a PUT request to /users/1 resulted in rejected request due to invalid data
 
 ```
-errors: [
-   {type: "format", message: "email is not formatted correctly. ex: text@text.ext"}
-   {type: "required", message: "firstName is a required field"}
-]
+{
+    id: 1,
+    firstName: "",
+    lastName: "Doe",
+    email: "blah",
+    errors: [
+       {type: "format", message: "email is not formatted correctly. ex: text@text.ext"}
+       {type: "required", message: "firstName is a required field"}
+    ]
+}
 ```
