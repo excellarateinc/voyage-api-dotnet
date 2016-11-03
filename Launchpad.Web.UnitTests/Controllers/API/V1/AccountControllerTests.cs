@@ -6,7 +6,7 @@ using FluentAssertions;
 using Ploeh.AutoFixture;
 using Launchpad.UnitTests.Common;
 using System.Web.Http;
-using Launchpad.Web.Controllers.API;
+using Launchpad.Web.Controllers.API.V1;
 using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System.Net;
@@ -14,7 +14,7 @@ using Launchpad.Services.Interfaces;
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace Launchpad.Web.UnitTests.Controllers.API
+namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class AccountControllerTests : BaseUnitTest
     {
@@ -105,7 +105,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         {
             typeof(AccountController).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
-                _ => _.Prefix.Equals(Constants.RoutePrefixes.Account));
+                _ => _.Prefix.Equals(Constants.RoutePrefixes.V1));
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new Models.RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("register"));
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
               
         }
 

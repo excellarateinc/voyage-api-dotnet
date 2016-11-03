@@ -14,8 +14,8 @@
             controller: LoginController,
             controllerAs: 'vm',
             bindings: {
-                Binding: '=',
-            },
+                Binding: '='
+            }
         });
 
     LoginController.$inject = ['accountService', '$state', 'authorizationService', 'lssConstants', '$log', 'userService'];

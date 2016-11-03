@@ -35,12 +35,12 @@ describe('account.service', function(){
     });
 
     describe("login", function(){
-        it('should call /Token endpoint', function(){
+        it('should call /api/Token endpoint', function(){
             var token = 'a token';
             var user = 'user';
             var password = 'word';
 
-            $httpBackend.when('POST', '/Token', 
+            $httpBackend.when('POST', '/api/Token', 
                 "grant_type=password&username=user&password=word", 
                 function(headers){
                     expect(headers['Content-Type']).toBe('application/x-www-form-urlencoded');
@@ -69,7 +69,7 @@ describe('account.service', function(){
 
             };
 
-            $httpBackend.when('POST', '/api/account/register', user)
+            $httpBackend.when('POST', '/api/v1/account/register', user)
                 .respond(true);
 
             var promise = service.register(user.email, user.password);
@@ -90,7 +90,7 @@ describe('account.service', function(){
 
             };
 
-            $httpBackend.when('POST', '/api/account/register', user)
+            $httpBackend.when('POST', '/api/v1/account/register', user)
                 .respond(400, {data: "error"});
 
             var promise = service.register(user.email, user.password);

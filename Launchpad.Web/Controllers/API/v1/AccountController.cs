@@ -5,11 +5,11 @@ using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace Launchpad.Web.Controllers.API
+namespace Launchpad.Web.Controllers.API.V1
 {
 
 
-    [RoutePrefix(Constants.RoutePrefixes.Account)]
+    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AccountController : ApiController
     {
         private IUserService _userService;
@@ -54,10 +54,12 @@ namespace Launchpad.Web.Controllers.API
 
 
         /**
-        * @api {post} /account/register Register a new account
+        * @api {post} /v1/account/register Register a new account
         * @apiVersion 0.1.0
         * @apiName CreateAccount
         * @apiGroup Account
+        * 
+        * @apiPermission none
         * 
         * @apiParam {String} email User's email
         * @apiParam {String} password User's password
@@ -69,7 +71,7 @@ namespace Launchpad.Web.Controllers.API
         * @apiUse BadRequestError
         */
         [AllowAnonymous]
-        [Route("register")]
+        [Route("account/register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
 

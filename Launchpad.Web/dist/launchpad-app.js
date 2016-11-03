@@ -148,7 +148,7 @@
  
             var content = "grant_type=password&username=" + username + "&password=" + password;  
          
-            $http.post("/Token", content, {
+            $http.post("/api/Token", content, {
                 headers: { 'Content-Type' :  'application/x-www-form-urlencoded'  }
             })
             .success(function(response){
@@ -170,7 +170,7 @@
                 confirmPassword: password
             };
 
-            $http.post("/api/account/register", user)
+            $http.post("/api/v1/account/register", user)
                 .then(function(response){
                     deferred.resolve(response.data);
                 }, 
@@ -197,8 +197,8 @@
             controller: LoginController,
             controllerAs: 'vm',
             bindings: {
-                Binding: '=',
-            },
+                Binding: '='
+            }
         });
 
     LoginController.$inject = ['accountService', '$state', 'authorizationService', 'lssConstants', '$log', 'userService'];
@@ -913,7 +913,7 @@
                 name: roleName
             };
 
-            $http.post('/api/role', role)
+            $http.post('/api/v1/role', role)
                  .then(function(response){
                      deferred.resolve(true);
                  }, 
@@ -927,7 +927,7 @@
         function getRoles(){
             var deferred = $q.defer();
 
-            $http.get('/api/role')
+            $http.get('/api/v1/role')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -938,7 +938,7 @@
         function removeRole(role){
             var deferred = $q.defer();
 
-            $http.delete('api/role', {params: role})
+            $http.delete('api/v1/role', {params: role})
                 .then(function(response){
                     deferred.resolve(true);
                 }, 
@@ -955,7 +955,7 @@
                 claimType: claim.claimType,
                 claimValue: claim.claimValue
             };
-            $http.delete('/api/role/claim', {params: roleClaim})
+            $http.delete('/api/v1/role/claim', {params: roleClaim})
                 .then(function(response){
                     deferred.resolve(response.data);
                 },
@@ -976,7 +976,7 @@
                 }
             };
 
-            $http.post('/api/role/claim', roleClaim)
+            $http.post('/api/v1/role/claim', roleClaim)
                 .then(function(response){
                     deferred.resolve(response.data);
                 },
@@ -1211,7 +1211,7 @@
         function getUsers(){
             var deferred = $q.defer();
 
-            $http.get('/api/user')
+            $http.get('/api/v1/user')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -1222,7 +1222,7 @@
         function getUsersWithRoles(){
             var deferred = $q.defer();
 
-            $http.get('/api/user/roles')
+            $http.get('/api/v1/user/roles')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -1238,7 +1238,7 @@
                 user: user
             };
 
-            $http.post('/api/user/assign', userRole)
+            $http.post('/api/v1/user/assign', userRole)
                 .then(function(response)
                 {
                     deferred.resolve(response.data);
@@ -1254,7 +1254,7 @@
                 user: user
             };
 
-            $http.post('/api/user/revoke', userRole)
+            $http.post('/api/v1/user/revoke', userRole)
                 .then(function(response)
                 {
                     deferred.resolve(response.data);
@@ -1265,7 +1265,7 @@
         function getClaims(){
             var deferred = $q.defer();
 
-            $http.get('api/user/claims')
+            $http.get('api/v1/user/claims')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });

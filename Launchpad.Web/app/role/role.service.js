@@ -25,7 +25,7 @@
                 name: roleName
             };
 
-            $http.post('/api/role', role)
+            $http.post('/api/v1/role', role)
                  .then(function(response){
                      deferred.resolve(true);
                  }, 
@@ -39,7 +39,7 @@
         function getRoles(){
             var deferred = $q.defer();
 
-            $http.get('/api/role')
+            $http.get('/api/v1/role')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -50,7 +50,7 @@
         function removeRole(role){
             var deferred = $q.defer();
 
-            $http.delete('api/role', {params: role})
+            $http.delete('api/v1/role', {params: role})
                 .then(function(response){
                     deferred.resolve(true);
                 }, 
@@ -67,7 +67,7 @@
                 claimType: claim.claimType,
                 claimValue: claim.claimValue
             };
-            $http.delete('/api/role/claim', {params: roleClaim})
+            $http.delete('/api/v1/role/claim', {params: roleClaim})
                 .then(function(response){
                     deferred.resolve(response.data);
                 },
@@ -88,7 +88,7 @@
                 }
             };
 
-            $http.post('/api/role/claim', roleClaim)
+            $http.post('/api/v1/role/claim', roleClaim)
                 .then(function(response){
                     deferred.resolve(response.data);
                 },

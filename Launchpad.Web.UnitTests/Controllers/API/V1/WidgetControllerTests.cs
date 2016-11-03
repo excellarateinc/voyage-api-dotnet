@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using Xunit;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -44,6 +45,45 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             message.Should().NotBeNull();
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        [Fact]
+        public void Class_Should_Have_Authorize_Attribute()
+        {
+            typeof(WidgetController).Should()
+             .BeDecoratedWith<AuthorizeAttribute>();
+        }
+
+        [Fact]
+        public void Get_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.Get(), LssClaims.ListWidgets);
+        }
+
+        [Fact]
+        public void GetById_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.Get(1), LssClaims.ViewWidget);
+        }
+
+        [Fact]
+        public void AddWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.AddWidget(new WidgetModel()), LssClaims.CreateWidget);
+        }
+
+
+        [Fact]
+        public void DeleteWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.DeleteWidget(1), LssClaims.DeleteWidget);
+        }
+
+        [Fact]
+        public void UpdateWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.UpdateWidget(new WidgetModel()), LssClaims.UpdateWidget);
+        }
+
 
         [Fact]
         public async void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()

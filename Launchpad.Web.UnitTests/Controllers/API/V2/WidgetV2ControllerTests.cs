@@ -41,6 +41,33 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         }
 
         [Fact]
+        public void GetById_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.Get(1), LssClaims.ViewWidget);
+        }
+
+        [Fact]
+        public void AddWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.AddWidget(new WidgetModel()), LssClaims.CreateWidget);
+        }
+
+
+        [Fact]
+        public void DeleteWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.DeleteWidget(1), LssClaims.DeleteWidget);
+        }
+
+        [Fact]
+        public void UpdateWidget_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _widgetController.AssertClaim(_ => _.UpdateWidget(new WidgetModel()), LssClaims.UpdateWidget);
+        }
+
+
+
+        [Fact]
         public async void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
         {
             const int id = 55;
@@ -221,6 +248,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
             typeof(WidgetV2Controller).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
                 _ => _.Prefix.Equals(Constants.RoutePrefixes.V2));
+        }
+
+        [Fact]
+        public void Class_Should_Have_Authorize_Attribute()
+        {
+            typeof(WidgetV2Controller).Should()
+             .BeDecoratedWith<AuthorizeAttribute>();
         }
 
         [Fact]
