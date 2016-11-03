@@ -2,7 +2,7 @@
 Web Services API for the Launchpad app
 
 ## Table of Contents
-* [Web Services Patterns](WEB-SERVICES-PATTERNS.md)
+* [Web Services Patterns](WEB-SERVICE-PATTERNS.md)
 * [Development Environment](#development-environment)
 * [Build](#build)
 * [Testing](#testing)
