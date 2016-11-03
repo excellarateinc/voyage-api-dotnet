@@ -12,3 +12,8 @@ body { padding-top: 70px; }
 .page-header.compact {
     margin-top: 0px;
 }
+
+.nav-header{
+    font-weight: 600;
+    color: #777;
+}

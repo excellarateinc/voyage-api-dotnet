@@ -10,7 +10,9 @@
         var service = {
             addRole: addRole,
             getRoles: getRoles,
-            addClaim: addClaim
+            addClaim: addClaim,
+            removeRole: removeRole,
+            removeClaim: removeClaim
         };
         
         return service;
@@ -40,6 +42,37 @@
             $http.get('/api/role')
                 .then(function(response){
                     deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function removeRole(role){
+            var deferred = $q.defer();
+
+            $http.delete('api/role', {params: role})
+                .then(function(response){
+                    deferred.resolve(true);
+                }, 
+                function(err){
+                    deferred.reject(err.data);
+                });
+            return deferred.promise;
+        }
+
+        function removeClaim(role, claim){
+            var deferred = $q.defer();
+            var roleClaim = {
+                roleName: role.name,
+                claimType: claim.claimType,
+                claimValue: claim.claimValue
+            };
+            $http.delete('/api/role/claim', {params: roleClaim})
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(err){
+                    deferred.reject(err.data);
                 });
 
             return deferred.promise;

@@ -85,6 +85,25 @@ describe('user.service', function(){
 
     });
 
+    describe('getUsersWithRoles', function(){
+
+        it('should call user endpoint and return users', function(){
+            var users = [{name: 'user1'},{name: 'user2'}];
+
+            $httpBackend.when('GET', '/api/user/roles')
+                .respond(users);
+
+            var promise = service.getUsersWithRoles();
+
+            promise.then(function(data){
+                expect(data.length).toBe(users.length);
+            });
+
+            $httpBackend.flush();
+        });
+
+    });
+
     describe('assign', function(){
         it('should call user endpoint', function(){
             var model = {
@@ -102,6 +121,32 @@ describe('user.service', function(){
                 .respond(true);
             
             var promise = service.assign(model.role, model.user);
+
+            promise.then(function(data){
+                expect(data).toBe(true);
+            });
+
+            $httpBackend.flush();
+        });
+    });
+
+       describe('revoke', function(){
+        it('should call user endpoint', function(){
+            var model = {
+                role: {
+                    name: 'role1',
+                    id: '123'
+                },
+                user: {
+                    name: 'user1',
+                    id: '456'
+                }
+            };
+
+            $httpBackend.when('POST', '/api/user/revoke', model)
+                .respond(true);
+            
+            var promise = service.revoke(model.role, model.user);
 
             promise.then(function(data){
                 expect(data).toBe(true);

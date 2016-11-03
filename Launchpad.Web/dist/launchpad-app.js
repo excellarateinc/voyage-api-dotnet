@@ -70,12 +70,12 @@
             }
         },
         {
-            name: 'addRole',
-            url: '/addRole',
+            name: 'roleDashboard',
+            url: '/roleDashboard',
             views: {
                 content: {
                     // Using component: instead of template:
-                    component: 'lssAddRole'
+                    component: 'lssRoleDashboard'
                 },
                 header: {
                     component: 'lssSecureHeader'
@@ -86,12 +86,12 @@
             }
         },
         {
-            name: 'addClaim',
-            url: '/addClaim',
+            name: 'claimDashboard',
+            url: '/claimDashboard',
                views: {
                 content: {
                     // Using component: instead of template:
-                    component: 'lssAddClaim'
+                    component: 'lssClaimDashboard'
                 },
                 header: {
                     component: 'lssSecureHeader'
@@ -375,7 +375,9 @@
             claims: {
                 login: 'login',
                 createClaim: 'create.claim',
-                assignRole: 'assign.role'
+                assignRole: 'assign.role',
+                createRole: 'create.role' 
+                
             }    
         });
 })();
@@ -577,8 +579,9 @@
 
         function _refreshNavigation(){
             vm.states = [];
-            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claims', 'addClaim');
-            _addState(constants.lssClaimType, constants.claims.assignRole, 'Users', 'userDashboard');
+            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claim Dashboard', 'claimDashboard');
+            _addState(constants.lssClaimType, constants.claims.assignRole, 'User Dashboard', 'userDashboard');
+            _addState(constants.lssClaimType, constants.claims.createRole, 'Role Dashboard', 'roleDashboard');
         }
 
         function _addState(claimType, claimName, stateDisplayName, state){
@@ -682,6 +685,210 @@
 })();;(function() {
 'use strict';
 
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssClaimDashboard', {
+            templateUrl: '/app/role/claim-dashboard.component.html',
+            controller: ClaimDashboardController,
+            controllerAs: 'vm',
+            bindings: {
+             
+            },
+        });
+
+    function ClaimDashboardController() {
+        var vm = this;
+        
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssRemoveClaim', {
+            templateUrl: '/app/role/remove-claim.component.html',
+            controller: RemoveClaimController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+    RemoveClaimController.$inject = ['roleService'];
+    function RemoveClaimController(roleService) {
+        var vm = this;
+        vm.roles = [];
+        vm.selectedRole = null;
+        vm.refresh = refresh;
+        vm.save = save;
+
+        ////////////////
+
+        vm.$onInit = function() {
+            vm.refresh();
+         };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function refresh(){
+              roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                    vm.selectedRole = vm.roles[0];
+                    vm.selectedClaim = null;
+                });
+        }
+
+        function save(){
+            if(vm.selectedClaim){
+            roleService.removeClaim(vm.selectedRole, vm.selectedClaim)
+                .then(function(){
+                    vm.refresh();
+                });
+            }
+        }
+        
+
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssRemoveRole', {
+            templateUrl: '/app/role/remove-role.component.html',
+            controller: RoleController,
+            controllerAs: 'vm',
+            bindings: {
+                
+            }
+        });
+
+    RoleController.$inject = ['roleService'];
+    function RoleController(roleService) {
+        var vm = this;
+        vm.roles = [];
+        vm.selectedRole = null;
+        vm.save = save;
+        vm.refresh = refresh;
+
+        ////////////////
+
+        vm.$onInit = function() {
+           vm.refresh();  
+         };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function save(){
+            roleService.removeRole(vm.selectedRole)
+                .then(function(){
+                    vm.refresh();
+                });
+        }
+
+        function refresh(){
+            roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                    vm.selectedRole = vm.roles[0];
+                    
+                });
+        }
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssRoleDashboard', {
+            templateUrl: '/app/role/role-dashboard.component.html',
+            controller: RoleDashboardController,
+            controllerAs: 'vm',
+            bindings: {
+              
+            },
+        });
+
+ 
+    function RoleDashboardController() {
+        var vm = this;
+        
+
+        ////////////////
+
+        vm.$onInit = function() { };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssRoleList', {
+            templateUrl: '/app/role/role-list.component.html',
+            controller: RoleListController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+    RoleListController.$inject = ['roleService'];
+    function RoleListController(roleService) {
+        var vm = this;
+        vm.roles = [];
+       
+        vm.refresh = refresh;
+
+        ////////////////
+
+        vm.$onInit = function() {
+            vm.refresh();
+         };
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function refresh(){
+              roleService.getRoles()
+                .then(function(roles){
+                    vm.roles = roles;
+                });
+        }
+    }
+})();;(function() {
+'use strict';
+
     angular
         .module('lss-launchpad')
         .factory('roleService', RoleService);
@@ -691,7 +898,9 @@
         var service = {
             addRole: addRole,
             getRoles: getRoles,
-            addClaim: addClaim
+            addClaim: addClaim,
+            removeRole: removeRole,
+            removeClaim: removeClaim
         };
         
         return service;
@@ -721,6 +930,37 @@
             $http.get('/api/role')
                 .then(function(response){
                     deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function removeRole(role){
+            var deferred = $q.defer();
+
+            $http.delete('api/role', {params: role})
+                .then(function(response){
+                    deferred.resolve(true);
+                }, 
+                function(err){
+                    deferred.reject(err.data);
+                });
+            return deferred.promise;
+        }
+
+        function removeClaim(role, claim){
+            var deferred = $q.defer();
+            var roleClaim = {
+                roleName: role.name,
+                claimType: claim.claimType,
+                claimValue: claim.claimValue
+            };
+            $http.delete('/api/role/claim', {params: roleClaim})
+                .then(function(response){
+                    deferred.resolve(response.data);
+                },
+                function(err){
+                    deferred.reject(err.data);
                 });
 
             return deferred.promise;
@@ -865,6 +1105,8 @@
             },
         });
 
+    var _assignValue = "assign";
+    var _revokeValue = "revoke";
     AssignRoleController.$inject = ['roleService', 'userService'];
     function AssignRoleController(roleService, userService) {
         var vm = this;
@@ -872,6 +1114,7 @@
         vm.users = [];
         vm.roles = [];
         vm.assign = assign;
+        vm.operation = _assignValue;
 
         ////////////////
 
@@ -891,9 +1134,54 @@
         vm.$onDestory = function() { };
 
         function assign(){
-            userService.assign(vm.selectedRole, vm.selectedUser)
-                .then(function(result){
-                    
+            if(vm.operation === _assignValue){
+            userService.assign(vm.selectedRole, vm.selectedUser);
+            }
+            else{
+                userService.revoke(vm.selectedRole, vm.selectedUser);
+            }
+        }
+
+    }
+})();;(function() {
+'use strict';
+
+    // Usage:
+    // 
+    // Creates:
+    // 
+
+    angular
+        .module('lss-launchpad')
+        .component('lssUserList', {
+            templateUrl: '/app/user/user-list.component.html',
+            controller: UserListController,
+            controllerAs: 'vm',
+            bindings: {
+            },
+        });
+
+ 
+    UserListController.$inject = ['userService'];
+    function UserListController(userService) {
+        var vm = this;
+        
+        vm.users = [];
+        vm.refresh = refresh;
+
+        ////////////////
+
+        vm.$onInit = function() { 
+          vm.refresh();
+        };
+
+        vm.$onChanges = function(changesObj) { };
+        vm.$onDestory = function() { };
+
+        function refresh(){
+            userService.getUsersWithRoles()
+                .then(function(users){
+                    vm.users = users;
                 });
         }
 
@@ -910,8 +1198,11 @@
         var service = {
             getUsers: getUsers,
             assign: assign,
+            revoke: revoke,
             getClaims: getClaims,
-            getClaimsMap: getClaimsMap
+            getClaimsMap: getClaimsMap,
+            getUsersWithRoles: getUsersWithRoles
+
         };
         
         return service;
@@ -921,6 +1212,17 @@
             var deferred = $q.defer();
 
             $http.get('/api/user')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function getUsersWithRoles(){
+            var deferred = $q.defer();
+
+            $http.get('/api/user/roles')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -943,6 +1245,22 @@
                 });
             return deferred.promise;
         }
+
+        function revoke(role, user){
+            var deferred = $q.defer();
+
+            var userRole = {
+                role: role,
+                user: user
+            };
+
+            $http.post('/api/user/revoke', userRole)
+                .then(function(response)
+                {
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+         }
 
         function getClaims(){
             var deferred = $q.defer();

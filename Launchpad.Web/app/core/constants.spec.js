@@ -13,6 +13,7 @@ describe('constants', function(){
         expect(lssConstants.claims.login).toBeDefined();
         expect(lssConstants.claims.createClaim).toBeDefined();
         expect(lssConstants.claims.assignRole).toBeDefined();
+        expect(lssConstants.claims.createRole).toBeDefined();
     });
 
 });

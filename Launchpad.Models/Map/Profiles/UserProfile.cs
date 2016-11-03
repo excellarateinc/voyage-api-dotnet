@@ -9,6 +9,10 @@ namespace Launchpad.Models.Map.Profiles
         {
             CreateMap<ApplicationUser, UserModel>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.UserName));
+
+            CreateMap<ApplicationUser, UserWithRolesModel>()
+               .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.UserName))
+               .ForMember(dest => dest.Roles, opt => opt.Ignore());
         }
     }
 }

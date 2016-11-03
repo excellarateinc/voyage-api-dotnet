@@ -43,6 +43,44 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void RemoveUserFromRoleAsync_Should_Call_User_Manager()
+        {
+            var userModel = Fixture.Build<UserModel>()
+                .With(_ => _.Name, "bob@bob.com")
+                .Create(); ;
+
+            var appUser = new ApplicationUser
+            {
+                UserName = userModel.Name,
+                Email = userModel.Name
+            };
+
+            var roleModel = Fixture.Create<RoleModel>();
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.IsInRoleAsync(appUser, roleModel.Name))
+                .ReturnsAsync(true);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.RemoveFromRoleAsync(appUser, roleModel.Name))
+                .Returns(Task.Delay(0));
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(appUser))
+                .Returns(Task.Delay(0));
+
+            var result = await _userService.RemoveUserFromRoleAsync(roleModel, userModel);
+
+            Mock.VerifyAll();
+            result.Succeeded.Should().BeTrue();
+        }
+
+        [Fact]
 
         public async void AssignUserRoleAsync_Should_Call_User_Manager_Return_IdentityResult_Success_When_Sucessful()
         {
@@ -239,6 +277,42 @@ namespace Launchpad.Services.UnitTests
                .BeTrue();
         }
 
+
+        [Fact]
+        public void GetUsersWithRoles_Should_Call_UserManager()
+        {
+            var user1 = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Id = "abc"
+            };
+
+            var roles = new[] { "r1", "r2" };
+
+            var userResults = new[] { user1 };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(user1.Id))
+                .ReturnsAsync(user1);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(user1))
+                .ReturnsAsync(roles);
+
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>()
+                .Setup(_ => _.Users)
+                .Returns(userResults.AsQueryable());
+
+            var result = _userService.GetUsersWithRoles();
+
+            Mock.VerifyAll();
+            result.Should().HaveSameCount(userResults);
+
+            userResults.All(_ => result.Any(r => r.Name == _.UserName))
+               .Should()
+               .BeTrue();
+
+            result.All(_ => _.Roles.All(r => roles.Contains(r.Name)));
+        }
         [Fact]
         public async Task Register_Should_Call_UserManager()
         {

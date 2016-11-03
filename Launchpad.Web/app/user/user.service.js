@@ -10,8 +10,11 @@
         var service = {
             getUsers: getUsers,
             assign: assign,
+            revoke: revoke,
             getClaims: getClaims,
-            getClaimsMap: getClaimsMap
+            getClaimsMap: getClaimsMap,
+            getUsersWithRoles: getUsersWithRoles
+
         };
         
         return service;
@@ -21,6 +24,17 @@
             var deferred = $q.defer();
 
             $http.get('/api/user')
+                .then(function(response){
+                    deferred.resolve(response.data);
+                });
+
+            return deferred.promise;
+        }
+
+        function getUsersWithRoles(){
+            var deferred = $q.defer();
+
+            $http.get('/api/user/roles')
                 .then(function(response){
                     deferred.resolve(response.data);
                 });
@@ -43,6 +57,22 @@
                 });
             return deferred.promise;
         }
+
+        function revoke(role, user){
+            var deferred = $q.defer();
+
+            var userRole = {
+                role: role,
+                user: user
+            };
+
+            $http.post('/api/user/revoke', userRole)
+                .then(function(response)
+                {
+                    deferred.resolve(response.data);
+                });
+            return deferred.promise;
+         }
 
         function getClaims(){
             var deferred = $q.defer();

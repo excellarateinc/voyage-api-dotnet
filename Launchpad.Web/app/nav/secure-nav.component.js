@@ -36,8 +36,9 @@
 
         function _refreshNavigation(){
             vm.states = [];
-            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claims', 'addClaim');
-            _addState(constants.lssClaimType, constants.claims.assignRole, 'Users', 'userDashboard');
+            _addState(constants.lssClaimType, constants.claims.createClaim, 'Claim Dashboard', 'claimDashboard');
+            _addState(constants.lssClaimType, constants.claims.assignRole, 'User Dashboard', 'userDashboard');
+            _addState(constants.lssClaimType, constants.claims.createRole, 'Role Dashboard', 'roleDashboard');
         }
 
         function _addState(claimType, claimName, stateDisplayName, state){

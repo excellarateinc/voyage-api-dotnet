@@ -13,6 +13,10 @@ namespace Launchpad.Services.Interfaces
 
         IEnumerable<ClaimModel> GetRoleClaims(string name);
 
-        Task AddClaimAsync(RoleModel role, ClaimModel claim); 
+        Task AddClaimAsync(RoleModel role, ClaimModel claim);
+
+        Task<IdentityResult> RemoveRoleAsync(RoleModel role);
+
+         void RemoveClaim(string roleName, string claimType, string claimValue);
     }
 }

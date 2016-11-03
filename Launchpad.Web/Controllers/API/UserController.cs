@@ -1,6 +1,7 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
+using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
 using System.Linq;
 using System.Security.Claims;
@@ -29,6 +30,13 @@ namespace Launchpad.Web.Controllers.API
             return Ok(_userService.GetUsers());
         }
 
+        [Route("user/roles")]
+        [HttpGet]
+        public IHttpActionResult GetUsersWithRoles()
+        {
+            return Ok(_userService.GetUsersWithRoles());
+        }
+
         [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
         [HttpGet]
         [Route("user/claims")]
@@ -55,6 +63,25 @@ namespace Launchpad.Web.Controllers.API
             }
 
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("user/revoke")]
+        public async Task<IHttpActionResult> RemoveRole(UserRoleModel model)
+        {
+            var result = await _userService.RemoveUserFromRoleAsync(model.Role, model.User);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                ModelState.AddErrors(result);
+                if (ModelState.IsValid)
+                    return BadRequest();
+                else
+                    return BadRequest(ModelState);
+            }
         }
     }
 }

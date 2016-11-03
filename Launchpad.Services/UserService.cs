@@ -27,6 +27,14 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        
+        public async Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel)
+        {
+           
+            var result = await _userManager.RemoveFromRoleAsync(userModel.Id, roleModel.Name);
+            return result;
+        }
+
         public async Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel)
         {
 
@@ -34,7 +42,16 @@ namespace Launchpad.Services
             return result;
         }
 
-       
+        public IEnumerable<UserWithRolesModel> GetUsersWithRoles()
+        {
+            var applicationUsers = _userManager.Users.ToList();
+            var users = _mapper.Map<IEnumerable<UserWithRolesModel>>(applicationUsers);
+            foreach(var user in users)
+            {
+                user.Roles = _userManager.GetRoles(user.Id).Select(_ => new RoleModel { Name = _ }); 
+            }
+            return users;
+        } 
 
         public IEnumerable<UserModel> GetUsers()
         {

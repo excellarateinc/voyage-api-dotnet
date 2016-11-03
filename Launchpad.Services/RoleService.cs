@@ -35,6 +35,20 @@ namespace Launchpad.Services
             }
         }
 
+        public async Task<IdentityResult> RemoveRoleAsync(RoleModel role)
+        {
+            IdentityResult result;
+            var roleEntity = await _roleManager.FindByNameAsync(role.Name);
+            if (roleEntity != null)
+            {
+                result = await _roleManager.DeleteAsync(roleEntity);
+            }else
+            {
+                result = new IdentityResult($"Unable to find role with name {role.Name}");
+            }
+            return result;
+        }
+
         public async Task<IdentityResult> CreateRoleAsync(RoleModel model)
         {
             var role = new ApplicationRole();
@@ -56,6 +70,15 @@ namespace Launchpad.Services
             var claims = _roleClaimRepository.GetClaimsByRole(name);
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
             
+        }
+
+        public void RemoveClaim(string roleName, string claimType, string claimValue)
+        {
+            var claim = _roleClaimRepository.GetByRoleAndClaim(roleName, claimType, claimValue);
+            if (claim != null)
+            {
+                _roleClaimRepository.Delete(claim.Id);
+            }
         }
     }
 }

@@ -195,5 +195,60 @@ namespace Launchpad.Web.UnitTests.Controllers.API
 
             message.StatusCode.Should().Be(HttpStatusCode.Created);
         }
+
+        [Fact]
+        public void RemoveClaim_Should_Have_HttpDeleteAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveClaim("1,", "2", "3"));
+        }
+
+        [Fact]
+        public void RemoveRole_Should_Have_HttpDeleteAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveRole(new RoleModel()));
+        }
+
+        [Fact]
+        public void RemoveClaim_Should_Have_RouteAttribute()
+        {
+            _roleController.AssertRoute(_ => _.RemoveClaim("1", "2", "3"), "role/claim");
+        }
+
+
+
+        [Fact]
+        public async void RemoveClaim_Should_Call_RoleService()
+        {
+            //Arrange
+            var model = Fixture.Create<RoleClaimModel>();
+
+            _mockRoleService.Setup(_ => _.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue));
+
+            //Act
+            var result = _roleController.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue);
+
+
+            //Assert
+            var message = await result.ExecuteAsync(new CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            Mock.VerifyAll();
+        }
+
+        [Fact]
+        public async void RemoveRole_Should_Call_RoleService()
+        {
+            //Arrange
+            var model = Fixture.Create<RoleModel>();
+            _mockRoleService.Setup(_ => _.RemoveRoleAsync(model))
+                .ReturnsAsync(IdentityResult.Success);
+
+            //Act
+            var result = await _roleController.RemoveRole(model);
+
+            //Assert
+            var message = await result.ExecuteAsync(new CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            Mock.VerifyAll();
+        }
     }
 }

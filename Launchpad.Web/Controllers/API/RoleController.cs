@@ -51,5 +51,26 @@ namespace Launchpad.Web.Controllers.API
             return StatusCode(HttpStatusCode.Created);
         }
 
+        [HttpDelete]
+        [Route("role/claim")]
+        public IHttpActionResult RemoveClaim(string roleName, string claimType, string claimValue)
+        {
+           _roleService.RemoveClaim(roleName, claimType, claimValue);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        [HttpDelete]
+        public async Task<IHttpActionResult> RemoveRole([FromUri] RoleModel role)
+        {
+            var result = await _roleService.RemoveRoleAsync(role);
+            if (result.Succeeded)
+                return StatusCode(HttpStatusCode.NoContent);
+            else
+                return BadRequest();
+        }
+
+
+
     }
 }

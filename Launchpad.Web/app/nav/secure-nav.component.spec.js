@@ -43,10 +43,15 @@ describe('secure-nav.component', function(){
                 .withArgs('lss.permission', 'assign.role')
                 .returns(false);
 
+            mockAuthorizationService.expects('hasClaim')
+                .once()
+                .withArgs('lss.permission', 'create.role')
+                .returns(false);
+
             controller.$onInit();
 
             expect(controller.states.length).toBe(1);
-            expect(controller.states[0].state).toBe('addClaim');
+            expect(controller.states[0].state).toBe('claimDashboard');
                 
         });
     });

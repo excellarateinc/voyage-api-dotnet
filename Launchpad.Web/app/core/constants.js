@@ -8,7 +8,9 @@
             claims: {
                 login: 'login',
                 createClaim: 'create.claim',
-                assignRole: 'assign.role'
+                assignRole: 'assign.role',
+                createRole: 'create.role' 
+                
             }    
         });
 })();
