@@ -1,6 +1,11 @@
 ## Overview
 The following web service patterns are implemented within Launchpad API and should be followed closely.
 
+## Table of Contents
+* [HTTP Methods](#http-methods)
+* [Example Endpoints](#example-endpoints)
+* [HTTP Codes](#http-codes)
+
 **NOTE:** 
 If a new pattern emerges during development, then this page must be updated to reflect the OLD pattern and the NEW pattern 
 along with the date and name of the person making the change.
