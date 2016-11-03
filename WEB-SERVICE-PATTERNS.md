@@ -70,3 +70,8 @@ The following example is a situation with a PUT request to /users/1 resulted in 
     ]
 }
 ```
+
+The 'errors' list contains 'error' objects with the following structure:
+* type (enum/text, required): 'required', 'format', 'unknown'
+* message (text, required): any text describing the error
+* stackTrace (text, optional): stack trace from an exception thrown by the application.
