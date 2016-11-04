@@ -43,15 +43,35 @@ Requests the deletion of a specific object. For example, "/users/1" to delete us
 #### /users - GET
 Returns a list of users that the consumer is eligible to receive.
 
+#### /users?select=Roles - GET
+Follows the same process as /users - GET, but additionally returns the associated Roles of the User (this follows OData spec). Consult the web services API Doc documentation for options on the additional information that the web service supports in the response. 
 
-/users/1 - GET - Get user 1
+#### /users/1 - GET
+Returns a specific User with "id" of 1. Returns a 404 response code if no user is found. 
 
-/users - POST - Create new user
+#### /users - POST
+Creates a new user record. Returns a 200 OK if the user is successfully created or if there are validation or other expected errors. See the Status object with an optional Errors object in the response for more information. See [Response Status](#response-status) and [Response Errors](#response-errors) for more information.  
 
-/users/1 - PUT - Update user 1
+#### /users/1 - PUT
+Updates an existing user record by overwriting the object in the database with the given request payload. If data is omitted from the request payload, then it will be deleted in the database. PUT represents a complete overwrite, whereas PATCH represents a partial update.
 
-/users/1 - DELETE - Delete user 1
+#### /users/1 - DELETE
+Deletes a specific User with "id" of 1
 
+#### /users/1/roles - GET
+Returns a list of roles that the consumer is eligible to receive. This is an example of nesting associated objects of the User in a RESTful pattern. 
+
+#### /users/1/roles/2 - GET
+Returns a specific User Role from User id=1 and Role id = 2.
+
+#### /users/1/roles - POST
+Creates a new role for User with "id" = 1. Returns a 200 OK if the role is successfully created or if there are validation or other expected errors. See the Status object with an optional Errors object in the response for more information. See [Response Status](#response-status) and [Response Errors](#response-errors) for more information.
+
+#### /users/1/roles/2 - PUT
+Updates an existing role record (id=2) for existing user record (id=1) by overwriting the object in the database with the given request payload. If data is omitted from the request payload, then it will be deleted in the database. PUT represents a complete overwrite, whereas PATCH represents a partial update.
+
+#### /users/1/roles/2 - DELETE
+Deletes a specific user role with id="2" for user with id = "1".
 
 ## HTTP Codes
 The following codes are returned as HTTP Status Codes in the response header depending on the circumstances described below.
