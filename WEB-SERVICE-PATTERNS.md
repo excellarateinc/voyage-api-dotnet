@@ -1,12 +1,23 @@
 ## Overview
-The following web service patterns are implemented within Launchpad API and should be followed closely.
+The following the patterns defined below is meant to loosely follow the [OData](http://www.odata.org) specification as a guideline. When in doubt, follow [OData](http://www.odata.org) unless the OData spec doesn't follow the KISS (Keep is Stupid Simple) protocol. The architecture team defining these rules for this project are working hard to strike a balance between a well defined protocol that is simple, easy to read, efficient, and solving clearly known and relevant issues.
+
+Please keep this document up to date as new decisions are made relating to web services architecture and patterns. 
 
 ## Table of Contents
+* [Definitions](#definitions)
 * [HTTP Methods](#http-methods)
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Response Status](#response-status)
 * [Response Errors](#response-errors)
+
+## Definitions
+
+#### Web Service Provider (aka Provider)
+The provider of web services to an audience of web service consumers. A provider provides web services for consumption.
+
+#### Web Service Consumer (aka Consumer)
+The consumer of web services made available by a web service provider. A consumers consumes web services to push and pull data. 
 
 ## HTTP Methods
 
@@ -21,11 +32,17 @@ Inserts a new object into the database. For example, "/users" to post a new user
 Updates the entire object into the database. A PUT assumes that the request will contain all necessary fields to completely 
 replace the object within the database. For example, "/users/1" to update an existing user within the database.
 
+#### PATCH
+Partially updates an object within the database. The purpose of PATCH is to send only the data that should be changed about an object while keeping everything else unchanged. As of this writing, PATCH will not be used very often, if at all. 
+
 #### DELETE
 Requests the deletion of a specific object. For example, "/users/1" to delete user with id=1 from the database.
 
 ## Example Endpoints
-/users - GET - List users
+
+#### /users - GET
+Returns a list of users that the consumer is eligible to receive.
+
 
 /users/1 - GET - Get user 1
 
