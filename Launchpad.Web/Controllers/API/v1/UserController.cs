@@ -3,6 +3,7 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
         /**
-        * @api {get} /v1/user/claims Get the authenticated user's claims 
+        * @api {get} /v1/user/:userId/claims Get user claims
         * @apiVersion 0.1.0
         * @apiName Claims
         * @apiGroup User
@@ -107,6 +108,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiPermission lss.permission->list.user-claims
         * 
         * @apiUse AuthHeader
+        * 
+        * @apiParam {String} userId Id of user
         *   
         * @apiSuccess {Object[]} claims List of user claims
         * @apiSuccess {String} claims.claimType Type of the claim
@@ -127,17 +130,13 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
+        [ClaimAuthorize(ClaimValue = LssClaims.ListUserClaims)]
         [HttpGet]
-        [Route("user/claims")]
-        public IHttpActionResult GetClaims()
+        [Route("user/{userId}/claims")]
+        public async Task<IHttpActionResult> GetClaims(string userId)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var clientFacingClaims = claimsIdentity.Claims
-                .Where(_=>_.Type == Constants.LssClaims.Type)
-                .Select(_ => new ClaimModel { ClaimType = _.Type, ClaimValue = _.Value })
-                .ToList();
-            return Ok(clientFacingClaims);
+            var claims = await _userService.GetUserClaimsAsync(userId);
+            return Ok(claims);
         }
 
 

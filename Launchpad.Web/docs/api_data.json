@@ -1163,8 +1163,8 @@
   },
   {
     "type": "get",
-    "url": "/v1/user/claims",
-    "title": "Get the authenticated user's claims",
+    "url": "/v1/user/:userId/claims",
+    "title": "Get user claims",
     "version": "0.1.0",
     "name": "Claims",
     "group": "User",
@@ -1173,6 +1173,19 @@
         "name": "lss.permission->list.user-claims"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>Id of user</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [

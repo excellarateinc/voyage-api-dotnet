@@ -22,5 +22,7 @@ namespace Launchpad.Services.Interfaces
 
         IEnumerable<UserWithRolesModel> GetUsersWithRoles();
 
+        Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
+
     }
 }

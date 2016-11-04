@@ -14,6 +14,7 @@ using Launchpad.Services.Fixture;
 using System.Linq;
 using Launchpad.Services.Interfaces;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -40,6 +41,44 @@ namespace Launchpad.Services.UnitTests
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
             _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object);
+        }
+
+        [Fact]
+        public async void GetUserClaimsAsync_Should_Call_User_Manager()
+        {
+            var roles = new string[] { "Admin" };
+            var id = Fixture.Create<string>();
+            var roleClaims = new[] { new ClaimModel { ClaimType = "type1", ClaimValue = "value1" } };
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "admin@admin.com"
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(appUser))
+                .ReturnsAsync(roles);
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+                .Setup(_ => _.GetClaimsAsync(appUser))
+                .ReturnsAsync(new List<Claim>());
+
+            _mockRoleService.Setup(_ => _.GetRoleClaims(roles[0]))
+                .Returns(roleClaims);
+
+            //Act
+            var result = await _userService.GetUserClaimsAsync(id);
+
+            Mock.VerifyAll();
+            result.Should().NotBeNullOrEmpty();
+            result.Any(_ => _.ClaimValue == "value1" && _.ClaimType == "type1").Should().BeTrue();
+
         }
 
         [Fact]

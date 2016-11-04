@@ -92,7 +92,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
         {
-            _userController.AssertClaim(_ => _.GetClaims(), LssClaims.ListUserClaims);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertClaim(_ => _.GetClaims("abc"), LssClaims.ListUserClaims);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
@@ -108,9 +110,15 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
 
         [Fact]
-        public async void GetClaims_Should_Return_Lss_Claims_From_Identity()
+        public async void GetClaims_Should_Call_User_Service()
         {
-            var result = _userController.GetClaims();
+            var id = "abc";
+            var fakeClaims = Fixture.CreateMany<ClaimModel>();
+
+            _mockUserService.Setup(_ => _.GetUserClaimsAsync(id))
+                .ReturnsAsync(fakeClaims);
+
+            var result = await _userController.GetClaims(id);
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 
@@ -119,11 +127,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             IEnumerable<ClaimModel> models;
             message.TryGetContentValue(out models).Should().BeTrue();
 
-            models.Should().HaveCount(1);
-            var claim = models.First();
-            claim.ClaimType.Should().Be(Constants.LssClaims.Type);
-            claim.ClaimValue.Should().Be("view.widget");
-
+            models.Should().BeEquivalentTo(fakeClaims);
         }
 
         [Fact]
@@ -255,7 +259,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void GetClaims_Should_Have_HttpGetAttribute()
         {
-            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims())
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
                 .BeDecoratedWith<HttpGetAttribute>();
         }
@@ -263,9 +269,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void GetClaims_Should_Have_RouteAttribute()
         {
-            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims())
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
               .Should()
-              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "user/claims");
+              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "user/{userId}/claims");
         }
 
         [Fact]

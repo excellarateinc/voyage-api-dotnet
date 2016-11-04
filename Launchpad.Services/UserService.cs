@@ -78,6 +78,17 @@ namespace Launchpad.Services
             return result;
         }
 
+        public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                throw new ArgumentException($"Unable to find user {userId}");
+            }
+            var identity = await CreateClaimsIdentityAsync(user.UserName, "OAuth");
+            return _mapper.Map<IEnumerable<ClaimModel>>(identity.Claims);
+        }
+
         public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
         {
             var user = await _userManager.FindByNameAsync(userName);
