@@ -101,7 +101,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void AssignRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.AssignRole(new UserRoleModel()), LssClaims.AssignRole);
+            _userController.AssertClaim(_ => _.AssignRole("userId", new RoleModel()), LssClaims.AssignRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         }
@@ -160,12 +160,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void Assign_Should_Call_User_Service_And_Return_Ok_When_Successful()
         {
             //arrange
-            var model = Fixture.Create<UserRoleModel>();
-            _mockUserService.Setup(_ => _.AssignUserRoleAsync(model.Role, model.User))
+            var userId = Fixture.Create<string>();
+            var model = Fixture.Create<RoleModel>();
+            _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
                 .ReturnsAsync(IdentityResult.Success);
 
             //act
-            var result = await _userController.AssignRole(model);
+            var result = await _userController.AssignRole(userId, model);
 
             
 
@@ -182,14 +183,15 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void Assign_Should_Call_User_Service_And_Return_BadRequest_When_Role_Assignment_Fails()
         {
             //arrange
-            var model = Fixture.Create<UserRoleModel>();
+            var userId = Fixture.Create<string>();
+            var model = Fixture.Create<RoleModel>();
 
-            _mockUserService.Setup(_ => _.AssignUserRoleAsync(model.Role, model.User))
-                .ReturnsAsync(new IdentityResult());
+            _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
+                .ReturnsAsync(new IdentityResult("Error"));
 
 
             //act
-            var result = await _userController.AssignRole(model);
+            var result = await _userController.AssignRole(userId, model);
 
 
             //assert
@@ -212,7 +214,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void AssignRole_Should_Be_Decorated_With_HttpGetAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole(new UserRoleModel()))
+            ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole("userId", new RoleModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
@@ -222,8 +224,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void AssignRole_Should_Be_Decorated_With_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole(new UserRoleModel()))
-                .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "user/assign");
+            ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole("userId", new RoleModel()))
+                .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "user/{userId}/role");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         }
@@ -280,7 +282,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void RemoveRole_Should_Have_HttpPostAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertAttribute<UserController, HttpPostAttribute>(_ => _.RemoveRole(new UserRoleModel()));
+            _userController.AssertAttribute<UserController, HttpDeleteAttribute>(_ => _.RemoveRole("userId", "roleId"));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -288,7 +290,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void RemoveRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertRoute(_ => _.RemoveRole(new UserRoleModel()), "user/revoke");
+            _userController.AssertRoute(_ => _.RemoveRole("userId", "roleId"), "user/{userId}/role/{roleId}");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -297,18 +299,20 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void RevokeRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.RemoveRole(new UserRoleModel()), LssClaims.RevokeRole);
+            _userController.AssertClaim(_ => _.RemoveRole("userId", "roleId"), LssClaims.RevokeRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
         [Fact]
         public async void RemoveRole_Should_Call_UserService()
         {
-            var model = Fixture.Create<UserRoleModel>();
+            var userId = Fixture.Create<string>();
+            var roleId = Fixture.Create<string>();
+          
 
-            _mockUserService.Setup(_ => _.RemoveUserFromRoleAsync(model.Role, model.User))
+            _mockUserService.Setup(_ => _.RemoveUserFromRoleAsync(userId, roleId))
                 .ReturnsAsync(IdentityResult.Success);
 
-            var result = await _userController.RemoveRole(model);
+            var result = await _userController.RemoveRole(userId, roleId);
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 

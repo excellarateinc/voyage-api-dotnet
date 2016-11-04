@@ -43,6 +43,26 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public void GetRoleById_Should_Call_Role_Manager()
+        {
+            var id = Fixture.Create<string>();
+
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(role);
+
+            //act
+            var result = _roleService.GetRoleById(id);
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
         public async void RemoveRole_Calls_Role_Manager()
         {
             //Arrange

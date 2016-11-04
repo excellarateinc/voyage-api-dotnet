@@ -3,9 +3,6 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
-using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
@@ -140,41 +137,39 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
 
-         /**
-         * @api {post} /v1/user/assign Assign role to user 
-         * @apiVersion 0.1.0
-         * @apiName AssignRole
-         * @apiGroup User
-         * 
-         * @apiPermission lss.permission->assign.role
-         * 
-         * @apiUse AuthHeader
-         *   
-         * @apiParam {Object} userRole Association between a user and a role
-         * @apiParam {Object} userRole.role Role for the association
-         * @apiParam {String} userRole.role.id Role ID
-         * @apiParam {String} userRole.role.name Name of the role
-         * @apiParam {Object} userRole.user User for the association
-         * @apiParam {String} userRole.user.id User ID
-         * @apiParam {String} userRole.user.name Name of the user
-         * 
-         * @apiSuccessExample Success-Response:
-         *   HTTP/1.1 200 OK
-         *
-         * @apiUse UnauthorizedError
-         * 
-         * @apiUse BadRequestError  
-         **/
+        /**
+        * @api {post} /v1/user/:userId/role Assign role to user 
+        * @apiVersion 0.1.0
+        * @apiName AssignRole
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->assign.role
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiParam {String} userId User ID
+        * @apiParam {Object} role Role for the association
+        * @apiParam {String} role.id Role ID
+        * @apiParam {String} role.name Name of the role
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *
+        * @apiUse UnauthorizedError
+        * 
+        * @apiUse BadRequestError  
+        **/
         [ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
         [HttpPost]
-        [Route("user/assign")]
-        public async Task<IHttpActionResult> AssignRole(UserRoleModel userRole)
+        [Route("user/{userId}/role")]
+        public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
-            var identityResult = await _userService.AssignUserRoleAsync(userRole.Role, userRole.User);
+            var identityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
 
             if (!identityResult.Succeeded)
             {
-                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+                ModelState.AddErrors(identityResult);
+                return BadRequest(ModelState);
             }
 
             return Ok();
@@ -182,7 +177,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
         /**
-        * @api {post} /v1/user/revoke Remove role from user 
+        * @api {delete} /v1/user/:userId/role/:roleId Remove role from user 
         * @apiVersion 0.1.0
         * @apiName RevokeRole
         * @apiGroup User
@@ -191,13 +186,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         *   
-        * @apiParam {Object} userRole Association between a user and a role
-        * @apiParam {Object} userRole.role Role for the association
-        * @apiParam {String} userRole.role.id Role ID
-        * @apiParam {String} userRole.role.name Name of the role
-        * @apiParam {Object} userRole.user User for the association
-        * @apiParam {String} userRole.user.id User ID
-        * @apiParam {String} userRole.user.name Name of the user
+        * @apiParam {String} roleId Role ID
+        * @apiParam {String} userId User ID
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -207,11 +197,11 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
-        [HttpPost]
-        [Route("user/revoke")]
-        public async Task<IHttpActionResult> RemoveRole(UserRoleModel model)
+        [HttpDelete]
+        [Route("user/{userId}/role/{roleId}")]
+        public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
-            var result = await _userService.RemoveUserFromRoleAsync(model.Role, model.User);
+            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             if (result.Succeeded)
             {
                 return Ok();

@@ -84,19 +84,22 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public async void RemoveUserFromRoleAsync_Should_Call_User_Manager()
         {
-            var userModel = Fixture.Build<UserModel>()
-                .With(_ => _.Name, "bob@bob.com")
-                .Create(); ;
+            var userId = "user-id";
+            var roleId = "role-id";
+            var roleModel = Fixture.Create<RoleModel>();
+
+
 
             var appUser = new ApplicationUser
             {
-                UserName = userModel.Name,
-                Email = userModel.Name
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com"
             };
 
-            var roleModel = Fixture.Create<RoleModel>();
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+                .Returns(roleModel);
 
-            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
+            _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
 
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
@@ -107,13 +110,13 @@ namespace Launchpad.Services.UnitTests
                 .Setup(_ => _.RemoveFromRoleAsync(appUser, roleModel.Name))
                 .Returns(Task.Delay(0));
 
-            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
                 .ReturnsAsync(appUser);
 
             _mockStore.Setup(_ => _.UpdateAsync(appUser))
                 .Returns(Task.Delay(0));
 
-            var result = await _userService.RemoveUserFromRoleAsync(roleModel, userModel);
+            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
 
             Mock.VerifyAll();
             result.Succeeded.Should().BeTrue();
@@ -154,7 +157,7 @@ namespace Launchpad.Services.UnitTests
          
 
             //act
-            var result = await _userService.AssignUserRoleAsync(roleModel, userModel);
+            var result = await _userService.AssignUserRoleAsync(userModel.Id, roleModel);
 
 
             //assert

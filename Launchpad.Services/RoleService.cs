@@ -26,6 +26,11 @@ namespace Launchpad.Services
             _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
+        public RoleModel GetRoleById(string id)
+        {
+            return _mapper.Map<RoleModel>(_roleManager.FindById(id));
+        }
+
         public async Task AddClaimAsync(RoleModel role, ClaimModel claim)
         {
             var roleEntity = await _roleManager.FindByNameAsync(role.Name);

@@ -28,17 +28,17 @@ namespace Launchpad.Services
         }
 
         
-        public async Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel)
+        public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
-           
-            var result = await _userManager.RemoveFromRoleAsync(userModel.Id, roleModel.Name);
+
+            var role = _roleService.GetRoleById(roleId);
+            var result = await _userManager.RemoveFromRoleAsync(userId, role.Name);
             return result;
         }
 
-        public async Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel)
+        public async Task<IdentityResult> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
-
-            var result = await _userManager.AddToRoleAsync(userModel.Id, roleModel.Name);
+            var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
             return result;
         }
 
