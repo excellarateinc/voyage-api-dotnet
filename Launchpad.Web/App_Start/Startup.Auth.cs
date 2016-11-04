@@ -2,6 +2,7 @@
 using Launchpad.Web.AuthProviders;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http.Cors;
 
 namespace Launchpad.Web
 {
@@ -60,6 +62,9 @@ namespace Launchpad.Web
         {
             //Add autofac to the pipeline
             app.UseAutofacMiddleware(ContainerConfig.Container);
+  
+            app.UseCors(CorsOptions.AllowAll);
+            
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
@@ -78,7 +83,8 @@ namespace Launchpad.Web
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
+                AllowInsecureHttp = true,
+               
             };
 
             // Enable the application to use bearer tokens to authenticate users

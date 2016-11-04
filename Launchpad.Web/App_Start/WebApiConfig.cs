@@ -7,7 +7,7 @@ using System.Web.Http;
 using Autofac;
 using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security.OAuth;
-
+using System.Web.Http.Cors;
 namespace Launchpad.Web
 {
     public static class WebApiConfig
@@ -17,9 +17,10 @@ namespace Launchpad.Web
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
+
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
-            
+
             //Service locator - not ideal
             var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
             config.MessageHandlers.Add(new RequestMetricsHandler(metricsService));

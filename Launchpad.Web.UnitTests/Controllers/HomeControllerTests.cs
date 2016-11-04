@@ -20,7 +20,7 @@ namespace Launchpad.Web.UnitTests.Controllers
         {
             var result = _homeController.Index();
 
-            result.Should().BeOfType<ViewResult>();
+            result.Should().BeOfType<RedirectResult>();
             
         }
 
