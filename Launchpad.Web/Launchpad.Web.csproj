@@ -219,87 +219,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\account\account.service.js" />
-    <Content Include="app\account\account.service.spec.js" />
-    <Content Include="app\account\login.component.html" />
-    <Content Include="app\account\login.component.js" />
-    <Content Include="app\account\login.component.spec.js" />
-    <Content Include="app\account\register.component.html" />
-    <Content Include="app\account\register.component.js" />
-    <Content Include="app\account\register.component.spec.js" />
-    <Content Include="app\app.config.js" />
-    <Content Include="app\app.css" />
-    <Content Include="app\app.module.js" />
-    <Content Include="app\core\authorization.interceptor.js" />
-    <Content Include="app\core\authorization.interceptor.spec.js" />
-    <Content Include="app\core\authorization.service.js" />
-    <Content Include="app\core\authorization.service.spec.js" />
-    <Content Include="app\core\constants.js" />
-    <Content Include="app\core\constants.spec.js" />
-    <Content Include="app\core\error.service.js" />
-    <Content Include="app\core\error.service.spec.js" />
-    <Content Include="app\dashboard\dashboard.component.html" />
-    <Content Include="app\dashboard\dashboard.component.js" />
-    <Content Include="app\dashboard\dashboard.component.spec.js" />
-    <Content Include="app\header\header.component.html" />
-    <Content Include="app\header\header.component.js" />
-    <Content Include="app\header\header.component.spec.js" />
-    <Content Include="app\header\secure.header.component.html" />
-    <Content Include="app\header\secure.header.component.js" />
-    <Content Include="app\header\secure.header.component.spec.js" />
-    <Content Include="app\nav\empty-nav.component.html" />
-    <Content Include="app\nav\empty-nav.component.js" />
-    <Content Include="app\nav\empty-nav.component.spec.js" />
-    <Content Include="app\nav\secure-nav.component.html" />
-    <Content Include="app\nav\secure-nav.component.js" />
-    <Content Include="app\nav\secure-nav.component.spec.js" />
-    <Content Include="app\role\add-claim.component.html" />
-    <Content Include="app\role\add-claim.component.js" />
-    <Content Include="app\role\add-claim.component.spec.js" />
-    <Content Include="app\role\add-role.component.html" />
-    <Content Include="app\role\add-role.component.js" />
-    <Content Include="app\role\add-role.component.spec.js" />
-    <Content Include="app\role\claim-dashboard.component.html" />
-    <Content Include="app\role\claim-dashboard.component.js" />
-    <Content Include="app\role\claim-dashboard.component.spec.js" />
-    <Content Include="app\role\remove-claim.component.html" />
-    <Content Include="app\role\remove-claim.component.js" />
-    <Content Include="app\role\remove-claim.component.spec.js" />
-    <Content Include="app\role\remove-role.component.html" />
-    <Content Include="app\role\remove-role.component.js" />
-    <Content Include="app\role\remove-role.component.spec.js" />
-    <Content Include="app\role\role-dashboard.component.html" />
-    <Content Include="app\role\role-dashboard.component.js" />
-    <Content Include="app\role\role-dashboard.component.spec.js" />
-    <Content Include="app\role\role-list.component.html" />
-    <Content Include="app\role\role-list.component.js" />
-    <Content Include="app\role\role-list.component.spec.js" />
-    <Content Include="app\role\role.service.js" />
-    <Content Include="app\role\role.service.spec.js" />
-    <Content Include="app\status\status-list.component.html" />
-    <Content Include="app\status\status-list.component.js" />
-    <Content Include="app\status\status-list.component.spec.js" />
-    <Content Include="app\status\status.component.html" />
-    <Content Include="app\status\status.component.js" />
-    <Content Include="app\status\status.component.spec.js" />
-    <Content Include="app\status\status.service.js" />
-    <Content Include="app\status\status.service.spec.js" />
-    <Content Include="app\user\assign-role.component.html" />
-    <Content Include="app\user\assign-role.component.js" />
-    <Content Include="app\user\assign-role.component.spec.js" />
-    <Content Include="app\user\user-list.component.html" />
-    <Content Include="app\user\user-list.component.js" />
-    <Content Include="app\user\user-list.component.spec.js" />
-    <Content Include="app\user\user.service.js" />
-    <Content Include="app\user\user.service.spec.js" />
-    <Content Include="app\widget\widget.component.html" />
-    <Content Include="app\widget\widget.component.js" />
-    <Content Include="app\widget\widget.component.spec.js" />
-    <Content Include="app\widget\widget.service.js" />
-    <Content Include="app\widget\widget.service.spec.js" />
     <Content Include="Global.asax" />
-    <Content Include="gruntfile.js" />
-    <Content Include="karma.conf.js" />
     <Content Include="Web.config" />
     <Content Include="_apidoc.js" />
   </ItemGroup>
@@ -330,15 +250,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="apidoc.json" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
