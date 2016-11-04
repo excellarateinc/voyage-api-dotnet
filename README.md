@@ -18,9 +18,7 @@ The following tools should be installed on the development machine:
    - Checked in connection strings point at SQLExpress 
    - Default instance: localhost\sqlexpress
 3. [Node](https://nodejs.org/en/)
-4. [Karma Client](http://karma-runner.github.io/1.0/intro/installation.html)
-   - npm install -g karma-Client
-5. [apiDocJs](http://apidocjs.com/)
+4. [apiDocJs](http://apidocjs.com/)
    - npm install -g apidoc 
 
 ### Source code
@@ -117,33 +115,6 @@ are roughly as follows:
 - Owin Middleware for Bearer Security
 - Serilog  
 
-
-### Client Development Notes
-There is a simple client UI within ***Launchpad.Web***. It supports the following scenarios:
-
-- As a user, I want to be able to register so I can access secure data.
-- As a user, I want to login so I can see secure data.
-- As a user, I want to see a list of widgets.
-- As a user, I want to logout so that other parties cannot access secure data.
-
-#### Client Build Commands
-Currently, the client is built using Grunt tasks. These tasks have been wrapped in NPM scripts to support removing the Grunt dependency.
-
-- npm test: This will run JSLint and the Karma test
-- npm run build: This will run JSLint and build the output files to /dist/ (at this time it does not minify)
-
-#### Client Stack 
-The following components are used in the client:
-
-1. [Bootstrap](http://getbootstrap.com/)
-2. [Angular (1.5+)](https://angularjs.org/)
-   - New functionality should be build using components
-3. [Angular UI Router (1.0.0-beta.3)](https://ui-router.github.io/ng1/)
-   - Note: The beta library is needed to support component routing
-4. [Karma](https://karma-runner.github.io/1.0/index.html)
-5. [Sinon](http://sinonjs.org/) 
-   - Mocking library for JavaScript
-
 ### Generating Documentation
 The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For 
 more details see the [documentation](http://apidocjs.com/).
@@ -196,36 +167,10 @@ All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js
 To generate the api docs after a change:
 1. In ***Launchpad.Web*** execute npm run doc
    - This is an npm script that is defined in package.json
-   - Script: apidoc -o docs -i Controllers
+   - Script: apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\"
    - This will scan the Controllers folder for endpoints and place the output in \docs
 
 To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
-
-## Testing
-The project has both client and server tests. 
-
-### Client Testing
-1. The tests use behavior and state verification
-   - Use Sinon to setup expectations and verify the behavior
-   - Use a Sinon sandbox for easy teardown of mocked components
-2. Place the test file alongside the components under test
-   - The build process will ignore any file with **.spec.js in the name
-3. Use $componentController service to get instance for testing component controllers in isolation
-4. Use nested describes to group tests together 
-5. For continuous testing use: karma start --singleRun=false
-
-
-#### Sinon Sandbox Setup
-```
-  beforeEach(function(){
-        sandbox = sinon.sandbox.create();
-    });
- 
-  afterEach(function(){
-        sandbox.restore();
-    });
-  
-```
 
 ### Server Testing 
 1. Integration tests exist for the Launchpad.Data
@@ -239,18 +184,8 @@ The project has both client and server tests.
 4. Use interfaces for dependencies in order to loosely couple components and make code mock-able
 5. When possible avoid statics to promote testable components
 
-
-
-    
-
-
 ### Testing Stack
-The current testing stack for client and server are found below. 
-
-#### Client Tests
-1. [Karma](https://karma-runner.github.io/1.0/index.html)
-2. [Jasmine](http://jasmine.github.io/) 
-3. [Sinon](http://sinonjs.org/) 
+The current testing stack for the server is found below. 
 
 #### Server Tests
 1. [Xunit](https://xunit.github.io/)
