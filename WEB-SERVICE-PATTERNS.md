@@ -1,15 +1,20 @@
 ## Overview
-The following the patterns defined below is meant to loosely follow the [OData](http://www.odata.org) specification as a guideline. When in doubt, follow [OData](http://www.odata.org) unless the OData spec doesn't follow the KISS (Keep is Stupid Simple) protocol. The architecture team defining these rules for this project are working hard to strike a balance between a well defined protocol that is simple, easy to read, efficient, and solving clearly known and relevant issues.
-
-Please keep this document up to date as new decisions are made relating to web services architecture and patterns. 
+The following the patterns defined below describes the expectations that should be available in every web service (WS) as a rule. All developers utilizing this WS API should be able to rely on the consistency of implementation. All developers implementing a web service in this API should know these patterns an adhere to them strictly. Should a situation appear that is outside of these patterns and rules, then it should be reviewed by the team and updated within this document with the clearly communicated understanding that everyone is to follow the revised patterns and rules. 
 
 ## Table of Contents
+* [References](#references)
 * [Definitions](#definitions)
 * [HTTP Methods](#http-methods)
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Response Status](#response-status)
 * [Response Errors](#response-errors)
+
+## References
+The patterns and rules defined within this document are heavily influenced by the following people and frameworks.
+
+* [Best Practices For a Programatic RESTful API](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+* [OData](http://www.odata.org) specification as a guideline (not an absolute rule)
 
 ## Definitions
 
