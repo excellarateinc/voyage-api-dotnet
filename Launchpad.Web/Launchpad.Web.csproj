@@ -219,7 +219,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="_apidoc.js" />
   </ItemGroup>
@@ -227,7 +226,6 @@
     <Compile Include="AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="Constants.cs" />
@@ -238,13 +236,9 @@
     <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
     <Compile Include="Controllers\API\v1\WidgetController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Handlers\RequestMetricsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

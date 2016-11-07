@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Http.Cors;
 
 namespace Launchpad.Web
@@ -61,6 +62,13 @@ namespace Launchpad.Web
         public static void Configure(IAppBuilder app)
         {
             //Add autofac to the pipeline
+            var httpConfig = new HttpConfiguration();
+
+            ContainerConfig.Register(httpConfig);
+
+            WebApiConfig.Register(httpConfig);
+
+
             app.UseAutofacMiddleware(ContainerConfig.Container);
   
             app.UseCors(CorsOptions.AllowAll);
@@ -89,6 +97,8 @@ namespace Launchpad.Web
 
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
+
+            app.UseWebApi(httpConfig);
         }
     }
 }

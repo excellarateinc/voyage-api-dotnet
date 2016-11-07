@@ -6,6 +6,7 @@ using Launchpad.Services;
 using Launchpad.Data;
 using System.Configuration;
 using Launchpad.Models.Map;
+using System.Web.Http;
 
 namespace Launchpad.Web.App_Start
 {
@@ -18,7 +19,7 @@ namespace Launchpad.Web.App_Start
 
         public static IContainer Container { get; private set; }
 
-        public static void Register()
+        public static void Register(HttpConfiguration httpConfig)
         {
             var builder = new ContainerBuilder();
 
@@ -28,21 +29,18 @@ namespace Launchpad.Web.App_Start
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
             builder.RegisterModule(new WebModule(connectionString));
-
-            // Get your HttpConfiguration.
-            var config = System.Web.Http.GlobalConfiguration.Configuration;
-
+            
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             // OPTIONAL: Register the Autofac filter provider.
-            builder.RegisterWebApiFilterProvider(config);
+            builder.RegisterWebApiFilterProvider(httpConfig);
 
             // Set the dependency resolver to be Autofac.
             Container = builder.Build();
 
 
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
+            httpConfig.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
         }
     }
 }
