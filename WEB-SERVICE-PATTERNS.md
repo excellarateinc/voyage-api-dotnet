@@ -5,6 +5,7 @@ The following the patterns defined below describes the expectations that should 
 * [References](#references)
 * [Definitions](#definitions)
 * [HTTP Methods](#http-methods)
+* [Versioning](#versioning)
 * [Example Endpoints](#example-endpoints)
 * [HTTP Codes](#http-codes)
 * [Response Status](#response-status)
