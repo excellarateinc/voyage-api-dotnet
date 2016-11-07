@@ -389,7 +389,7 @@
   },
   {
     "type": "delete",
-    "url": "/v1/roles",
+    "url": "/v1/roles/:roleId",
     "title": "Delete a role",
     "version": "0.1.0",
     "name": "RemoveRole",
@@ -559,7 +559,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/status",
+    "url": "/v2/statuses",
     "title": "Get status from all monitors",
     "version": "0.2.0",
     "name": "GetStatus",
@@ -703,7 +703,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/status/:id",
+    "url": "/v2/statuses/:id",
     "title": "Get status by monitor type",
     "version": "0.2.0",
     "name": "GetStatusByType",
@@ -788,7 +788,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/status/:id",
+    "url": "/v1/statuses/:id",
     "title": "Get status by monitor type",
     "version": "0.1.0",
     "name": "GetStatusByType",
@@ -1505,7 +1505,7 @@
   },
   {
     "type": "post",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Create a new widget",
     "version": "0.2.0",
     "name": "CreateWidget",
@@ -1631,7 +1631,7 @@
   },
   {
     "type": "post",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Create a new widget",
     "version": "0.1.0",
     "name": "CreateWidget",
@@ -1743,7 +1743,7 @@
   },
   {
     "type": "delete",
-    "url": "/v2/widget/:id",
+    "url": "/v2/widgets/:id",
     "title": "Delete a widget",
     "version": "0.2.0",
     "name": "DeleteWidget",
@@ -1819,7 +1819,7 @@
   },
   {
     "type": "delete",
-    "url": "/v1/widget/:id",
+    "url": "/v1/widgets/:id",
     "title": "Delete a widget",
     "version": "0.1.0",
     "name": "DeleteWidget",
@@ -1895,7 +1895,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/widget/:id",
+    "url": "/v2/widgets/:id",
     "title": "Get a widget",
     "version": "0.2.0",
     "name": "GetWidget",
@@ -2007,7 +2007,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/widget/:id",
+    "url": "/v1/widgets/:id",
     "title": "Get a widget",
     "version": "0.1.0",
     "name": "GetWidget",
@@ -2112,7 +2112,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Get all widgets",
     "version": "0.2.0",
     "name": "GetWidgets",
@@ -2207,7 +2207,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Get all widgets",
     "version": "0.1.0",
     "name": "GetWidgets",
@@ -2295,7 +2295,7 @@
   },
   {
     "type": "put",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Update an existing widget",
     "version": "0.2.0",
     "name": "UpdateWidget",
@@ -2439,7 +2439,7 @@
   },
   {
     "type": "put",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Update an existing widget",
     "version": "0.1.0",
     "name": "UpdateWidget",
