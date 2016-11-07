@@ -104,7 +104,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             ReflectionHelper.GetMethod<StatusController>(_ => _.Get(MonitorType.Activity))
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("status/{id:int}"));
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("statuses/{id:int}"));
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             ReflectionHelper.GetMethod<StatusController>(_ => _.Get())
              .Should()
-             .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("status"));
+             .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("statuses"));
         }
     }
 }

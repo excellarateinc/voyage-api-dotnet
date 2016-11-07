@@ -3,8 +3,6 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
@@ -24,7 +22,7 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {get} /v1/user Get all users
+        * @api {get} /v1/users Get all users
         * @apiVersion 0.1.0
         * @apiName GetUsers
         * @apiGroup User
@@ -50,7 +48,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
         [HttpGet]
-        [Route("user")]
+        [Route("users")]
         public IHttpActionResult GetUsers()
         {
             return Ok(_userService.GetUsers());
@@ -58,7 +56,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
         /**
-        * @api {get} /v1/user/roles Get all users and their roles 
+        * @api {get} /v1/users/:userId/roles Get user roles 
         * @apiVersion 0.1.0
         * @apiName User
         * @apiGroup User
@@ -66,40 +64,48 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiPermission lss.permission->list.users
         * 
         * @apiUse AuthHeader
+        *
+        * @apiParam {String} userId ID of the user 
         *   
-        * @apiSuccess {Object[]} users List of users 
-        * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.name Name of the user
-        * @apiSuccess {Object[]} users.roles List of user roles
-        * @apiSuccess users.roles.name Role name
+        * @apiSuccess {Object[]} role List of roles 
+        * @apiSuccess {String} role.id Role ID
+        * @apiSuccess {String} role.name Name of the role     
+        * @apiSuccess {Object[]} claims List of claims
+        * @apiSuccess {String} claims.claimType Type of claim
+        * @apiSuccess {String} claims.claimValue Value of claim 
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
-        *       {   
-        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com",
-        *           "roles": [ 
-        *                    {
-        *                        "name": "Admin"
-        *                    }
-        *            ]
-        *       }
+        *       {
+        *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
+        *           "name": "Basic",
+        *           "claims": [
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "login"
+        *               },
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "list.user-claims"
+        *               }
         *   ]
+        *
         *   
         * @apiUse UnauthorizedError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]        
-        [Route("user/roles")]
+        [Route("users/{userId}/roles")]
         [HttpGet]
-        public IHttpActionResult GetUsersWithRoles()
+        public async Task<IHttpActionResult> GetUserRoles(string userId)
         {
-            return Ok(_userService.GetUsersWithRoles());
+            var roles = await _userService.GetUserRolesAsync(userId);
+            return Ok(roles);
         }
 
 
         /**
-        * @api {get} /v1/user/claims Get the authenticated user's claims 
+        * @api {get} /v1/users/:userId/claims Get user claims
         * @apiVersion 0.1.0
         * @apiName Claims
         * @apiGroup User
@@ -107,6 +113,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiPermission lss.permission->list.user-claims
         * 
         * @apiUse AuthHeader
+        * 
+        * @apiParam {String} userId Id of user
         *   
         * @apiSuccess {Object[]} claims List of user claims
         * @apiSuccess {String} claims.claimType Type of the claim
@@ -127,55 +135,49 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.ListUserClaims)]
+        [ClaimAuthorize(ClaimValue = LssClaims.ListUserClaims)]
         [HttpGet]
-        [Route("user/claims")]
-        public IHttpActionResult GetClaims()
+        [Route("users/{userId}/claims")]
+        public async Task<IHttpActionResult> GetClaims(string userId)
         {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            var clientFacingClaims = claimsIdentity.Claims
-                .Where(_=>_.Type == Constants.LssClaims.Type)
-                .Select(_ => new ClaimModel { ClaimType = _.Type, ClaimValue = _.Value })
-                .ToList();
-            return Ok(clientFacingClaims);
+            var claims = await _userService.GetUserClaimsAsync(userId);
+            return Ok(claims);
         }
 
 
-         /**
-         * @api {post} /v1/user/assign Assign role to user 
-         * @apiVersion 0.1.0
-         * @apiName AssignRole
-         * @apiGroup User
-         * 
-         * @apiPermission lss.permission->assign.role
-         * 
-         * @apiUse AuthHeader
-         *   
-         * @apiParam {Object} userRole Association between a user and a role
-         * @apiParam {Object} userRole.role Role for the association
-         * @apiParam {String} userRole.role.id Role ID
-         * @apiParam {String} userRole.role.name Name of the role
-         * @apiParam {Object} userRole.user User for the association
-         * @apiParam {String} userRole.user.id User ID
-         * @apiParam {String} userRole.user.name Name of the user
-         * 
-         * @apiSuccessExample Success-Response:
-         *   HTTP/1.1 200 OK
-         *
-         * @apiUse UnauthorizedError
-         * 
-         * @apiUse BadRequestError  
-         **/
+        /**
+        * @api {post} /v1/users/:userId/roles Assign role to user 
+        * @apiVersion 0.1.0
+        * @apiName AssignRole
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->assign.role
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiParam {String} userId User ID
+        * @apiParam {Object} role Role for the association
+        * @apiParam {String} role.id Role ID
+        * @apiParam {String} role.name Name of the role
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *
+        * @apiUse UnauthorizedError
+        * 
+        * @apiUse BadRequestError  
+        **/
         [ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
         [HttpPost]
-        [Route("user/assign")]
-        public async Task<IHttpActionResult> AssignRole(UserRoleModel userRole)
+        [Route("users/{userId}/roles")]
+        public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
-            var identityResult = await _userService.AssignUserRoleAsync(userRole.Role, userRole.User);
+            var identityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
 
             if (!identityResult.Succeeded)
             {
-                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+                ModelState.AddErrors(identityResult);
+                return BadRequest(ModelState);
             }
 
             return Ok();
@@ -183,7 +185,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
         /**
-        * @api {post} /v1/user/revoke Remove role from user 
+        * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user 
         * @apiVersion 0.1.0
         * @apiName RevokeRole
         * @apiGroup User
@@ -192,13 +194,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         *   
-        * @apiParam {Object} userRole Association between a user and a role
-        * @apiParam {Object} userRole.role Role for the association
-        * @apiParam {String} userRole.role.id Role ID
-        * @apiParam {String} userRole.role.name Name of the role
-        * @apiParam {Object} userRole.user User for the association
-        * @apiParam {String} userRole.user.id User ID
-        * @apiParam {String} userRole.user.name Name of the user
+        * @apiParam {String} roleId Role ID
+        * @apiParam {String} userId User ID
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -208,11 +205,11 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
-        [HttpPost]
-        [Route("user/revoke")]
-        public async Task<IHttpActionResult> RemoveRole(UserRoleModel model)
+        [HttpDelete]
+        [Route("users/{userId}/roles/{roleId}")]
+        public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
-            var result = await _userService.RemoveUserFromRoleAsync(model.Role, model.User);
+            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             if (result.Succeeded)
             {
                 return Ok();

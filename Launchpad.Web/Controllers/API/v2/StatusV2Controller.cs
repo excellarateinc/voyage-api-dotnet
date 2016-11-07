@@ -21,7 +21,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-        * @api {get} /v2/status/:id Get status by monitor type
+        * @api {get} /v2/statuses/:id Get status by monitor type
         * @apiVersion 0.2.0
         * @apiName GetStatusByType
         * @apiGroup Status
@@ -52,7 +52,7 @@ namespace Launchpad.Web.Controllers.API.V2
         *          }
         *      ]
         */
-        [Route("status/{id:int}")]
+        [Route("statuses/{id:int}")]
         public IHttpActionResult Get(MonitorType id)
         {
             _log.Information("Request for MonitorType -> {id}", id);
@@ -60,7 +60,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-         * @api {get} /v2/status Get status from all monitors
+         * @api {get} /v2/statuses Get status from all monitors
          * @apiVersion 0.2.0
          * @apiName GetStatus
          * @apiGroup Status
@@ -105,7 +105,7 @@ namespace Launchpad.Web.Controllers.API.V2
          *          }
          *      ]
          */
-        [Route("status")]
+        [Route("statuses")]
         public IHttpActionResult Get()
         {
             var status = _statusCollector.Collect();

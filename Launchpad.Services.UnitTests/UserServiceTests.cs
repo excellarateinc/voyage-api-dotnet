@@ -14,6 +14,7 @@ using Launchpad.Services.Fixture;
 using System.Linq;
 using Launchpad.Services.Interfaces;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -43,21 +44,101 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
-        public async void RemoveUserFromRoleAsync_Should_Call_User_Manager()
+        public async void GetUserRolesAsync_Should_Call_UserManager_And_Role_Service()
         {
-            var userModel = Fixture.Build<UserModel>()
-                .With(_ => _.Name, "bob@bob.com")
-                .Create(); ;
+            var userId = Fixture.Create<string>();
 
             var appUser = new ApplicationUser
             {
-                UserName = userModel.Name,
-                Email = userModel.Name
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com",
+                Id = userId
             };
 
+            
+
+            var fakeRoles = Fixture.CreateMany<RoleModel>();
+
+            var assignedRoles = fakeRoles.Take(1).Select(_=>_.Name).ToList();
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userId))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(appUser))
+                .ReturnsAsync(assignedRoles);
+
+            _mockRoleService.Setup(_ => _.GetRoles())
+                .Returns(fakeRoles);
+
+            var roles = await _userService.GetUserRolesAsync(userId);
+
+
+            Mock.VerifyAll();
+
+            roles.Should().NotBeNullOrEmpty();
+            roles.Should().HaveCount(1);
+            roles.First().Name.Should().Be(assignedRoles.First());
+             
+        }
+
+        [Fact]
+        public async void GetUserClaimsAsync_Should_Call_User_Manager()
+        {
+            var roles = new string[] { "Admin" };
+            var id = Fixture.Create<string>();
+            var roleClaims = new[] { new ClaimModel { ClaimType = "type1", ClaimValue = "value1" } };
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "admin@admin.com"
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.GetRolesAsync(appUser))
+                .ReturnsAsync(roles);
+
+            _mockStore.As<IUserClaimStore<ApplicationUser>>()
+                .Setup(_ => _.GetClaimsAsync(appUser))
+                .ReturnsAsync(new List<Claim>());
+
+            _mockRoleService.Setup(_ => _.GetRoleClaims(roles[0]))
+                .Returns(roleClaims);
+
+            //Act
+            var result = await _userService.GetUserClaimsAsync(id);
+
+            Mock.VerifyAll();
+            result.Should().NotBeNullOrEmpty();
+            result.Any(_ => _.ClaimValue == "value1" && _.ClaimType == "type1").Should().BeTrue();
+
+        }
+
+        [Fact]
+        public async void RemoveUserFromRoleAsync_Should_Call_User_Manager()
+        {
+            var userId = "user-id";
+            var roleId = "role-id";
             var roleModel = Fixture.Create<RoleModel>();
 
-            _mockStore.Setup(_ => _.FindByIdAsync(userModel.Id))
+
+
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com"
+            };
+
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+                .Returns(roleModel);
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
 
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
@@ -68,13 +149,13 @@ namespace Launchpad.Services.UnitTests
                 .Setup(_ => _.RemoveFromRoleAsync(appUser, roleModel.Name))
                 .Returns(Task.Delay(0));
 
-            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
                 .ReturnsAsync(appUser);
 
             _mockStore.Setup(_ => _.UpdateAsync(appUser))
                 .Returns(Task.Delay(0));
 
-            var result = await _userService.RemoveUserFromRoleAsync(roleModel, userModel);
+            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
 
             Mock.VerifyAll();
             result.Succeeded.Should().BeTrue();
@@ -115,7 +196,7 @@ namespace Launchpad.Services.UnitTests
          
 
             //act
-            var result = await _userService.AssignUserRoleAsync(roleModel, userModel);
+            var result = await _userService.AssignUserRoleAsync(userModel.Id, roleModel);
 
 
             //assert
@@ -278,41 +359,7 @@ namespace Launchpad.Services.UnitTests
         }
 
 
-        [Fact]
-        public void GetUsersWithRoles_Should_Call_UserManager()
-        {
-            var user1 = new ApplicationUser
-            {
-                UserName = "bob@bob.com",
-                Id = "abc"
-            };
-
-            var roles = new[] { "r1", "r2" };
-
-            var userResults = new[] { user1 };
-
-            _mockStore.Setup(_ => _.FindByIdAsync(user1.Id))
-                .ReturnsAsync(user1);
-
-            _mockStore.As<IUserRoleStore<ApplicationUser>>()
-                .Setup(_ => _.GetRolesAsync(user1))
-                .ReturnsAsync(roles);
-
-            _mockStore.As<IQueryableUserStore<ApplicationUser>>()
-                .Setup(_ => _.Users)
-                .Returns(userResults.AsQueryable());
-
-            var result = _userService.GetUsersWithRoles();
-
-            Mock.VerifyAll();
-            result.Should().HaveSameCount(userResults);
-
-            userResults.All(_ => result.Any(r => r.Name == _.UserName))
-               .Should()
-               .BeTrue();
-
-            result.All(_ => _.Roles.All(r => roles.Contains(r.Name)));
-        }
+       
         [Fact]
         public async Task Register_Should_Call_UserManager()
         {

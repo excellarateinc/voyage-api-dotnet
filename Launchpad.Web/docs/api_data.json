@@ -71,7 +71,7 @@
   },
   {
     "type": "post",
-    "url": "/v1/role/claim",
+    "url": "/v1/roles/:roleId/claims",
     "title": "Create a role claim",
     "version": "0.1.0",
     "name": "AddRoleClaim",
@@ -86,51 +86,30 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
+            "type": "string",
             "optional": false,
-            "field": "roleClaim",
-            "description": "<p>Association between a role and a claim</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "roleClaim.role",
-            "description": "<p>Role</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "roleClaim.role.id",
+            "field": "roleId",
             "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "roleClaim.role.name",
-            "description": "<p>Name of the role</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Object",
             "optional": false,
-            "field": "roleClaim.claim",
+            "field": "claim",
             "description": "<p>Claim</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleClaim.claim.claimType",
+            "field": "claim.claimType",
             "description": "<p>Type of the claim</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleClaim.claim.claimValue",
+            "field": "claim.claimValue",
             "description": "<p>Value of the claim</p>"
           }
         ]
@@ -200,7 +179,7 @@
   },
   {
     "type": "post",
-    "url": "/v1/role",
+    "url": "/v1/roles",
     "title": "Create a role",
     "version": "0.1.0",
     "name": "CreateRole",
@@ -301,7 +280,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/role",
+    "url": "/v1/roles",
     "title": "Get all roles",
     "version": "0.1.0",
     "name": "GetRoles",
@@ -410,7 +389,7 @@
   },
   {
     "type": "delete",
-    "url": "/v1/role",
+    "url": "/v1/roles/:roleId",
     "title": "Delete a role",
     "version": "0.1.0",
     "name": "RemoveRole",
@@ -425,24 +404,10 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "role",
-            "description": "<p>Role</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "role.id",
+            "field": "roleId",
             "description": "<p>Role ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "role.name",
-            "description": "<p>Name of the role</p>"
           }
         ]
       }
@@ -511,7 +476,7 @@
   },
   {
     "type": "delete",
-    "url": "/v1/role/claim",
+    "url": "/v1/roles/:roleId/claims/:claimId",
     "title": "Remove a role claim",
     "version": "0.1.0",
     "name": "RemoveRoleClaim",
@@ -528,22 +493,15 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleName",
-            "description": "<p>Name of the role</p>"
+            "field": "roleId",
+            "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "claimType",
-            "description": "<p>Type of the claim</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "claimValue",
-            "description": "<p>Value of the claim</p>"
+            "field": "claimId",
+            "description": "<p>Claim ID</p>"
           }
         ]
       }
@@ -601,7 +559,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/status",
+    "url": "/v2/statuses",
     "title": "Get status from all monitors",
     "version": "0.2.0",
     "name": "GetStatus",
@@ -745,7 +703,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/status/:id",
+    "url": "/v2/statuses/:id",
     "title": "Get status by monitor type",
     "version": "0.2.0",
     "name": "GetStatusByType",
@@ -830,7 +788,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/status/:id",
+    "url": "/v1/statuses/:id",
     "title": "Get status by monitor type",
     "version": "0.1.0",
     "name": "GetStatusByType",
@@ -1034,7 +992,7 @@
   },
   {
     "type": "post",
-    "url": "/v1/user/assign",
+    "url": "/v1/users/:userId/roles",
     "title": "Assign role to user",
     "version": "0.1.0",
     "name": "AssignRole",
@@ -1049,52 +1007,31 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
+            "type": "String",
             "optional": false,
-            "field": "userRole",
-            "description": "<p>Association between a user and a role</p>"
+            "field": "userId",
+            "description": "<p>User ID</p>"
           },
           {
             "group": "Parameter",
             "type": "Object",
             "optional": false,
-            "field": "userRole.role",
+            "field": "role",
             "description": "<p>Role for the association</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "userRole.role.id",
+            "field": "role.id",
             "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "userRole.role.name",
+            "field": "role.name",
             "description": "<p>Name of the role</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "userRole.user",
-            "description": "<p>User for the association</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userRole.user.id",
-            "description": "<p>User ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userRole.user.name",
-            "description": "<p>Name of the user</p>"
           }
         ]
       }
@@ -1163,8 +1100,8 @@
   },
   {
     "type": "get",
-    "url": "/v1/user/claims",
-    "title": "Get the authenticated user's claims",
+    "url": "/v1/users/:userId/claims",
+    "title": "Get user claims",
     "version": "0.1.0",
     "name": "Claims",
     "group": "User",
@@ -1173,6 +1110,19 @@
         "name": "lss.permission->list.user-claims"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>Id of user</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -1251,7 +1201,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/user",
+    "url": "/v1/users",
     "title": "Get all users",
     "version": "0.1.0",
     "name": "GetUsers",
@@ -1338,8 +1288,8 @@
     }
   },
   {
-    "type": "post",
-    "url": "/v1/user/revoke",
+    "type": "delete",
+    "url": "/v1/users/:userId/roles/:roleId",
     "title": "Remove role from user",
     "version": "0.1.0",
     "name": "RevokeRole",
@@ -1354,52 +1304,17 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "userRole",
-            "description": "<p>Association between a user and a role</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "userRole.role",
-            "description": "<p>Role for the association</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "userRole.role.id",
+            "field": "roleId",
             "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "userRole.role.name",
-            "description": "<p>Name of the role</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "userRole.user",
-            "description": "<p>User for the association</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userRole.user.id",
+            "field": "userId",
             "description": "<p>User ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userRole.user.name",
-            "description": "<p>Name of the user</p>"
           }
         ]
       }
@@ -1468,8 +1383,8 @@
   },
   {
     "type": "get",
-    "url": "/v1/user/roles",
-    "title": "Get all users and their roles",
+    "url": "/v1/users/:userId/roles",
+    "title": "Get user roles",
     "version": "0.1.0",
     "name": "User",
     "group": "User",
@@ -1478,6 +1393,19 @@
         "name": "lss.permission->list.users"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>ID of the user</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -1485,42 +1413,50 @@
             "group": "Success 200",
             "type": "Object[]",
             "optional": false,
-            "field": "users",
-            "description": "<p>List of users</p>"
+            "field": "role",
+            "description": "<p>List of roles</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "users.id",
-            "description": "<p>User ID</p>"
+            "field": "role.id",
+            "description": "<p>Role ID</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "users.name",
-            "description": "<p>Name of the user</p>"
+            "field": "role.name",
+            "description": "<p>Name of the role</p>"
           },
           {
             "group": "Success 200",
             "type": "Object[]",
             "optional": false,
-            "field": "users.roles",
-            "description": "<p>List of user roles</p>"
+            "field": "claims",
+            "description": "<p>List of claims</p>"
           },
           {
             "group": "Success 200",
+            "type": "String",
             "optional": false,
-            "field": "users.roles.name",
-            "description": "<p>Role name</p>"
+            "field": "claims.claimType",
+            "description": "<p>Type of claim</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "claims.claimValue",
+            "description": "<p>Value of claim</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n    {   \n        \"id\": \"A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A\",\n        \"name\": \"admin@admin.com\",\n        \"roles\": [ \n                 {\n                     \"name\": \"Admin\"\n                 }\n         ]\n    }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"id\": \"7ec91144-a60e-4240-8878-ccba3c4c2ef4\",\n        \"name\": \"Basic\",\n        \"claims\": [\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"login\"\n            },\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"list.user-claims\"\n            }\n]",
           "type": "json"
         }
       ]
@@ -1569,7 +1505,7 @@
   },
   {
     "type": "post",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Create a new widget",
     "version": "0.2.0",
     "name": "CreateWidget",
@@ -1695,7 +1631,7 @@
   },
   {
     "type": "post",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Create a new widget",
     "version": "0.1.0",
     "name": "CreateWidget",
@@ -1807,7 +1743,7 @@
   },
   {
     "type": "delete",
-    "url": "/v2/widget/:id",
+    "url": "/v2/widgets/:id",
     "title": "Delete a widget",
     "version": "0.2.0",
     "name": "DeleteWidget",
@@ -1883,7 +1819,7 @@
   },
   {
     "type": "delete",
-    "url": "/v1/widget/:id",
+    "url": "/v1/widgets/:id",
     "title": "Delete a widget",
     "version": "0.1.0",
     "name": "DeleteWidget",
@@ -1959,7 +1895,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/widget/:id",
+    "url": "/v2/widgets/:id",
     "title": "Get a widget",
     "version": "0.2.0",
     "name": "GetWidget",
@@ -2071,7 +2007,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/widget/:id",
+    "url": "/v1/widgets/:id",
     "title": "Get a widget",
     "version": "0.1.0",
     "name": "GetWidget",
@@ -2176,7 +2112,7 @@
   },
   {
     "type": "get",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Get all widgets",
     "version": "0.2.0",
     "name": "GetWidgets",
@@ -2271,7 +2207,7 @@
   },
   {
     "type": "get",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Get all widgets",
     "version": "0.1.0",
     "name": "GetWidgets",
@@ -2359,7 +2295,7 @@
   },
   {
     "type": "put",
-    "url": "/v2/widget",
+    "url": "/v2/widgets",
     "title": "Update an existing widget",
     "version": "0.2.0",
     "name": "UpdateWidget",
@@ -2503,7 +2439,7 @@
   },
   {
     "type": "put",
-    "url": "/v1/widget",
+    "url": "/v1/widgets",
     "title": "Update an existing widget",
     "version": "0.1.0",
     "name": "UpdateWidget",

@@ -3,6 +3,7 @@ using Launchpad.UnitTests.Common;
 using Xunit;
 using FluentAssertions;
 using Launchpad.Models.EntityFramework;
+using System.Security.Claims;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
 {
@@ -14,6 +15,19 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
         public ClaimProfileTests(AutoMapperFixture mappingFixture)
         {
             _mappingFixture = mappingFixture;
+        }
+
+        [Fact]
+        public void Claim_Should_Map_To_ClaimModel()
+        {
+            var claim = new Claim("type1", "value1");
+
+            var claimModel = _mappingFixture.MapperInstance.Map<ClaimModel>(claim);
+
+            claimModel.Should().NotBeNull();
+            claimModel.ClaimType.Should().Be(claim.Type);
+            claimModel.ClaimValue.Should().Be(claim.Value);
+            claimModel.Id.Should().Be(default(int));
         }
 
         [Fact]

@@ -262,7 +262,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.Get())
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets"));
         }
 
         [Fact]
@@ -270,7 +270,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.Get(1))
                     .Should()
-                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget/{id:int}"));
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
 
         }
 
@@ -279,7 +279,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.AddWidget(new WidgetModel()))
                     .Should()
-                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets"));
 
         }
 
@@ -288,7 +288,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.DeleteWidget(1))
                     .Should()
-                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget/{id:int}"));
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
 
         }
 
@@ -297,7 +297,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.UpdateWidget(new WidgetModel()))
                     .Should()
-                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widget"));
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets"));
 
         }
 

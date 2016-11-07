@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using AutoMapper;
 using System.Linq;
+using System.Data.Entity;
 
 namespace Launchpad.Services
 {
@@ -28,30 +29,19 @@ namespace Launchpad.Services
         }
 
         
-        public async Task<IdentityResult> RemoveUserFromRoleAsync(RoleModel roleModel, UserModel userModel)
+        public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
-           
-            var result = await _userManager.RemoveFromRoleAsync(userModel.Id, roleModel.Name);
+
+            var role = _roleService.GetRoleById(roleId);
+            var result = await _userManager.RemoveFromRoleAsync(userId, role.Name);
             return result;
         }
 
-        public async Task<IdentityResult> AssignUserRoleAsync(RoleModel roleModel, UserModel userModel)
+        public async Task<IdentityResult> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
-
-            var result = await _userManager.AddToRoleAsync(userModel.Id, roleModel.Name);
+            var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
             return result;
         }
-
-        public IEnumerable<UserWithRolesModel> GetUsersWithRoles()
-        {
-            var applicationUsers = _userManager.Users.ToList();
-            var users = _mapper.Map<IEnumerable<UserWithRolesModel>>(applicationUsers);
-            foreach(var user in users)
-            {
-                user.Roles = _userManager.GetRoles(user.Id).Select(_ => new RoleModel { Name = _ }); 
-            }
-            return users;
-        } 
 
         public IEnumerable<UserModel> GetUsers()
         {
@@ -78,6 +68,17 @@ namespace Launchpad.Services
             return result;
         }
 
+        public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                throw new ArgumentException($"Unable to find user {userId}");
+            }
+            var identity = await CreateClaimsIdentityAsync(user.UserName, "OAuth");
+            return _mapper.Map<IEnumerable<ClaimModel>>(identity.Claims);
+        }
+
         public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
         {
             var user = await _userManager.FindByNameAsync(userName);
@@ -97,6 +98,18 @@ namespace Launchpad.Services
             userIdentity.AddClaims(roleClaims);
                             
             return userIdentity;
+        }
+
+        public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
+        {
+           
+            var roles = await _userManager.GetRolesAsync(userId);
+
+            //TODO: Refactor this to pass in the role list (IQueryable)
+            var roleModels = _roleService.GetRoles()
+                            .Where(_ => roles.Contains(_.Name));
+
+            return roleModels;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {get} /v1/status/:id Get status by monitor type
+        * @api {get} /v1/statuses/:id Get status by monitor type
         * @apiVersion 0.1.0
         * @apiName GetStatusByType
         * @apiGroup Status
@@ -50,7 +50,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *          }
         *      ]
         */
-        [Route("status/{id:int}")]
+        [Route("statuses/{id:int}")]
         public IHttpActionResult Get(MonitorType id)
         {
             return Ok(_statusCollector.Collect(id));
@@ -102,7 +102,7 @@ namespace Launchpad.Web.Controllers.API.V1
          *          }
          *      ]
          */
-        [Route("status")]
+        [Route("statuses")]
         public IHttpActionResult Get()
         {
             var status = _statusCollector.Collect();

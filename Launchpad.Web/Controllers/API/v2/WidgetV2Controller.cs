@@ -20,7 +20,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-         * @api {get} /v2/widget Get all widgets
+         * @api {get} /v2/widgets Get all widgets
          * @apiVersion 0.2.0
          * @apiName GetWidgets
          * @apiGroup Widget
@@ -52,7 +52,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
-        [Route("widget")]
+        [Route("widgets")]
         public IHttpActionResult Get()
         {
             return Ok(_widgetService.GetWidgets());
@@ -60,7 +60,7 @@ namespace Launchpad.Web.Controllers.API.V2
 
 
         /**
-         * @api {get} /v2/widget/:id Get a widget
+         * @api {get} /v2/widgets/:id Get a widget
          * @apiVersion 0.2.0
          * @apiName GetWidget
          * @apiGroup Widget
@@ -87,7 +87,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
-        [Route("widget/{id:int}")]
+        [Route("widgets/{id:int}")]
         public IHttpActionResult Get(int id)
         {
             var widget = _widgetService.GetWidget(id);
@@ -102,7 +102,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-         * @api {post} /v2/widget Create a new widget
+         * @api {post} /v2/widgets Create a new widget
          * @apiVersion 0.2.0
          * @apiName CreateWidget
          * @apiGroup Widget
@@ -130,7 +130,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.CreateWidget)]
-        [Route("widget")]
+        [Route("widgets")]
         [HttpPost]
         public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
         {
@@ -139,7 +139,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-         * @api {delete} /v2/widget/:id Delete a widget
+         * @api {delete} /v2/widgets/:id Delete a widget
          * @apiVersion 0.2.0 
          * @apiName DeleteWidget
          * @apiGroup Widget
@@ -155,7 +155,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.DeleteWidget)]
-        [Route("widget/{id:int}")]
+        [Route("widgets/{id:int}")]
         [HttpDelete]
         public IHttpActionResult DeleteWidget(int id)
         {
@@ -164,7 +164,7 @@ namespace Launchpad.Web.Controllers.API.V2
         }
 
         /**
-         * @api {put} /v2/widget Update an existing widget
+         * @api {put} /v2/widgets Update an existing widget
          * @apiVersion 0.2.0
          * @apiName UpdateWidget
          * @apiGroup Widget
@@ -196,7 +196,7 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError 
          */
         [ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
-        [Route("widget")]
+        [Route("widgets")]
         [HttpPut]
         public IHttpActionResult UpdateWidget([FromBody] WidgetModel widget)
         {

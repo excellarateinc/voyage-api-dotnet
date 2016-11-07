@@ -43,16 +43,37 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public void GetRoleById_Should_Call_Role_Manager()
+        {
+            var id = Fixture.Create<string>();
+
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(role);
+
+            //act
+            var result = _roleService.GetRoleById(id);
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
         public async void RemoveRole_Calls_Role_Manager()
         {
             //Arrange
-            var model = new RoleModel { Name = "A Role to Remember" };
+            var roleId = Fixture.Create<string>();
+
             var appRole = new ApplicationRole
             {
-                Name = model.Name
+                Name = "New Role"
             };
 
-            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(roleId))
                 .ReturnsAsync(appRole);
             _mockRoleStore.Setup(_ => _.DeleteAsync(appRole))
                 .Returns(Task.Delay(0));
@@ -61,7 +82,7 @@ namespace Launchpad.Services.UnitTests
 
 
             //Act
-            var result = await _roleService.RemoveRoleAsync(model);
+            var result = await _roleService.RemoveRoleAsync(roleId);
 
 
             //Assert
@@ -71,54 +92,31 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
-        public void RemoveClaim_Calls_Repository_And_Manager_When_RoleClaim_Exists()
+        public void RemoveClaim_Calls_Repository()
         {
-            var roleModel = Fixture.Create<RoleModel>();
-            var claimModel = Fixture.Create<ClaimModel>();
-            var roleClaim = new RoleClaim() { Id = 1 };
+            var roleId = Fixture.Create<string>();
+            var claimId = Fixture.Create<int>();
 
-            _mockRepository.Setup(_ => _.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue))
-                .Returns(roleClaim);
-
-            _mockRepository.Setup(_ => _.Delete(roleClaim.Id));
+            _mockRepository.Setup(_ => _.Delete(claimId));
                 
 
             //act
-            _roleService.RemoveClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
+            _roleService.RemoveClaim(roleId, claimId);
 
             Mock.VerifyAll();
         }
 
-        [Fact]
-        public void RemoveClaim_Calls_Repository_And_Does_Not_Call_Manager_When_RoleClaim_Does_Not_Exist()
-        {
-            var roleModel = Fixture.Create<RoleModel>();
-            var claimModel = Fixture.Create<ClaimModel>();
-            RoleClaim roleClaim = null;
-
-            _mockRepository.Setup(_ => _.GetByRoleAndClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue))
-                .Returns(roleClaim);
-
-
-
-
-            //act
-            _roleService.RemoveClaim(roleModel.Name, claimModel.ClaimType, claimModel.ClaimValue);
-
-
-            Mock.VerifyAll();
-        }
-
+       
         [Fact]
         public async void RemoveRole_Calls_Role_Manager_And_Returns_Failed_Result_When_Role_Does_Not_Exist()
         {
-            var model = new RoleModel { Name = "A Role to Remember" };
+            var roleId = Fixture.Create<string>();
             
-            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(roleId))
                 .ReturnsAsync(null);
 
 
-            var result = await _roleService.RemoveRoleAsync(model);
+            var result = await _roleService.RemoveRoleAsync(roleId);
 
             Mock.VerifyAll();
             result.Succeeded.Should().BeFalse();
@@ -151,7 +149,7 @@ namespace Launchpad.Services.UnitTests
 
             var claim = Fixture.Create<ClaimModel>();
 
-            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(appRole);
 
             _mockRepository.Setup(_ => _.Add(It.Is<RoleClaim>(
@@ -161,7 +159,7 @@ namespace Launchpad.Services.UnitTests
             )))
             .Returns(new RoleClaim());
 
-            await _roleService.AddClaimAsync(model, claim);
+            await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
         }
@@ -173,11 +171,11 @@ namespace Launchpad.Services.UnitTests
             
             var claim = Fixture.Create<ClaimModel>();
          
-            _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
+            _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(null);
           
 
-            await _roleService.AddClaimAsync(model, claim);
+            await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
         }
