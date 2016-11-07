@@ -71,7 +71,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/v1/role/claim",
+    "url": "/v1/roles/:roleId/claims",
     "title": "Create a role claim",
     "version": "0.1.0",
     "name": "AddRoleClaim",
@@ -86,51 +86,30 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
+            "type": "string",
             "optional": false,
-            "field": "roleClaim",
-            "description": "<p>Association between a role and a claim</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "roleClaim.role",
-            "description": "<p>Role</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "roleClaim.role.id",
+            "field": "roleId",
             "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "roleClaim.role.name",
-            "description": "<p>Name of the role</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Object",
             "optional": false,
-            "field": "roleClaim.claim",
+            "field": "claim",
             "description": "<p>Claim</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleClaim.claim.claimType",
+            "field": "claim.claimType",
             "description": "<p>Type of the claim</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleClaim.claim.claimValue",
+            "field": "claim.claimValue",
             "description": "<p>Value of the claim</p>"
           }
         ]
@@ -200,7 +179,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/v1/role",
+    "url": "/v1/roles",
     "title": "Create a role",
     "version": "0.1.0",
     "name": "CreateRole",
@@ -301,7 +280,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/v1/role",
+    "url": "/v1/roles",
     "title": "Get all roles",
     "version": "0.1.0",
     "name": "GetRoles",
@@ -410,7 +389,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/v1/role",
+    "url": "/v1/roles",
     "title": "Delete a role",
     "version": "0.1.0",
     "name": "RemoveRole",
@@ -425,24 +404,10 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Object",
-            "optional": false,
-            "field": "role",
-            "description": "<p>Role</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "role.id",
+            "field": "roleId",
             "description": "<p>Role ID</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "role.name",
-            "description": "<p>Name of the role</p>"
           }
         ]
       }
@@ -511,7 +476,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/v1/role/claim",
+    "url": "/v1/roles/:roleId/claims/:claimId",
     "title": "Remove a role claim",
     "version": "0.1.0",
     "name": "RemoveRoleClaim",
@@ -528,22 +493,15 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "roleName",
-            "description": "<p>Name of the role</p>"
+            "field": "roleId",
+            "description": "<p>Role ID</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "claimType",
-            "description": "<p>Type of the claim</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "claimValue",
-            "description": "<p>Value of the claim</p>"
+            "field": "claimId",
+            "description": "<p>Claim ID</p>"
           }
         ]
       }

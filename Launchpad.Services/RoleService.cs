@@ -31,25 +31,25 @@ namespace Launchpad.Services
             return _mapper.Map<RoleModel>(_roleManager.FindById(id));
         }
 
-        public async Task AddClaimAsync(RoleModel role, ClaimModel claim)
+        public async Task AddClaimAsync(string roleId, ClaimModel claim)
         {
-            var roleEntity = await _roleManager.FindByNameAsync(role.Name);
+            var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if(roleEntity != null)
             {
                 _roleClaimRepository.Add(new RoleClaim { RoleId = roleEntity.Id, ClaimValue = claim.ClaimValue, ClaimType = claim.ClaimType });   
             }
         }
 
-        public async Task<IdentityResult> RemoveRoleAsync(RoleModel role)
+        public async Task<IdentityResult> RemoveRoleAsync(string roleId)
         {
             IdentityResult result;
-            var roleEntity = await _roleManager.FindByNameAsync(role.Name);
+            var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
                 result = await _roleManager.DeleteAsync(roleEntity);
             }else
             {
-                result = new IdentityResult($"Unable to find role with name {role.Name}");
+                result = new IdentityResult($"Unable to find role with ID {roleId}");
             }
             return result;
         }
@@ -77,13 +77,12 @@ namespace Launchpad.Services
             
         }
 
-        public void RemoveClaim(string roleName, string claimType, string claimValue)
+        public void RemoveClaim(string roleId, int claimId)
         {
-            var claim = _roleClaimRepository.GetByRoleAndClaim(roleName, claimType, claimValue);
-            if (claim != null)
-            {
-                _roleClaimRepository.Delete(claim.Id);
-            }
+            //With the current model, the claim id uniquely identifies the RoleClaim
+            //It is not normalized - the record contains the RoleId and the complete definition of the claim
+            //This means something like a "login" claim is repeated for each role
+            _roleClaimRepository.Delete(claimId);
         }
     }
 }

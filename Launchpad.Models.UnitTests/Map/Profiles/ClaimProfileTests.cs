@@ -27,6 +27,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             claimModel.Should().NotBeNull();
             claimModel.ClaimType.Should().Be(claim.Type);
             claimModel.ClaimValue.Should().Be(claim.Value);
+            claimModel.Id.Should().Be(default(int));
         }
 
         [Fact]

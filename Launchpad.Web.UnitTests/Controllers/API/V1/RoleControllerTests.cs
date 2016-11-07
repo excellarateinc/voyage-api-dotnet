@@ -42,27 +42,27 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void RemoveRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertRoute(_ => _.RemoveRole(new RoleModel()), "role");
+            _roleController.AssertRoute(_ => _.RemoveRole("roleId"), "role");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
         public void RemoveClaim_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.RemoveClaim("a", "b", "c"), LssClaims.DeleteRoleClaim);
+            _roleController.AssertClaim(_ => _.RemoveClaim("a", 1), LssClaims.DeleteRoleClaim);
         }
         
         [Fact]
         public void GetRoles_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.GetRoles(), "role");
+            _roleController.AssertRoute(_ => _.GetRoles(), "roles");
         }
 
         [Fact]
         public void RemoveRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.RemoveRole(new RoleModel()), LssClaims.DeleteRole);
+            _roleController.AssertClaim(_ => _.RemoveRole("id"), LssClaims.DeleteRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -84,7 +84,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void AddClaim_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.AddClaim(new RoleClaimModel()), LssClaims.CreateClaim);
+            _roleController.AssertClaim(_ => _.AddClaim("id", new ClaimModel()), LssClaims.CreateClaim);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -169,7 +169,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleClaimModel()))
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim("id", new ClaimModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
@@ -179,8 +179,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim(new RoleClaimModel()))
-               .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "role/claim");
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim("id", new ClaimModel()))
+               .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "roles/{roleId}/claims");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -218,16 +218,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var role = Fixture.Create<RoleModel>();
             var claim = Fixture.Create<ClaimModel>();
-            var roleClaim = new RoleClaimModel
-            {
-                Role = role,
-                Claim = claim
-            };
-
-            _mockRoleService.Setup(_ => _.AddClaimAsync(role, claim))
+            
+            _mockRoleService.Setup(_ => _.AddClaimAsync(role.Id, claim))
                 .Returns(Task.Delay(0));
 
-            var result  = await _roleController.AddClaim(roleClaim);
+            var result  = await _roleController.AddClaim(role.Id, claim);
 
             var message = await result.ExecuteAsync(new CancellationToken());
 
@@ -237,21 +232,21 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void RemoveClaim_Should_Have_HttpDeleteAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveClaim("1,", "2", "3"));
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveClaim("roleId", 1));
         }
 
         [Fact]
         public void RemoveRole_Should_Have_HttpDeleteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveRole(new RoleModel()));
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveRole("roleId"));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
         public void RemoveClaim_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.RemoveClaim("1", "2", "3"), "role/claim");
+            _roleController.AssertRoute(_ => _.RemoveClaim("roleId", 1), "roles/{roleId}/claims/{claimId}");
         }
 
 
@@ -260,12 +255,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void RemoveClaim_Should_Call_RoleService()
         {
             //Arrange
-            var model = Fixture.Create<RoleClaimModel>();
+            var roleId = Fixture.Create<string>();
+            var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue));
+            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId));
 
             //Act
-            var result = _roleController.RemoveClaim(model.Role.Name, model.Claim.ClaimType, model.Claim.ClaimValue);
+            var result = _roleController.RemoveClaim(roleId, claimId);
 
 
             //Assert
@@ -278,12 +274,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void RemoveRole_Should_Call_RoleService()
         {
             //Arrange
-            var model = Fixture.Create<RoleModel>();
-            _mockRoleService.Setup(_ => _.RemoveRoleAsync(model))
+            var roleId = Fixture.Create<string>();
+
+            _mockRoleService.Setup(_ => _.RemoveRoleAsync(roleId))
                 .ReturnsAsync(IdentityResult.Success);
 
             //Act
-            var result = await _roleController.RemoveRole(model);
+            var result = await _roleController.RemoveRole(roleId);
 
             //Assert
             var message = await result.ExecuteAsync(new CancellationToken());

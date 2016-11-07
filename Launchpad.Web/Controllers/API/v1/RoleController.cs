@@ -23,7 +23,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
         /**
-        * @api {get} /v1/role Get all roles
+        * @api {get} /v1/roles Get all roles
         * @apiVersion 0.1.0
         * @apiName GetRoles
         * @apiGroup Role
@@ -62,7 +62,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ListRoles)]
         [HttpGet]
-        [Route("role")]
+        [Route("roles")]
         public IHttpActionResult GetRoles()
         {
             var result = _roleService.GetRoles();
@@ -70,7 +70,7 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {post} /v1/role Create a role 
+        * @api {post} /v1/roles Create a role 
         * @apiVersion 0.1.0
         * @apiName CreateRole
         * @apiGroup Role
@@ -92,7 +92,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.CreateRole)]
         [HttpPost]
-        [Route("role")]
+        [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
             var result = await _roleService.CreateRoleAsync(model);
@@ -107,22 +107,20 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-       * @api {post} /v1/role/claim Create a role claim 
+       * @api {post} /v1/roles/:roleId/claims Create a role claim 
        * @apiVersion 0.1.0
        * @apiName AddRoleClaim
        * @apiGroup Role
        * 
        * @apiPermission lss.permission->create.claim
        * 
+       * 
        * @apiUse AuthHeader
        *   
-       * @apiParam {Object} roleClaim Association between a role and a claim 
-       * @apiParam {Object} roleClaim.role Role
-       * @apiParam {String} roleClaim.role.id Role ID
-       * @apiParam {String} roleClaim.role.name Name of the role
-       * @apiParam {Object} roleClaim.claim Claim 
-       * @apiParam {String} roleClaim.claim.claimType Type of the claim 
-       * @apiParam {String} roleClaim.claim.claimValue Value of the claim
+       * @apiParam {string} roleId Role ID 
+       * @apiParam {Object} claim Claim 
+       * @apiParam {String} claim.claimType Type of the claim 
+       * @apiParam {String} claim.claimValue Value of the claim
        * 
        * @apiSuccessExample Success-Response:
        *   HTTP/1.1 201 Created
@@ -132,18 +130,18 @@ namespace Launchpad.Web.Controllers.API.V1
        * @apiUse BadRequestError  
        **/
         [ClaimAuthorize(ClaimValue = LssClaims.CreateClaim)]
-        [Route("role/claim")]
+        [Route("roles/{roleId}/claims")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddClaim(RoleClaimModel model)
+        public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
-            await _roleService.AddClaimAsync(model.Role, model.Claim);
+            await _roleService.AddClaimAsync(roleId, claim);
             return StatusCode(HttpStatusCode.Created);
         }
 
 
 
         /**
-        * @api {delete} /v1/role/claim Remove a role claim 
+        * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim 
         * @apiVersion 0.1.0
         * @apiName RemoveRoleClaim
         * @apiGroup Role
@@ -152,9 +150,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         *   
-        * @apiParam {String} roleName Name of the role
-        * @apiParam {String} claimType Type of the claim 
-        * @apiParam {String} claimValue Value of the claim
+        * @apiParam {String} roleId Role ID
+        * @apiParam {Integer} claimId Claim ID
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 204 No Content
@@ -164,26 +161,25 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.DeleteRoleClaim)]
         [HttpDelete]
-        [Route("role/claim")]
-        public IHttpActionResult RemoveClaim(string roleName, string claimType, string claimValue)
+        [Route("roles/{roleId}/claims/{claimId}")]
+        public IHttpActionResult RemoveClaim(string roleId, int claimId)
         {
-            _roleService.RemoveClaim(roleName, claimType, claimValue);
+            _roleService.RemoveClaim(roleId, claimId);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         /**
-        * @api {delete} /v1/role Delete a role 
+        * @api {delete} /v1/roles/:roleId Delete a role 
         * @apiVersion 0.1.0
         * @apiName RemoveRole
         * @apiGroup Role
+        * 
         * 
         * @apiPermission lss.permission->delete.role
         * 
         * @apiUse AuthHeader
         *   
-        * @apiParam {Object} role Role
-        * @apiParam {String} role.id Role ID
-        * @apiParam {String} role.name Name of the role
+        * @apiParam {String} roleId Role ID
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 204 No Content
@@ -194,10 +190,10 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = LssClaims.DeleteRole)]
-        [Route("role")]
-        public async Task<IHttpActionResult> RemoveRole([FromUri] RoleModel role)
+        [Route("roles/{roleId}")]
+        public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
-            var result = await _roleService.RemoveRoleAsync(role);
+            var result = await _roleService.RemoveRoleAsync(roleId);
             if (result.Succeeded)
                 return StatusCode(HttpStatusCode.NoContent);
             else
