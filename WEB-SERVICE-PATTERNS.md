@@ -28,6 +28,7 @@ The consumer of web services made available by a web service provider. A consume
 
 ## RESTful URLs
 There are [many articles](https://www.google.com/#q=restful+url+design) and [REST specifications](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) online that can educate on the basics. This API follows a few key points:
+
 1. Structure the URL from the **consumer's** perspective and be consistent!
 2. Endpoint names are plural nouns 
   * /users - returns a list of users
