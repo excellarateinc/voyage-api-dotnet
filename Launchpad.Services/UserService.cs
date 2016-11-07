@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using AutoMapper;
 using System.Linq;
+using System.Data.Entity;
 
 namespace Launchpad.Services
 {
@@ -41,17 +42,6 @@ namespace Launchpad.Services
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
             return result;
         }
-
-        public IEnumerable<UserWithRolesModel> GetUsersWithRoles()
-        {
-            var applicationUsers = _userManager.Users.ToList();
-            var users = _mapper.Map<IEnumerable<UserWithRolesModel>>(applicationUsers);
-            foreach(var user in users)
-            {
-                user.Roles = _userManager.GetRoles(user.Id).Select(_ => new RoleModel { Name = _ }); 
-            }
-            return users;
-        } 
 
         public IEnumerable<UserModel> GetUsers()
         {
@@ -108,6 +98,18 @@ namespace Launchpad.Services
             userIdentity.AddClaims(roleClaims);
                             
             return userIdentity;
+        }
+
+        public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
+        {
+           
+            var roles = await _userManager.GetRolesAsync(userId);
+
+            //TODO: Refactor this to pass in the role list (IQueryable)
+            var roleModels = _roleService.GetRoles()
+                            .Where(_ => roles.Contains(_.Name));
+
+            return roleModels;
         }
     }
 }

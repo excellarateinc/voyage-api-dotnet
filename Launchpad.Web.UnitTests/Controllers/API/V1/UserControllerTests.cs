@@ -37,41 +37,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.User = new ClaimsPrincipal(_claimIdentity);
         }
 
-        [Fact]
-        public void GetUsersWithRoles_Should_Have_HttpGetAttribute()
-        {
-            _userController.AssertAttribute<UserController, HttpGetAttribute>(_ => _.GetUsersWithRoles());
-        }
+       
 
-        [Fact]
-        public void GetUsersWithRoles_Should_Have_RouteAttribute()
-        {
-            _userController.AssertRoute(_ => _.GetUsersWithRoles(), "user/roles");
-        }
+    
 
         [Fact]
         public void GetUsers_Should_Have_RouteAttribute()
         {
-            _userController.AssertRoute(_ => _.GetUsers(), "user");
+            _userController.AssertRoute(_ => _.GetUsers(), "users");
         }
 
-        [Fact]
-        public async void GetUsersWithRoles_Should_Call_UserService()
-        {
-            var users = Fixture.CreateMany<UserWithRolesModel>();
-
-            _mockUserService.Setup(_ => _.GetUsersWithRoles())
-                .Returns(users);
-
-            var result = _userController.GetUsersWithRoles();
-
-            var message =await result.ExecuteAsync(new System.Threading.CancellationToken());
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            IEnumerable<UserWithRolesModel> models;
-            message.TryGetContentValue(out models).Should().BeTrue();
-            models.Should().BeEquivalentTo(users);
-        }
+    
 
         [Fact]
         public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
@@ -81,13 +57,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
         }
 
-        [Fact]
-        public void GetUsersWithRoles_Should_Have_ClaimAuthorizeAttribute()
-        {
-            _userController.AssertClaim(_ => _.GetUsersWithRoles(),
-                LssClaims.ListUsers);
-
-        }
+     
 
         [Fact]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
@@ -225,7 +195,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole("userId", new RoleModel()))
-                .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "user/{userId}/role");
+                .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/roles");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         }
@@ -275,7 +245,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
               .Should()
-              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "user/{userId}/claims");
+              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "users/{userId}/claims");
         }
 
         [Fact]
@@ -290,7 +260,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void RemoveRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertRoute(_ => _.RemoveRole("userId", "roleId"), "user/{userId}/role/{roleId}");
+            _userController.AssertRoute(_ => _.RemoveRole("userId", "roleId"), "users/{userId}/roles/{roleId}");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
