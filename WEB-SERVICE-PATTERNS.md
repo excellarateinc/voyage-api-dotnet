@@ -4,10 +4,11 @@ The following the patterns defined below describes the expectations that should 
 ## Table of Contents
 * [References](#references)
 * [Definitions](#definitions)
-* [HTTP Methods](#http-methods)
+* [HTTP Request Methods](#http-request-methods)
+* [HTTP Response Status Codes](#http-response-status-codes)
+* [RESTful URLs](#restful-urls)
 * [Versioning](#versioning)
 * [Example Endpoints](#example-endpoints)
-* [HTTP Codes](#http-codes)
 * [Response Status](#response-status)
 * [Response Errors](#response-errors)
 
@@ -25,7 +26,33 @@ The provider of web services to an audience of web service consumers. A provider
 #### Web Service Consumer (aka Consumer)
 The consumer of web services made available by a web service provider. A consumers consumes web services to push and pull data. 
 
-## HTTP Methods
+## RESTful URLs
+There are [many articles](https://www.google.com/#q=restful+url+design) and [REST specifications](http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) online that can educate on the basics. This API follows a few key points:
+1. Structure the URL from the **consumer's** perspective and be consistent!
+2. Endpoint names are plural nouns 
+  * /users - returns a list of users
+  * /tickets - returns a list of tickets
+3. Get single objects by adding the object "id" after the plural noun endpoint name
+  * /users/1 - retrieves user with id=1
+  * /orders/2 - retrieves order with id=2
+4. Use [HTTP Request Methods](#http-request-methods) to do different actions with a single plural noun endpoint
+  * /users/1 POST - create a new user
+  * /users/1 GET - retrieve user id=1
+  * /users/1 PUT - update user id=1
+  * /users/1 DELETE - delete user id=1
+5. Relational requests extend the parent endpoint
+  * /users/1/roles - returns the roles associated with user id=1
+  * /users/1/roles/2 - returns role with id=2 for user with id=1
+6. Use "verb" endpoint names only when it makes better sense from the consumer's perspective
+  * /search - invokes a global search perhaps
+  * /users/1/star - adds a star to the user's profile
+  * NOTE: Optionally consider to embed the "action" within a plural noun resource like "/users/1" PATCH with body parameter "isStarred: true". In some cases this might lead to a more intuitive API with fewer "action" endpoints to be concerned about. 
+
+Reference APIs
+* [Github API](https://developer.github.com/v3/)
+* [Enchant API](http://dev.enchant.com/api/v1)
+
+## HTTP Request Methods
 
 #### GET
 Requests one or more objects from the database. Optionally includes a request parameter on the URL string for the "id" of the 
@@ -43,6 +70,30 @@ Partially updates an object within the database. The purpose of PATCH is to send
 
 #### DELETE
 Requests the deletion of a specific object. For example, "/users/1" to delete user with id=1 from the database.
+
+## HTTP Response Status Codes
+The following codes are returned as HTTP Status Codes in the response header depending on the circumstances described below. All responses regardless of the status code, should contain a well formed JSON response object that contains meaningful information for the consumer.
+
+#### 200 OK
+Returned for an expected and acceptable web service request from a consumer. 
+
+#### 400 Bad Request
+Returned when the request parameters are incorrect, invalid, or incomplete. This response status code should be use to enforce the schema of the request. 
+
+#### 401 Unauthorized
+Returned when a consumer makes a request to a web service that is secured and the consumer is not authorized to make the request. 
+
+#### 402 Request Failed
+Returned when an expected failure situation occurrs, such as a parameter has an incorrect format or value. Other reasons for returning this status code might be a failure to properly complete a transaction. In every case, the response should include a detailed explaination to the consumer as to the error code, description, and any other information they should have to retry. 
+
+#### 403 Forbidden
+Returned when a consumer is authorized (i.e. logged in) and makes a request to a secured web service but the consumer doesn't have the proper authorization to make the request. 
+
+#### 404 Not Found
+Returned when a request is made for specific data, usually using an ID, and the data cannot be found. This response code is also returned automatically by the web server if a endpoint or URL is not defined by the application. 
+
+#### 500 Internal Server Error
+Returned when an unexpected error occurs within the app for any reason. This is usually accompanied by an application stack trace.
 
 ## Versioning
 Versioning the API ensures backward compatability with consumers and allows the developers of the API to release new versions of a web services API without impacting existing consumers (unless they choose to be impacted). Where to place the version number value within the request is an (ongoing debate)[http://stackoverflow.com/questions/389169/best-practices-for-api-versioning]. The approach taken by this API follows [Vinay Sahni](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#versioning), which is to include the MAJOR version number of the entire API in the URI and include a sub-version value of the API within a custom HTTP header attribute titled "API-Version".
@@ -120,30 +171,6 @@ Updates an existing role record (id=2) for existing user record (id=1) by overwr
 
 #### /v1/users/1/roles/2 - DELETE
 Deletes a specific user role with id="2" for user with id = "1".
-
-## HTTP Codes
-The following codes are returned as HTTP Status Codes in the response header depending on the circumstances described below. All responses regardless of the status code, should contain a well formed JSON response object that contains meaningful information for the consumer.
-
-#### 200 OK
-Returned for an expected and acceptable web service request from a consumer. 
-
-#### 400 Bad Request
-Returned when the request parameters are incorrect, invalid, or incomplete. This response status code should be use to enforce the schema of the request. 
-
-#### 401 Unauthorized
-Returned when a consumer makes a request to a web service that is secured and the consumer is not authorized to make the request. 
-
-#### 402 Request Failed
-Returned when an expected failure situation occurrs, such as a parameter has an incorrect format or value. Other reasons for returning this status code might be a failure to properly complete a transaction. In every case, the response should include a detailed explaination to the consumer as to the error code, description, and any other information they should have to retry. 
-
-#### 403 Forbidden
-Returned when a consumer is authorized (i.e. logged in) and makes a request to a secured web service but the consumer doesn't have the proper authorization to make the request. 
-
-#### 404 Not Found
-Returned when a request is made for specific data, usually using an ID, and the data cannot be found. This response code is also returned automatically by the web server if a endpoint or URL is not defined by the application. 
-
-#### 500 Internal Server Error
-Returned when an unexpected error occurs within the app for any reason. This is usually accompanied by an application stack trace.
 
 ## Response Status
 Web service responses might need to contain a "status" that notifies the consumer that the action completed, partially completed, or some other status that instructs the consumer on next steps. 
