@@ -73,6 +73,7 @@
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\StatusCode.cs" />
+    <Compile Include="IdentityResult.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />

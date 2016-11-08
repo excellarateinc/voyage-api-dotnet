@@ -9,7 +9,7 @@ namespace Launchpad.Services.Interfaces
     {
         RoleModel GetRoleById(string id);
 
-        Task<IdentityResult> CreateRoleAsync(RoleModel model);
+        Task<IdentityResult<RoleModel>> CreateRoleAsync(RoleModel model);
 
         IEnumerable<RoleModel> GetRoles();
 

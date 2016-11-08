@@ -19,6 +19,7 @@
             public const string DeleteRole = "delete.role";
             public const string ListRoles = "list.roles";
             public const string RevokeRole = "revoke.role";
+            public const string ViewRole = "view.role";
 
             public const string ListUsers = "list.users";
             public const string ListUserClaims = "list.user-claims";

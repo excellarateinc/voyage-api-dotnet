@@ -21,6 +21,50 @@ namespace Launchpad.Web.Controllers.API.V1
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        /**
+        * @api {get} /v1/roles/:roleId Get a role
+        * @apiVersion 0.1.0
+        * @apiName GetRoleById
+        * @apiGroup Role
+        * 
+        * @apiPermission lss.permission->view.role
+        * 
+        * @apiUse AuthHeader
+        * 
+        * @apiParam {String} roleId Role ID
+        *  
+        * @apiSuccess {Object} role  
+        * @apiSuccess {String} role.id Role ID
+        * @apiSuccess {String} role.name Name of the role
+        * @apiSuccess {Object[]} role.claims Claims associated to the role
+        * @apiSuccess {String} role.claims.claimType Type of the claim
+        * @apiSuccess {String} role.claims.claimValue Value of the claim
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   [
+        *      {
+        *           "id": "76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6",
+        *           "name": "New Role 1",
+        *           "claims": [
+        *               {
+        *                   claimType: "lss.permission",
+        *                   claimValue: "view.role"
+        *               }
+        *           ]
+        *       }
+        *   ]
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue =LssClaims.ViewRole)]
+        [HttpGet]
+        [Route("roles/{roleId}", Name = "GetRoleById")]
+        public IHttpActionResult GetRoleById(string roleId)
+        {
+            return Ok(_roleService.GetRoleById(roleId));
+        }
+        
 
         /**
         * @api {get} /v1/roles Get all roles
@@ -78,6 +122,13 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiPermission lss.permission->create.role
         * 
         * @apiUse AuthHeader
+        * 
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *   
+        * @apiHeaderExample {json} Location-Example
+        *   { 
+        *       "Location": "http://localhost:52431/api/v1/roles/34d87057-fafa-4e5d-822b-cddb1700b507"
+        *   }
         *   
         * @apiParam {Object} role Role
         * @apiParam {String} role.id Role ID
@@ -85,7 +136,12 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
-        *
+        *   {
+        *       "id": "34d87057-fafa-4e5d-822b-cddb1700b507",
+        *       "name": "New Role 2",
+        *       "claims": []
+        *   }
+        *   
         * @apiUse UnauthorizedError
         * 
         * @apiUse BadRequestError  
@@ -96,9 +152,9 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
             var result = await _roleService.CreateRoleAsync(model);
-            if (result.Succeeded)
+            if (result.Result.Succeeded)
             {
-                return StatusCode(HttpStatusCode.Created);
+                return CreatedAtRoute("GetRoleById", new { roleId = result.Model.Id }, result.Model);
             }
             else
             {

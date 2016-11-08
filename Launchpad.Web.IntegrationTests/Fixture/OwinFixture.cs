@@ -45,7 +45,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
 
         public OwinFixture()
-        {
+        {           
             _webApp = WebApp.Start<Startup>(url: BaseAddress);
             DefaultClient = new HttpClient();
             DefaultToken = GenerateToken().Result;
