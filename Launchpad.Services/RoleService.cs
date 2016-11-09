@@ -66,7 +66,8 @@ namespace Launchpad.Services
 
             var result = await _roleManager.CreateAsync(role);
 
-            return new IdentityResult<RoleModel>(result, _mapper.Map<RoleModel>(role));
+            var hydratedRole = GetRoleByName(role.Name);
+            return new IdentityResult<RoleModel>(result, _mapper.Map<RoleModel>(hydratedRole));
         }
 
         public IEnumerable<RoleModel> GetRoles()
@@ -93,6 +94,12 @@ namespace Launchpad.Services
         public ClaimModel GetClaimById(string roleId, int claimId)
         {
             return _mapper.Map<ClaimModel>(_roleClaimRepository.Get(claimId));  
+        }
+
+        public RoleModel GetRoleByName(string name)
+        {
+            var role = _roleManager.FindByName(name);
+            return _mapper.Map<RoleModel>(role);
         }
     }
 }

@@ -174,15 +174,62 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var identityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
 
-            if (!identityResult.Succeeded)
+            if (!identityResult.Result.Succeeded)
             {
-                ModelState.AddErrors(identityResult);
+                ModelState.AddErrors(identityResult.Result);
                 return BadRequest(ModelState);
             }
 
-            return Ok();
+            return CreatedAtRoute("GetUserRoleById", new { UserId = userId, RoleId = identityResult.Model.Id }, identityResult.Model);
         }
 
+
+        /**
+        * @api {get} /v1/users/:userId/roles/:roleId Get role 
+        * @apiVersion 0.1.0
+        * @apiName GetUserRoleById
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->view.role
+        * 
+        * @apiUse AuthHeader
+        *
+        * @apiParam {String} userId User ID 
+        * @apiParam {String} roleId Role ID  
+        *   
+        * @apiSuccess {Object} role Role 
+        * @apiSuccess {String} role.id Role ID
+        * @apiSuccess {String} role.name Name of the role     
+        * @apiSuccess {Object[]} role.claims List of claims
+        * @apiSuccess {String} role.claims.claimType Type of claim
+        * @apiSuccess {String} role.claims.claimValue Value of claim 
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *       {
+        *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
+        *           "name": "Basic",
+        *           "claims": [
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "login"
+        *               },
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "list.user-claims"
+        *               }
+        *       }
+        *
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue =LssClaims.ViewRole)]
+        [HttpGet]
+        [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
+        public IHttpActionResult GetUserRoleById(string userId, string roleId)
+        {
+            return Ok(_userService.GetUserRoleById(userId, roleId));
+        }
 
         /**
         * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user 

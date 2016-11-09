@@ -37,10 +37,12 @@ namespace Launchpad.Services
             return result;
         }
 
-        public async Task<IdentityResult> AssignUserRoleAsync(string userId, RoleModel roleModel)
+        public async Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-            return result;
+            
+            var hydratedRole = _roleService.GetRoleByName(roleModel.Name);
+            return new IdentityResult<RoleModel>(IdentityResult.Success, hydratedRole);
         }
 
         public IEnumerable<UserModel> GetUsers()
@@ -110,6 +112,14 @@ namespace Launchpad.Services
                             .Where(_ => roles.Contains(_.Name));
 
             return roleModels;
+        }
+
+        public RoleModel GetUserRoleById(string userId, string roleId)
+        {
+            var role = _roleService.GetRoleById(roleId);
+            
+            return _userManager.IsInRole(userId, role.Name) ? role : null;
+
         }
     }
 }

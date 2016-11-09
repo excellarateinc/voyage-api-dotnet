@@ -16,13 +16,15 @@ namespace Launchpad.Services.Interfaces
 
         IEnumerable<UserModel> GetUsers();
 
-        Task<IdentityResult> AssignUserRoleAsync(string userId, RoleModel roleModel);
+        Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel);
 
         Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId);
 
         Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId);
 
         Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
+
+        RoleModel GetUserRoleById(string userId, string roleId);
 
     }
 }

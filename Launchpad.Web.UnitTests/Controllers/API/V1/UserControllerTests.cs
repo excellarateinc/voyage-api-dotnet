@@ -15,18 +15,22 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using System.Linq;
 using static Launchpad.Web.Constants;
-
+using System.Web.Http.Routing;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class UserControllerTests : BaseUnitTest
     {
         private UserController _userController;
+        private Mock<UrlHelper> _mockUrlHelper;
+
         private Mock<IUserService> _mockUserService;
         private ClaimsIdentity _claimIdentity;
         public UserControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
+            _mockUrlHelper = Mock.Create<UrlHelper>();
+
             _userController = new UserController(_mockUserService.Object);
             _userController.Request = new System.Net.Http.HttpRequestMessage();
             _userController.Configuration = new System.Web.Http.HttpConfiguration();
@@ -35,11 +39,55 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _claimIdentity.AddClaim(new Claim("fakeClaim", "fake"));
             _claimIdentity.AddClaim(new Claim(Constants.LssClaims.Type, "view.widget"));
             _userController.User = new ClaimsPrincipal(_claimIdentity);
+            _userController.Url = _mockUrlHelper.Object;
         }
 
        
 
-    
+        [Fact]
+        public void GetUserRoleById_Should_Have_HttpGetAttribute()
+        {
+            _userController.AssertAttribute<UserController, HttpGetAttribute>(_ => _.GetUserRoleById("userId", "roleId"));
+        }
+
+        [Fact]
+        public void GetUserRoleById_Should_Have_RouteAttribute()
+        {
+            _userController.AssertRoute<UserController>(_ => _.GetUserRoleById("userId", "roleId"), "users/{userId}/roles/{roleId}");
+        }
+
+        [Fact]
+        public void GetUserRoleById_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _userController.AssertClaim(_ => _.GetUserRoleById("userId", "roleId"), LssClaims.ViewRole);
+        }
+
+        [Fact]
+        public async void GetUserRoleById_Should_Call_UserService()
+        {
+            var model = Fixture.Create<RoleModel>();
+            var userId = Fixture.Create<string>();
+            var roleId = Fixture.Create<string>();
+
+            _mockUserService.Setup(_ => _.GetUserRoleById(userId, roleId))
+                .Returns(model);
+
+         
+
+
+            var result = _userController.GetUserRoleById(userId, roleId);
+
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+           
+
+            RoleModel messageModel;
+            message.TryGetContentValue(out messageModel).Should().BeTrue();
+
+            messageModel.ShouldBeEquivalentTo(model);
+        }
+
 
         [Fact]
         public void GetUsers_Should_Have_RouteAttribute()
@@ -127,13 +175,32 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public async void Assign_Should_Call_User_Service_And_Return_Ok_When_Successful()
+        public async void Assign_Should_Call_User_Service_And_Return_Created_When_Successful()
         {
             //arrange
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
+            var serviceModel = Fixture.Create<RoleModel>();
+            var identityResult = new IdentityResult<RoleModel>(IdentityResult.Success, serviceModel);
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
-                .ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(identityResult);
+
+            const string url = "http://testlink.com";
+
+            //Matcher for determining if route params match
+            Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
+            {
+                routeDictionary.ContainsKey("UserId").Should().BeTrue();
+                routeDictionary["UserId"].ToString().Should().Be(userId);
+                routeDictionary.ContainsKey("RoleId").Should().BeTrue();
+                routeDictionary["RoleId"].ToString().Should().Be(serviceModel.Id);
+                return true;
+            };
+
+
+            _mockUrlHelper.Setup(_ => _.Link("GetUserRoleById", It.Is<Dictionary<string,object>>(arg=>routeDictionaryMatcher(arg))))
+                .Returns(url);
+            
 
             //act
             var result = await _userController.AssignRole(userId, model);
@@ -141,12 +208,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             
 
             //assert
-            Mock.VerifyAll();
+          
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
-
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+            message.Headers.Location.Should().Be(url);
+            message.StatusCode.Should().Be(HttpStatusCode.Created);
+            Mock.VerifyAll();
         }
 
         [Fact]
@@ -155,9 +222,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //arrange
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
-
+            var identityResult = new IdentityResult<RoleModel>(new IdentityResult("error"), null);
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
-                .ReturnsAsync(new IdentityResult("Error"));
+                .ReturnsAsync(identityResult);
 
 
             //act

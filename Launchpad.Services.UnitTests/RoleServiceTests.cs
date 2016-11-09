@@ -12,6 +12,7 @@ using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
 using Launchpad.Services.Fixture;
+using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -79,6 +80,26 @@ namespace Launchpad.Services.UnitTests
 
             //act
             var result = _roleService.GetRoleById(id);
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetRoleByName_Should_Call_Role_Manager()
+        {
+            var name = Fixture.Create<string>();
+
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
+                .ReturnsAsync(role);
+
+            //act
+            var result = _roleService.GetRoleByName(name);
 
             result.Should().NotBeNull();
         }
@@ -209,17 +230,32 @@ namespace Launchpad.Services.UnitTests
         {
             var model = Fixture.Create<RoleModel>();
 
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            Queue<ApplicationRole> returnQueue = new Queue<ApplicationRole>();
+            returnQueue.Enqueue(null);
+            returnQueue.Enqueue(role);
+
             _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
-                .ReturnsAsync(null);
+               .Returns( () => Task.FromResult(returnQueue.Dequeue()));
+            
+           
 
             _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<ApplicationRole>(value => value.Name == model.Name)))
                 .Returns(Task.FromResult(0));
+
+            
 
             var result = await _roleService.CreateRoleAsync(model);
 
             Mock.VerifyAll();
             result.Should().NotBeNull();
-            result.Model.Name.Should().Be(model.Name);
+            result.Model.Name.Should().Be(role.Name);
+            result.Model.Id.Should().Be(role.Id);
             result.Result.Succeeded.Should().BeTrue();
         }
 
