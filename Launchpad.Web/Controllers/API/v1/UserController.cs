@@ -54,6 +54,40 @@ namespace Launchpad.Web.Controllers.API.V1
             return Ok(_userService.GetUsers());
         }
 
+        /**
+        * @api {get} /v1/users/:userId Get user
+        * @apiVersion 0.1.0
+        * @apiName GetUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->view.user
+        * 
+        * @apiUse AuthHeader
+        *  
+        * @apiParam {String} userId User ID  
+        *   
+        * @apiSuccess {Object} user User
+        * @apiSuccess {String} user.id User ID
+        * @apiSuccess {String} user.name Name of the user
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK  
+        *   {   
+        *       "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *       "name": "admin@admin.com"
+        *   }
+        *   
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
+        [HttpGet]
+        [Route("users/{userId}")]
+        public async Task<IHttpActionResult> GetUser(string userId)
+        {
+            var user = await _userService.GetUser(userId);
+            return Ok(user);
+        }
 
         /**
         * @api {get} /v1/users/:userId/roles Get user roles 

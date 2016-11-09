@@ -19,6 +19,7 @@ using System.Web.Http.Routing;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
+    [Trait("Category", "User.Controller")]
     public class UserControllerTests : BaseUnitTest
     {
         private UserController _userController;
@@ -355,6 +356,53 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
             
+
+        }
+
+        [Fact]
+        public void GetUser_Should_Have_HttpGetAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertAttribute<UserController, HttpGetAttribute>(_ => _.GetUser("id"));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void GetUser_Should_Have_ClaimAuthorizeAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertClaim(_ => _.GetUser("id"), LssClaims.ViewUser);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void GetUser_Should_Have_RouteAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertRoute(_ => _.GetUser("id"), "users/{userId}");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public async void GetUser_Should_Call_User_Service()
+        {
+            //ARRANGE
+            var id = Fixture.Create<string>();
+            var user = Fixture.Create<UserModel>();
+            _mockUserService.Setup(_ => _.GetUser(id))
+                .ReturnsAsync(user);
+
+            //ACT
+            var result = await _userController.GetUser(id);
+
+            //ASSERT
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            UserModel messageModel;
+            message.TryGetContentValue(out messageModel).Should().BeTrue();
+            messageModel.ShouldBeEquivalentTo(user);
 
         }
     }

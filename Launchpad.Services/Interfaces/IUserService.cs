@@ -26,5 +26,7 @@ namespace Launchpad.Services.Interfaces
 
         RoleModel GetUserRoleById(string userId, string roleId);
 
+        Task<UserModel> GetUser(string userId);
+
     }
 }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Trait("Category", "User.Service")]
     [Collection(AutoMapperCollection.CollectionName)]
     public class UserServiceTests : BaseUnitTest
     {
@@ -41,6 +42,28 @@ namespace Launchpad.Services.UnitTests
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
             _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object);
+        }
+
+        [Fact]
+        public async void GetUser_Should_Call_UserManager()
+        {
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                Email = "bob@bob.com",
+                UserName = "bob@bob.com",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            var result = await _userService.GetUser(id);
+
+            result.Name.Should().Be(appUser.UserName);
+            result.Id.Should().Be(appUser.Id);
+            Mock.VerifyAll();
+
         }
 
         [Fact]

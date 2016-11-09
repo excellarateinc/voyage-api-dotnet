@@ -23,6 +23,7 @@
 
             public const string ListUsers = "list.users";
             public const string ListUserClaims = "list.user-claims";
+            public const string ViewUser = "view.user";
 
             public const string DeleteRoleClaim = "delete.role-claim";
             public const string CreateClaim = "create.claim";

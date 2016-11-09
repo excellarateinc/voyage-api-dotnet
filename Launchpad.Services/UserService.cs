@@ -121,5 +121,11 @@ namespace Launchpad.Services
             return _userManager.IsInRole(userId, role.Name) ? role : null;
 
         }
+
+        public async Task<UserModel> GetUser(string userId)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            return _mapper.Map<UserModel>(appUser);
+        }
     }
 }
