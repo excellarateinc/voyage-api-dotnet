@@ -286,7 +286,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            
 
         }
     }

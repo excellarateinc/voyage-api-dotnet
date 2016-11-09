@@ -198,7 +198,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} userId User ID
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
+        *   HTTP/1.1 204 No Content
         *
         * @apiUse UnauthorizedError
         * 
@@ -212,7 +212,7 @@ namespace Launchpad.Web.Controllers.API.V1
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             if (result.Succeeded)
             {
-                return Ok();
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
             }
             else
             {
