@@ -15,10 +15,12 @@ namespace Launchpad.Services.Interfaces
 
         IEnumerable<ClaimModel> GetRoleClaims(string name);
 
-        Task AddClaimAsync(string roleId, ClaimModel claim);
+        Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim);
 
         Task<IdentityResult> RemoveRoleAsync(string roleId);
 
          void RemoveClaim(string roleId, int claimId);
+
+        ClaimModel GetClaimById(string roleId, int claimId);
     }
 }

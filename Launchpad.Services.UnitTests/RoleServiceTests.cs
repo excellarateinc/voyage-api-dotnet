@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
@@ -10,7 +8,6 @@ using Launchpad.UnitTests.Common;
 using Moq;
 using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
@@ -40,6 +37,30 @@ namespace Launchpad.Services.UnitTests
 
             _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance);
             
+        }
+
+        [Fact]
+        public void GetClaimById_Should_Call_Repository()
+        {
+            var roleId = Fixture.Create<string>();
+            int id = 1;
+            RoleClaim repoClaim = new RoleClaim
+            {
+                ClaimType = Fixture.Create<string>(),
+                ClaimValue = Fixture.Create<string>(),
+                Id = Fixture.Create<int>()
+            };
+
+            _mockRepository.Setup(_ => _.Get(id))
+                .Returns(repoClaim);
+
+            var claim = _roleService.GetClaimById(roleId, id);
+
+            Mock.VerifyAll();
+            claim.Id.Should().Be(repoClaim.Id);
+            claim.ClaimType.Should().Be(repoClaim.ClaimType);
+            claim.ClaimValue.Should().Be(repoClaim.ClaimValue);
+
         }
 
         [Fact]
@@ -159,9 +180,11 @@ namespace Launchpad.Services.UnitTests
             )))
             .Returns(new RoleClaim());
 
-            await _roleService.AddClaimAsync(model.Id, claim);
+            var serviceResult = await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
+            serviceResult.ClaimValue.Should().Be(claim.ClaimValue);
+            serviceResult.ClaimType.Should().Be(claim.ClaimType);
         }
 
         [Fact]
