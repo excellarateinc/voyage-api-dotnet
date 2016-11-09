@@ -54,6 +54,77 @@ namespace Launchpad.Web.Controllers.API.V1
             return Ok(_userService.GetUsers());
         }
 
+        /**
+        * @api {put} /v1/users/:userId Update user
+        * @apiVersion 0.1.0
+        * @apiName UpdateUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->update.user
+        * 
+        * @apiUse AuthHeader
+        * 
+        * @apiParam {String} userId User ID
+        * @apiParam {Object} user User
+        * @apiParam {String} user.name Name of the user
+        * @apiParam {String} user.Id User ID  
+        *   
+        * @apiSuccess {Object} user User 
+        * @apiSuccess {String} users.id User ID
+        * @apiSuccess {String} users.name Name of the user
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   {   
+        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *           "name": "admin@admin.com"
+        *   }
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.UpdateUser)]
+        [HttpPut]
+        [Route("users/{userId}")]
+        public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
+        {
+            var result = await _userService.UpdateUser(userId, userModel);
+            return Ok(result.Model);
+        }
+
+        /**
+        * @api {get} /v1/users/:userId Get user
+        * @apiVersion 0.1.0
+        * @apiName GetUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->view.user
+        * 
+        * @apiUse AuthHeader
+        *  
+        * @apiParam {String} userId User ID  
+        *   
+        * @apiSuccess {Object} user User
+        * @apiSuccess {String} user.id User ID
+        * @apiSuccess {String} user.name Name of the user
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK  
+        *   {   
+        *       "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *       "name": "admin@admin.com"
+        *   }
+        *   
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
+        [HttpGet]
+        [Route("users/{userId}")]
+        public async Task<IHttpActionResult> GetUser(string userId)
+        {
+            var user = await _userService.GetUser(userId);
+            return Ok(user);
+        }
 
         /**
         * @api {get} /v1/users/:userId/roles Get user roles 
@@ -155,14 +226,25 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         *   
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *   
+        * @apiHeaderExample {json} Location-Example
+        *   { 
+        *       "Location": "http://localhost:52431/api/v1/users/ceee08c8-9b3b-4fde-a234-86cc04993309/roles/76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6"
+        *   }
+        *   
         * @apiParam {String} userId User ID
         * @apiParam {Object} role Role for the association
         * @apiParam {String} role.id Role ID
         * @apiParam {String} role.name Name of the role
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *
+        *   HTTP/1.1 201 CREATED
+        *   {
+        *       "id": "76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6",
+        *       "name": "New Role 1",
+        *       "claims": []
+        *   }
         * @apiUse UnauthorizedError
         * 
         * @apiUse BadRequestError  
@@ -174,15 +256,62 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var identityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
 
-            if (!identityResult.Succeeded)
+            if (!identityResult.Result.Succeeded)
             {
-                ModelState.AddErrors(identityResult);
+                ModelState.AddErrors(identityResult.Result);
                 return BadRequest(ModelState);
             }
 
-            return Ok();
+            return CreatedAtRoute("GetUserRoleById", new { UserId = userId, RoleId = identityResult.Model.Id }, identityResult.Model);
         }
 
+
+        /**
+        * @api {get} /v1/users/:userId/roles/:roleId Get role 
+        * @apiVersion 0.1.0
+        * @apiName GetUserRoleById
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->view.role
+        * 
+        * @apiUse AuthHeader
+        *
+        * @apiParam {String} userId User ID 
+        * @apiParam {String} roleId Role ID  
+        *   
+        * @apiSuccess {Object} role Role 
+        * @apiSuccess {String} role.id Role ID
+        * @apiSuccess {String} role.name Name of the role     
+        * @apiSuccess {Object[]} role.claims List of claims
+        * @apiSuccess {String} role.claims.claimType Type of claim
+        * @apiSuccess {String} role.claims.claimValue Value of claim 
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *       {
+        *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
+        *           "name": "Basic",
+        *           "claims": [
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "login"
+        *               },
+        *               {
+        *                   "claimType": "lss.permission",
+        *                   "claimValue": "list.user-claims"
+        *               }
+        *       }
+        *
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue =LssClaims.ViewRole)]
+        [HttpGet]
+        [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
+        public IHttpActionResult GetUserRoleById(string userId, string roleId)
+        {
+            return Ok(_userService.GetUserRoleById(userId, roleId));
+        }
 
         /**
         * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user 
@@ -198,7 +327,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} userId User ID
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
+        *   HTTP/1.1 204 No Content
         *
         * @apiUse UnauthorizedError
         * 
@@ -212,7 +341,7 @@ namespace Launchpad.Web.Controllers.API.V1
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             if (result.Succeeded)
             {
-                return Ok();
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
             }
             else
             {

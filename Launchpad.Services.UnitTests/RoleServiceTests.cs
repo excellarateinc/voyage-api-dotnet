@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
@@ -10,11 +8,11 @@ using Launchpad.UnitTests.Common;
 using Moq;
 using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Data.Interfaces;
 using Launchpad.Services.Fixture;
+using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -43,6 +41,30 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public void GetClaimById_Should_Call_Repository()
+        {
+            var roleId = Fixture.Create<string>();
+            int id = 1;
+            RoleClaim repoClaim = new RoleClaim
+            {
+                ClaimType = Fixture.Create<string>(),
+                ClaimValue = Fixture.Create<string>(),
+                Id = Fixture.Create<int>()
+            };
+
+            _mockRepository.Setup(_ => _.Get(id))
+                .Returns(repoClaim);
+
+            var claim = _roleService.GetClaimById(roleId, id);
+
+            Mock.VerifyAll();
+            claim.Id.Should().Be(repoClaim.Id);
+            claim.ClaimType.Should().Be(repoClaim.ClaimType);
+            claim.ClaimValue.Should().Be(repoClaim.ClaimValue);
+
+        }
+
+        [Fact]
         public void GetRoleById_Should_Call_Role_Manager()
         {
             var id = Fixture.Create<string>();
@@ -58,6 +80,26 @@ namespace Launchpad.Services.UnitTests
 
             //act
             var result = _roleService.GetRoleById(id);
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetRoleByName_Should_Call_Role_Manager()
+        {
+            var name = Fixture.Create<string>();
+
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
+                .ReturnsAsync(role);
+
+            //act
+            var result = _roleService.GetRoleByName(name);
 
             result.Should().NotBeNull();
         }
@@ -159,9 +201,11 @@ namespace Launchpad.Services.UnitTests
             )))
             .Returns(new RoleClaim());
 
-            await _roleService.AddClaimAsync(model.Id, claim);
+            var serviceResult = await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
+            serviceResult.ClaimValue.Should().Be(claim.ClaimValue);
+            serviceResult.ClaimType.Should().Be(claim.ClaimType);
         }
 
         [Fact]
@@ -186,17 +230,32 @@ namespace Launchpad.Services.UnitTests
         {
             var model = Fixture.Create<RoleModel>();
 
+            var role = new ApplicationRole
+            {
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            Queue<ApplicationRole> returnQueue = new Queue<ApplicationRole>();
+            returnQueue.Enqueue(null);
+            returnQueue.Enqueue(role);
+
             _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
-                .ReturnsAsync(null);
+               .Returns( () => Task.FromResult(returnQueue.Dequeue()));
+            
+           
 
             _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<ApplicationRole>(value => value.Name == model.Name)))
                 .Returns(Task.FromResult(0));
+
+            
 
             var result = await _roleService.CreateRoleAsync(model);
 
             Mock.VerifyAll();
             result.Should().NotBeNull();
-            result.Model.Name.Should().Be(model.Name);
+            result.Model.Name.Should().Be(role.Name);
+            result.Model.Id.Should().Be(role.Id);
             result.Result.Succeeded.Should().BeTrue();
         }
 

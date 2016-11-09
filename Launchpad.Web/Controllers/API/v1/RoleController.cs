@@ -163,37 +163,90 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-       * @api {post} /v1/roles/:roleId/claims Create a role claim 
-       * @apiVersion 0.1.0
-       * @apiName AddRoleClaim
-       * @apiGroup Role
-       * 
-       * @apiPermission lss.permission->create.claim
-       * 
-       * 
-       * @apiUse AuthHeader
-       *   
-       * @apiParam {string} roleId Role ID 
-       * @apiParam {Object} claim Claim 
-       * @apiParam {String} claim.claimType Type of the claim 
-       * @apiParam {String} claim.claimValue Value of the claim
-       * 
-       * @apiSuccessExample Success-Response:
-       *   HTTP/1.1 201 Created
-       *
-       * @apiUse UnauthorizedError
-       * 
-       * @apiUse BadRequestError  
-       **/
+        * @api {post} /v1/roles/:roleId/claims Create a role claim 
+        * @apiVersion 0.1.0
+        * @apiName AddRoleClaim
+        * @apiGroup Role
+        * 
+        * @apiPermission lss.permission->create.claim
+        * 
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *   
+        * @apiHeaderExample {json} Location-Example
+        *   { 
+        *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/claims/219"
+        *   }
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiParam {string} roleId Role ID 
+        * @apiParam {Object} claim Claim 
+        * @apiParam {String} claim.claimType Type of the claim 
+        * @apiParam {String} claim.claimValue Value of the claim
+        * 
+        * @apiSuccess {Object} claim Claim
+        * @apiSuccess {Integer} claim.id Claim ID
+        * @apiSuccess {String} claim.claimType Type
+        * @apiSuccess {String} claim.claimValue Value
+        * 
+        *  @apiSuccessExample Success-Response:
+        *   HTTP/1.1 201 Created
+        *   {
+        *       "claimType": "lss.permission",
+        *       "claimValue": "list.widgets",
+        *       "id": 219
+        *   }
+        *
+        * @apiUse UnauthorizedError
+        * 
+        * @apiUse BadRequestError  
+        **/
         [ClaimAuthorize(ClaimValue = LssClaims.CreateClaim)]
         [Route("roles/{roleId}/claims")]
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
-            await _roleService.AddClaimAsync(roleId, claim);
-            return StatusCode(HttpStatusCode.Created);
+            var newModel = await _roleService.AddClaimAsync(roleId, claim);
+            return CreatedAtRoute("GetClaimById", new {RoleId = roleId, ClaimId = newModel.Id }, newModel);
         }
 
+        /**
+        * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
+        * @apiVersion 0.1.0
+        * @apiName GetClaimById
+        * @apiGroup Role
+        * 
+        * @apiPermission lss.permission->view.claim
+        *
+        * @apiUse AuthHeader
+        *   
+        * @apiParam {String} roleId Role ID 
+        * @apiParam {String} claimId Claim ID
+        * 
+        * @apiSuccess {Object} claim Claim
+        * @apiSuccess {Integer} claim.id Claim ID
+        * @apiSuccess {String} claim.claimType Type
+        * @apiSuccess {String} claim.claimValue Value
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 Created
+        *   {
+        *       "claimType": "lss.permission",
+        *       "claimValue": "list.widgets",
+        *       "id": 219
+        *   }
+        * @apiUse UnauthorizedError
+        * 
+        * @apiUse BadRequestError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.ViewClaim)]
+        [Route("roles/{roleId}/claims/{claimId}", Name ="GetClaimById")]
+        [HttpGet]
+        public IHttpActionResult GetClaimById(string roleId, int claimId)
+        {
+            var claim = _roleService.GetClaimById(roleId, claimId);
+            return Ok(claim);
+        }
 
 
         /**

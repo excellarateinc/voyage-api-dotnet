@@ -28,7 +28,19 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
-        
+        public async Task<IdentityResult<UserModel>> UpdateUser(string userId, UserModel model)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+
+            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+            var identityResult = await _userManager.UpdateAsync(appUser);
+
+            return new IdentityResult<UserModel>(identityResult, _mapper.Map<UserModel>(appUser));
+
+        }
+
+            
         public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
 
@@ -37,10 +49,12 @@ namespace Launchpad.Services
             return result;
         }
 
-        public async Task<IdentityResult> AssignUserRoleAsync(string userId, RoleModel roleModel)
+        public async Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-            return result;
+            
+            var hydratedRole = _roleService.GetRoleByName(roleModel.Name);
+            return new IdentityResult<RoleModel>(IdentityResult.Success, hydratedRole);
         }
 
         public IEnumerable<UserModel> GetUsers()
@@ -110,6 +124,20 @@ namespace Launchpad.Services
                             .Where(_ => roles.Contains(_.Name));
 
             return roleModels;
+        }
+
+        public RoleModel GetUserRoleById(string userId, string roleId)
+        {
+            var role = _roleService.GetRoleById(roleId);
+            
+            return _userManager.IsInRole(userId, role.Name) ? role : null;
+
+        }
+
+        public async Task<UserModel> GetUser(string userId)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            return _mapper.Map<UserModel>(appUser);
         }
     }
 }

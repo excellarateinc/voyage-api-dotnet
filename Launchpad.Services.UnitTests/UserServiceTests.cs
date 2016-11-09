@@ -18,6 +18,7 @@ using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Trait("Category", "User.Service")]
     [Collection(AutoMapperCollection.CollectionName)]
     public class UserServiceTests : BaseUnitTest
     {
@@ -41,6 +42,61 @@ namespace Launchpad.Services.UnitTests
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
             _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object);
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Call_UserManager()
+        {
+            var id = Fixture.Create<string>();
+            var userModel = new UserModel
+            {
+                Id = id,
+                Name = "sally@sally.com"
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com"
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(appUser);
+
+
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Name)))
+                .Returns(Task.Delay(0));
+
+            var result = await _userService.UpdateUser(id, userModel);
+
+            result.Result.Succeeded.Should().BeTrue();
+            result.Model.Name.Should().Be(userModel.Name);
+        }
+
+        [Fact]
+        public async void GetUser_Should_Call_UserManager()
+        {
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                Email = "bob@bob.com",
+                UserName = "bob@bob.com",
+                Id = Guid.NewGuid().ToString()
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            var result = await _userService.GetUser(id);
+
+            result.Name.Should().Be(appUser.UserName);
+            result.Id.Should().Be(appUser.Id);
+            Mock.VerifyAll();
+
         }
 
         [Fact]
@@ -174,6 +230,8 @@ namespace Launchpad.Services.UnitTests
         
 
             var roleModel = Fixture.Create<RoleModel>();
+            var serviceModel = Fixture.Create<RoleModel>();
+
             var applicationUser = new ApplicationUser { Id = userModel.Id, UserName = userModel.Name };
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
                 .Setup(_ => _.FindByIdAsync(userModel.Id))
@@ -193,6 +251,8 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.UpdateAsync(applicationUser))
                 .Returns(Task.Delay(0));
 
+            _mockRoleService.Setup(_ => _.GetRoleByName(roleModel.Name))
+                .Returns(serviceModel);
          
 
             //act
@@ -202,7 +262,69 @@ namespace Launchpad.Services.UnitTests
             //assert
             Mock.VerifyAll();
             result.Should().NotBeNull();
-            result.Succeeded.Should().BeTrue();
+            result.Result.Succeeded.Should().BeTrue();
+            result.Model.ShouldBeEquivalentTo(serviceModel);
+
+        }
+
+        [Fact]
+        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager()
+        {
+            var userId = Fixture.Create<string>();
+            var roleId = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com"
+            };
+
+            var model = Fixture.Create<RoleModel>();
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+                .Returns(model);
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userId))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.IsInRoleAsync(appUser, model.Name))
+                .ReturnsAsync(true);
+
+            var role = _userService.GetUserRoleById(userId, roleId);
+
+
+            Mock.VerifyAll();
+            role.ShouldBeEquivalentTo(model);
+
+        }
+
+
+        [Fact]
+        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager_And_Return_Null_When_Not_Found()
+        {
+            var userId = Fixture.Create<string>();
+            var roleId = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com"
+            };
+
+            var model = Fixture.Create<RoleModel>();
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+                .Returns(model);
+
+            _mockStore.Setup(_ => _.FindByIdAsync(userId))
+                .ReturnsAsync(appUser);
+
+            _mockStore.As<IUserRoleStore<ApplicationUser>>()
+                .Setup(_ => _.IsInRoleAsync(appUser, model.Name))
+                .ReturnsAsync(false);
+
+            var role = _userService.GetUserRoleById(userId, roleId);
+
+
+            Mock.VerifyAll();
+            role.Should().BeNull();
 
         }
 

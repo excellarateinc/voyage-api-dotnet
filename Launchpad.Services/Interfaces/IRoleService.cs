@@ -7,6 +7,9 @@ namespace Launchpad.Services.Interfaces
 {
     public interface IRoleService
     {
+
+        RoleModel GetRoleByName(string name);
+
         RoleModel GetRoleById(string id);
 
         Task<IdentityResult<RoleModel>> CreateRoleAsync(RoleModel model);
@@ -15,10 +18,12 @@ namespace Launchpad.Services.Interfaces
 
         IEnumerable<ClaimModel> GetRoleClaims(string name);
 
-        Task AddClaimAsync(string roleId, ClaimModel claim);
+        Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim);
 
         Task<IdentityResult> RemoveRoleAsync(string roleId);
 
          void RemoveClaim(string roleId, int claimId);
+
+        ClaimModel GetClaimById(string roleId, int claimId);
     }
 }

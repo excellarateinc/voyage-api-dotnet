@@ -31,13 +31,18 @@ namespace Launchpad.Services
             return _mapper.Map<RoleModel>(_roleManager.FindById(id));
         }
 
-        public async Task AddClaimAsync(string roleId, ClaimModel claim)
+        public async Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim)
         {
+            ClaimModel model = null;
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if(roleEntity != null)
             {
-                _roleClaimRepository.Add(new RoleClaim { RoleId = roleEntity.Id, ClaimValue = claim.ClaimValue, ClaimType = claim.ClaimType });   
+                var roleClaim = new RoleClaim { RoleId = roleEntity.Id, ClaimValue = claim.ClaimValue, ClaimType = claim.ClaimType };
+                _roleClaimRepository.Add(roleClaim);
+                model = _mapper.Map<ClaimModel>(roleClaim);
+                   
             }
+            return model;
         }
 
         public async Task<IdentityResult> RemoveRoleAsync(string roleId)
@@ -61,7 +66,8 @@ namespace Launchpad.Services
 
             var result = await _roleManager.CreateAsync(role);
 
-            return new IdentityResult<RoleModel>(result, _mapper.Map<RoleModel>(role));
+            var hydratedRole = GetRoleByName(role.Name);
+            return new IdentityResult<RoleModel>(result, _mapper.Map<RoleModel>(hydratedRole));
         }
 
         public IEnumerable<RoleModel> GetRoles()
@@ -83,6 +89,17 @@ namespace Launchpad.Services
             //It is not normalized - the record contains the RoleId and the complete definition of the claim
             //This means something like a "login" claim is repeated for each role
             _roleClaimRepository.Delete(claimId);
+        }
+
+        public ClaimModel GetClaimById(string roleId, int claimId)
+        {
+            return _mapper.Map<ClaimModel>(_roleClaimRepository.Get(claimId));  
+        }
+
+        public RoleModel GetRoleByName(string name)
+        {
+            var role = _roleManager.FindByName(name);
+            return _mapper.Map<RoleModel>(role);
         }
     }
 }

@@ -267,6 +267,53 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
+        public void GetClaimById_Should_Have_HttpGetAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetClaimById("roleId", 0));
+        }
+
+        [Fact]
+        public void GetClaimById_Should_Have_RouteAttribute()
+        {
+            _roleController.AssertRoute(_ => _.GetClaimById("roleId", 0), "roles/{roleId}/claims/{claimId}");
+        }
+
+        [Fact]
+        public void GetClaimById_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.GetClaimById("roleId", 0), LssClaims.ViewClaim);
+        }
+
+        [Fact]
+        public async void GetClaimById_Should_Call_RoleService_And_Return_Ok()
+        {
+            //ARRANGE
+            var roleId = Fixture.Create<string>();
+            var claimId = Fixture.Create<int>();
+            var claim = Fixture.Create<ClaimModel>();
+
+            _mockRoleService
+                .Setup(_ => _.GetClaimById(roleId, claimId))
+                .Returns(claim);
+
+            //ACT
+            var result = _roleController.GetClaimById(roleId, claimId);
+
+            //ASSERT
+            Mock.VerifyAll();
+
+            var message = await result.ExecuteAsync(new CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            ClaimModel resultModel;
+            message.TryGetContentValue(out resultModel).Should().BeTrue();
+
+            resultModel.ShouldBeEquivalentTo(claim);
+
+
+        }
+
+        [Fact]
         public async void GetRoles_Should_Call_RoleService()
         {
             var roles = Fixture.CreateMany<RoleModel>();
@@ -291,17 +338,42 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void AddClaim_Should_Call_RoleService_And_Return_Created()
         {
+            //Arrange
             var role = Fixture.Create<RoleModel>();
             var claim = Fixture.Create<ClaimModel>();
-            
+            var serviceResult = Fixture.Create<ClaimModel>();
             _mockRoleService.Setup(_ => _.AddClaimAsync(role.Id, claim))
-                .Returns(Task.Delay(0));
+                .ReturnsAsync(serviceResult);
 
+            var link = "http://fakelink.com";
+
+            //Matcher for determining if route params match
+            Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
+            {
+                routeDictionary.ContainsKey("RoleId").Should().BeTrue();
+                routeDictionary["RoleId"].ToString().Should().Be(role.Id);
+                routeDictionary.ContainsKey("ClaimId").Should().BeTrue();
+                routeDictionary["ClaimId"].As<int>().Should().Be(serviceResult.Id);
+                return true;
+            };
+
+            _mockUrlHelper.Setup(_ => _.Link("GetClaimById",
+                It.Is<Dictionary<string, object>>(args => routeDictionaryMatcher(args))))
+                .Returns(link);
+
+            //Act
             var result  = await _roleController.AddClaim(role.Id, claim);
 
+            //Assert
             var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.Created);
+            message.Headers.Location.Should().Be(link);
+
+            ClaimModel messageModel;
+            message.TryGetContentValue(out messageModel).Should().BeTrue();
+
+            messageModel.ShouldBeEquivalentTo(serviceResult);
         }
 
         [Fact]

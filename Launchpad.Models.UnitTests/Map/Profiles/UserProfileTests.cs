@@ -2,6 +2,7 @@
 using Launchpad.Models.EntityFramework;
 using Launchpad.Models.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
+using System;
 using Xunit;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
@@ -46,6 +47,29 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             user.Should().NotBeNull();
             user.Name.Should().Be(appUser.UserName);
             user.Id.Should().Be(appUser.Id);
+        }
+
+        [Fact]
+        public void UserModle_Should_Map_To_ApplicationUser()
+        {
+            var appUser = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "hank@hank.com",
+                Email = "hank@hank.com"
+            };
+
+            var userModel = new UserModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "tom@tom.com"
+            };
+
+            var mapResult = _mappingFixture.MapperInstance.Map(userModel, appUser);
+
+            appUser.UserName.Should().Be(userModel.Name);
+            appUser.Email.Should().Be(userModel.Name);
+            appUser.Id.Should().NotBe(userModel.Id);
         }
 
     }
