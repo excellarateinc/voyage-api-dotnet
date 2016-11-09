@@ -196,6 +196,8 @@ namespace Launchpad.Services.UnitTests
 
             Mock.VerifyAll();
             result.Should().NotBeNull();
+            result.Model.Name.Should().Be(model.Name);
+            result.Result.Succeeded.Should().BeTrue();
         }
 
         [Fact]

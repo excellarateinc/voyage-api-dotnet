@@ -54,14 +54,14 @@ namespace Launchpad.Services
             return result;
         }
 
-        public async Task<IdentityResult> CreateRoleAsync(RoleModel model)
+        public async Task<IdentityResult<RoleModel>> CreateRoleAsync(RoleModel model)
         {
             var role = new ApplicationRole();
             role.Name = model.Name;
 
             var result = await _roleManager.CreateAsync(role);
 
-            return result;
+            return new IdentityResult<RoleModel>(result, _mapper.Map<RoleModel>(role));
         }
 
         public IEnumerable<RoleModel> GetRoles()
