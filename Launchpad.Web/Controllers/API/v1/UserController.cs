@@ -155,14 +155,25 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         *   
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *   
+        * @apiHeaderExample {json} Location-Example
+        *   { 
+        *       "Location": "http://localhost:52431/api/v1/users/ceee08c8-9b3b-4fde-a234-86cc04993309/roles/76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6"
+        *   }
+        *   
         * @apiParam {String} userId User ID
         * @apiParam {Object} role Role for the association
         * @apiParam {String} role.id Role ID
         * @apiParam {String} role.name Name of the role
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *
+        *   HTTP/1.1 201 CREATED
+        *   {
+        *       "id": "76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6",
+        *       "name": "New Role 1",
+        *       "claims": []
+        *   }
         * @apiUse UnauthorizedError
         * 
         * @apiUse BadRequestError  

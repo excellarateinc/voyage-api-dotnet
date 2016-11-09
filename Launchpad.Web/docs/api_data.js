@@ -1310,6 +1310,40 @@ define({ "api": [
         "name": "lss.permission->assign.role"
       }
     ],
+    "header": {
+      "fields": {
+        "Response Headers": [
+          {
+            "group": "Response Headers",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Location of the newly created resource</p>"
+          }
+        ],
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authentication token returned from the /api/Token service</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Location-Example",
+          "content": "{ \n    \"Location\": \"http://localhost:52431/api/v1/users/ceee08c8-9b3b-4fde-a234-86cc04993309/roles/76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Header-Example:",
+          "content": "{\n \n    \"Authorization\": \"bearer 5_leQJfkDVIFxRgt-YZcnRGvzlrsFdNXClRaZEaTf3jzToaoFAUtOyneKNhtYo2cCSC9_fYXXBMS3UHwY3MZuzRbWmLqG_H1T5Cm6YHUzzQHPpKCCUqcYMx6m3NMLQoGVX9_f2svSSY4HieOTzwT-LTfxYbxHyuiRY0sJrmoGnQOtWGGC9GhdUXPCpM9_1L8p0vdAC1wnnTKtkDkxulAUkIxj3jJIUc9lUhqLoh5BRYJ8VsABsKEZYouLWvYfL5eqkL7EjwtxRNBhy9rJSU7nc_6lNCk5PEpsFg-laLYWeVO10gVFBkI3Ml7I8KgJA2Bs3vKKccIxuOwqoWjU_XIhV3f9Lhjm34OqSrwcThfx940k5TEWjHG9CHqxnItRvgHtqahc2rP8q0QuZ0qw6Ph5kxEE18YVGa8IVX7zAPW8V6WtXnVnR7SbZwnwiNTuh3i0t0Ib_gOKZAwUZTrVhsTqnFe20zMvJIsOzTtijl80bJMF7ZBAbKKL6zKfJcQ_DwYJaM0CISapXGjbJYMNWPaOzg6kTKtVuHb4akxfxlsAUk0QFqxZ793TT-KCdh-c0ppUNb3brPMh8wGpJDhwLbnhUfpBVnuxdC-sDrGUtzpSnMrPavKivovVT-sXBbqzeg6udOhjN3JXIv2ZzctisLYTw\"\n \n}",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1348,33 +1382,13 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK",
+          "content": "HTTP/1.1 201 CREATED\n{\n    \"id\": \"76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6\",\n    \"name\": \"New Role 1\",\n    \"claims\": []\n}",
           "type": "json"
         }
       ]
     },
     "filename": "./Controllers/API/v1/UserController.cs",
     "groupTitle": "User",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Authentication token returned from the /api/Token service</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header-Example:",
-          "content": "{\n \n    \"Authorization\": \"bearer 5_leQJfkDVIFxRgt-YZcnRGvzlrsFdNXClRaZEaTf3jzToaoFAUtOyneKNhtYo2cCSC9_fYXXBMS3UHwY3MZuzRbWmLqG_H1T5Cm6YHUzzQHPpKCCUqcYMx6m3NMLQoGVX9_f2svSSY4HieOTzwT-LTfxYbxHyuiRY0sJrmoGnQOtWGGC9GhdUXPCpM9_1L8p0vdAC1wnnTKtkDkxulAUkIxj3jJIUc9lUhqLoh5BRYJ8VsABsKEZYouLWvYfL5eqkL7EjwtxRNBhy9rJSU7nc_6lNCk5PEpsFg-laLYWeVO10gVFBkI3Ml7I8KgJA2Bs3vKKccIxuOwqoWjU_XIhV3f9Lhjm34OqSrwcThfx940k5TEWjHG9CHqxnItRvgHtqahc2rP8q0QuZ0qw6Ph5kxEE18YVGa8IVX7zAPW8V6WtXnVnR7SbZwnwiNTuh3i0t0Ib_gOKZAwUZTrVhsTqnFe20zMvJIsOzTtijl80bJMF7ZBAbKKL6zKfJcQ_DwYJaM0CISapXGjbJYMNWPaOzg6kTKtVuHb4akxfxlsAUk0QFqxZ793TT-KCdh-c0ppUNb3brPMh8wGpJDhwLbnhUfpBVnuxdC-sDrGUtzpSnMrPavKivovVT-sXBbqzeg6udOhjN3JXIv2ZzctisLYTw\"\n \n}",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Error 4xx": [
