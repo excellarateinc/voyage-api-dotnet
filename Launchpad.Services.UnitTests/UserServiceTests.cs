@@ -45,6 +45,39 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void UpdateUser_Should_Call_UserManager()
+        {
+            var id = Fixture.Create<string>();
+            var userModel = new UserModel
+            {
+                Id = id,
+                Name = "sally@sally.com"
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com"
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+                .ReturnsAsync(appUser);
+
+
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Name)))
+                .Returns(Task.Delay(0));
+
+            var result = await _userService.UpdateUser(id, userModel);
+
+            result.Result.Succeeded.Should().BeTrue();
+            result.Model.Name.Should().Be(userModel.Name);
+        }
+
+        [Fact]
         public async void GetUser_Should_Call_UserManager()
         {
             var id = Fixture.Create<string>();

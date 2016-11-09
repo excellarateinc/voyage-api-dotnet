@@ -43,7 +43,52 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.Url = _mockUrlHelper.Object;
         }
 
-       
+        [Fact]
+        public void UpdateUser_Should_Have_ClaimAuthorizeAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertClaim(_ => _.UpdateUser("id", new UserModel()), LssClaims.UpdateUser);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void UpdateUser_Should_Have_HttpPutAtribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertAttribute<UserController, HttpPutAttribute>(_ => _.UpdateUser("id", new UserModel()));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void UpdateUser_Should_Have_RouteAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertRoute(_ => _.UpdateUser("id", new UserModel()), "users/{userId}");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Call_UserService()
+        {
+            var userModel = Fixture.Create<UserModel>();
+            var returnModel = Fixture.Create<UserModel>();
+            var identityResult = new IdentityResult<UserModel>(IdentityResult.Success
+                , returnModel);
+            var id = Fixture.Create<string>();
+
+            _mockUserService.Setup(_ => _.UpdateUser(id, userModel))
+                .ReturnsAsync(identityResult);
+
+            var result = await _userController.UpdateUser(id, userModel);
+
+            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            UserModel messageModel;
+            message.TryGetContentValue(out messageModel).Should().BeTrue();
+
+            messageModel.ShouldBeEquivalentTo(returnModel);
+        }
 
         [Fact]
         public void GetUserRoleById_Should_Have_HttpGetAttribute()

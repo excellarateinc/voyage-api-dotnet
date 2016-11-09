@@ -28,7 +28,19 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
-        
+        public async Task<IdentityResult<UserModel>> UpdateUser(string userId, UserModel model)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+
+            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+            var identityResult = await _userManager.UpdateAsync(appUser);
+
+            return new IdentityResult<UserModel>(identityResult, _mapper.Map<UserModel>(appUser));
+
+        }
+
+            
         public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
 

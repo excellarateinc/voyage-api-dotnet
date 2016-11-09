@@ -55,6 +55,43 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
+        * @api {put} /v1/users/:userId Update user
+        * @apiVersion 0.1.0
+        * @apiName UpdateUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->update.user
+        * 
+        * @apiUse AuthHeader
+        * 
+        * @apiParam {String} userId User ID
+        * @apiParam {Object} user User
+        * @apiParam {String} user.name Name of the user
+        * @apiParam {String} user.Id User ID  
+        *   
+        * @apiSuccess {Object} user User 
+        * @apiSuccess {String} users.id User ID
+        * @apiSuccess {String} users.name Name of the user
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   {   
+        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *           "name": "admin@admin.com"
+        *   }
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.UpdateUser)]
+        [HttpPut]
+        [Route("users/{userId}")]
+        public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
+        {
+            var result = await _userService.UpdateUser(userId, userModel);
+            return Ok(result.Model);
+        }
+
+        /**
         * @api {get} /v1/users/:userId Get user
         * @apiVersion 0.1.0
         * @apiName GetUser

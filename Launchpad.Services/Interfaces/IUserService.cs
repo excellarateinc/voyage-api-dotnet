@@ -28,5 +28,7 @@ namespace Launchpad.Services.Interfaces
 
         Task<UserModel> GetUser(string userId);
 
+        Task<IdentityResult<UserModel>> UpdateUser(string userId, UserModel model);
+
     }
 }
