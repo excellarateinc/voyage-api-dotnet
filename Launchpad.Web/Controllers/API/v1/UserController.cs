@@ -128,6 +128,56 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
+        * @api {post} /v1/users Create user
+        * @apiVersion 0.1.0
+        * @apiName CreateUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->create.user
+        * 
+        * @apiUse AuthHeader
+        *
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *   
+        * @apiHeaderExample {json} Location-Example
+        *   { 
+        *       "Location": "http://localhost:52431/api/v1/users/b78ae241-1fa6-498c-aa48-9742245d0d2f"
+        *   }
+        * 
+        * 
+        * @apiParam {Object} user User
+        * @apiParam {String} user.name Name of the user
+        *   
+        * @apiSuccess {Object} user User 
+        * @apiSuccess {String} users.id User ID
+        * @apiSuccess {String} users.name Name of the user
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 201 CREATED
+        *   {   
+        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *           "name": "admin@admin.com"
+        *   }
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.CreateUser)]
+        [HttpPost]
+        [Route("users")]
+        public async Task<IHttpActionResult> CreateUser(UserModel user)
+        {
+            var result = await _userService.CreateUserAsync(user);
+            if (result.Result.Succeeded)
+            {
+                return CreatedAtRoute("GetUser", new { UserId = result.Model.Id }, result.Model);
+            }else
+            {
+                ModelState.AddErrors(result.Result);
+                return BadRequest(ModelState);
+            }
+        }
+
+        /**
         * @api {get} /v1/users/:userId Get user
         * @apiVersion 0.1.0
         * @apiName GetUser
@@ -155,7 +205,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
         [HttpGet]
-        [Route("users/{userId}")]
+        [Route("users/{userId}", Name ="GetUser")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
             var user = await _userService.GetUser(userId);

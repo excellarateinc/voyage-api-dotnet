@@ -115,6 +115,7 @@ namespace Launchpad.Data.Migrations
             SeedRoleClaim(context, adminRole.Id, claimType, "view.user");
             SeedRoleClaim(context, adminRole.Id, claimType, "update.user");
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.user");
+            SeedRoleClaim(context, adminRole.Id, claimType, "create.user");
 
 
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.role-claim");

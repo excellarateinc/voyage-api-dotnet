@@ -10,6 +10,8 @@ namespace Launchpad.Services.Interfaces
     {
         Task<IdentityResult> RegisterAsync(RegistrationModel model);
 
+        Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model);
+
         Task<bool> IsValidCredential(string userName, string password);
 
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
