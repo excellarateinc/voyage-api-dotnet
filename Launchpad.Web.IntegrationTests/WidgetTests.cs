@@ -10,7 +10,7 @@ using Launchpad.Web.IntegrationTests.Extensions;
 namespace Launchpad.Web.IntegrationTests
 {
   
-
+    [Trait("Category", "Self-Hosted")]
     [Collection(OwinCollectionFixture.Name)]
     public class WidgetTests : BaseEndpointTest
     {

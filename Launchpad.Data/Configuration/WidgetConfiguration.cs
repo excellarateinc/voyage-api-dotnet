@@ -11,7 +11,7 @@ namespace Launchpad.Data.Configuration
     {
         public WidgetConfiguration()
         {
-            ToTable("Widget");
+            ToTable("Widget", Constants.Schemas.FrameworkTables);
 
             //Configure the entity key
             HasKey(_ => _.Id);

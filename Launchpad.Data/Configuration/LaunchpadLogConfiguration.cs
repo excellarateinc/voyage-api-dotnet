@@ -7,7 +7,7 @@ namespace Launchpad.Data.Configuration
     {
         public LaunchpadLogConfiguration()
         {
-            ToTable("LaunchpadLog");
+            ToTable("LaunchpadLogs", Constants.Schemas.FrameworkTables);
 
             HasKey(_ => _.Id);
 

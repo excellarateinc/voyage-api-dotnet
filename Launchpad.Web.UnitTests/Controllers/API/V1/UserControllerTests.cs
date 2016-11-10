@@ -46,20 +46,26 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void CreateUser_Should_Have_ClaimAuthorizeAttribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertClaim(_ => _.CreateUser(new UserModel()), LssClaims.CreateUser);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
         }
 
         [Fact]
         public void CreateUser_Should_Have_HttpPostAttribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertAttribute<UserController, HttpPostAttribute>(_ => _.CreateUser(new UserModel()));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
         public void CreateUser_Should_Have_RouteAttribute()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertRoute(_ => _.CreateUser(new UserModel()), "users");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
