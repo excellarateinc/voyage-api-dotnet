@@ -80,6 +80,10 @@
     <Compile Include="Migrations\201611101743272_Initial.Designer.cs">
       <DependentUpon>201611101743272_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.cs" />
+    <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.Designer.cs">
+      <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepository.cs" />
@@ -105,6 +109,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611101743272_Initial.resx">
       <DependentUpon>201611101743272_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.resx">
+      <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

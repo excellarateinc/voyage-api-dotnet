@@ -122,6 +122,8 @@ namespace Launchpad.Data.Migrations
 
             SeedRoleClaim(context, adminRole.Id, claimType, "list.widgets");
 
+
+            SeedRoleClaim(context, adminRole.Id, claimType, "list.role-claims");
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.role-claim");
             SeedRoleClaim(context, adminRole.Id, claimType, "create.claim");
             

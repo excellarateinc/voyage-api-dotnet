@@ -19,6 +19,7 @@ using System.Web.Http.Routing;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
+    [Trait("Category", "Role.Controller")]
     public class RoleControllerTests : BaseUnitTest
     {
         private RoleController _roleController;
@@ -35,17 +36,60 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
            
         }
 
+        [Fact]
+        public void GetClaims_Should_Have_RouteAttribute()
+        {
+            _roleController.AssertRoute(_ => _.GetClaims("id"), "roles/{roleId}/claims");
+        }
+
+        [Fact]
+        public void GetClaims_Should_Have_HttpGetAttribute()
+        {
+            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetClaims("Id"));
+        }
+
+        [Fact]
+        public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
+        {
+            _roleController.AssertClaim(_ => _.GetClaims("id"), LssClaims.ListRoleClaims);
+        }
+
+        [Fact]
+        public async void GetClaims_Should_Call_RoleService_And_Return_Ok_On_Success()
+        {
+            var id = Fixture.Create<string>();
+            var claims = Fixture.CreateMany<ClaimModel>();
+
+            _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleId(id))
+                .Returns(claims);
+
+            var result = _roleController.GetClaims(id);
+
+            Mock.VerifyAll();
+            var message = await result.ExecuteAsync(CreateCancelToken());
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            IEnumerable<ClaimModel> messageModels;
+            message.TryGetContentValue(out messageModels).Should().BeTrue("Message is readable");
+            messageModels.ShouldBeEquivalentTo(claims);
+
+        }
+
+        [Fact]
+
         public void CreateRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertRoute(_=>_.CreateRole(new RoleModel()), "role");
+            _roleController.AssertRoute(_=>_.CreateRole(new RoleModel()), "roles");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
+
+        [Fact]
 
         public void RemoveRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertRoute(_ => _.RemoveRole("roleId"), "role");
+            _roleController.AssertRoute(_ => _.RemoveRole("roleId"), "roles/{roleId}");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 

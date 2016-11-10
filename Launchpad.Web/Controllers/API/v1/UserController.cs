@@ -34,13 +34,17 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {Object[]} users List of users 
         * @apiSuccess {String} users.id User ID
         * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} users.firstName First Name
+        * @apiSuccess {String} users.lastName last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
         *       {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com"
+        *           "name": "admin@admin.com",
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
         *       }
         *   ]
         *   
@@ -57,7 +61,7 @@ namespace Launchpad.Web.Controllers.API.V1
         /**
         * @api {put} /v1/users/:userId Update user
         * @apiVersion 0.1.0
-        * @apiName UpdateUser
+        * @apiName UpdateUserAsync
         * @apiGroup User
         * 
         * @apiPermission lss.permission->update.user
@@ -67,17 +71,24 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} userId User ID
         * @apiParam {Object} user User
         * @apiParam {String} user.name Name of the user
-        * @apiParam {String} user.Id User ID  
+        * @apiParam {String} user.id User ID  
+        * @apiParam {String} user.firstName First name
+        * @apiParam {String} user.lastName Last name  
         *   
         * @apiSuccess {Object} user User 
-        * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} user.id User ID
+        * @apiSuccess {String} user.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com"
+        *           "name": "admin@admin.com",
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
+        *           
         *   }
         *   
         * @apiUse UnauthorizedError  
@@ -87,14 +98,14 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
-            var result = await _userService.UpdateUser(userId, userModel);
+            var result = await _userService.UpdateUserAsync(userId, userModel);
             return Ok(result.Model);
         }
 
         /**
         * @api {delete} /v1/users/:userId Delete a user
         * @apiVersion 0.1.0
-        * @apiName DeleteUser
+        * @apiName DeleteUserAsync
         * @apiGroup User
         * 
         * @apiPermission lss.permission->delete.user
@@ -116,7 +127,7 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
         {
-            var result = await _userService.DeleteUser(userId);
+            var result = await _userService.DeleteUserAsync(userId);
             if (result.Succeeded)
             {
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
@@ -147,16 +158,22 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiParam {Object} user User
         * @apiParam {String} user.name Name of the user
+        * @apiParam {String} user.firstName First name
+        * @apiParam {String} user.lastName Last name
         *   
         * @apiSuccess {Object} user User 
         * @apiSuccess {String} users.id User ID
         * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
         *   {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
         *           "name": "admin@admin.com"
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
         *   }
         *   
         * @apiUse UnauthorizedError  
@@ -169,7 +186,7 @@ namespace Launchpad.Web.Controllers.API.V1
             var result = await _userService.CreateUserAsync(user);
             if (result.Result.Succeeded)
             {
-                return CreatedAtRoute("GetUser", new { UserId = result.Model.Id }, result.Model);
+                return CreatedAtRoute("GetUserAsync", new { UserId = result.Model.Id }, result.Model);
             }else
             {
                 ModelState.AddErrors(result.Result);
@@ -180,7 +197,7 @@ namespace Launchpad.Web.Controllers.API.V1
         /**
         * @api {get} /v1/users/:userId Get user
         * @apiVersion 0.1.0
-        * @apiName GetUser
+        * @apiName GetUserAsync
         * @apiGroup User
         * 
         * @apiPermission lss.permission->view.user
@@ -192,12 +209,17 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {Object} user User
         * @apiSuccess {String} user.id User ID
         * @apiSuccess {String} user.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK  
         *   {   
         *       "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *       "name": "admin@admin.com"
+        *       "name": "admin@admin.com",
+        *       "firstName": "Admin_first",
+        *       "lastName": "Admin_last"
+        *       
         *   }
         *   
         *   
@@ -205,10 +227,10 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
         [HttpGet]
-        [Route("users/{userId}", Name ="GetUser")]
+        [Route("users/{userId}", Name ="GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
-            var user = await _userService.GetUser(userId);
+            var user = await _userService.GetUserAsync(userId);
             return Ok(user);
         }
 

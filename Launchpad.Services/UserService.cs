@@ -28,7 +28,7 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
-        public async Task<IdentityResult<UserModel>> UpdateUser(string userId, UserModel model)
+        public async Task<IdentityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
 
@@ -65,7 +65,7 @@ namespace Launchpad.Services
         public async Task<bool> IsValidCredential(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
-            return user != null;
+            return user != null && user.IsActive;
         }
         
         public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)
@@ -142,13 +142,13 @@ namespace Launchpad.Services
 
         }
 
-        public async Task<UserModel> GetUser(string userId)
+        public async Task<UserModel> GetUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             return _mapper.Map<UserModel>(appUser);
         }
 
-        public async Task<IdentityResult> DeleteUser(string userId)
+        public async Task<IdentityResult> DeleteUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             var identityResult = await _userManager.DeleteAsync(appUser);

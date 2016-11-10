@@ -278,6 +278,43 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
+        * @api {get} /v1/roles/:roleId/claims Get role claims
+        * @apiVersion 0.1.0
+        * @apiName GetRoleClaims
+        * @apiGroup Role
+        * 
+        * @apiPermission lss.permission->list.role-claims
+        * 
+        * @apiParam {String} roleId Role ID
+        * 
+        * @apiUse AuthHeader
+        *   
+        * @apiSuccess {Object[]} claims Claims associated to the role
+        * @apiSuccess {String} claims.claimType Type of the claim
+        * @apiSuccess {String} claims.claimValue Value of the claim
+        * 
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   [
+        *       { 
+        *           "claimType": "lss.permission",
+        *           "claimValue": "list.widgets",
+        *           "id": 17
+        *       }
+        *   ]
+        *   
+        * @apiUse UnauthorizedError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.ListRoleClaims)]
+        [HttpGet]
+        [Route("roles/{roleId}/claims")]
+        public IHttpActionResult GetClaims(string roleId)
+        {
+            var claims = _roleService.GetRoleClaimsByRoleId(roleId);
+            return Ok(claims);
+        }
+
+        /**
         * @api {delete} /v1/roles/:roleId Delete a role 
         * @apiVersion 0.1.0
         * @apiName RemoveRole
