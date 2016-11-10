@@ -34,13 +34,17 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {Object[]} users List of users 
         * @apiSuccess {String} users.id User ID
         * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} users.firstName First Name
+        * @apiSuccess {String} users.lastName last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
         *       {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com"
+        *           "name": "admin@admin.com",
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
         *       }
         *   ]
         *   
@@ -67,17 +71,24 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} userId User ID
         * @apiParam {Object} user User
         * @apiParam {String} user.name Name of the user
-        * @apiParam {String} user.Id User ID  
+        * @apiParam {String} user.id User ID  
+        * @apiParam {String} user.firstName First name
+        * @apiParam {String} user.lastName Last name  
         *   
         * @apiSuccess {Object} user User 
-        * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} user.id User ID
+        * @apiSuccess {String} user.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com"
+        *           "name": "admin@admin.com",
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
+        *           
         *   }
         *   
         * @apiUse UnauthorizedError  
@@ -147,16 +158,22 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiParam {Object} user User
         * @apiParam {String} user.name Name of the user
+        * @apiParam {String} user.firstName First name
+        * @apiParam {String} user.lastName Last name
         *   
         * @apiSuccess {Object} user User 
         * @apiSuccess {String} users.id User ID
         * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
         *   {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
         *           "name": "admin@admin.com"
+        *           "firstName": "Admin_First",
+        *           "lastName": "Admin_Last"
         *   }
         *   
         * @apiUse UnauthorizedError  
@@ -192,12 +209,17 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {Object} user User
         * @apiSuccess {String} user.id User ID
         * @apiSuccess {String} user.name Name of the user
+        * @apiSuccess {String} user.firstName First name
+        * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK  
         *   {   
         *       "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *       "name": "admin@admin.com"
+        *       "name": "admin@admin.com",
+        *       "firstName": "Admin_first",
+        *       "lastName": "Admin_last"
+        *       
         *   }
         *   
         *   

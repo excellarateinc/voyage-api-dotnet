@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 using FluentAssertions;
 
 namespace Launchpad.Models.UnitTests
 {
+    [Trait("Category", "Model Validation")]
     public class RegistrationModelTests
     {
         [Fact]
         public void Email_Is_Required()
         {
-            var model = new RegistrationModel() { Password = "01234567", ConfirmPassword="01234567" };
+            var model = new RegistrationModel() { Password = "01234567", ConfirmPassword="01234567", FirstName = "First", LastName="Last" };
             var result = model.RunValidations();
 
             result.Item1.Should().BeFalse();
@@ -29,7 +25,9 @@ namespace Launchpad.Models.UnitTests
             var model = new RegistrationModel() {
                 Email = "fred@fred.com",
                 Password = password,
-                ConfirmPassword = password
+                ConfirmPassword = password,
+                FirstName = "First",
+                LastName = "Last"
             };
 
             var result = model.RunValidations();
@@ -48,12 +46,52 @@ namespace Launchpad.Models.UnitTests
             {
                 Email = "fred@fred.com",
                 Password = password,
-                ConfirmPassword = password
+                ConfirmPassword = password,
+                FirstName = "First",
+                LastName = "Last"
+                
             };
 
             var result = model.RunValidations();
 
             result.Item1.Should().BeTrue();
+        }
+
+        [Fact]
+        public void FirstName_Fails_Validation_When_It_Is_Null()
+        {
+            var model = new RegistrationModel()
+            {
+                Email = "fred@fred.com",
+                Password = "01234567",
+                ConfirmPassword = "01234567",
+                
+                LastName = "Last"
+            };
+
+            var result = model.RunValidations();
+
+            result.Item1.Should().BeFalse();
+            result.Item2.Should().HaveCount(1);
+            result.Item2[0].ErrorMessage.Should().Be("The First Name field is required.");
+        }
+
+        [Fact]
+        public void LastName_Fails_Validation_When_It_Is_Null()
+        {
+            var model = new RegistrationModel()
+            {
+                Email = "fred@fred.com",
+                Password = "01234567",
+                ConfirmPassword = "01234567",
+                FirstName = "First"
+            };
+
+            var result = model.RunValidations();
+
+            result.Item1.Should().BeFalse();
+            result.Item2.Should().HaveCount(1);
+            result.Item2[0].ErrorMessage.Should().Be("The Last Name field is required.");
         }
 
         [Fact]
@@ -63,7 +101,9 @@ namespace Launchpad.Models.UnitTests
             {
                 Email = "fred@fred.com",
                 Password = "01234567",
-                ConfirmPassword = "01234567abc"
+                ConfirmPassword = "01234567abc",
+                FirstName = "First",
+                LastName = "Last"
             };
 
             var result = model.RunValidations();

@@ -19,7 +19,14 @@ namespace Launchpad.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "First Name")]
+        [Required]
+        [StringLength(128, MinimumLength = 1)]
         public string FirstName { get; set; }
+
+        [Display(Name ="Last Name")]
+        [Required]
+        [StringLength(128, MinimumLength = 1)]
 
         public string LastName { get; set; }
     }

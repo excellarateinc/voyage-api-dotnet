@@ -64,9 +64,11 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} email User's email
         * @apiParam {String} password User's password
         * @apiParam {String} confirmPassword User's password (x2) 
+        * @apiParam {String} firstName First name
+        * @apiParam {String} lastName Last name
         * 
         * @apiSuccessExample Success-Response:
-        *      HTTP/1.1 200 OK
+        *      HTTP/1.1 204 NO CONTENT
         *      
         * @apiUse BadRequestError
         */
@@ -82,7 +84,7 @@ namespace Launchpad.Web.Controllers.API.V1
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return StatusCode(System.Net.HttpStatusCode.NoContent);
 
         }
     }
