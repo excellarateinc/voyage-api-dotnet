@@ -92,6 +92,42 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
+        * @api {delete} /v1/users/:userId Delete a user
+        * @apiVersion 0.1.0
+        * @apiName DeleteUser
+        * @apiGroup User
+        * 
+        * @apiPermission lss.permission->delete.user
+        * 
+        * @apiUse AuthHeader
+        *  
+        * @apiParam {String} userId User ID  
+        *   
+        *            
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 204 NO CONTENT  
+        *   
+        *   
+        * @apiUse UnauthorizedError
+        * @apiUse BadRequestError  
+        **/
+        [ClaimAuthorize(ClaimValue = LssClaims.DeleteUser)]
+        [HttpDelete]
+        [Route("users/{userId}")]
+        public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
+        {
+            var result = await _userService.DeleteUser(userId);
+            if (result.Succeeded)
+            {
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
+            }else
+            {
+                ModelState.AddErrors(result);
+                return BadRequest(ModelState);
+            }
+        }
+
+        /**
         * @api {get} /v1/users/:userId Get user
         * @apiVersion 0.1.0
         * @apiName GetUser

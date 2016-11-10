@@ -44,6 +44,58 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
+        public void DeleteUser_Should_Have_ClaimAuthorizeAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertClaim(_ => _.DeleteUser("id"), LssClaims.DeleteUser);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void DeleteUser_Should_Have_HttpDeleteAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertAttribute<UserController, HttpDeleteAttribute>(_ => _.DeleteUser("Id"));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public void DeleteUser_Should_Have_RouteAttribute()
+        {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            _userController.AssertRoute(_ => _.DeleteUser("id"), "users/{userId}");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        }
+
+        [Fact]
+        public async void DeleteUser_Should_Call_Service_And_Return_NoContent_On_Success()
+        {
+            var id = Fixture.Create<string>();
+            _mockUserService.Setup(_ => _.DeleteUser(id))
+                .ReturnsAsync(IdentityResult.Success);
+
+            var result = await _userController.DeleteUser(id);
+
+            var message = await result.ExecuteAsync(CreateCancelToken());
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async void DeleteUser_Should_Call_Service_And_Return_BadRequest_On_Failure()
+        {
+            var id = Fixture.Create<string>();
+            _mockUserService.Setup(_ => _.DeleteUser(id))
+                .ReturnsAsync(new IdentityResult("error"));
+
+            var result = await _userController.DeleteUser(id);
+
+            var message = await result.ExecuteAsync(CreateCancelToken());
+
+            message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+             
+        }
+
+        [Fact]
         public void UpdateUser_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

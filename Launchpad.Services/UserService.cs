@@ -139,5 +139,12 @@ namespace Launchpad.Services
             var appUser = await _userManager.FindByIdAsync(userId);
             return _mapper.Map<UserModel>(appUser);
         }
+
+        public async Task<IdentityResult> DeleteUser(string userId)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            var identityResult = await _userManager.DeleteAsync(appUser);
+            return identityResult;
+        }
     }
 }

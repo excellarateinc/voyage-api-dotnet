@@ -45,6 +45,32 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void DeleteUser_Should_Call_UserManager()
+        {
+            //Arrange
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com",
+                Id = id
+            };
+            _mockStore.Setup(_ => _.DeleteAsync(appUser))
+                .Returns(Task.Delay(0));
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            //Act
+            var result = await _userService.DeleteUser(id);
+
+            //Assert
+            result.Succeeded.Should().BeTrue();
+
+            Mock.VerifyAll();
+        }
+
+        [Fact]
         public async void UpdateUser_Should_Call_UserManager()
         {
             var id = Fixture.Create<string>();
