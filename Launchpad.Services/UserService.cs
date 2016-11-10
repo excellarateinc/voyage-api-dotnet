@@ -65,7 +65,7 @@ namespace Launchpad.Services
         public async Task<bool> IsValidCredential(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
-            return user != null;
+            return user != null && user.IsActive;
         }
         
         public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)

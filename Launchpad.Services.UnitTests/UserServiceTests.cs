@@ -78,11 +78,17 @@ namespace Launchpad.Services.UnitTests
                 Email = "bob@bob.com",
                 Id = id
             };
-            _mockStore.Setup(_ => _.DeleteAsync(appUser))
-                .Returns(Task.Delay(0));
-
+            
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
+                    .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(appUser))
+                .Callback<ApplicationUser>( (user) => user.IsActive.Should().BeFalse())
+                .Returns(Task.Delay(0));
+
 
             //Act
             var result = await _userService.DeleteUserAsync(id);
@@ -443,7 +449,7 @@ namespace Launchpad.Services.UnitTests
             string user = "bob@bob.com";
             string password = "giraffe";
             var hpw = new PasswordHasher().HashPassword(password);
-            var model = new ApplicationUser();
+            var model = new ApplicationUser() { IsActive = true };
 
             _mockStore.Setup(_ => _.FindByNameAsync(user)).ReturnsAsync(model);
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
@@ -454,6 +460,26 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             result.Should().BeTrue();
         }
+
+        [Fact]
+        public async void IsValidCredential_Should_Return_False_When_User_Is_Not_Active()
+        {
+            string user = "bob@bob.com";
+            string password = "giraffe";
+            var hpw = new PasswordHasher().HashPassword(password);
+            var model = new ApplicationUser() { IsActive = false };
+
+            _mockStore.Setup(_ => _.FindByNameAsync(user)).ReturnsAsync(model);
+            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
+                .Setup(_ => _.GetPasswordHashAsync(model))
+                .ReturnsAsync(hpw);
+            var result = await _userService.IsValidCredential(user, password);
+
+            Mock.VerifyAll();
+            result.Should().BeFalse();
+        }
+
+
 
         [Fact]
         public async void IsValidCredential_Should_Return_False_When_User_Is_Not_Found()
@@ -475,6 +501,8 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             result.Should().BeFalse();
         }
+
+
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
