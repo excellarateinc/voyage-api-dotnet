@@ -84,14 +84,11 @@
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
     <Compile Include="RegistrationModel.cs" />
-    <Compile Include="RoleClaimModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="StatusAggregateModel.cs" />
     <Compile Include="StatusModel.cs" />
     <Compile Include="RequestDataPointModel.cs" />
     <Compile Include="UserModel.cs" />
-    <Compile Include="UserRoleModel.cs" />
-    <Compile Include="UserWithRolesModel.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

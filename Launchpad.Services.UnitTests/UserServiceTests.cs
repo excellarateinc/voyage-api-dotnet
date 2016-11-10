@@ -100,14 +100,20 @@ namespace Launchpad.Services.UnitTests
             var userModel = new UserModel
             {
                 Id = id,
-                Name = "sally@sally.com"
+                Name = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1"
             };
 
             var appUser = new ApplicationUser
             {
                 Id = id,
                 UserName = "sue@sue.com",
-                Email = "sue@sue.com"
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2"
+                
+
             };
 
             _mockStore.Setup(_ => _.FindByIdAsync(id))
@@ -124,6 +130,8 @@ namespace Launchpad.Services.UnitTests
 
             result.Result.Succeeded.Should().BeTrue();
             result.Model.Name.Should().Be(userModel.Name);
+            result.Model.LastName.Should().Be(userModel.LastName);
+            result.Model.FirstName.Should().Be(userModel.FirstName);
         }
 
         [Fact]

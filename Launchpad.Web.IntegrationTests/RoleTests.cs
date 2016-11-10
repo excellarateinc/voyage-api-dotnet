@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Launchpad.Web.IntegrationTests
 {
+    [Trait("Category", "Self-Hosted")]
     [Collection(OwinCollectionFixture.Name)]
     public class RoleTests : BaseEndpointTest
     {

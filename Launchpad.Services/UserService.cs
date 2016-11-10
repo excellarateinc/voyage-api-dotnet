@@ -78,7 +78,7 @@ namespace Launchpad.Services
 
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName=model.FirstName, LastName= model.LastName, IsActive = true };
           
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
