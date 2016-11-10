@@ -85,7 +85,7 @@ namespace Launchpad.Services.UnitTests
                 .ReturnsAsync(appUser);
 
             //Act
-            var result = await _userService.DeleteUser(id);
+            var result = await _userService.DeleteUserAsync(id);
 
             //Assert
             result.Succeeded.Should().BeTrue();
@@ -126,7 +126,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Name)))
                 .Returns(Task.Delay(0));
 
-            var result = await _userService.UpdateUser(id, userModel);
+            var result = await _userService.UpdateUserAsync(id, userModel);
 
             result.Result.Succeeded.Should().BeTrue();
             result.Model.Name.Should().Be(userModel.Name);
@@ -148,7 +148,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);
 
-            var result = await _userService.GetUser(id);
+            var result = await _userService.GetUserAsync(id);
 
             result.Name.Should().Be(appUser.UserName);
             result.Id.Should().Be(appUser.Id);

@@ -89,7 +89,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             };
 
 
-            _mockUrlHelper.Setup(_ => _.Link("GetUser", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
+            _mockUrlHelper.Setup(_ => _.Link("GetUserAsync", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
                 .Returns(url);
 
             //ACT
@@ -152,7 +152,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void DeleteUser_Should_Call_Service_And_Return_NoContent_On_Success()
         {
             var id = Fixture.Create<string>();
-            _mockUserService.Setup(_ => _.DeleteUser(id))
+            _mockUserService.Setup(_ => _.DeleteUserAsync(id))
                 .ReturnsAsync(IdentityResult.Success);
 
             var result = await _userController.DeleteUser(id);
@@ -165,7 +165,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void DeleteUser_Should_Call_Service_And_Return_BadRequest_On_Failure()
         {
             var id = Fixture.Create<string>();
-            _mockUserService.Setup(_ => _.DeleteUser(id))
+            _mockUserService.Setup(_ => _.DeleteUserAsync(id))
                 .ReturnsAsync(new IdentityResult("error"));
 
             var result = await _userController.DeleteUser(id);
@@ -209,7 +209,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 , returnModel);
             var id = Fixture.Create<string>();
 
-            _mockUserService.Setup(_ => _.UpdateUser(id, userModel))
+            _mockUserService.Setup(_ => _.UpdateUserAsync(id, userModel))
                 .ReturnsAsync(identityResult);
 
             var result = await _userController.UpdateUser(id, userModel);
@@ -567,7 +567,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //ARRANGE
             var id = Fixture.Create<string>();
             var user = Fixture.Create<UserModel>();
-            _mockUserService.Setup(_ => _.GetUser(id))
+            _mockUserService.Setup(_ => _.GetUserAsync(id))
                 .ReturnsAsync(user);
 
             //ACT
