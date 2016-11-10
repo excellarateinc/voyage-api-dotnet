@@ -45,6 +45,55 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void CreateUserAsync_Should_Call_UserManager()
+        {
+            var userModel = Fixture.Build<UserModel>()
+                                .With(_ => _.Name, "bob@bob.com")
+                                .Create();
+
+            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name)))
+                .Returns(Task.Delay(0));
+            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
+                .Setup(_ => _.SetPasswordHashAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name), It.IsAny<string>()))
+                .Returns(Task.Delay(0));
+            _mockStore.Setup(_ => _.FindByNameAsync("bob@bob.com"))
+                .ReturnsAsync(null);
+
+            var result = await _userService.CreateUserAsync(userModel);
+
+            result.Result.Succeeded.Should().BeTrue(string.Join("\r\n", result.Result.Errors));
+            result.Model.Name.Should().Be(userModel.Name);
+
+        }
+
+
+        [Fact]
+        public async void DeleteUser_Should_Call_UserManager()
+        {
+            //Arrange
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com",
+                Id = id
+            };
+            _mockStore.Setup(_ => _.DeleteAsync(appUser))
+                .Returns(Task.Delay(0));
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            //Act
+            var result = await _userService.DeleteUser(id);
+
+            //Assert
+            result.Succeeded.Should().BeTrue();
+
+            Mock.VerifyAll();
+        }
+
+        [Fact]
         public async void UpdateUser_Should_Call_UserManager()
         {
             var id = Fixture.Create<string>();

@@ -68,6 +68,14 @@ namespace Launchpad.Services
             return user != null;
         }
         
+        public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)
+        {
+            var appUser = new ApplicationUser();
+            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+            var result = await _userManager.CreateAsync(appUser, "Hello123!");
+            return new IdentityResult<UserModel>(result, _mapper.Map<UserModel>(appUser));
+        }
+
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
@@ -138,6 +146,13 @@ namespace Launchpad.Services
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             return _mapper.Map<UserModel>(appUser);
+        }
+
+        public async Task<IdentityResult> DeleteUser(string userId)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            var identityResult = await _userManager.DeleteAsync(appUser);
+            return identityResult;
         }
     }
 }
