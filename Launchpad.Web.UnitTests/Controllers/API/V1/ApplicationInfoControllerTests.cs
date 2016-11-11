@@ -51,8 +51,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //Arrange
 
             _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo(It.IsAny<Dictionary<string, string>>())).Returns(new ApplicationInfoModel() { Version = "12345" });
-            _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFilePath")).Returns(@"C:\Users\alfre\Source\Repos\launchpad-dotnet-api\Launchpad.Web");
-            _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFileName")).Returns("version.txt");
+            _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFilePath")).Returns(string.Empty);
+            _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFileName")).Returns(string.Empty);
 
             var fullFilePath = Path.Combine(
                 _mockConfigurationManagerService.Object.GetAppSetting("ApplicationInfoFilePath"),
