@@ -6,6 +6,7 @@ Web Services API for the Launchpad app
 * [Development Environment](#development-environment)
 * [Build](#build)
 * [Testing](#testing)
+* [Authorization] (AUTHORIZATION.md)
 
 ## Development Environment
 
