@@ -19,10 +19,14 @@ namespace Launchpad.Web.Controllers.API.V1
     public class ApplicationInfoController : ApiController
     {
         private readonly IApplicationInfoService _applicationInfoService;
+        private readonly IConfigurationManagerService _configurationManagerService;
+        private readonly ITupleFileReaderService _tupleFileReaderService;
 
-        public ApplicationInfoController(IApplicationInfoService applicationInfoService)
+        public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, ITupleFileReaderService tupleFileReaderService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
+            _configurationManagerService = configurationManagerService.ThrowIfNull(null);
+            _tupleFileReaderService = tupleFileReaderService.ThrowIfNull(null);
         }
 
         /**
@@ -46,7 +50,10 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var settings = new Dictionary<string, string>();
 
-            var lines = File.ReadAllLines(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~"), ConfigurationManager.AppSettings["ApplicationInfoFileName"]));
+            var filePath = _configurationManagerService.GetAppSetting("ApplicationInfoFilePath");
+            var fileName = _configurationManagerService.GetAppSetting("ApplicationInfoFileName");
+
+            var lines = _tupleFileReaderService.ReadAllLines(Path.Combine(filePath, fileName));
 
             lines.ToList().ForEach(l =>
             {

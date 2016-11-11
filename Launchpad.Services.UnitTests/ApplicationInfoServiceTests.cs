@@ -26,9 +26,9 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void GetApplicationInfo_Should_Read_Application_Info()
         {
-            var result = _applicationInfoService.GetApplicationInfo(new Dictionary<string, string>() { { "version", "version#" } });
+            var result = _applicationInfoService.GetApplicationInfo(new Dictionary<string, string>() { { "version", "12345" } });
 
-            result.Version.Should().BeOfType<string>();
+            result.Version.Should().BeOfType<string>().And.Be("12345");
         }
     }
 }
