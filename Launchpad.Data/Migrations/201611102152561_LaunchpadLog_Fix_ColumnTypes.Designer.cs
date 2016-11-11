@@ -7,13 +7,13 @@ namespace Launchpad.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class RoleClaims_Table : IMigrationMetadata
+    public sealed partial class LaunchpadLog_Fix_ColumnTypes : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RoleClaims_Table));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(LaunchpadLog_Fix_ColumnTypes));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610281946586_RoleClaims_Table"; }
+            get { return "201611102152561_LaunchpadLog_Fix_ColumnTypes"; }
         }
         
         string IMigrationMetadata.Source

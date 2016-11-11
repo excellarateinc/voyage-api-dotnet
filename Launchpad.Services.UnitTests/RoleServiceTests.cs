@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Trait("Category", "Role.Service")]
     [Collection(AutoMapperCollection.CollectionName)]
     public class RoleServiceTests : BaseUnitTest
     {
@@ -38,6 +39,23 @@ namespace Launchpad.Services.UnitTests
 
             _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance);
             
+        }
+
+        [Fact]
+        public void GetRoleClaimsByRoleId_Should_Call_Repostiory()
+        {
+            var targetId = Fixture.Create<string>();
+            var roleClaim1 = new RoleClaim { RoleId = targetId, ClaimType = "target-type" };
+            var roleClaim2 = new RoleClaim { RoleId = Fixture.Create<string>() };
+            var repoResult = new[] { roleClaim1, roleClaim2 }.AsQueryable();
+
+            _mockRepository.Setup(_ => _.GetAll())
+                .Returns(repoResult);
+
+            var result = _roleService.GetRoleClaimsByRoleId(targetId);
+
+            result.Should().NotBeNullOrEmpty().And.HaveCount(1);
+            result.First().ClaimType.Should().Be("target-type");
         }
 
         [Fact]

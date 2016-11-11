@@ -7,13 +7,13 @@ namespace Launchpad.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Identity_Tables : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Identity_Tables));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610281500076_Identity_Tables"; }
+            get { return "201611101743272_Initial"; }
         }
         
         string IMigrationMetadata.Source

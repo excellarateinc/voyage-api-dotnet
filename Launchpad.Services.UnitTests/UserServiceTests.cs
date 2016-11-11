@@ -45,20 +45,81 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void CreateUserAsync_Should_Call_UserManager()
+        {
+            var userModel = Fixture.Build<UserModel>()
+                                .With(_ => _.Name, "bob@bob.com")
+                                .Create();
+
+            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name)))
+                .Returns(Task.Delay(0));
+            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
+                .Setup(_ => _.SetPasswordHashAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name), It.IsAny<string>()))
+                .Returns(Task.Delay(0));
+            _mockStore.Setup(_ => _.FindByNameAsync("bob@bob.com"))
+                .ReturnsAsync(null);
+
+            var result = await _userService.CreateUserAsync(userModel);
+
+            result.Result.Succeeded.Should().BeTrue(string.Join("\r\n", result.Result.Errors));
+            result.Model.Name.Should().Be(userModel.Name);
+
+        }
+
+
+        [Fact]
+        public async void DeleteUser_Should_Call_UserManager()
+        {
+            //Arrange
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Email = "bob@bob.com",
+                Id = id
+            };
+            
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(appUser.UserName))
+                    .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.UpdateAsync(appUser))
+                .Callback<ApplicationUser>( (user) => user.IsActive.Should().BeFalse())
+                .Returns(Task.Delay(0));
+
+
+            //Act
+            var result = await _userService.DeleteUserAsync(id);
+
+            //Assert
+            result.Succeeded.Should().BeTrue();
+
+            Mock.VerifyAll();
+        }
+
+        [Fact]
         public async void UpdateUser_Should_Call_UserManager()
         {
             var id = Fixture.Create<string>();
             var userModel = new UserModel
             {
                 Id = id,
-                Name = "sally@sally.com"
+                Name = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1"
             };
 
             var appUser = new ApplicationUser
             {
                 Id = id,
                 UserName = "sue@sue.com",
-                Email = "sue@sue.com"
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2"
+                
+
             };
 
             _mockStore.Setup(_ => _.FindByIdAsync(id))
@@ -71,10 +132,12 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Name)))
                 .Returns(Task.Delay(0));
 
-            var result = await _userService.UpdateUser(id, userModel);
+            var result = await _userService.UpdateUserAsync(id, userModel);
 
             result.Result.Succeeded.Should().BeTrue();
             result.Model.Name.Should().Be(userModel.Name);
+            result.Model.LastName.Should().Be(userModel.LastName);
+            result.Model.FirstName.Should().Be(userModel.FirstName);
         }
 
         [Fact]
@@ -91,7 +154,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);
 
-            var result = await _userService.GetUser(id);
+            var result = await _userService.GetUserAsync(id);
 
             result.Name.Should().Be(appUser.UserName);
             result.Id.Should().Be(appUser.Id);
@@ -386,7 +449,7 @@ namespace Launchpad.Services.UnitTests
             string user = "bob@bob.com";
             string password = "giraffe";
             var hpw = new PasswordHasher().HashPassword(password);
-            var model = new ApplicationUser();
+            var model = new ApplicationUser() { IsActive = true };
 
             _mockStore.Setup(_ => _.FindByNameAsync(user)).ReturnsAsync(model);
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
@@ -397,6 +460,26 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             result.Should().BeTrue();
         }
+
+        [Fact]
+        public async void IsValidCredential_Should_Return_False_When_User_Is_Not_Active()
+        {
+            string user = "bob@bob.com";
+            string password = "giraffe";
+            var hpw = new PasswordHasher().HashPassword(password);
+            var model = new ApplicationUser() { IsActive = false };
+
+            _mockStore.Setup(_ => _.FindByNameAsync(user)).ReturnsAsync(model);
+            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
+                .Setup(_ => _.GetPasswordHashAsync(model))
+                .ReturnsAsync(hpw);
+            var result = await _userService.IsValidCredential(user, password);
+
+            Mock.VerifyAll();
+            result.Should().BeFalse();
+        }
+
+
 
         [Fact]
         public async void IsValidCredential_Should_Return_False_When_User_Is_Not_Found()
@@ -418,6 +501,8 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             result.Should().BeFalse();
         }
+
+
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()

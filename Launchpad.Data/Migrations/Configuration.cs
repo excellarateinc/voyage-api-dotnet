@@ -59,7 +59,10 @@ namespace Launchpad.Data.Migrations
                 UserName = "admin@admin.com",
                 Email = "admin@admin.com",
                 PasswordHash = new PasswordHasher().HashPassword("Hello123!"),
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
+                LastName = "Admin_Last",
+                FirstName = "Admin_First",
+                IsActive = true
             };
           
             context.Users.AddOrUpdate(_ => _.UserName, adminUser);
@@ -114,8 +117,13 @@ namespace Launchpad.Data.Migrations
             SeedRoleClaim(context, adminRole.Id, claimType, "list.user-claims");
             SeedRoleClaim(context, adminRole.Id, claimType, "view.user");
             SeedRoleClaim(context, adminRole.Id, claimType, "update.user");
+            SeedRoleClaim(context, adminRole.Id, claimType, "delete.user");
+            SeedRoleClaim(context, adminRole.Id, claimType, "create.user");
+
+            SeedRoleClaim(context, adminRole.Id, claimType, "list.widgets");
 
 
+            SeedRoleClaim(context, adminRole.Id, claimType, "list.role-claims");
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.role-claim");
             SeedRoleClaim(context, adminRole.Id, claimType, "create.claim");
             

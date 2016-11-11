@@ -25,10 +25,13 @@
             public const string ListUserClaims = "list.user-claims";
             public const string ViewUser = "view.user";
             public const string UpdateUser = "update.user";
+            public const string DeleteUser = "delete.user";
+            public const string CreateUser = "create.user";
 
             public const string DeleteRoleClaim = "delete.role-claim";
             public const string CreateClaim = "create.claim";
             public const string ViewClaim = "view.claim";
+            public const string ListRoleClaims = "list.role-claims";
 
             public const string ListWidgets = "list.widgets";
             public const string ViewWidget = "view.widget";

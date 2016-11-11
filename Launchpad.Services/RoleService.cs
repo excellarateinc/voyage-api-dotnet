@@ -83,6 +83,16 @@ namespace Launchpad.Services
             
         }
 
+        public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
+        {
+            //Take advantage of queryable
+            var claims = _roleClaimRepository.GetAll()
+                .Where(_ => _.RoleId == id)
+                .ToList();
+            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
+
+        }
+
         public void RemoveClaim(string roleId, int claimId)
         {
             //With the current model, the claim id uniquely identifies the RoleClaim

@@ -1,4 +1,5 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using System.Threading.Tasks;
+using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Services.IdentityManagers
@@ -29,6 +30,12 @@ namespace Launchpad.Services.IdentityManagers
             this.UserTokenProvider = tokenProvider;
         }
 
-      
+        public override async Task<IdentityResult> DeleteAsync(ApplicationUser user)
+        {
+            user.IsActive = false;
+            var result = await this.UpdateAsync(user);
+            return result;
+        }
+
     }
 }

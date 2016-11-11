@@ -7,7 +7,7 @@ namespace Launchpad.Services.Interfaces
 {
     public interface IRoleService
     {
-
+        IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id);
         RoleModel GetRoleByName(string name);
 
         RoleModel GetRoleById(string id);
