@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
+using System.Collections.Generic;
 using System.Net.Http;
 
 namespace Launchpad.Services
@@ -19,7 +20,7 @@ namespace Launchpad.Services
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<StatusCollectorService>()
+            builder.RegisterType<ApplicationInfoService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 

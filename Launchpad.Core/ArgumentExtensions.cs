@@ -22,5 +22,20 @@ namespace Launchpad.Core
             }
             return argumentInstance;
         }
+
+        /// <summary>
+        /// Throw null argument exception when the given string is null or empty, otherwise returns the instance.
+        /// </summary>
+        /// <param name="argumentInstance">Instance to compare against null</param>
+        /// <param name="paramName">Optional: Name of the argument as it appears in the caller's parameter list</param>
+        /// <returns>string</returns>
+        public static string ThrowIfNullOrEmpty(this string argumentInstance, string paramName = "")
+        {
+            if (string.IsNullOrEmpty(argumentInstance))
+            {
+                throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(string).Name : paramName);
+            }
+            return argumentInstance;
+        }
     }
 }

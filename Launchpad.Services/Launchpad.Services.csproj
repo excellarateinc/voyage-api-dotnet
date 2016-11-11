@@ -65,8 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInfoService.cs" />
     <Compile Include="IdentityManagers\ApplicationRoleManager.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
+    <Compile Include="Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Interfaces\IRequestMetricsService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
