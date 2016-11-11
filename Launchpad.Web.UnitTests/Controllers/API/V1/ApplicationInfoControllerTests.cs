@@ -32,7 +32,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockApplicationInfoService = Mock.Create<IApplicationInfoService>();
             _mockConfigurationManagerService = Mock.Create<IConfigurationManagerService>();
             _mockTupleFileReaderService = Mock.Create<ITupleFileReaderService>();
-            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object, _mockConfigurationManagerService.Object, _mockTupleFileReaderService.Object);
+            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object, _mockConfigurationManagerService.Object, _mockTupleFileReaderService.Object,
+                () => { return string.Empty; });
             _controller.Request = new System.Net.Http.HttpRequestMessage();
             _controller.Configuration = new System.Web.Http.HttpConfiguration();
         }
@@ -40,7 +41,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_when_ApplicationInfoService_Is_Null()
         {
-            Action throwAction = () => new ApplicationInfoController(null, null, null);
+            Action throwAction = () => new ApplicationInfoController(null, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("applicationInfoService");
         }
@@ -50,7 +51,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //Arrange
 
-            _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo(It.IsAny<Dictionary<string, string>>())).Returns(new ApplicationInfoModel() { Version = "12345" });
+            _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo(It.IsAny<Dictionary<string, string>>())).Returns(new ApplicationInfoModel() { BuildNumber = "some_number" });
             _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFilePath")).Returns(string.Empty);
             _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFileName")).Returns(string.Empty);
 
@@ -58,7 +59,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 _mockConfigurationManagerService.Object.GetAppSetting("ApplicationInfoFilePath"),
                 _mockConfigurationManagerService.Object.GetAppSetting("ApplicationInfoFileName"));
 
-            _mockTupleFileReaderService.Setup(_ => _.ReadAllLines(fullFilePath)).Returns(new string[] { "version=12345" });
+            _mockTupleFileReaderService.Setup(_ => _.ReadAllText(fullFilePath)).Returns("{ 'build': { 'buildNumber': 'some_number'}}");
             
             //Act
 
@@ -69,7 +70,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             result.Should().BeOfType<OkNegotiatedContentResult<ApplicationInfoModel>>();
             
             var resultContent = result.As<OkNegotiatedContentResult<ApplicationInfoModel>>();
-            resultContent.Content.Version.Should().Be("12345");
+            resultContent.Content.BuildNumber.Should().Be("some_number");
         }
 
         [Fact]

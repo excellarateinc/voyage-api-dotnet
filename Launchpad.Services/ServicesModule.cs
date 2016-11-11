@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -23,6 +24,16 @@ namespace Launchpad.Services
             builder.RegisterType<ApplicationInfoService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
+
+            builder.RegisterType<ConfigurationManagerService>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            builder.RegisterType<TupleFileReaderService>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
+            builder.RegisterInstance<Func<string>>(() => { return System.Web.HttpContext.Current.Server.MapPath("~"); });
 
             builder.RegisterType<HttpClient>()
                 .InstancePerRequest(); //Let the container dispose of it at the end of the request

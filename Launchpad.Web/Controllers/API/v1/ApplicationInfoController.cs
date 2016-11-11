@@ -2,6 +2,9 @@
 using Launchpad.Models;
 using Launchpad.Models.Enum;
 using Launchpad.Services.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -21,12 +24,14 @@ namespace Launchpad.Web.Controllers.API.V1
         private readonly IApplicationInfoService _applicationInfoService;
         private readonly IConfigurationManagerService _configurationManagerService;
         private readonly ITupleFileReaderService _tupleFileReaderService;
+        private readonly Func<string> _localPathProvider;
 
-        public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, ITupleFileReaderService tupleFileReaderService)
+        public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, ITupleFileReaderService tupleFileReaderService, Func<string> localPathProvider)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
             _configurationManagerService = configurationManagerService.ThrowIfNull(null);
             _tupleFileReaderService = tupleFileReaderService.ThrowIfNull(null);
+            _localPathProvider = localPathProvider;
         }
 
         /**
@@ -41,7 +46,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   HTTP/1.1 200 OK
         *   [
         *       {   
-        *           "version": "version"
+        *           "buildNumber": "some_number"
         *       }
         *   ]
         **/
@@ -50,17 +55,14 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var settings = new Dictionary<string, string>();
 
-            var filePath = _configurationManagerService.GetAppSetting("ApplicationInfoFilePath");
+            var filePath = _localPathProvider();
             var fileName = _configurationManagerService.GetAppSetting("ApplicationInfoFileName");
 
-            var lines = _tupleFileReaderService.ReadAllLines(Path.Combine(filePath, fileName));
+            var text = _tupleFileReaderService.ReadAllText(Path.Combine(filePath, fileName));
 
-            lines.ToList().ForEach(l =>
-            {
-                var setting = l.Split('=');
+            var buildNumber = (string)JObject.Parse(text).SelectToken("build.buildNumber");
 
-                settings.Add(setting[0], setting[1]);
-            });
+            settings.Add("buildNumber", buildNumber);
 
             var appInfo = _applicationInfoService.GetApplicationInfo(settings);
             

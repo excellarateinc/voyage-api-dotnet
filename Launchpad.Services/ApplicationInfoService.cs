@@ -13,7 +13,7 @@ namespace Launchpad.Services
         {
             return new ApplicationInfoModel()
             {
-                Version = settings["version"]
+                BuildNumber = settings["buildNumber"]
             };
         }
     }

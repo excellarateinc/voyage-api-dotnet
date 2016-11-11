@@ -8,6 +8,6 @@ namespace Launchpad.Models
 {
     public class ApplicationInfoModel
     {
-        public string Version { get; set; }
+        public string BuildNumber { get; set; }
     }
 }

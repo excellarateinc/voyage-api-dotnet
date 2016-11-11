@@ -8,6 +8,6 @@ namespace Launchpad.Services.Interfaces
 {
     public interface ITupleFileReaderService
     {
-        string[] ReadAllLines(string filePath);
+        string ReadAllText(string filePath);
     }
 }

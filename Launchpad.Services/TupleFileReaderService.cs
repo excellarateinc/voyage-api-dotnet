@@ -10,9 +10,9 @@ namespace Launchpad.Services
 {
     public class TupleFileReaderService : ITupleFileReaderService
     {
-        public string[] ReadAllLines(string filePath)
+        public string ReadAllText(string filePath)
         {
-            return File.ReadAllLines(filePath);
+            return File.ReadAllText(filePath);
         }
     }
 }
