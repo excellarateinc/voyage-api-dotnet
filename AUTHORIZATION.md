@@ -50,7 +50,7 @@ to lss.permission. When the the filter executes, the identity of the principle m
 1. IsAuthenticated 
    * Failure results in a 401
 2. HasClaim
-   * Failure results in 403
+   * Failure results in 403. Identity claims are a combination of all user claims and user's role claims. When the identity is constructed, the claims are loaded from UserClaims and RoleClaims (based on the user's role membership.)
    
 When both checks are succesful, the user is considered authorized to perform the action.
 
