@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Configuration;
 using System.Web.Http;
 
 namespace Launchpad.Web
@@ -85,10 +86,11 @@ namespace Launchpad.Web
                 TokenEndpointPath = new PathString("/api/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+
+                //If the config is wrong, let the application crash
+                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"])),
                 // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true,
-               
+                AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
             };
 
             // Enable the application to use bearer tokens to authenticate users
