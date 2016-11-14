@@ -156,6 +156,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AuthProviders\ApplicationOAuthProviderTests.cs" />
+    <Compile Include="AuthProviders\LoginOrchestratorTests.cs" />
+    <Compile Include="AuthProviders\LoginOrchestratorV2Tests.cs" />
     <Compile Include="ConstantsTests.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
