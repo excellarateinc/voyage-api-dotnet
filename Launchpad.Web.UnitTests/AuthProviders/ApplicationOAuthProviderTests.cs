@@ -39,18 +39,123 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(_pathString);
             _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
         }
+        
 
         [Fact]
-        public void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
+        public async void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
         {
-            //OAuthValidateTokenRequestContext ctx = new OAuthValidateTokenRequestContext(
-            //    _mockOwinContext.Object, 
-            //    new OAuthAuthorizationServerOptions(), 
-            //    new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(), 
-            //    new BaseValidatingClientContext());
+              //Setup the request
+            var mockRequest = Mock.Create<IOwinRequest>();
 
-            //_provider.MatchEndpoint()
+            mockRequest.Setup(_ => _.Path)
+              .Returns(new PathString(_pathString));
+
+            _mockOwinContext.Setup(_ => _.Request)
+              .Returns(mockRequest.Object);
+
+            OAuthMatchEndpointContext ctx = new OAuthMatchEndpointContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions());
+                
+            await _provider.MatchEndpoint(ctx);
+
+            ctx.IsTokenEndpoint.Should().BeTrue();
         }
+
+        [Fact]
+        public async void MatchEndPoint_Should_Not_Call_MatchesTokenEndpoint_When_LoginOrchestrator_DoesNotMatch()
+        {
+            
+            //Setup the request
+            var mockRequest = Mock.Create<IOwinRequest>();
+
+            mockRequest.Setup(_ => _.Path)
+              .Returns(new PathString(_pathString + "!"));
+
+            _mockOwinContext.Setup(_ => _.Request)
+              .Returns(mockRequest.Object);
+
+            OAuthMatchEndpointContext ctx = new OAuthMatchEndpointContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions());
+
+            await _provider.MatchEndpoint(ctx);
+
+            ctx.IsTokenEndpoint.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void ValidateTokenRequest_Should_Call_Validated_When_LoginOrchestrator_Returns_True()
+        {
+            var pairs = new Dictionary<string, string[]>();
+            var readableCollection = new ReadableStringCollection(pairs);
+            var mockValidatingCtx = Mock.Create<BaseValidatingClientContext>();
+
+            var validatingCtx = new OAuthValidateClientAuthenticationContext(
+                context: _mockOwinContext.Object,
+                options: new OAuthAuthorizationServerOptions(),
+                parameters: readableCollection
+                );
+
+            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
+                .Returns(true);
+
+            //Setup the request
+            var mockRequest = Mock.Create<IOwinRequest>();
+
+            mockRequest.Setup(_ => _.Path)
+              .Returns(new PathString(_pathString));
+
+            _mockOwinContext.Setup(_ => _.Request)
+              .Returns(mockRequest.Object);
+
+            var ctx = new OAuthValidateTokenRequestContext(
+                context: _mockOwinContext.Object,
+                options: new OAuthAuthorizationServerOptions(),
+                tokenRequest: new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(readableCollection),
+                clientContext: validatingCtx);
+
+
+            await _provider.ValidateTokenRequest(ctx);
+
+            ctx.HasError.Should().BeFalse();
+            ctx.IsValidated.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void ValidateTokenRequest_Should_Call_SetError_When_LoginOrchestrator_Returns_False()
+        {
+            var pairs = new Dictionary<string, string[]>();
+            var readableCollection = new ReadableStringCollection(pairs);
+            var mockValidatingCtx = Mock.Create<BaseValidatingClientContext>();
+
+            var validatingCtx = new OAuthValidateClientAuthenticationContext(
+                context: _mockOwinContext.Object,
+                options: new OAuthAuthorizationServerOptions(),
+                parameters: readableCollection
+                );
+
+            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
+                .Returns(false);
+
+            //Setup the request
+            var mockRequest = Mock.Create<IOwinRequest>();
+
+            mockRequest.Setup(_ => _.Path)
+              .Returns(new PathString(_pathString));
+
+            _mockOwinContext.Setup(_ => _.Request)
+              .Returns(mockRequest.Object);
+
+            var ctx = new OAuthValidateTokenRequestContext(
+                context: _mockOwinContext.Object,
+                options: new OAuthAuthorizationServerOptions(),
+                tokenRequest: new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(readableCollection),
+                clientContext: validatingCtx);
+
+
+            await _provider.ValidateTokenRequest(ctx);
+
+            ctx.HasError.Should().BeTrue();
+            ctx.IsValidated.Should().BeFalse();
+        }
+
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
