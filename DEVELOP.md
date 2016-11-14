@@ -10,6 +10,7 @@ NOTE: Each developer on the project must update this document with the latest de
 * [Database](#database)
 * [Dependency Injection](#dependency-injection)
 * [Logging](#logging)
+* [API Versioning](#api-versioning)
 * [API Doc](#api-doc)
 
 ## Current Tech Stack
