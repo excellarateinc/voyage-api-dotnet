@@ -98,9 +98,9 @@ public IHttpActionResult Get(MonitorType id)
 ````
 
 ## API Versioning
-API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](https://github.com/lssinc/launchpad-dotnet-api/blob/master/WEB-SERVICE-PATTERNS.md#versioning). Each version of the an api will have a new controller source file and a unique 
-url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API
-are roughly as follows:
+API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](https://github.com/lssinc/launchpad-dotnet-api/blob/master/WEB-SERVICE-PATTERNS.md#versioning). 
+
+Each version of the an api will have a new controller source file and a unique url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API are roughly as follows:
 
 1. If a subfolder does not exist for a version, create it 
    - \v1, \v2, \v3...
