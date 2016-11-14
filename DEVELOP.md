@@ -1,7 +1,27 @@
-## API Development
+## Development
+The follow sections include details and helpful information for software developers. 
 
-### Tools
+NOTE: Each developer on the project must update this document with the latest dev info to ensure everyone is aware of how to build, development, and deploy the app. 
 
+## Table of Contents
+* [Current Tech Stack](#current-tech-stack)
+* [Development Tools](#development-tools)
+* [Build](#build)
+* [Database](#database)
+* [Dependency Injection](#dependency-injection)
+* [Logging](#logging)
+* [API Doc](#api-doc)
+
+## Current Tech Stack
+- Autofac
+- EntityFramework
+- Asp.Net Identity
+- Asp.Net MVC
+- Asp.Net Web Api 2
+- Owin Middleware for Bearer Security
+- Serilog  
+
+## Development Tools
 The following tools should be installed on the development machine:
 
 1. Visual Studio 2015
@@ -12,16 +32,14 @@ The following tools should be installed on the development machine:
 4. [apiDocJs](http://apidocjs.com/)
    - npm install -g apidoc 
 
-### Source code
+## Build
 After pulling the source code install the required packages: 
 
 1. Pull the source code from github repo
 2. Perform a Nuget package restore
 3. Perform a npm install in folder ***Launchpad.Web***
 
-## Build
-
-### Database
+## Database
 The application uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
 
 1. In Visual Studio, open the package manager console
@@ -36,14 +54,7 @@ A default user will be seeded into the database when Update-Database is run. The
 
 Each new user will be created with a 'Basic' role whcih allows them to log in. You may notice on the dashboard a 403 (Forbidden) is generated. The basic role does not have the 'list.widgets' claim. To resolve this and see the widgets, login as the admin and select Add Claim. Choose 'Basic' as the role and enter 'lss.permission' and 'list.widgets' for the claim type and claim value respectively. 
 
-
-### Server Side Development Notes
-The server exposes 3 endpoints:
-- api/account: Used for user management
-- api/{v}/widget: Simple example of CRUD operations on an entity
-- api/status: Used to query application statuses 
-
-#### Dependency Injection
+## Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
 components with the container. The overall container is setup in the ContainerConfig in ***Launchpad.Web***.
 
@@ -60,13 +71,13 @@ are registered using scanning. This can simplify the container configuration thr
                 .InstancePerRequest();
 ```
 
-#### Logging
+## Logging
 Logging has been configured to use [Serilog](https://serilog.net/) with a SQL Server sink. It is registered as a singleton. 
 
 This is a structure logging library which allows additional
 functionality when searching for events. For more information see the website. 
 
-##### Usage
+### Usage
 To utilize logging, add it as a constructor dependency and the container will resolve it.
 ````
 public StatusV2Controller(IStatusCollector statusCollector, ILogger log)
@@ -85,7 +96,7 @@ public IHttpActionResult Get(MonitorType id)
 }
 ````
 
-#### API Versioning
+## API Versioning
 API versioning is handled through URL versioning. Each version of the an api will have a new controller source file and a unique 
 url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API
 are roughly as follows:
@@ -97,20 +108,11 @@ are roughly as follows:
 4. Add the RoutePrefix attribute at the class level
 5. Add the Route attribute to each operation, specifying the route template
 
-#### Server Stack
-- Autofac
-- EntityFramework
-- Asp.Net Identity
-- Asp.Net MVC
-- Asp.Net Web Api 2
-- Owin Middleware for Bearer Security
-- Serilog  
-
-### Generating Documentation
+## API Doc
 The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For 
 more details see the [documentation](http://apidocjs.com/).
 
-#### Sample Documentation Comments
+### Sample Documentation Comments
 Below is an example of the comments used to document an endpoint.
 
 ```
@@ -141,19 +143,19 @@ Below is an example of the comments used to document an endpoint.
         ...
 ```
 
-#### Reusable apiDoc blocks
+### Reusable apiDoc blocks
 apiDoc supports creating reusuable documentation blocks using [@apiDefine](http://apidocjs.com/#param-api-define). This 
 cuts down on repeated comment blocks for shared elements such as errors. 
 All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js***
 
-##### Current @apiDefine blocks
+### Current @apiDefine blocks
 
 1. BadRequestError
    - Used when an endpoint can return a 400
 2.  NotFoundError
     - Used when an endpoint can return a 404
 
-#### Generating documentation
+### Generating documentation
 To generate the api docs after a change:
 1. In ***Launchpad.Web*** execute npm run doc
    - This is an npm script that is defined in package.json
