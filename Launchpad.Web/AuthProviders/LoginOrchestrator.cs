@@ -48,6 +48,7 @@ namespace Launchpad.Web.AuthProviders
         *           ".expires": "Thu, 17 Nov 2016 14:38:29 GMT"
         *      }
         * 
+        * @apiUse BadRequestError  
         */
         public virtual string TokenPath => "/api/v1/login";
 

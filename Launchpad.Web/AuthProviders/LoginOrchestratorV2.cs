@@ -40,6 +40,7 @@
         *           ".expires": "Thu, 17 Nov 2016 14:38:29 GMT"
         *      }
         * 
+        * @apiUse BadRequestError  
         */
         public override string TokenPath => "/api/v2/login";
 
