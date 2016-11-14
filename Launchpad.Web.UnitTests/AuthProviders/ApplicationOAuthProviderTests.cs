@@ -20,39 +20,85 @@ using Microsoft.Owin.Security;
 
 namespace Launchpad.Web.UnitTests.AuthProviders
 {
+    [Trait("Category", "OAuthProvider")]
     public class ApplicationOAuthProviderTests : BaseUnitTest
     {
-        private string clientId;
+        const string _pathString = "/api/v1/login";
+        private string _clientId;
         ApplicationOAuthProvider _provider;
         private Mock<IOwinContext> _mockOwinContext;
+        private Mock<ILoginOrchestrator> _mockLoginOrchestrator;
 
         public ApplicationOAuthProviderTests()
         {
-            clientId = Fixture.Create<string>();
+            _clientId = Fixture.Create<string>();
             _mockOwinContext = Mock.Create<IOwinContext>();
-            _provider = new ApplicationOAuthProvider(clientId);
+            _mockLoginOrchestrator = Mock.Create<ILoginOrchestrator>();
+
+            //Setup login delegate
+            _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(_pathString);
+            _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
         }
+
+        [Fact]
+        public void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
+        {
+            //OAuthValidateTokenRequestContext ctx = new OAuthValidateTokenRequestContext(
+            //    _mockOwinContext.Object, 
+            //    new OAuthAuthorizationServerOptions(), 
+            //    new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(), 
+            //    new BaseValidatingClientContext());
+
+            //_provider.MatchEndpoint()
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
+        {
+            Action throwAction = () => new ApplicationOAuthProvider(null, null);
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName
+                .Should()
+                .Be("publicClientId");
+        }
+
+        [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_LoginOrchestrators_Null()
+        {
+            Action throwAction = () => new ApplicationOAuthProvider(_clientId, null);
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName
+                .Should()
+                .Be("loginOrchestrators");
+        }
+
 
         [Fact]
         public async void GrantResourceOwnerCredentials_Should_SetError_When_Invalid_User()
         {
             var user = "bob@bob.com";
             var password = "giraffe";
-            OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), clientId, user, password, new List<string>());
+            OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
 
-            //Setup the user service
 
-            var mockUserService = Mock.Create<IUserService>();
-            mockUserService.Setup(_ => _.IsValidCredential(user, password))
+            
+
+            //Setup the request
+            var mockRequest = Mock.Create<IOwinRequest>();
+
+            mockRequest.Setup(_ => _.Path)
+              .Returns(new PathString(_pathString));
+
+            _mockOwinContext.Setup(_ => _.Request)
+              .Returns(mockRequest.Object);
+
+            //Setup the login orchestrator
+            _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
                 .ReturnsAsync(false);
-
-            //Skip mocking out autofac, just build the container to use
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.Register(c => mockUserService.Object);
-            var container = containerBuilder.Build();
-
-            _mockOwinContext.Setup(_ => _.Get<ILifetimeScope>(It.IsAny<string>()))
-            .Returns(container);
+                
+          
 
             //ACT
             await _provider.GrantResourceOwnerCredentials(oAuthContext);
@@ -68,18 +114,21 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var user = "bob@bob.com";
             var password = "giraffe";
-            OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), clientId, user, password, new List<string>());
+            OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
 
             //Identity fake
 
             var identity = new ClaimsIdentity();
 
+            //Setup login
+            //Setup the login orchestrator
+            _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
+                .ReturnsAsync(true);
 
             //Setup the user service
 
             var mockUserService = Mock.Create<IUserService>();
-            mockUserService.Setup(_ => _.IsValidCredential(user, password))
-                .ReturnsAsync(true);
+         
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, OAuthDefaults.AuthenticationType))
                 .ReturnsAsync(identity);
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, CookieAuthenticationDefaults.AuthenticationType))
@@ -99,6 +148,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
 
             //Configure the context properties
             var mockOwinRequest = Mock.Create<IOwinRequest>();
+            mockOwinRequest.Setup(_ => _.Path)
+                .Returns(new PathString(_pathString));
+          
             mockOwinRequest.Setup(_ => _.Context).Returns(_mockOwinContext.Object);
             _mockOwinContext.Setup(_ => _.Request).Returns(mockOwinRequest.Object);    
             _mockOwinContext.Setup(_ => _.Get<ILifetimeScope>(It.IsAny<string>()))
