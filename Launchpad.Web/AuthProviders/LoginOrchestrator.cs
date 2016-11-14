@@ -11,10 +11,10 @@ namespace Launchpad.Web.AuthProviders
     public class LoginOrchestrator : ILoginOrchestrator
     {
         /**
-        * @api {post} /api/v1/login Get an authentication token 
+        * @api {post} /api/v1/login Login a user
         * @apiVersion 0.1.0
-        * @apiName Token
-        * @apiGroup Token
+        * @apiName Login 
+        * @apiGroup Account
         * 
         * @apiParam {String} grant_type=password Authentication method
         * @apiParam {String} password User's password
