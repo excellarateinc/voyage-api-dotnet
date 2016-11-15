@@ -162,13 +162,13 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * 
         * @apiParam {Object} user User
-        * @apiParam {String} user.name Name of the user
+        * @apiParam {String} user.userName Username of the user
         * @apiParam {String} user.firstName First name
         * @apiParam {String} user.lastName Last name
         *   
         * @apiSuccess {Object} user User 
         * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.name Name of the user
+        * @apiSuccess {String} users.userName Username of the user
         * @apiSuccess {String} user.firstName First name
         * @apiSuccess {String} user.lastName Last name
         * 
@@ -176,9 +176,10 @@ namespace Launchpad.Web.Controllers.API.V1
         *   HTTP/1.1 201 CREATED
         *   {   
         *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com"
+        *           "userName": "admin@admin.com"
         *           "firstName": "Admin_First",
-        *           "lastName": "Admin_Last"
+        *           "lastName": "Admin_Last",
+        *           "phones": []
         *   }
         *   
         * @apiUse UnauthorizedError  
@@ -213,18 +214,26 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiSuccess {Object} user User
         * @apiSuccess {String} user.id User ID
-        * @apiSuccess {String} user.name Name of the user
+        * @apiSuccess {String} user.userName Username of the user
         * @apiSuccess {String} user.firstName First name
         * @apiSuccess {String} user.lastName Last name
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK  
-        *   {   
-        *       "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *       "name": "admin@admin.com",
-        *       "firstName": "Admin_first",
-        *       "lastName": "Admin_last"
-        *       
+        *   HTTP/1.1 200 OK 
+        *   {
+        *       "id":"0ff4c2c7-3d53-4932-84a3-398161ef7c46",
+        *       "firstName":"Admin_First",
+        *       "lastName":"Admin_Last",
+        *       "username":"admin2@admin.com",
+        *       "email":"admin2@admin.com",
+        *       "phones":[
+        *           {
+        *               "id":2,
+        *               "userId":"0ff4c2c7-3d53-4932-84a3-398161ef7c46",
+        *               "phoneNumber":"6125555555",
+        *               "phoneType":"Office"
+        *           }],
+        *        "isActive":false
         *   }
         *   
         *   
