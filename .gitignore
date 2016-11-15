@@ -4,6 +4,11 @@
 # Ignore APIDOC output
 Launchpad.Web/docs/
 
+# Ignore files created by the xunit test script
+xunit/
+xunit-results.xml
+
+
 # User-specific files
 *.suo
 *.user
