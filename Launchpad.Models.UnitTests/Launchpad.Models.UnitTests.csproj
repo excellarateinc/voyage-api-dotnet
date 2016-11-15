@@ -106,6 +106,7 @@
     <Compile Include="AutoMapperValidationTests.cs" />
     <Compile Include="Map\Profiles\ClaimProfileTests.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfileTests.cs" />
+    <Compile Include="Map\Profiles\PhoneContactProfileTest.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfileTests.cs" />
     <Compile Include="Map\Profiles\UserProfileTests.cs" />

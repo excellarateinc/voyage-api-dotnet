@@ -33,7 +33,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             var user = _mappingFixture.MapperInstance.Map<UserModel>(appUser);
 
             user.Should().NotBeNull();
-            user.Name.Should().Be(appUser.UserName);
+            user.Username.Should().Be(appUser.UserName);
             user.Id.Should().Be(appUser.Id);
             user.FirstName.Should().Be(appUser.FirstName);
             user.LastName.Should().Be(appUser.LastName);
@@ -57,7 +57,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             {
                 IsActive = true,
                 Id = Guid.NewGuid().ToString(),
-                Name = "tom@tom.com",
+                Username = "tom@tom.com",
                 FirstName = "Third",
                 LastName = "Fourth"
             };
@@ -65,8 +65,8 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             var mapResult = _mappingFixture.MapperInstance.Map(userModel, appUser);
 
             appUser.IsActive.Should().BeFalse();
-            appUser.UserName.Should().Be(userModel.Name);
-            appUser.Email.Should().Be(userModel.Name);
+            appUser.UserName.Should().Be(userModel.Username);
+            appUser.Email.Should().Be(userModel.Email);
             appUser.Id.Should().NotBe(userModel.Id);
             appUser.FirstName.Should().Be(userModel.FirstName);
             appUser.LastName.Should().Be(userModel.LastName);

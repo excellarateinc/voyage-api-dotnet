@@ -11,6 +11,8 @@ namespace Launchpad.Data.Interfaces
 
         IDbSet<RoleClaim> RoleClaims { get; set; }
 
+        IDbSet<ApplicationUser> Users { get; set; }
+
         int SaveChanges();
        
     }
