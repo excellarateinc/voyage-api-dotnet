@@ -84,7 +84,7 @@
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
-    <Compile Include="Map\Profiles\PhoneContactProfile.cs" />
+    <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
