@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Models.Map.Profiles
 {
-    public class PhoneContactProfile : Profile
+    public class UserPhoneProfile : Profile
     {
-        public PhoneContactProfile()
+        public UserPhoneProfile()
         {
             CreateMap<UserPhone, UserPhoneModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

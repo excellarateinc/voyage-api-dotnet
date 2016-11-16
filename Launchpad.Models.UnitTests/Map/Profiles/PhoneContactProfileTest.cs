@@ -12,17 +12,17 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
 {
     [Trait("Cateogry", "Mapping")]
     [Collection(AutoMapperCollection.CollectionName)]
-    public class PhoneContactProfileTest : BaseUnitTest
+    public class UserPhonesProfileTest : BaseUnitTest
     {
         private AutoMapperFixture _mappingFixture;
 
-        public PhoneContactProfileTest(AutoMapperFixture mappingFixture)
+        public UserPhonesProfileTest(AutoMapperFixture mappingFixture)
         {
             _mappingFixture = mappingFixture;
         }
 
         [Fact]
-        public void PhoneContactEntity_Should_MapTo_PhoneContactModel()
+        public void UserPhoneEntity_Should_MapTo_UserPhoneModel()
         {
             var userPhone = new UserPhone();
 
