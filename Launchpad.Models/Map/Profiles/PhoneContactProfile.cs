@@ -12,14 +12,14 @@ namespace Launchpad.Models.Map.Profiles
     {
         public PhoneContactProfile()
         {
-            CreateMap<PhoneContact, PhoneContactModel>()
+            CreateMap<UserPhone, UserPhoneModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.PhoneType, opt => opt.MapFrom(src => src.PhoneType))
                 //.ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
 
-            CreateMap<PhoneContactModel, PhoneContact>()
+            CreateMap<UserPhoneModel, UserPhone>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.PhoneType, opt => opt.MapFrom(src => src.PhoneType))

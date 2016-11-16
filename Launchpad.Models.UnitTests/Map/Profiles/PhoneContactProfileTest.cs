@@ -24,9 +24,9 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
         [Fact]
         public void PhoneContactEntity_Should_MapTo_PhoneContactModel()
         {
-            var phoneContact = new PhoneContact();
+            var userPhone = new UserPhone();
 
-            var model = _mappingFixture.MapperInstance.Map<PhoneContactModel>(phoneContact);
+            var model = _mappingFixture.MapperInstance.Map<UserPhoneModel>(userPhone);
 
 
         }

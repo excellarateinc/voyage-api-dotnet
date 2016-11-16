@@ -3,12 +3,12 @@ namespace Launchpad.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CreatePhoneContactTable : DbMigration
+    public partial class CreateUserPhonesTable : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "core.PhoneContact",
+                "core.UserPhones",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -24,9 +24,9 @@ namespace Launchpad.Data.Migrations
         
         public override void Down()
         {
-            DropForeignKey("core.PhoneContact", "UserId", "core.Users");
-            DropIndex("core.PhoneContact", new[] { "UserId" });
-            DropTable("core.PhoneContact");
+            DropForeignKey("core.UserPhones", "UserId", "core.Users");
+            DropIndex("core.UserPhones", new[] { "UserId" });
+            DropTable("core.UserPhones");
         }
     }
 }

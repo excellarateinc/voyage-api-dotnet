@@ -7,13 +7,13 @@ namespace Launchpad.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CreatePhoneContactTable : IMigrationMetadata
+    public sealed partial class CreateUserPhonesTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CreatePhoneContactTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreateUserPhonesTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201611151626319_CreatePhoneContactTable"; }
+            get { return "201611161727172_CreateUserPhonesTable"; }
         }
         
         string IMigrationMetadata.Source

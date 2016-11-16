@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Data.Configuration
 {
-    public class PhoneContactConfiguration : EntityTypeConfiguration<PhoneContact>
+    public class UserPhoneConfiguration : EntityTypeConfiguration<UserPhone>
     {
-        public PhoneContactConfiguration()
+        public UserPhoneConfiguration()
         {
-            this.ToTable("PhoneContact", Constants.Schemas.FrameworkTables);
+            this.ToTable("UserPhones", Constants.Schemas.FrameworkTables);
             this.HasKey(_ => _.Id);
 
             this.Property(_ => _.Id).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);

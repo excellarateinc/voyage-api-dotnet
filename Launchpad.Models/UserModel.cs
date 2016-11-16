@@ -13,7 +13,7 @@ namespace Launchpad.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public List<PhoneContactModel> Phones { get; set; }
+        public List<UserPhoneModel> Phones { get; set; }
         public bool IsActive { get; set; }
     }
 }

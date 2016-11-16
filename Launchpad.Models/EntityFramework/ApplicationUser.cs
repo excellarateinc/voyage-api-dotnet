@@ -10,7 +10,7 @@ namespace Launchpad.Models.EntityFramework
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public virtual ICollection<PhoneContact> Phones { get; set; }
+        public virtual ICollection<UserPhone> Phones { get; set; }
         public bool IsActive { get; set; }
 
     }

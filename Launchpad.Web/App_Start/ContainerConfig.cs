@@ -38,8 +38,7 @@ namespace Launchpad.Web.App_Start
 
             // Set the dependency resolver to be Autofac.
             Container = builder.Build();
-
-
+            
             httpConfig.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
         }
     }

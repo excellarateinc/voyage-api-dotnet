@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ClaimModel.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
@@ -89,8 +90,8 @@
     <Compile Include="Map\Profiles\UserProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
-    <Compile Include="EntityFramework\PhoneContact.cs" />
-    <Compile Include="PhoneContactModel.cs" />
+    <Compile Include="EntityFramework\UserPhone.cs" />
+    <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="StatusAggregateModel.cs" />

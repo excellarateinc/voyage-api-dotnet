@@ -64,7 +64,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
     <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
-    <Compile Include="Configuration\PhoneContactConfiguration.cs" />
+    <Compile Include="Configuration\UserPhoneConfiguration.cs" />
     <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="Constants.cs" />
@@ -85,9 +85,9 @@
     <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.Designer.cs">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201611151626319_CreatePhoneContactTable.cs" />
-    <Compile Include="Migrations\201611151626319_CreatePhoneContactTable.Designer.cs">
-      <DependentUpon>201611151626319_CreatePhoneContactTable.cs</DependentUpon>
+    <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.cs" />
+    <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.Designer.cs">
+      <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,8 +118,8 @@
     <EmbeddedResource Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.resx">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611151626319_CreatePhoneContactTable.resx">
-      <DependentUpon>201611151626319_CreatePhoneContactTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611161727172_CreateUserPhonesTable.resx">
+      <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
