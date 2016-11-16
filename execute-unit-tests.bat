@@ -21,7 +21,7 @@ set bin=%root%\xunit
 :: set defaults
 set resultCode=0
 set outputPath=^"%root%\xunit-results.xml^"
-set failOnError=1
+set failOnError=0
 
 :: process command line
 if not [%1]==[] if not [%1]==[-] set outputPath=%1
