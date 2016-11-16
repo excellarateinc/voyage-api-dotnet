@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
 {
-    [Trait("Cateogry", "Mapping")]
+    [Trait("Category", "Mapping")]
     [Collection(AutoMapperCollection.CollectionName)]
     public class UserPhonesProfileTest : BaseUnitTest
     {
