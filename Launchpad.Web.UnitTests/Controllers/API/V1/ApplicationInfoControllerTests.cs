@@ -26,14 +26,18 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         private Mock<IApplicationInfoService> _mockApplicationInfoService;
         private Mock<IConfigurationManagerService> _mockConfigurationManagerService;
         private Mock<IFileReaderService> _mockFileReaderService;
+        private Mock<IPathProviderService> _mockPathProviderService;
+
 
         public ApplicationInfoControllerTests()
         {
             _mockApplicationInfoService = Mock.Create<IApplicationInfoService>();
             _mockConfigurationManagerService = Mock.Create<IConfigurationManagerService>();
             _mockFileReaderService = Mock.Create<IFileReaderService>();
+            _mockPathProviderService = Mock.Create<IPathProviderService>();
+
             _controller = new ApplicationInfoController(_mockApplicationInfoService.Object, _mockConfigurationManagerService.Object, _mockFileReaderService.Object,
-                () => { return string.Empty; });
+               _mockPathProviderService.Object);
             _controller.Request = new System.Net.Http.HttpRequestMessage();
             _controller.Configuration = new System.Web.Http.HttpConfiguration();
         }
@@ -51,7 +55,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //Arrange
 
-            _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo(It.IsAny<Dictionary<string, string>>())).Returns(new ApplicationInfoModel() { BuildNumber = "some_number" });
+            _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo())
+                .Returns(new ApplicationInfoModel() { BuildNumber = "some_number" });
             _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFilePath")).Returns(string.Empty);
             _mockConfigurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFileName")).Returns(string.Empty);
 
