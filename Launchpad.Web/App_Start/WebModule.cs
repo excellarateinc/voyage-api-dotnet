@@ -9,6 +9,8 @@ using System.Web;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Web.AuthProviders;
+using System;
+using Launchpad.Web.Middleware;
 
 namespace Launchpad.Web.App_Start
 {
@@ -35,7 +37,15 @@ namespace Launchpad.Web.App_Start
             //Register Identity services
             ConfigureIdentityServices(builder);
 
+            ConfigureMiddleware(builder);
             
+        }
+
+        private void ConfigureMiddleware(ContainerBuilder builder)
+        {
+            builder.RegisterType<ActivityAuditMiddleware>()
+                .InstancePerRequest()
+                .AsSelf();
         }
 
         private void ConfigureIdentityServices(ContainerBuilder builder)
@@ -99,6 +109,8 @@ namespace Launchpad.Web.App_Start
             var log = new LoggerConfiguration()
                 .WriteTo.MSSqlServer(connectionString, tableName, columnOptions: columnOptions)
                 .CreateLogger();
+
+            Serilog.Debugging.SelfLog.Enable(msg => System.Diagnostics.Debug.WriteLine(msg));
 
             Log.Logger = log; //Configure the global static logger
             return log;

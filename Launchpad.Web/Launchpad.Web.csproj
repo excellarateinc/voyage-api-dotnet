@@ -221,6 +221,7 @@
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Handlers\RequestMetricsHandler.cs" />
+    <Compile Include="Middleware\ActivityAuditMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
