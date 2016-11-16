@@ -29,11 +29,13 @@ namespace Launchpad.Services
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<TupleFileReaderService>()
+            builder.RegisterType<FileReaderService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterInstance<Func<string>>(() => { return System.Web.HttpContext.Current.Server.MapPath("~"); });
+            builder.RegisterType<PathProviderService>()
+                .AsImplementedInterfaces()
+                .WithParameter("localPath", System.Web.HttpContext.Current.Server.MapPath("~"));
 
             builder.RegisterType<HttpClient>()
                 .InstancePerRequest(); //Let the container dispose of it at the end of the request

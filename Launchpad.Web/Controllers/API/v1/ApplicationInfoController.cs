@@ -23,15 +23,15 @@ namespace Launchpad.Web.Controllers.API.V1
     {
         private readonly IApplicationInfoService _applicationInfoService;
         private readonly IConfigurationManagerService _configurationManagerService;
-        private readonly ITupleFileReaderService _tupleFileReaderService;
-        private readonly Func<string> _localPathProvider;
+        private readonly IFileReaderService _fileReaderService;
+        private readonly IPathProviderService _pathProviderService;
 
-        public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, ITupleFileReaderService tupleFileReaderService, Func<string> localPathProvider)
+        public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, IFileReaderService fileReaderService, IPathProviderService pathProviderService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
             _configurationManagerService = configurationManagerService.ThrowIfNull(null);
-            _tupleFileReaderService = tupleFileReaderService.ThrowIfNull(null);
-            _localPathProvider = localPathProvider;
+            _fileReaderService = fileReaderService.ThrowIfNull(null);
+            _pathProviderService = pathProviderService;
         }
 
         /**
@@ -53,18 +53,7 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("statuses")]
         public IHttpActionResult Get()
         {
-            var settings = new Dictionary<string, string>();
-
-            var filePath = _localPathProvider();
-            var fileName = _configurationManagerService.GetAppSetting("ApplicationInfoFileName");
-
-            var text = _tupleFileReaderService.ReadAllText(Path.Combine(filePath, fileName));
-
-            var buildNumber = (string)JObject.Parse(text).SelectToken("build.buildNumber");
-
-            settings.Add("buildNumber", buildNumber);
-
-            var appInfo = _applicationInfoService.GetApplicationInfo(settings);
+            var appInfo = _applicationInfoService.GetApplicationInfo();
             
             return Ok(appInfo);
         }

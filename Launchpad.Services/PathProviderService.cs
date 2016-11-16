@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace Launchpad.Services
 {
-    public class TupleFileReaderService : ITupleFileReaderService
+    public class PathProviderService : IPathProviderService
     {
-        public string ReadAllText(string filePath)
+        public string LocalPath { get; private set; }
+
+        public PathProviderService(string localPath)
         {
-            return File.ReadAllText(filePath);
+            LocalPath = localPath;
         }
     }
 }

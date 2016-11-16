@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Services.Interfaces
 {
-    public interface ITupleFileReaderService
+    public interface IPathProviderService
     {
-        string ReadAllText(string filePath);
+        string LocalPath { get; }
     }
 }

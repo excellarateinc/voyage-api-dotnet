@@ -25,14 +25,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         private ApplicationInfoController _controller;
         private Mock<IApplicationInfoService> _mockApplicationInfoService;
         private Mock<IConfigurationManagerService> _mockConfigurationManagerService;
-        private Mock<ITupleFileReaderService> _mockTupleFileReaderService;
+        private Mock<IFileReaderService> _mockFileReaderService;
 
         public ApplicationInfoControllerTests()
         {
             _mockApplicationInfoService = Mock.Create<IApplicationInfoService>();
             _mockConfigurationManagerService = Mock.Create<IConfigurationManagerService>();
-            _mockTupleFileReaderService = Mock.Create<ITupleFileReaderService>();
-            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object, _mockConfigurationManagerService.Object, _mockTupleFileReaderService.Object,
+            _mockFileReaderService = Mock.Create<IFileReaderService>();
+            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object, _mockConfigurationManagerService.Object, _mockFileReaderService.Object,
                 () => { return string.Empty; });
             _controller.Request = new System.Net.Http.HttpRequestMessage();
             _controller.Configuration = new System.Web.Http.HttpConfiguration();
@@ -59,7 +59,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 _mockConfigurationManagerService.Object.GetAppSetting("ApplicationInfoFilePath"),
                 _mockConfigurationManagerService.Object.GetAppSetting("ApplicationInfoFileName"));
 
-            _mockTupleFileReaderService.Setup(_ => _.ReadAllText(fullFilePath)).Returns("{ 'build': { 'buildNumber': 'some_number'}}");
+            _mockFileReaderService.Setup(_ => _.ReadAllText(fullFilePath)).Returns("{ 'build': { 'buildNumber': 'some_number'}}");
             
             //Act
 
