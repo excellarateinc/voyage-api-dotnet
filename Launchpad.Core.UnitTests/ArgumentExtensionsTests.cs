@@ -23,7 +23,7 @@ namespace Launchpad.Core.UnitTests
 
             Action throwAction = () => input.ThrowIfNull();
 
-            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("Object");
+            throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("Object1");
         }
 
         [Fact]
