@@ -10,7 +10,7 @@ namespace Launchpad.Web.Middleware
     {
         private readonly ILogger _logger;
 
-        public ActivityAuditMiddleware(ILogger logger, OwinMiddleware next) : base(next)
+        public ActivityAuditMiddleware(OwinMiddleware next, ILogger logger) : base(next)
         {
             _logger = logger.ThrowIfNull(nameof(logger));
         }
