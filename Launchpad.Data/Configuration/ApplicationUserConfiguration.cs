@@ -13,7 +13,9 @@ namespace Launchpad.Data.Configuration
 
             this.Property(_ => _.FirstName).HasMaxLength(128).IsRequired();
             this.Property(_ => _.LastName).HasMaxLength(128).IsRequired();
+            this.HasMany(_ => _.Phones);
             this.Property(_ => _.IsActive).IsRequired();
+            
         }
     }
 }

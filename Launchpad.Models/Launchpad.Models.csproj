@@ -54,6 +54,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -74,16 +78,20 @@
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\StatusCode.cs" />
+    <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="IdentityResult.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
+    <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
+    <Compile Include="EntityFramework\UserPhone.cs" />
+    <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="StatusAggregateModel.cs" />
