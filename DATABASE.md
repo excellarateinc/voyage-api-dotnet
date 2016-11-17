@@ -51,6 +51,8 @@ FK_core.RoleClaims_core.Roles_RoleId
 1. Column names should be descriptive
 2. Column names should avoid abbreviations
 3. Column names should not contain underscores
+4. Columns in different tables that represent the same type of data should be named the same.
+1. For example a column that holds a zip code should be called ZipCode in all tables. 
 
 
 ### Data Types
