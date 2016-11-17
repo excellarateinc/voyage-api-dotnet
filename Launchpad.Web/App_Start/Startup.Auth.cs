@@ -8,11 +8,21 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using System.Text;
 
 namespace Launchpad.Web
 {
+    using Middleware;
+    using AppFunc = Func<IDictionary<string, object>, Task>;
+
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
@@ -40,7 +50,7 @@ namespace Launchpad.Web
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-           
+            app.Use(typeof(ValidationHandler));
 
             var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
             OAuthOptions = new OAuthAuthorizationServerOptions
@@ -59,6 +69,47 @@ namespace Launchpad.Web
             app.UseOAuthBearerTokens(OAuthOptions);
 
             app.UseWebApi(httpConfig);
+        }
+    }
+
+    public static class IOwinResponseExtensions
+    {
+        public static async Task SetBody(this IOwinResponse response, string content)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(content);
+
+            var buffer = new MemoryStream(bytes);
+            buffer.Seek(0, SeekOrigin.Begin);
+
+            await buffer.CopyToAsync(response.Body);
+        }
+
+        public static async Task GetResponseBody(this IOwinContext context, AppFunc next)
+        {
+            using (var buffer = new MemoryStream())
+            {
+                //replace the context response with our buffer
+                var stream = context.Response.Body;
+                context.Response.Body = buffer;
+
+                //invoke the rest of the pipeline
+                await next.Invoke(context.Environment);
+
+                //reset the buffer and read out the contents
+                buffer.Seek(0, SeekOrigin.Begin);
+                var reader = new StreamReader(buffer);
+                using (var bufferReader = new StreamReader(buffer))
+                {
+                    string body = await bufferReader.ReadToEndAsync();
+
+                    //reset to start of stream
+                    buffer.Seek(0, SeekOrigin.Begin);
+
+                    //copy our content to the original stream and put it back
+                    await buffer.CopyToAsync(stream);
+                    context.Response.Body = stream;
+                }
+            }
         }
     }
 }

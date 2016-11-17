@@ -8,6 +8,8 @@ using Autofac;
 using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security.OAuth;
 using System.Web.Http.Cors;
+using FluentValidation.WebApi;
+
 namespace Launchpad.Web
 {
     public static class WebApiConfig
@@ -39,6 +41,8 @@ namespace Launchpad.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            FluentValidationModelValidatorProvider.Configure(config);
         }
     }
 }
