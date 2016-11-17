@@ -24,14 +24,33 @@ Schemas should be used to organize related database objects such as tables. For 
 #### Primary Keys
 Every table should have a primary key. Typically this will be surogate key implemented as an identity column. Using an integer primary key value fits well with the web service pattern of being able to reference a particular record within an entity set with a single value. A multipart natural key will not fit this pattern.
 
+These keys should use the following naming convention:
+
+
+```
+PK_{schema.TableName}
+
+PK_core.LaunchpadLogs
+
+```
+
 #### Foreign Keys
-Referential integrity should be enforced via foreign key relationships. 
+Referential integrity should be enforced via foreign key relationships. These keys should use the following naming convention:
+
+```
+FK_{schema.ForeignKeyTable}_{schema.PrimaryKeyTable}_{PrimaryKeyColmn}
+
+FK_core.RoleClaims_core.Roles_RoleId
+
+```
 
 
 ## Columns 
 
 ### Names
-1. 
+1. Column names should be descriptive
+2. Column names should avoid abbreviations
+
 
 ### Data Types
 Columns should try to adhere to a standard set of data types based off of their content content.
@@ -65,4 +84,4 @@ Operational columns will be added to every table. The standard columns are:
 1. Do not prefix store procedures with sp_ 
 
 ## Indexes
-
+1. Create a clustered index on the primary key  (default behavior) 
