@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ClaimModel.cs" />
+    <Compile Include="EntityFramework\ActivityAudit.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
     <Compile Include="EntityFramework\LaunchpadLog.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="IdentityResult.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
+    <Compile Include="Map\Profiles\ActivityAuditProfile.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />

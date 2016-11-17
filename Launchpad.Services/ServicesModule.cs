@@ -51,6 +51,10 @@ namespace Launchpad.Services
                 .AsSelf()
                 .InstancePerRequest();
 
+            builder.RegisterType<AuditService>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
+
         }
     }
 }

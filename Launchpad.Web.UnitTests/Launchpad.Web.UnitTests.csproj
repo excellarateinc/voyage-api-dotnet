@@ -170,9 +170,11 @@
     <Compile Include="Controllers\API\V2\StatusV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />
+    <Compile Include="Extensions\OwinContextExtensionsTests.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />
     <Compile Include="Handlers\RequestMetricsHandlerTests.cs" />
     <Compile Include="Middleware\ActivityAuditMiddlewareTests.cs" />
+    <Compile Include="Middleware\TestEnvironmentMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -61,13 +61,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityAuditRepository.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Configuration\ActivityAuditConfiguration.cs" />
     <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
     <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
     <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataModule.cs" />
+    <Compile Include="Interfaces\IActivityAuditRepository.cs" />
     <Compile Include="Interfaces\IDbConnectionStatus.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
@@ -83,6 +86,10 @@
     <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.cs" />
     <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.Designer.cs">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.cs" />
+    <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.Designer.cs">
+      <DependentUpon>201611171500114_ActivityAudit_CreateTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.resx">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611171500114_ActivityAudit_CreateTable.resx">
+      <DependentUpon>201611171500114_ActivityAudit_CreateTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

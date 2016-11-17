@@ -13,7 +13,7 @@ namespace Launchpad.Data
     {
 
         #region DbSets
-
+        public IDbSet<ActivityAudit> ActivityAudits { get; set; }
         public IDbSet<Widget> Widgets { get; set; }
         public IDbSet<LaunchpadLog> Logs {get;set;}
 

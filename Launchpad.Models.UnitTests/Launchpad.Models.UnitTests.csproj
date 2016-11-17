@@ -100,6 +100,7 @@
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="AutoMapperValidationTests.cs" />
+    <Compile Include="Map\Profiles\ActivityAuditProfileTests.cs" />
     <Compile Include="Map\Profiles\ClaimProfileTests.cs" />
     <Compile Include="Map\Profiles\LaunchpadLogProfileTests.cs" />
     <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />

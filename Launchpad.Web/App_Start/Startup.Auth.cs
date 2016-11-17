@@ -2,10 +2,8 @@
 using Launchpad.Web.App_Start;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -55,7 +53,7 @@ namespace Launchpad.Web
             };
 
 
-
+            //Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
 

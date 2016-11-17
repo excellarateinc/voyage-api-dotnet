@@ -94,6 +94,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ActivityAuditRepositoryTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\LaunchpadContextExtensions.cs" />
     <Compile Include="LaunchpadDataContextTests.cs" />

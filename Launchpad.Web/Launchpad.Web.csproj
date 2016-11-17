@@ -218,6 +218,7 @@
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
     <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
+    <Compile Include="Extensions\OwinContextExtensions.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Handlers\RequestMetricsHandler.cs" />
