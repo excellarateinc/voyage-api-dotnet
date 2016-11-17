@@ -50,10 +50,11 @@ FK_core.RoleClaims_core.Roles_RoleId
 ### Names
 1. Column names should be descriptive
 2. Column names should avoid abbreviations
+3. Column names should not contain underscores
 
 
 ### Data Types
-Columns should try to adhere to a standard set of data types based off of their content content.
+Columns should try to adhere to a standard set of data types based on their content.
 
 |Primitive Type | Column Data Type | Additional Information
 |:----|:----|:----|
