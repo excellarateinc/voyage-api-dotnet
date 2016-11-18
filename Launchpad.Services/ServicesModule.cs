@@ -40,14 +40,7 @@ namespace Launchpad.Services
             builder.RegisterType<HttpClient>()
                 .InstancePerRequest(); //Let the container dispose of it at the end of the request
 
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<IStatusMonitor>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
-            builder.RegisterType<RequestMetricsService>()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+           
 
             builder.RegisterType<UserService>()
                 .AsImplementedInterfaces()
@@ -63,6 +56,10 @@ namespace Launchpad.Services
 
             builder.RegisterType<ApplicationRoleManager>()
                 .AsSelf()
+                .InstancePerRequest();
+
+            builder.RegisterType<AuditService>()
+                .AsImplementedInterfaces()
                 .InstancePerRequest();
 
         }

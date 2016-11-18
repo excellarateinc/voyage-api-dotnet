@@ -70,33 +70,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationInfoModel.cs" />
+    <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ClaimModel.cs" />
+    <Compile Include="EntityFramework\ActivityAudit.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
     <Compile Include="EntityFramework\LaunchpadLog.cs" />
     <Compile Include="EntityFramework\RoleClaim.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
-    <Compile Include="Enum\StatusCode.cs" />
+  
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="IdentityResult.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
+    <Compile Include="Map\Profiles\ActivityAuditProfile.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
-    <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
+    
     <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
-    <Compile Include="Map\Profiles\RequestDataPointProfile.cs" />
+   
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
-    <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
+   
     <Compile Include="EntityFramework\UserPhone.cs" />
     <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
-    <Compile Include="StatusAggregateModel.cs" />
-    <Compile Include="StatusModel.cs" />
-    <Compile Include="RequestDataPointModel.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +104,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Map\Resolvers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

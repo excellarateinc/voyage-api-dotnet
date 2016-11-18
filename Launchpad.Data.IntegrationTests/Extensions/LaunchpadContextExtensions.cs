@@ -5,6 +5,23 @@ namespace Launchpad.Data.IntegrationTests.Extensions
 {
     public static class LaunchpadContextExtensions
     {
+        public static ActivityAudit AddActivityAudit(this LaunchpadDataContext context)
+        {
+            var audit = new ActivityAudit
+            {
+                RequestId = System.Guid.NewGuid().ToString(),
+                IpAddress = "1.1.1.1",
+                UserName = "bob@bob.com",
+                Method = "PATCH",
+                Path = "/widget/1",
+                Date = System.DateTime.Now
+            };
+
+            context.ActivityAudits.Add(audit);
+            context.SaveChanges();
+            return audit;
+        }
+
         public static Widget AddWidget(this LaunchpadDataContext context)
         {
             var widget = new Models.EntityFramework.Widget { Name = "My Test Widget", Color="Blue" };

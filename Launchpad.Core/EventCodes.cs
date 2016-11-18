@@ -2,6 +2,7 @@
 {
     public static class EventCodes
     {
-        public static string Authorization = "Authorization";
+        public static readonly string ActivityAudit = "Activity";
+        public static readonly string Authorization = "Authorization";
     }
 }

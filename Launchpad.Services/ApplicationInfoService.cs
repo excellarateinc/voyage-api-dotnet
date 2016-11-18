@@ -16,9 +16,9 @@ namespace Launchpad.Services
 
         public ApplicationInfoService(IConfigurationManagerService configurationManagerService, IFileReaderService fileReaderService, IPathProviderService pathProviderService)
         {
-            _configurationManagerService = configurationManagerService;
-            _fileReaderService = fileReaderService;
-            _pathProviderService = pathProviderService;
+            _configurationManagerService = configurationManagerService.ThrowIfNull(nameof(configurationManagerService));
+            _fileReaderService = fileReaderService.ThrowIfNull(nameof(fileReaderService));
+            _pathProviderService = pathProviderService.ThrowIfNull(nameof(pathProviderService));
         }
 
         public ApplicationInfoModel GetApplicationInfo()

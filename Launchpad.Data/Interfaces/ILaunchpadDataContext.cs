@@ -13,6 +13,8 @@ namespace Launchpad.Data.Interfaces
 
         IDbSet<ApplicationUser> Users { get; set; }
 
+        IDbSet<ActivityAudit> ActivityAudits { get; set; }
+
         IDbSet<UserPhone> UserPhones { get; set; }
 
         int SaveChanges();

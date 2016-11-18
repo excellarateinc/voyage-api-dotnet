@@ -61,7 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityAuditRepository.cs" />
     <Compile Include="BaseRepository.cs" />
+    <Compile Include="Configuration\ActivityAuditConfiguration.cs" />
     <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
     <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
     <Compile Include="Configuration\UserPhoneConfiguration.cs" />
@@ -69,7 +71,7 @@
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataModule.cs" />
-    <Compile Include="Interfaces\IDbConnectionStatus.cs" />
+    <Compile Include="Interfaces\IActivityAuditRepository.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -89,6 +91,14 @@
     <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.Designer.cs">
       <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.cs" />
+    <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.Designer.cs">
+      <DependentUpon>201611171500114_ActivityAudit_CreateTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611181628480_ModelChanges.cs" />
+    <Compile Include="Migrations\201611181628480_ModelChanges.Designer.cs">
+      <DependentUpon>201611181628480_ModelChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201611181800196_UserPhoneColumnConstraints.cs" />
     <Compile Include="Migrations\201611181800196_UserPhoneColumnConstraints.Designer.cs">
       <DependentUpon>201611181800196_UserPhoneColumnConstraints.cs</DependentUpon>
@@ -96,7 +106,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepository.cs" />
-    <Compile Include="SqlConnectionStatus.cs" />
     <Compile Include="WidgetRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611161727172_CreateUserPhonesTable.resx">
       <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611171500114_ActivityAudit_CreateTable.resx">
+      <DependentUpon>201611171500114_ActivityAudit_CreateTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181628480_ModelChanges.resx">
+      <DependentUpon>201611181628480_ModelChanges.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611181800196_UserPhoneColumnConstraints.resx">
       <DependentUpon>201611181800196_UserPhoneColumnConstraints.cs</DependentUpon>

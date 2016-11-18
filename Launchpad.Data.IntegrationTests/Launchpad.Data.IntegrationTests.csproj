@@ -94,13 +94,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ActivityAuditRepositoryTests.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\LaunchpadContextExtensions.cs" />
     <Compile Include="LaunchpadDataContextTests.cs" />
     <Compile Include="LaunchpadLogRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepositoryTests.cs" />
-    <Compile Include="SqlConnectionStatusTests.cs" />
     <Compile Include="WidgetRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
