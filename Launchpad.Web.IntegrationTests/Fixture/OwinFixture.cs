@@ -27,7 +27,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
         {
            
 
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/token");
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/v1/login");
             httpRequestMessage.Content = new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
                                 "application/x-www-form-urlencoded");
 

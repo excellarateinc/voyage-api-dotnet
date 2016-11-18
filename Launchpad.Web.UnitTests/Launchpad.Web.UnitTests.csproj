@@ -123,7 +123,6 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -149,14 +148,12 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise>
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-      </ItemGroup>
-    </Otherwise>
+    <Otherwise />
   </Choose>
   <ItemGroup>
     <Compile Include="AuthProviders\ApplicationOAuthProviderTests.cs" />
+    <Compile Include="AuthProviders\LoginOrchestratorTests.cs" />
+    <Compile Include="AuthProviders\LoginOrchestratorV2Tests.cs" />
     <Compile Include="ConstantsTests.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
@@ -164,7 +161,6 @@
     <Compile Include="Controllers\API\V1\ApplicationInfoControllerTests.cs" />
     <Compile Include="Controllers\API\V1\StatusControllerTests.cs" />
     <Compile Include="Controllers\API\V1\WidgetControllerTests.cs" />
-    <Compile Include="Controllers\API\V2\StatusV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />

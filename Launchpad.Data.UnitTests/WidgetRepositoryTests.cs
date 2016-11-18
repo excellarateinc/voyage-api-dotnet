@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using Launchpad.UnitTests.Common;
 using Xunit;

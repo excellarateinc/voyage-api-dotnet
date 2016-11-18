@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
+using Launchpad.Core;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security;
@@ -7,11 +8,13 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Launchpad.Web.AuthProviders
 {
+
     /// <summary>
     /// This provider is a singleton - since our dependency are per request, we cannot inject the dependencies via the constructor
     /// Use the service locator pattern to resolve dependencies here
@@ -21,22 +24,64 @@ namespace Launchpad.Web.AuthProviders
     {
         private readonly string _publicClientId;
 
-        public ApplicationOAuthProvider(string publicClientId)
+        //Backed off from using a dictionary here - there is no guarantee that the IsMatch logic will be as straight 
+        //forward as checking the path 
+        private readonly Dictionary<string, ILoginOrchestrator> _loginOrchestrators;
+
+        
+
+
+        public ApplicationOAuthProvider(string publicClientId, IEnumerable<ILoginOrchestrator> loginOrchestrators)
         {
-            if (publicClientId == null)
+            publicClientId.ThrowIfNull(nameof(publicClientId));
+            _publicClientId = publicClientId;
+
+            loginOrchestrators.ThrowIfNull(nameof(loginOrchestrators));
+            _loginOrchestrators = loginOrchestrators.ToDictionary(_=> _.TokenPath);
+
+        }
+
+        /// <summary>
+        /// Determines if the incoming request matches an endpoint. This override is here to support multiple versions of the 
+        /// login service
+        /// </summary>
+        /// <param name="context">Context</param>
+        /// <returns>Task</returns>
+        public override Task MatchEndpoint(OAuthMatchEndpointContext context)
+        {
+            //Check if there is a match path in the array - if so it is a token endpoint 
+            if (_loginOrchestrators.ContainsKey(context.Request.Path.Value))
             {
-                throw new ArgumentNullException("publicClientId");
+                context.MatchesTokenEndpoint();
+                return Task.Delay(0);
             }
 
-            _publicClientId = publicClientId;
+            //If it does not match a token endpoint, execute the default behavior 
+            return base.MatchEndpoint(context);
+        }
+
+    
+        public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
+        {
+            //At this point, it has passed Matchendpoint. If the orchestrator is missing at this point
+            //bring on the crash 
+            var loginOrchestrator = _loginOrchestrators[context.Request.Path.Value];
+
+            if (loginOrchestrator.ValidateRequest(context.TokenRequest.Parameters))
+            {
+                context.Validated();
+            }else
+            {
+                context.SetError("error", "invalid_request");
+            }
+            return Task.FromResult<object>(null);
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var scope = context.OwinContext.GetAutofacLifetimeScope();
-            var userService = scope.Resolve<IUserService>(); //context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            var valid = await userService.IsValidCredential(context.UserName, context.Password);
+            //Let the orchestrator determine if it is a valid credential and then respond accordingly
+            var loginOrchestrator = _loginOrchestrators[context.Request.Path.Value]; 
+            var valid = await loginOrchestrator.ValidateCredential(context);
 
             if (!valid)
             {
@@ -44,6 +89,8 @@ namespace Launchpad.Web.AuthProviders
                 return;
             }
 
+            var scope = context.OwinContext.GetAutofacLifetimeScope();
+            var userService = scope.Resolve<IUserService>();
             ClaimsIdentity oAuthIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, CookieAuthenticationDefaults.AuthenticationType);
 

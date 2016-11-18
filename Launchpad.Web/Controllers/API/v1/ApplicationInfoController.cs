@@ -35,9 +35,9 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {get} /v1/status Get application info
+        * @api {get} /v1/statuses Get application info
         * @apiVersion 0.1.0
-        * @apiName GetStatus
+        * @apiName GetStatuses
         * @apiGroup Status
         *   
         * @apiSuccess {String} version Version Number

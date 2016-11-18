@@ -48,13 +48,13 @@ namespace Launchpad.Services.UnitTests
         public async void CreateUserAsync_Should_Call_UserManager()
         {
             var userModel = Fixture.Build<UserModel>()
-                                .With(_ => _.Name, "bob@bob.com")
+                                .With(_ => _.Username, "bob@bob.com")
                                 .Create();
 
-            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name)))
+            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
-                .Setup(_ => _.SetPasswordHashAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Name), It.IsAny<string>()))
+                .Setup(_ => _.SetPasswordHashAsync(It.Is<ApplicationUser>(appUser => appUser.UserName == userModel.Username), It.IsAny<string>()))
                 .Returns(Task.Delay(0));
             _mockStore.Setup(_ => _.FindByNameAsync("bob@bob.com"))
                 .ReturnsAsync(null);
@@ -62,7 +62,7 @@ namespace Launchpad.Services.UnitTests
             var result = await _userService.CreateUserAsync(userModel);
 
             result.Result.Succeeded.Should().BeTrue(string.Join("\r\n", result.Result.Errors));
-            result.Model.Name.Should().Be(userModel.Name);
+            result.Model.Username.Should().Be(userModel.Username);
 
         }
 
@@ -106,7 +106,7 @@ namespace Launchpad.Services.UnitTests
             var userModel = new UserModel
             {
                 Id = id,
-                Name = "sally@sally.com",
+                Username = "sally@sally.com",
                 FirstName = "First1",
                 LastName = "Last1"
             };
@@ -125,17 +125,17 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);
 
-            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
                 .ReturnsAsync(appUser);
 
 
-            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Name)))
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
 
             var result = await _userService.UpdateUserAsync(id, userModel);
 
             result.Result.Succeeded.Should().BeTrue();
-            result.Model.Name.Should().Be(userModel.Name);
+            result.Model.Username.Should().Be(userModel.Username);
             result.Model.LastName.Should().Be(userModel.LastName);
             result.Model.FirstName.Should().Be(userModel.FirstName);
         }
@@ -156,7 +156,7 @@ namespace Launchpad.Services.UnitTests
 
             var result = await _userService.GetUserAsync(id);
 
-            result.Name.Should().Be(appUser.UserName);
+            result.Username.Should().Be(appUser.UserName);
             result.Id.Should().Be(appUser.Id);
             Mock.VerifyAll();
 
@@ -287,7 +287,7 @@ namespace Launchpad.Services.UnitTests
             //arrange
 
             var userModel = Fixture.Build<UserModel>()
-                .With(_ => _.Name, "bob@bob.com")
+                .With(_ => _.Username, "bob@bob.com")
                 .Create(); ;
 
         
@@ -295,7 +295,7 @@ namespace Launchpad.Services.UnitTests
             var roleModel = Fixture.Create<RoleModel>();
             var serviceModel = Fixture.Create<RoleModel>();
 
-            var applicationUser = new ApplicationUser { Id = userModel.Id, UserName = userModel.Name };
+            var applicationUser = new ApplicationUser { Id = userModel.Id, UserName = userModel.Username };
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
                 .Setup(_ => _.FindByIdAsync(userModel.Id))
                 .ReturnsAsync(applicationUser);
@@ -308,7 +308,7 @@ namespace Launchpad.Services.UnitTests
                 .Setup(_ => _.AddToRoleAsync(applicationUser, roleModel.Name))
                 .Returns(Task.Delay(0));
 
-            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Name))
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
                 .ReturnsAsync(applicationUser);
 
             _mockStore.Setup(_ => _.UpdateAsync(applicationUser))
@@ -560,7 +560,7 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             result.Should().HaveSameCount(userResults);
 
-            userResults.All(_ => result.Any(r => r.Name == _.UserName))
+            userResults.All(_ => result.Any(r => r.Username == _.UserName))
                .Should()
                .BeTrue();
         }

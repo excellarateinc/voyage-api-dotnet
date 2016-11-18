@@ -209,12 +209,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
+    <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
+    <Compile Include="AuthProviders\LoginOrchestrator.cs" />
+    <Compile Include="AuthProviders\LoginOrchestratorV2.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
     <Compile Include="Controllers\API\v1\ApplicationInfoController.cs" />
-    <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
     <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
