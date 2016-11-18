@@ -29,9 +29,9 @@ namespace Launchpad.Web.Controllers.API.V1
         public ApplicationInfoController(IApplicationInfoService applicationInfoService, IConfigurationManagerService configurationManagerService, IFileReaderService fileReaderService, IPathProviderService pathProviderService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
-            _configurationManagerService = configurationManagerService.ThrowIfNull(null);
-            _fileReaderService = fileReaderService.ThrowIfNull(null);
-            _pathProviderService = pathProviderService;
+            _configurationManagerService = configurationManagerService.ThrowIfNull(nameof(configurationManagerService));
+            _fileReaderService = fileReaderService.ThrowIfNull(nameof(fileReaderService));
+            _pathProviderService = pathProviderService.ThrowIfNull(nameof(pathProviderService));
         }
 
         /**
