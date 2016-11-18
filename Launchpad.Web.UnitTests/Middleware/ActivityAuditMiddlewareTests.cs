@@ -31,7 +31,7 @@ namespace Launchpad.Web.UnitTests.Middleware
 
     
         [Fact]
-        public async void Invoke_Should_Call_Logger()
+        public async void Invoke_Should_Call_Logger_And_AuditService()
         {
             //Setup the dependencies 
             _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
@@ -48,6 +48,42 @@ namespace Launchpad.Web.UnitTests.Middleware
             {
                 //Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object>() { { "owin.RequestId", id } });
+
+                //Middleware under test
+                app.Use(typeof(ActivityAuditMiddleware), _mockLogger.Object, _mockAuditService.Object);
+
+                app.Run(context =>
+                {
+                    return context.Response.WriteAsync("Hello world using OWIN TestServer");
+                });
+
+            }))
+            {
+                HttpResponseMessage response = await server.HttpClient.GetAsync("/");
+
+                //Verify the audit and logger was called
+                Mock.VerifyAll();
+            }
+        }
+
+        [Fact]
+        public async void Invoke_Should_Call_Logger_And_AuditService_And_Overwrite_Empty_RequestId()
+        {
+            //Setup the dependencies 
+            _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
+                .Returns(_mockLogger.Object);
+
+            _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            var id = Guid.Empty.ToString();
+
+            _mockAuditService.Setup(_ => _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId != id)))
+                .Returns(Task.FromResult(0));
+
+            using (var server = TestServer.Create(app =>
+            {
+                //Use the test environment middleware to setup an context.Environment variables
+                app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object>() { { "owin.RequestId", Guid.Empty } });
 
                 //Middleware under test
                 app.Use(typeof(ActivityAuditMiddleware), _mockLogger.Object, _mockAuditService.Object);

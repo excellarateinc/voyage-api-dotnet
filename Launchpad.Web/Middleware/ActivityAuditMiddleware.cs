@@ -4,11 +4,14 @@ using Serilog;
 using System.Threading.Tasks;
 using Launchpad.Web.Extensions;
 using Launchpad.Services.Interfaces;
+using System;
 
 namespace Launchpad.Web.Middleware
 {
     public class ActivityAuditMiddleware : OwinMiddleware
     {
+        private static string EmptyId = Guid.Empty.ToString();
+
         private readonly ILogger _logger;
         private readonly IAuditService _auditService;
 
@@ -21,8 +24,11 @@ namespace Launchpad.Web.Middleware
 
         public async override Task Invoke(IOwinContext context)
         {
-
+            
+            var requestId = Guid.NewGuid().ToString();
             var requestAudit = context.ToAuditModel();
+            if (EmptyId.Equals(requestAudit.RequestId, StringComparison.InvariantCultureIgnoreCase))
+                requestAudit.RequestId = requestId;
 
             await _auditService.RecordAsync(requestAudit);
 
@@ -38,6 +44,8 @@ namespace Launchpad.Web.Middleware
             await Next.Invoke(context);
 
             var responseAudit = context.ToAuditModel();
+            if (EmptyId.Equals(responseAudit.RequestId, StringComparison.InvariantCultureIgnoreCase))
+                responseAudit.RequestId = requestId;
 
             await _auditService.RecordAsync(responseAudit);
 
