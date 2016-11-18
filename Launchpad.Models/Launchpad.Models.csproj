@@ -74,20 +74,16 @@
     <Compile Include="EntityFramework\RoleClaim.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
-    <Compile Include="Enum\StatusCode.cs" />
     <Compile Include="IdentityResult.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ActivityAuditProfile.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
-    <Compile Include="Map\Profiles\LaunchpadLogProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
-    <Compile Include="Map\Resolvers\LogLevelResolver.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
-    <Compile Include="StatusModel.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +91,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Map\Resolvers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
