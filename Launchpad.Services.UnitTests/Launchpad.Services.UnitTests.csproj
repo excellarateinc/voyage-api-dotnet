@@ -107,17 +107,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AuditServiceTests.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManagerTests.cs" />
-    <Compile Include="Monitors\ActivityMonitorTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
-    <Compile Include="Monitors\DbStatusMonitorTests.cs" />
-    <Compile Include="Monitors\HttpEndpointStatusMonitorTests.cs" />
-    <Compile Include="Monitors\LogMonitorTests.cs" />
-    <Compile Include="RequestMetricsServiceTests.cs" />
     <Compile Include="RoleServiceTests.cs" />
     <Compile Include="ApplicationInfoServiceTests.cs" />
-    <Compile Include="StatusCollectorServiceTests.cs" />
+    
     <Compile Include="UserServiceTests.cs" />
     <Compile Include="WidgetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

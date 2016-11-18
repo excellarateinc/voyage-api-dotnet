@@ -13,7 +13,7 @@ namespace Launchpad.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         /// <summary>

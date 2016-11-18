@@ -43,6 +43,25 @@ namespace Launchpad.Data.IntegrationTests
         }
 
         [Fact]
+        public void ActivityAudits_Should_Query_Database()
+        {
+            //Create a new transaction scope
+            using (var scope = new TransactionScope())
+            {
+
+                //Create a data context
+                using (var context = new LaunchpadDataContext())
+                {
+
+                    //Just force a database query
+                    var results = context.ActivityAudits.Take(10);
+
+                    results.Should().NotBeNull();
+                }
+            }
+        }
+
+        [Fact]
         public void Logs_Should_Query_Database()
         {
             //Create a new transaction scope

@@ -84,8 +84,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ActivityAuditRepositoryTests.cs" />
     <Compile Include="LaunchpadLogRepositoryTests.cs" />
-    <Compile Include="SqlConnectionStatusTests.cs" />
     <Compile Include="WidgetRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

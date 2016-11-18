@@ -32,12 +32,7 @@ namespace Launchpad.Data
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<SqlConnectionStatus>()
-                .WithParameter("connectionString", _connectionString)
-                .WithParameter("displayName", "Launchpad Database")
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
+           
             //Shortcut to register all repositories using a marker interface
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IRepository>()

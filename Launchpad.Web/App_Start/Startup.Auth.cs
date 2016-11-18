@@ -1,10 +1,9 @@
 ﻿using Autofac;
 using Launchpad.Web.App_Start;
 using Launchpad.Web.AuthProviders;
-using Microsoft.AspNet.Identity;
+using Launchpad.Web.Middleware;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -28,17 +27,15 @@ namespace Launchpad.Web
 
             WebApiConfig.Register(httpConfig);
 
+            app.UseAutofacLifetimeScopeInjector(ContainerConfig.Container);
 
-
-            app.UseAutofacMiddleware(ContainerConfig.Container);
-  
             app.UseCors(CorsOptions.AllowAll);
             
 
-            // Enable the application to use a cookie to store information for the signed in user
+             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            // app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
            
 
@@ -54,6 +51,11 @@ namespace Launchpad.Web
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
             };
+
+
+            //Register the activty auditing here so that anonymous activity is captured
+            app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
+
 
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
