@@ -95,7 +95,25 @@ public IHttpActionResult Get(MonitorType id)
   _log.Information("Request for MonitorType -> {id}", id);
   return Ok(_statusCollector.Collect(id));
 }
-````
+```
+### Debugging
+Serilog will fail silently if there is an issue logging a message. While this is desirable in production, when debugging it can be hard identify the issue with the message template. Serilog offers debugging out to help troubleshoot issues. To turn on the output, use:
+
+```
+ Serilog.Debugging.SelfLog.Enable(msg => System.Diagnostics.Debug.WriteLine(msg));
+```
+ 
+ 
+This will write Serilog issues to the output window. For more options see the [documentation.](https://github.com/serilog/serilog/wiki/Debugging-and-Diagnostics)
+
+```
+016-11-16T16:46:12.8645916Z Exception while emitting periodic batch from Serilog.Sinks.MSSqlServer.MSSqlServerSink: System.AggregateException: One or more errors occurred. ---> System.FormatException: Format String can be only "D", "d", "N", "n", "P", "p", "B", "b", "X" or "x".
+   at System.Guid.ToString(String format, IFormatProvider provider)
+   at Serilog.Events.ScalarValue.Render(TextWriter output, String format, IFormatProvider formatProvider)
+   at Serilog.Parsing.PropertyToken.Render(IReadOnlyDictionary`2 properties, TextWriter output, IFormatProvider formatProvider)
+   at Serilog.Sinks.MSSqlServer.MSSqlServerSink.FillDataTable(IEnumerable`1 events)
+   at Serilog.Sinks.MSSqlServer.MSSqlServerSink.<EmitBatchAsync>d__10.MoveNext()
+```
 
 ## API Versioning
 API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](https://github.com/lssinc/launchpad-dotnet-api/blob/master/WEB-SERVICE-PATTERNS.md#versioning). 

@@ -18,6 +18,7 @@ namespace Launchpad.Data
         public IDbSet<LaunchpadLog> Logs {get;set;}
 
         public IDbSet<RoleClaim> RoleClaims { get; set; }
+
         #endregion 
 
 

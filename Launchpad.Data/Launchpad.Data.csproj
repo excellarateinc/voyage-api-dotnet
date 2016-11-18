@@ -66,6 +66,7 @@
     <Compile Include="Configuration\ActivityAuditConfiguration.cs" />
     <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
     <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
+    <Compile Include="Configuration\UserPhoneConfiguration.cs" />
     <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
     <Compile Include="Constants.cs" />
@@ -85,6 +86,10 @@
     <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.cs" />
     <Compile Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.Designer.cs">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.cs" />
+    <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.Designer.cs">
+      <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.cs" />
     <Compile Include="Migrations\201611171500114_ActivityAudit_CreateTable.Designer.cs">
@@ -117,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611102152561_LaunchpadLog_Fix_ColumnTypes.resx">
       <DependentUpon>201611102152561_LaunchpadLog_Fix_ColumnTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161727172_CreateUserPhonesTable.resx">
+      <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611171500114_ActivityAudit_CreateTable.resx">
       <DependentUpon>201611171500114_ActivityAudit_CreateTable.cs</DependentUpon>

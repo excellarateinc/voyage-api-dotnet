@@ -121,6 +121,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -165,6 +166,8 @@
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
     <Compile Include="Controllers\API\V1\RoleControllerTests.cs" />
+    <Compile Include="Controllers\API\V1\ApplicationInfoControllerTests.cs" />
+  
     <Compile Include="Controllers\API\V1\WidgetControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />
@@ -193,7 +196,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -93,5 +93,31 @@ namespace Launchpad.Data.IntegrationTests
                 }
             }
         }
+
+        [Fact]
+        public void Users_Should_Query_Database()
+        {
+            using (var scope = new TransactionScope())
+            {
+                using (var context = new LaunchpadDataContext())
+                {
+                    var results = context.Users.Take(10).ToList();
+                    results.Should().NotBeNull();
+                }
+            }
+        }
+
+        [Fact]
+        public void Users_Should_Have_Phones()
+        {
+            using (var scope = new TransactionScope())
+            {
+                using (var context = new LaunchpadDataContext())
+                {
+                    var results = context.Users.First();
+                    results.Phones.Should().NotBeNull();
+                }
+            }
+        }
     }
 }
