@@ -89,6 +89,10 @@
     <Compile Include="Migrations\201611161727172_CreateUserPhonesTable.Designer.cs">
       <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611181800196_UserPhoneColumnConstraints.cs" />
+    <Compile Include="Migrations\201611181800196_UserPhoneColumnConstraints.Designer.cs">
+      <DependentUpon>201611181800196_UserPhoneColumnConstraints.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepository.cs" />
@@ -120,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611161727172_CreateUserPhonesTable.resx">
       <DependentUpon>201611161727172_CreateUserPhonesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611181800196_UserPhoneColumnConstraints.resx">
+      <DependentUpon>201611181800196_UserPhoneColumnConstraints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

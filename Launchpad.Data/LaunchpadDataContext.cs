@@ -16,8 +16,8 @@ namespace Launchpad.Data
 
         public IDbSet<Widget> Widgets { get; set; }
         public IDbSet<LaunchpadLog> Logs {get;set;}
-
         public IDbSet<RoleClaim> RoleClaims { get; set; }
+        public IDbSet<UserPhone> UserPhones { get; set; }
 
         #endregion 
 

@@ -18,11 +18,9 @@ namespace Launchpad.Data.Configuration
 
             this.Property(_ => _.Id).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
 
-            this.Property(_ => _.PhoneNumber);
-            this.Property(_ => _.PhoneType);
-
-
-
+            this.Property(_ => _.PhoneNumber).HasMaxLength(15).IsRequired();
+            this.Property(_ => _.PhoneType).IsRequired();
+            
             HasRequired(_ => _.User)
                 .WithMany(_ => _.Phones)
                 .HasForeignKey(_ => _.UserId);

@@ -13,7 +13,7 @@ namespace Launchpad.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         /// <summary>
@@ -68,6 +68,22 @@ namespace Launchpad.Data.Migrations
             context.Users.AddOrUpdate(_ => _.UserName, adminUser);
 
             SaveChanges(context);
+
+            #endregion
+
+            #region UserPhone Seed
+
+            var userPhone = new Models.EntityFramework.UserPhone()
+            {
+                PhoneNumber = "5555555555",
+                PhoneType = Models.Enum.PhoneType.Home,
+                UserId = adminUser.Id
+            };
+
+            context.UserPhones.AddOrUpdate(_ => _.UserId, userPhone);
+
+            SaveChanges(context);
+
             #endregion
 
 
