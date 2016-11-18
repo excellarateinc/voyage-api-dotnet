@@ -71,7 +71,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Interfaces\IActivityAuditRepository.cs" />
-    <Compile Include="Interfaces\IDbConnectionStatus.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
@@ -94,7 +93,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepository.cs" />
-    <Compile Include="SqlConnectionStatus.cs" />
     <Compile Include="WidgetRepository.cs" />
   </ItemGroup>
   <ItemGroup>

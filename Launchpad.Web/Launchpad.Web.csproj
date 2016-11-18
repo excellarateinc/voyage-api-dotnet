@@ -213,15 +213,12 @@
     <Compile Include="Controllers\API\v1\AccountController.cs" />
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
-    <Compile Include="Controllers\API\v1\StatusController.cs" />
-    <Compile Include="Controllers\API\v2\StatusV2Controller.cs" />
     <Compile Include="Controllers\API\v2\WidgetV2Controller.cs" />
     <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\OwinContextExtensions.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
-    <Compile Include="Handlers\RequestMetricsHandler.cs" />
     <Compile Include="Middleware\ActivityAuditMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

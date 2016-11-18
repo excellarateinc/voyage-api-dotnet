@@ -1,13 +1,7 @@
-﻿using Launchpad.Services;
-using Launchpad.Web.App_Start;
-using Launchpad.Web.Filters;
-using Launchpad.Web.Handlers;
+﻿using Launchpad.Web.Filters;
+using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
-using Autofac;
-using Launchpad.Services.Interfaces;
-using Microsoft.Owin.Security.OAuth;
-using System.Web.Http.Cors;
 namespace Launchpad.Web
 {
     public static class WebApiConfig
@@ -20,12 +14,6 @@ namespace Launchpad.Web
 
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
-
-            //Service locator - not ideal
-            var metricsService = config.DependencyResolver.GetService(typeof(IRequestMetricsService)) as IRequestMetricsService;
-            config.MessageHandlers.Add(new RequestMetricsHandler(metricsService));
-
-           
 
             //Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

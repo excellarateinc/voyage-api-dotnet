@@ -19,21 +19,11 @@ namespace Launchpad.Services
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<StatusCollectorService>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
 
             builder.RegisterType<HttpClient>()
                 .InstancePerRequest(); //Let the container dispose of it at the end of the request
 
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<IStatusMonitor>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
-            builder.RegisterType<RequestMetricsService>()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+           
 
             builder.RegisterType<UserService>()
                 .AsImplementedInterfaces()

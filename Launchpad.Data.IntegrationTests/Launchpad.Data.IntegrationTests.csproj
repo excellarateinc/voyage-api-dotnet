@@ -101,7 +101,6 @@
     <Compile Include="LaunchpadLogRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepositoryTests.cs" />
-    <Compile Include="SqlConnectionStatusTests.cs" />
     <Compile Include="WidgetRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
