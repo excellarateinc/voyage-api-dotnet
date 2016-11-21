@@ -50,7 +50,7 @@ public class ApplicationUserAuditConfiguration : BaseAuditConfiguration<Applicat
 ```
 
 #### Soft Deletes
-Auditing will track soft deletes if the model implements ISoftDeleteable. When the Deleted flag is changed to true, it will be tracked as SoftDeleted and when the flag is changed to false it will be tracked as UnDeleted.
+Auditing will track soft deletes if the model implements ISoftDeleteable. When the Deleted flag is changed to true, it will be tracked as SoftDeleted and when the flag is changed to false it will be tracked as UnDeleted. Additional information can be found [here](https://github.com/bilal-fazlani/tracker-enabled-dbcontext/wiki/8.-Soft-Deletable)
 
 #### Database Tables
 The nuget package defines the tables that store the auditing records.
