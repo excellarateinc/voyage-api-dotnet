@@ -55,6 +55,8 @@ namespace Launchpad.Web
             };
 
 
+            app.Use<RewindResponseMiddleware>();
+
             //Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 

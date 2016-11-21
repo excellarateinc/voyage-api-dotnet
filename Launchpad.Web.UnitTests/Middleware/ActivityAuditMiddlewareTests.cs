@@ -12,6 +12,7 @@ using System;
 using System.Threading.Tasks;
 using Launchpad.Models;
 using System.Collections.Generic;
+using Launchpad.Web.Middleware.Processors;
 
 namespace Launchpad.Web.UnitTests.Middleware
 {
@@ -19,14 +20,15 @@ namespace Launchpad.Web.UnitTests.Middleware
     public class ActivityAuditMiddlewareTests : BaseUnitTest
     {
         private Mock<ILogger> _mockLogger;
-        private Mock<IOwinContext> _mockOwinContext;
         private Mock<IAuditService> _mockAuditService;
+        private Mock<ErrorResponseProcessor> _mockProcessor;
 
         public ActivityAuditMiddlewareTests()
         {
-            _mockOwinContext = Mock.Create<IOwinContext>();
+           
             _mockLogger = Mock.Create<ILogger>();
             _mockAuditService = Mock.Create<IAuditService>();
+            _mockProcessor = Mock.Create<ErrorResponseProcessor>();
         }
 
     
@@ -39,9 +41,13 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
 
+            _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
+                .Returns(false);
+
             var id = Guid.NewGuid().ToString();
 
-            _mockAuditService.Setup(_ => _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id)))
+            _mockAuditService.Setup(_ => 
+                _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id)))
                 .Returns(Task.FromResult(0));
 
             using (var server = TestServer.Create(app =>
@@ -50,7 +56,63 @@ namespace Launchpad.Web.UnitTests.Middleware
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object>() { { "owin.RequestId", id } });
 
                 //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), _mockLogger.Object, _mockAuditService.Object);
+                app.Use(typeof(ActivityAuditMiddleware), 
+                    _mockLogger.Object, 
+                    _mockAuditService.Object,
+                    _mockProcessor.Object);
+
+                app.Run(context =>
+                {
+                    return context.Response.WriteAsync("Hello world using OWIN TestServer");
+                });
+
+            }))
+            {
+                HttpResponseMessage response = await server.HttpClient.GetAsync("/");
+
+                //Verify the audit and logger was called
+                Mock.VerifyAll();
+            }
+        }
+
+        [Fact]
+        public async void Invoke_Should_Set_ErrorMessage_When_Available()
+        {
+            const string error = "error!";
+            //Setup the dependencies 
+            _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
+                .Returns(_mockLogger.Object);
+
+            _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
+                .Returns(true);
+
+            _mockProcessor.Setup(_ => _.GetResponseStringAsync(It.IsAny<IOwinResponse>()))
+                .ReturnsAsync(error);
+
+            var id = Guid.NewGuid().ToString();
+
+
+            _mockAuditService.Setup(_ =>
+                _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == null)))
+                .Returns(Task.FromResult(0));
+
+
+            _mockAuditService.Setup(_ =>
+                _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == error)))
+                .Returns(Task.FromResult(0));
+
+            using (var server = TestServer.Create(app =>
+            {
+                //Use the test environment middleware to setup an context.Environment variables
+                app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object>() { { "owin.RequestId", id } });
+
+                //Middleware under test
+                app.Use(typeof(ActivityAuditMiddleware),
+                    _mockLogger.Object,
+                    _mockAuditService.Object,
+                    _mockProcessor.Object);
 
                 app.Run(context =>
                 {
@@ -75,6 +137,9 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
 
+            _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
+               .Returns(false);
+
             var id = Guid.Empty.ToString();
 
             _mockAuditService.Setup(_ => _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId != id)))
@@ -86,7 +151,10 @@ namespace Launchpad.Web.UnitTests.Middleware
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object>() { { "owin.RequestId", Guid.Empty } });
 
                 //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), _mockLogger.Object, _mockAuditService.Object);
+                app.Use(typeof(ActivityAuditMiddleware), 
+                    _mockLogger.Object, 
+                    _mockAuditService.Object,
+                    _mockProcessor.Object);
 
                 app.Run(context =>
                 {

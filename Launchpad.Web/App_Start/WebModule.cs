@@ -15,6 +15,8 @@ using Microsoft.Owin;
 using System.Net.Http;
 using Autofac.Integration.WebApi;
 using System.Web.Http;
+using Launchpad.Web.Middleware.Processors;
+
 
 namespace Launchpad.Web.App_Start
 {
@@ -52,6 +54,10 @@ namespace Launchpad.Web.App_Start
 
         private void ConfigureMiddleware(ContainerBuilder builder)
         {
+            builder.RegisterType<ErrorResponseProcessor>()
+                .InstancePerRequest()
+                .AsSelf();
+
             builder.RegisterType<ActivityAuditMiddleware>()
                 .InstancePerRequest()
                 .AsSelf();
