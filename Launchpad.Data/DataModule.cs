@@ -1,10 +1,13 @@
 ﻿using Autofac;
 using Autofac.Core;
+using Launchpad.Data.Auditing;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Launchpad.Data
 {
@@ -21,8 +24,29 @@ namespace Launchpad.Data
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Scan the assembly for the audit configuration and call configure
+        /// </summary>
+        protected void ConfigureAuditing()
+        {
+            var auditing = typeof(IAuditConfiguration)
+                .Assembly
+                .GetTypes()
+                .Where(_ => _.IsAssignableTo<IAuditConfiguration>() && !_.IsAbstract)
+                .Select(_ => Activator.CreateInstance(_) as IAuditConfiguration);
+
+            foreach(var config in auditing)
+            {
+                config.Configure();
+            }
+        }
+
         protected override void Load(ContainerBuilder builder)
         {
+
+            //Configure the auditing for the context
+            ConfigureAuditing();
+
             //Register a data context with an instance per request
             //Dependency Type: ILaunchpadDataContext
             //Concrete Type: LaunchpadDataContext

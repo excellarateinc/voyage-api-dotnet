@@ -1,5 +1,6 @@
 ﻿using Launchpad.Models.EntityFramework;
 using System.Data.Entity.ModelConfiguration;
+using TrackerEnabledDbContext.Common.Configuration;
 
 namespace Launchpad.Data.Configuration
 {
@@ -7,6 +8,9 @@ namespace Launchpad.Data.Configuration
     {
         public ActivityAuditConfiguration()
         {
+            
+                
+
             ToTable("ActivityAudit", Constants.Schemas.FrameworkTables);
             HasKey(_ => _.Id);
 
