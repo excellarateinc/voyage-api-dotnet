@@ -6,6 +6,7 @@ If you are extending this API to build a new app, then replace this section with
 ## Table of Contents
 * [Quick Start](#quick-start)
 * [Development](DEVELOP.md)
+* [Core Service: Auditing] (AUDITING.md)
 * [Testing](TESTING.md)
 * [Authorization] (AUTHORIZATION.md)
 * [Web Services Patterns](WEB-SERVICE-PATTERNS.md)
