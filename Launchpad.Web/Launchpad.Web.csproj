@@ -209,6 +209,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
+    <Compile Include="AuthProviders\IdentityProvider.cs" />
     <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
     <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="AuthProviders\LoginOrchestratorV2.cs" />

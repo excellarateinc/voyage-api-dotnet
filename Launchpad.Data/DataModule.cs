@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core;
+using Launchpad.Core;
 using Launchpad.Data.Auditing;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
@@ -52,6 +53,7 @@ namespace Launchpad.Data
             //Concrete Type: LaunchpadDataContext
             builder.RegisterType<LaunchpadDataContext>()
                 .WithParameter("connectionString", _connectionString)
+                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(IIdentityProvider), (pi, ctx) => ctx.Resolve<IIdentityProvider>()))
                 .AsSelf()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();

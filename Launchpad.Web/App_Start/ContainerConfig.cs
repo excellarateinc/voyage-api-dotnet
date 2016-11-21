@@ -28,7 +28,7 @@ namespace Launchpad.Web.App_Start
             builder.RegisterModule(new DataModule(connectionString));
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
-            builder.RegisterModule(new WebModule(connectionString));
+            builder.RegisterModule(new WebModule(connectionString, httpConfig));
             
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();

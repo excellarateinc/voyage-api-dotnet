@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TrackerEnabledDbContext.Common.Models;
+using Launchpad.Core;
 
 namespace Launchpad.Data
 {
@@ -12,6 +13,7 @@ namespace Launchpad.Data
 
     public class LaunchpadDataContext : TrackerEnabledDbContext.Identity.TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
+        private readonly IIdentityProvider _identityProvider;
 
         #region DbSets
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
@@ -31,8 +33,12 @@ namespace Launchpad.Data
         /// Pass in the connection string to eliminate the "magic string" above
         /// </summary>
         /// <param name="connectionString">Connection string from the web.config or app.config</param>
-        public LaunchpadDataContext(string connectionString) : base(connectionString)
+        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider) : base(connectionString)
         {
+            _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
+
+            //Configure the username factory for the auditing 
+            base.ConfigureUsername(() => _identityProvider.GetUserName());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
