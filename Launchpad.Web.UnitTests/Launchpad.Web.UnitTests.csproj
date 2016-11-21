@@ -160,6 +160,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AuthProviders\ApplicationOAuthProviderTests.cs" />
+    <Compile Include="AuthProviders\IdentityProviderTests.cs" />
     <Compile Include="AuthProviders\LoginOrchestratorTests.cs" />
     <Compile Include="AuthProviders\LoginOrchestratorV2Tests.cs" />
     <Compile Include="ConstantsTests.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
     <Compile Include="Controllers\API\V1\RoleControllerTests.cs" />
     <Compile Include="Controllers\API\V1\ApplicationInfoControllerTests.cs" />
-  
     <Compile Include="Controllers\API\V1\WidgetControllerTests.cs" />
     <Compile Include="Controllers\API\V2\WidgetV2ControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />

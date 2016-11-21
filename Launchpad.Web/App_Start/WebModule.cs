@@ -11,6 +11,10 @@ using Launchpad.Models.EntityFramework;
 using Launchpad.Web.AuthProviders;
 using System;
 using Launchpad.Web.Middleware;
+using Microsoft.Owin;
+using System.Net.Http;
+using Autofac.Integration.WebApi;
+using System.Web.Http;
 
 namespace Launchpad.Web.App_Start
 {
@@ -20,10 +24,12 @@ namespace Launchpad.Web.App_Start
     public class WebModule : Module
     {
         private string _connectionString;
+        private HttpConfiguration _httpConfig;
 
-        public WebModule(string connectionString)
+        public WebModule(string connectionString, HttpConfiguration httpConfig)
         {
-            _connectionString = connectionString.ThrowIfNull();
+            _httpConfig = httpConfig.ThrowIfNull(nameof(httpConfig));
+            _connectionString = connectionString.ThrowIfNull(nameof(connectionString));
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -33,6 +39,9 @@ namespace Launchpad.Web.App_Start
             builder.RegisterInstance(log)
                 .As<ILogger>()
                 .SingleInstance();
+
+
+            builder.RegisterHttpRequestMessage(_httpConfig);
 
             //Register Identity services
             ConfigureIdentityServices(builder);
@@ -50,7 +59,17 @@ namespace Launchpad.Web.App_Start
 
         private void ConfigureIdentityServices(ContainerBuilder builder)
         {
+            //Register the owin context - this allows non-web api services
+            //access to the hosting 
+            builder.Register(c => c.Resolve<HttpRequestMessage>().GetOwinContext())
+                .As<IOwinContext>()
+                .InstancePerRequest();
 
+            //Configure the concrete implementation of the 
+            //IdentityProvider. 
+            builder.RegisterType<IdentityProvider>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
 
 
             //Login orchestrators - these will be passed into the 
