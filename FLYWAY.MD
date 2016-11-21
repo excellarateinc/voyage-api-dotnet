@@ -14,7 +14,7 @@
 
 - TCP/IP has to be enabled in SQL Server Configuration Manager -> SQL Server Network Configuration.
 
-- SQL Server Browser service has to be started in order for the named SQL Server instance reference is understood.
+- SQL Server Browser service has to be started in order for the named SQL Server instance reference to be understood.
 
 - If flyway.user and/or flyway.password is not set, then you'll be prompted from the command line.
 
