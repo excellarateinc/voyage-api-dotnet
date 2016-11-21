@@ -70,5 +70,7 @@
 
 - When developing locally, execute the Flyway command line instruction "flyway migrate".
 
-- For CI builds, Jenkins has Flyway and it's own flyway.conf file on the build server and will target the Migrations directory. Jenkins can pass environment parameters that map to variables in the flyway.conf file. 
+- For CI builds, Jenkins has Flyway and it's own flyway.conf file on the build server and will target the Migrations directory. Jenkins can pass environment parameters that map to variables in the flyway.conf file.
+- 
+- j 
 
