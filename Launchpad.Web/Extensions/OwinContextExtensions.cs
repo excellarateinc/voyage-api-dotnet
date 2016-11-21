@@ -9,7 +9,7 @@ namespace Launchpad.Web.Extensions
         private const string _noIdentity = "No Identity";
         private const string _owinRequestId = "owin.RequestId";
 
-        private static string _getIdentityName(IOwinContext context)
+        public static string GetIdentityName(this IOwinContext context)
         {
             string identityName = _noIdentity;
 
@@ -31,7 +31,7 @@ namespace Launchpad.Web.Extensions
             model.Method = context.Request.Method;
             model.Date = DateTime.Now;
             model.Path = context.Request.Path.Value;
-            model.UserName = _getIdentityName(context);
+            model.UserName = context.GetIdentityName();
             model.StatusCode = context.Response.StatusCode;
             return model;
         }

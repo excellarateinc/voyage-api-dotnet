@@ -21,7 +21,9 @@ namespace Launchpad.Web
         public static void Configure(IAppBuilder app)
         {
             //Add autofac to the pipeline
+
             var httpConfig = new HttpConfiguration();
+            
 
             ContainerConfig.Register(httpConfig);
 

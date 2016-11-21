@@ -52,7 +52,71 @@ namespace Launchpad.Web.UnitTests.Extensions
 
         }
 
+        [Fact]
+        public void GetIdentityName_Should_Return_NoIdentity_When_Authentication_Null()
+        {
 
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
+
+            //Act
+            var result = _mockOwinContext.Object.GetIdentityName();
+
+            result.Should().Be("No Identity");
+        }
+
+        [Fact]
+        public void GetIdentityName_Should_Return_NoIdentity_When_User_Null()
+        {
+
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)_mockAuthManager.Object);
+            _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)null);
+
+            //Act
+            var result = _mockOwinContext.Object.GetIdentityName();
+
+            result.Should().Be("No Identity");
+        }
+
+        [Fact]
+        public void GetIdentityName_Should_Return_NoIdentity_When_Identity_Null()
+        {
+
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)_mockAuthManager.Object);
+            _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)new ClaimsPrincipal());
+
+            //Act
+            var result = _mockOwinContext.Object.GetIdentityName();
+
+            result.Should().Be("No Identity");
+        }
+
+
+        [Fact]
+        public void GetIdentityName_Should_Return_NoIdentity_When_Name_Null()
+        {
+
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)_mockAuthManager.Object);
+            _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity(string.Empty)));
+
+            //Act
+            var result = _mockOwinContext.Object.GetIdentityName();
+
+            result.Should().Be("No Identity");
+        }
+
+
+        [Fact]
+        public void GetIdentityName_Should_Return_Name_When_Populated()
+        {
+
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)_mockAuthManager.Object);
+            _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity("admin@admin.com")));
+
+            //Act
+            var result = _mockOwinContext.Object.GetIdentityName();
+
+            result.Should().Be("admin@admin.com");
+        }
 
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity()

@@ -79,20 +79,17 @@
     <Compile Include="EntityFramework\RoleClaim.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="Enum\MonitorType.cs" />
-  
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="IdentityResult.cs" />
+    <Compile Include="ISoftDeleteable.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ActivityAuditProfile.cs" />
     <Compile Include="Map\Profiles\ClaimProfile.cs" />
-    
     <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
-   
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
     <Compile Include="Map\Profiles\WidgetProfile.cs" />
-   
     <Compile Include="EntityFramework\UserPhone.cs" />
     <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
