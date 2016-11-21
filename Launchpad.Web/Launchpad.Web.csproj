@@ -234,6 +234,7 @@
     </Content>
     <Content Include="apidoc.json" />
     <Content Include="package.json" />
+    <Content Include="Flyway.MD" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
