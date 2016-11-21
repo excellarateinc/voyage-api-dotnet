@@ -64,7 +64,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
 
             var mapResult = _mappingFixture.MapperInstance.Map(userModel, appUser);
 
-            appUser.IsActive.Should().BeFalse();
+            appUser.IsActive.Should().BeTrue();
             appUser.UserName.Should().Be(userModel.Username);
             appUser.Email.Should().Be(userModel.Email);
             appUser.Id.Should().NotBe(userModel.Id);

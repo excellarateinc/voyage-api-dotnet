@@ -3,6 +3,7 @@ using Autofac.Core;
 using Launchpad.Core;
 using Launchpad.Data.Auditing;
 using Launchpad.Data.Interfaces;
+using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -30,6 +31,12 @@ namespace Launchpad.Data
         /// </summary>
         protected void ConfigureAuditing()
         {
+            TrackerEnabledDbContext
+                .Common
+                .Configuration
+                .GlobalTrackingConfig
+                .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
+                
             var auditing = typeof(IAuditConfiguration)
                 .Assembly
                 .GetTypes()
