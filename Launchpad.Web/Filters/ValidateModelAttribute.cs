@@ -1,10 +1,15 @@
-﻿using System.Net;
+﻿using Launchpad.Models;
+using Launchpad.Web.Extensions;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
 namespace Launchpad.Web.Filters
 {
+   
+
     /// <summary>
     /// Returns a BadRequest response if the model is invalid
     /// </summary>
@@ -14,8 +19,10 @@ namespace Launchpad.Web.Filters
         {
             if (!actionContext.ModelState.IsValid)
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(
-                   HttpStatusCode.BadRequest, actionContext.ModelState);
+                actionContext.Response = actionContext
+                    .Request
+                    .CreateResponse(HttpStatusCode.BadRequest, 
+                        actionContext.ModelState.ConvertToResponseModel());                    
             }
         }
     }

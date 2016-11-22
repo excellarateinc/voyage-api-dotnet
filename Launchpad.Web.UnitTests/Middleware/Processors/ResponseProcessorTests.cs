@@ -38,7 +38,9 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
 
         //
         [Fact]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async void GetResponseStringAsync_Should_Throw_Exception_When_Stream_Not_MemoryStream()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _testProcessor.Valid = true;
             var mockStream = Mock.Create<Stream>();
@@ -58,7 +60,9 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
         }
 
         [Fact]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async void GetResponseStringAsync_Should_Throw_Exception_When_Stream_Cannot_Seek()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _testProcessor.Valid = false;
             var mockStream = Mock.Create<Stream>();
@@ -79,7 +83,9 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
 
 
         [Fact]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async void GetResponseStringAsync_Should_Throw_Exception_When_ShouldProcess_False()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             _testProcessor.Valid = false;
             var memoryStream = new MemoryStream();

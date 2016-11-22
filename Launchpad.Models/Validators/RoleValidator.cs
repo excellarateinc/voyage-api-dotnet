@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Launchpad.Models.Extensions;
 
 namespace Launchpad.Models.Validators
 {
@@ -13,8 +14,7 @@ namespace Launchpad.Models.Validators
         {
             RuleFor(_ => _.Name)
                 .NotEmpty()
-                .WithMessage("Name is a required field")
-                .WithErrorCode("abc");
+                .WithErrorCodeMessage("missing.required.field", "Name is required");
 
         }
     }
