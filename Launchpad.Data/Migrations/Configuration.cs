@@ -73,17 +73,23 @@ namespace Launchpad.Data.Migrations
 
             #region UserPhone Seed
 
-            var userPhone = new Models.EntityFramework.UserPhone()
+            //AddOrUpdate will fail if the predicate does not find a unique
+            //record. If the user has more than 1 phone number, this will fail.
+            //Avoid error by checking to see if there are any phone numbers for the 
+            //user. 
+            if (!context.UserPhones.Any(_ => _.UserId == adminUser.Id))
             {
-                PhoneNumber = "5555555555",
-                PhoneType = Models.Enum.PhoneType.Home,
-                UserId = adminUser.Id
-            };
+                var userPhone = new Models.EntityFramework.UserPhone()
+                {
+                    PhoneNumber = "5555555555",
+                    PhoneType = Models.Enum.PhoneType.Home,
+                    UserId = adminUser.Id
+                };
 
-            context.UserPhones.AddOrUpdate(_ => _.UserId, userPhone);
+                context.UserPhones.AddOrUpdate(_ => _.UserId, userPhone);
 
-            SaveChanges(context);
-
+                SaveChanges(context);
+            }
             #endregion
 
 
