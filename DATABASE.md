@@ -1,3 +1,13 @@
+## Design Priciples
+The database should be platform agnostic. As a result, all scripts should be written using the |insert standard here| SQL standard. This will ensure that the migrations can be deployed to a compliant platform. 
+
+The |insert standard here| includes support for:
+
+* Feature list here
+* Merge?
+
+Avoid writing migrations that use platform specific SQL dialects such as T-SQL. 
+
 ## General Naming Conventions
 
 1. Use PascalCase
