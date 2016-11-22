@@ -25,5 +25,16 @@ namespace Launchpad.Web.Filters
                         actionContext.ModelState.ConvertToResponseModel());                    
             }
         }
+
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {
+            if (!actionExecutedContext.ActionContext.ModelState.IsValid)
+            {
+                actionExecutedContext.Response = actionExecutedContext
+                    .Request
+                    .CreateResponse(HttpStatusCode.BadRequest,
+                        actionExecutedContext.ActionContext.ModelState.ConvertToResponseModel());
+            }
+        }
     }
 }
