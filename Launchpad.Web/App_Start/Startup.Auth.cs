@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using FluentValidation.WebApi;
 using Launchpad.Web.App_Start;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
@@ -16,31 +17,42 @@ namespace Launchpad.Web
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
         public static string PublicClientId => "self"; // Configure the application for OAuth based flow
-            
-        
+
+
         public static void Configure(IAppBuilder app)
         {
-            //Add autofac to the pipeline
 
+            #region Container and Route Configuration
             var httpConfig = new HttpConfiguration();
-            
 
+          
+            
+            //Build the container
             ContainerConfig.Register(httpConfig);
 
+            //Configure API 
             WebApiConfig.Register(httpConfig);
 
+            // configure FluentValidation model validator provider
+            FluentValidationModelValidatorProvider.Configure(httpConfig);
+
+            #endregion
+
+            #region Arrange Pipeline
+            //1. Use the autofac scope for owin 
             app.UseAutofacLifetimeScopeInjector(ContainerConfig.Container);
 
+            //2. Allow cors requests
             app.UseCors(CorsOptions.AllowAll);
-            
 
-             // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            // app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            //3. Use the readable response middleware
+            app.Use<RewindResponseMiddleware>();
 
-           
+            //4. Register the activty auditing here so that anonymous activity is captured
+            app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
+
+            //5. Configure oAuth
             var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
@@ -54,17 +66,13 @@ namespace Launchpad.Web
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
             };
 
-
-            app.Use<RewindResponseMiddleware>();
-
-            //Register the activty auditing here so that anonymous activity is captured
-            app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
-
-
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
 
+            //6. Add web api to pipeline
             app.UseWebApi(httpConfig);
+
+            #endregion 
         }
     }
 }
