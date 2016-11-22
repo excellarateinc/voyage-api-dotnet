@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Web.Middleware.Processors
 {
+    /// <summary>
+    /// Basic response processor 
+    /// </summary>
     public abstract class ResponseProcessor
     {
         public abstract bool ShouldProcess(IOwinResponse response);

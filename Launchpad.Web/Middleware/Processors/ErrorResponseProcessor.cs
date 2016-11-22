@@ -2,6 +2,11 @@
 
 namespace Launchpad.Web.Middleware.Processors
 {
+    /// <summary>
+    /// Reads a the response as a string if it was an error
+    /// </summary>
+    /// <remarks>This assumes the write-only stream has been replaced
+    /// with a read-write stream</remarks>
     public class ErrorResponseProcessor : ResponseProcessor
     {
         public override bool ShouldProcess(IOwinResponse response)

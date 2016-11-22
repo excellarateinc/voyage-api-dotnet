@@ -35,12 +35,7 @@ namespace Launchpad.Web.UnitTests.Middleware
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService()
         {
-            //Setup the dependencies 
-            _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
-                .Returns(_mockLogger.Object);
-
-            _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
-
+ 
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                 .Returns(false);
 
@@ -79,12 +74,7 @@ namespace Launchpad.Web.UnitTests.Middleware
         public async void Invoke_Should_Set_ErrorMessage_When_Available()
         {
             const string error = "error!";
-            //Setup the dependencies 
-            _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
-                .Returns(_mockLogger.Object);
-
-            _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
-
+ 
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                 .Returns(true);
 
@@ -131,12 +121,7 @@ namespace Launchpad.Web.UnitTests.Middleware
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService_And_Overwrite_Empty_RequestId()
         {
-            //Setup the dependencies 
-            _mockLogger.Setup(_ => _.ForContext<ActivityAuditMiddleware>())
-                .Returns(_mockLogger.Object);
-
-            _mockLogger.Setup(_ => _.Information(It.IsAny<string>(), It.IsAny<object[]>()));
-
+    
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                .Returns(false);
 

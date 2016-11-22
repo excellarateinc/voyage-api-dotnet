@@ -4,6 +4,12 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Web.Middleware
 {
+    /// <summary>
+    /// This middleware will replace the default response.body
+    /// with a read/write stream. After all other middleware
+    /// executes it will copy the contents to the default stream
+    /// and re-assign it to the response.body
+    /// </summary>
     public class RewindResponseMiddleware : OwinMiddleware
     {
         public RewindResponseMiddleware(OwinMiddleware next) : base(next)

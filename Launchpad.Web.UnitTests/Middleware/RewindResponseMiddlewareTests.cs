@@ -9,6 +9,7 @@ using System.IO;
 
 namespace Launchpad.Web.UnitTests.Middleware
 {
+    [Trait("Category", "CustomMiddleware")]
     public class RewindResponseMiddlewareTests : BaseUnitTest
     {
         [Fact]
