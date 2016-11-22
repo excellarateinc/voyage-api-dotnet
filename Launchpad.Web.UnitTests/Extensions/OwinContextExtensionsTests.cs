@@ -26,6 +26,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         private string _method;
         private int _statusCode;
         private string _path;
+        private string _overrideId;
 
 
         public OwinContextExtensionsTests()
@@ -49,7 +50,21 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockOwinRequest.Setup(_ => _.Path).Returns(new PathString(_path));
             _statusCode = 3000;
             _mockOwinResponse.Setup(_ => _.StatusCode).Returns(_statusCode);
+            _overrideId = Guid.NewGuid().ToString();
+        }
 
+        [Fact]
+        public void ToAuditModel_Uses_OverrideId_When_RequestId_Empty()
+        {
+            //Arrange
+            _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
+            _env["owin.RequestId"] = Guid.Empty.ToString();
+
+            //Act
+            var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
+
+            //Assert
+            result.RequestId.Should().Be(_overrideId);
         }
 
         [Fact]
@@ -126,7 +141,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
 
             //Act
-            var result = _mockOwinContext.Object.ToAuditModel();
+            var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
@@ -146,7 +161,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)null);
 
             //Act
-            var result = _mockOwinContext.Object.ToAuditModel();
+            var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
@@ -165,7 +180,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal());
 
             //Act
-            var result = _mockOwinContext.Object.ToAuditModel();
+            var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
@@ -185,7 +200,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockAuthManager.Setup(_ => _.User).Returns(principal);
 
             //Act
-            var result = _mockOwinContext.Object.ToAuditModel();
+            var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);

@@ -8,6 +8,7 @@ namespace Launchpad.Web.Extensions
     {
         private const string _noIdentity = "No Identity";
         private const string _owinRequestId = "owin.RequestId";
+        private static string EmptyId = Guid.Empty.ToString();
 
         public static string GetIdentityName(this IOwinContext context)
         {
@@ -22,11 +23,19 @@ namespace Launchpad.Web.Extensions
             return identityName;
         }
 
-        public static ActivityAuditModel ToAuditModel(this IOwinContext context)
+        public static ActivityAuditModel ToAuditModel(this IOwinContext context, string requestIdOverride)
         {
             ActivityAuditModel model = new ActivityAuditModel();
 
-            model.RequestId = context.Environment[_owinRequestId].ToString();
+            var owinRequestId = context.Environment[_owinRequestId].ToString();
+            if (EmptyId.Equals(owinRequestId, StringComparison.InvariantCultureIgnoreCase))
+            {
+                model.RequestId = requestIdOverride;
+            }else
+            {
+                model.RequestId = owinRequestId;
+            }
+           
             model.IpAddress = context.Request.RemoteIpAddress;
             model.Method = context.Request.Method;
             model.Date = DateTime.Now;
