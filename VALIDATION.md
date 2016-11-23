@@ -26,6 +26,15 @@ errors. An ActionFilterAttribute will then transform the dictionary into the exp
     [Validator(typeof(UserModelValidator))]
     public class UserModel
 ```
+ * Create a corresponding test file in the test project. Use the [extension methods](https://github.com/JeremySkinner/FluentValidation/wiki/g.-Testing) to write tests for each validation rule.
+
+```
+  [Fact]
+  public void Should_Have_Error_When_Name_Is_Null()
+  {
+      _validator.ShouldHaveValidationErrorFor(role => role.Name, null as string);
+  }
+```
 
 #### Validation Response
 Validation errors will be returned as a 400 Bad Request response. The body of the response will be an array with items  
