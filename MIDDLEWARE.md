@@ -1,5 +1,5 @@
 ## Custom Middleware
-Owin allows a developer to define custom middleware. This middleware is registered doing the startup of the application 
+Owin allows a developer to define custom middleware. This middleware is registered during the startup of the application 
 and executes in order in which it is registered. Launchpad has a number of custom middleware pieces that are described below.
 
 ### RewindResponseMiddleware
