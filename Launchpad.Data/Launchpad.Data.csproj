@@ -77,6 +77,9 @@
     <Compile Include="Auditing\ApplicationRoleAuditConfiguration.cs" />
     <Compile Include="Auditing\ApplicationUserAuditConfiguration.cs" />
     <Compile Include="Auditing\BaseAuditConfiguration.cs" />
+    <Compile Include="Auditing\IdentityUserClaimAuditConfiguration.cs" />
+    <Compile Include="Auditing\IdentityUserLoginAuditConfiguration.cs" />
+    <Compile Include="Auditing\IdentityUserRoleAuditConfiguration.cs" />
     <Compile Include="Auditing\RoleClaimAuditConfiguration.cs" />
     <Compile Include="Auditing\UserPhoneAuditConfiguration.cs" />
     <Compile Include="Auditing\WidgetAuditConfiguration.cs" />
