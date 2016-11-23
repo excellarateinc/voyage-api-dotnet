@@ -78,6 +78,7 @@
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="BadRequestErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="EntityFramework\ActivityAudit.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
@@ -102,7 +103,8 @@
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="UserModel.cs" />
-    <Compile Include="Validators\RoleValidator.cs" />
+    <Compile Include="Validators\RoleModelValidator.cs" />
+    <Compile Include="Validators\UserModelValidator.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -113,8 +113,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationModelTests.cs" />
     <Compile Include="RoleModelTests.cs" />
+    <Compile Include="UserModelTests.cs" />
     <Compile Include="ValidationTestExtensions.cs" />
-    <Compile Include="Validators\RoleValidatorTests.cs" />
+    <Compile Include="Validators\RoleModelValidatorTests.cs" />
+    <Compile Include="Validators\UserModelValidatorTests.cs" />
     <Compile Include="WidgetModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

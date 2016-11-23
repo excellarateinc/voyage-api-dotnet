@@ -1,19 +1,19 @@
-﻿using Xunit;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentValidation.Attributes;
 using Launchpad.Models.Validators;
+using Xunit;
 
 namespace Launchpad.Models.UnitTests
 {
     [Trait("Category", "Model.Validation")]
-    public class RoleModelTests
+    public class UserModelTests
     {
         [Fact]
         public void Class_Should_Have_Validator_Class()
         {
-            typeof(RoleModel)
+            typeof(UserModel)
                 .Should()
-                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(RoleModelValidator));
+                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(UserModelValidator));
         }
     }
 }

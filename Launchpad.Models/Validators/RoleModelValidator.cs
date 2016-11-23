@@ -8,13 +8,13 @@ using Launchpad.Models.Extensions;
 
 namespace Launchpad.Models.Validators
 {
-    public class RoleValidator : AbstractValidator<RoleModel>
+    public class RoleModelValidator : AbstractValidator<RoleModel>
     {
-        public RoleValidator()
+        public RoleModelValidator()
         {
             RuleFor(_ => _.Name)
                 .NotEmpty()
-                .WithErrorCodeMessage("missing.required.field", "Name is required");
+                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Name is a required field");
 
         }
     }

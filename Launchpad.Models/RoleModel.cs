@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Models
 {
-    [Validator(typeof(RoleValidator))]
+    [Validator(typeof(RoleModelValidator))]
     public class RoleModel
     {
         public string Id { get; set; }
