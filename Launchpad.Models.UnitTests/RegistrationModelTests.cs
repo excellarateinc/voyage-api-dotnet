@@ -3,7 +3,7 @@ using FluentAssertions;
 
 namespace Launchpad.Models.UnitTests
 {
-    [Trait("Category", "Model Validation")]
+    [Trait("Category", "Model.Validation")]
     public class RegistrationModelTests
     {
         [Fact]

@@ -18,31 +18,31 @@ namespace Launchpad.Models.UnitTests.Validators
         [Fact]
         public void Should_Have_Error_When_FirstName_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(role => role.FirstName, null as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.FirstName, null as string);
         }
 
         [Fact]
         public void Should_Have_Error_When_LastName_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(role => role.LastName, null as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.LastName, null as string);
         }
 
         [Fact]
         public void Should_Have_Error_When_UserName_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(role => role.Username, null as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.Username, null as string);
         }
 
         [Fact]
         public void Should_Have_Error_When_Email_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(role => role.Email, null as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.Email, null as string);
         }
 
         [Fact]
         public void Should_Have_Error_When_Email_Is_Invalid()
         {
-            _validator.ShouldHaveValidationErrorFor(role => role.Email, "abc");
+            _validator.ShouldHaveValidationErrorFor(model => model.Email, "abc");
         }
     }
 }

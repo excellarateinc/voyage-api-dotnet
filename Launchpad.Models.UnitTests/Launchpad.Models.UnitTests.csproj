@@ -101,6 +101,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ClaimModelTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="AutoMapperValidationTests.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="RoleModelTests.cs" />
     <Compile Include="UserModelTests.cs" />
     <Compile Include="ValidationTestExtensions.cs" />
+    <Compile Include="Validators\ClaimModelValidatorTests.cs" />
     <Compile Include="Validators\RoleModelValidatorTests.cs" />
     <Compile Include="Validators\UserModelValidatorTests.cs" />
     <Compile Include="WidgetModelTests.cs" />
