@@ -115,10 +115,11 @@
     <Compile Include="RegistrationModelTests.cs" />
     <Compile Include="RoleModelTests.cs" />
     <Compile Include="UserModelTests.cs" />
-    <Compile Include="ValidationTestExtensions.cs" />
     <Compile Include="Validators\ClaimModelValidatorTests.cs" />
+    <Compile Include="Validators\RegistrationModelValidatorTests.cs" />
     <Compile Include="Validators\RoleModelValidatorTests.cs" />
     <Compile Include="Validators\UserModelValidatorTests.cs" />
+    <Compile Include="Validators\WidgetModelValidatorTests.cs" />
     <Compile Include="WidgetModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

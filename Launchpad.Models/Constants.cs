@@ -12,6 +12,8 @@ namespace Launchpad.Models
         {
             public const string MissingField = "missing.required.field";
             public const string InvalidEmail = "invalid.email";
+            public const string InvalidLength = "invalid.length";
+            public const string InvalidDependentRule = "invalid.dependent.rule";
         }
     }
 }
