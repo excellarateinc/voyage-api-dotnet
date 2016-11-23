@@ -29,11 +29,11 @@ errors. An ActionFilterAttribute will then transform the dictionary into the exp
  * Create a corresponding test file in the test project. Use the [extension methods](https://github.com/JeremySkinner/FluentValidation/wiki/g.-Testing) to write tests for each validation rule.
 
 ```
-  [Fact]
-  public void Should_Have_Error_When_Name_Is_Null()
-  {
-      _validator.ShouldHaveValidationErrorFor(role => role.Name, null as string);
-  }
+    [Fact]
+    public void Should_Have_Error_When_Name_Is_Null()
+    {
+        _validator.ShouldHaveValidationErrorFor(role => role.Name, null as string);
+    }
 ```
 
 #### Validation Response
@@ -76,8 +76,8 @@ During the transformation, this message will be split into the code and descript
 ```
 
 ```
-     public static BadRequestErrorModel ToModel(this ModelError error, string field)
-     {
+    public static BadRequestErrorModel ToModel(this ModelError error, string field)
+    {
         var model = new BadRequestErrorModel();
         model.Field = field;
 
@@ -92,7 +92,7 @@ During the transformation, this message will be split into the code and descript
             model.Description = error.ErrorMessage;
         }
         return model;
-     }
+    }
 ```
 
 While the encoding is is not necessarily desirable, being able to utilize the standard ModelState validation of ASP.Net is easier 
