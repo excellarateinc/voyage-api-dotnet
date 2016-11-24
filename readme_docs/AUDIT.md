@@ -1,18 +1,21 @@
-## Auditing
-The application supports two types of auditing:
+## Audit
+Most company security policies require embedded surveilence of user actity to monitor data access and data changes in the event that an unauthorized event occurs and auditors need to know exactly what happened in the application by a specific user. The audit capabilities included within this web services API include user request auditing as well as data change auditing. 
 
-1. **API Activity Auditing** 
-  1. Activity auditing will record the API traffic. 
-2. **Database Auditing** 
-  1. Database auditing will record changes made to database records
+### Table of Contents
+* [Activity Audit](#activity-audit)
+* [Data Audit](#data-audit)
 
-### Activity Auditing
+### Activity Audit
+Activity auditing captures all requests made to a particular API endpoint and writes a record with metadata to the database. The metadata that is collected would include the authenticated user, requestor's IP Address, current date and time, request URL, request body (if POST, PUT, PATCH), and any other pertinent information the developer has accessible and determines should be in the activity audit log. 
+
+** Talk about response status code and result. How is this logged?
+
 Activity auditing is implemented as a piece of custom Owin middleware. To ensure that every request is logged, 
 the audit middleware is registered as the first step in the pipeline. When the middleware is activated, it will record 
 an ActivityAudit to capture the request and then invoke the next piece of middleware. Once the subsequent middleware executes, 
 another activity audit record is generated to record the response.
 
-#### Database Table
+#### Data Audit
 The activity auditing uses the core.ActivityAudit table.
 
 | Column | Description | 
