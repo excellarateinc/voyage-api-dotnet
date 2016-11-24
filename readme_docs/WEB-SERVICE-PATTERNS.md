@@ -138,7 +138,7 @@ API Version 2.2016-11-6 - Version 2 of the API with specific minor version "2016
 curl https://api.[your-hostname].com/v2/users -H "API-Version: 2016-12-06"
 ```
 
-NOTE: As of this writing (11/24/2016) the only supported minor version technique is to use the URL. Header versioning has not yet been implemented.
+> NOTE: As of this writing (11/24/2016) the only supported minor version technique is to use the URL. Header versioning has not yet been implemented.
 
 ## Filtering, Sorting, Searching, Selecting Fields
 The following common actions use query parameters to add provide the web service with options for processing the request and how to return the data in the response.  
