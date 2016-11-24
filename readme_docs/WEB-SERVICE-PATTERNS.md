@@ -230,64 +230,59 @@ Returned when an unexpected error occurs within the app for any reason. This is 
 ## Response Body
 Every HTTP Response should contain a well defined HEADER and BODY so that the consumer has a well formed and _meaningful_ response message. Consumers of web services can be frustrated during development or while debugging a production issue if the web service response is not informative enough as to the reasons for success, partial success, or failure of a request. 
 
-### For POST
-1. 201 "Created" HTTP Response Status Code should be returned IF the request is successfully processed. See [HTTP Response Status Codes](#http-response-status-code) for other behaviors.
-2. HTTP header attribute "Location" should contain the URL to the newly created resource (http://api.[your-hostname].com/v1/users/35
+### HTTP POST
+1. 201 "Created" HTTP Response Status Code should be returned IF the request is successfully processed. See [Response Status Codes](#response-status-code) for other behaviors.
+2. HTTP header attribute "Location" should contain the URL to the newly created resource http://api.[your-hostname].com/v1/users/35
 3. Response body should return the full record in JSON format (so that the consumer doesn't have to immediately refetch)
-4. Response body should contain a "status" and/or "errors" object(s) with additional metadata about the processing of the request. 
 
-### For PUT, PATCH
-1. 200 "Ok" HTTP Response Status Code should be returned IF the request is successfully processed. See [HTTP Response Status Codes](#http-response-status-code) for other behaviors.
+### HTTP PUT or PATCH
+1. 200 "OK" HTTP Response Status Code should be returned IF the request is successfully processed. See [Response Status Codes](#response-status-code) for other behaviors.
 2. Response body should return the full record in JSON format (so that the consumer doesn't have to immediately refetch)
-3. Response body should contain a [Response Body Status](#response-body-status) and/or [Response Body Errors](#response-body-errors) object(s) with additional metadata about the processing of the request. 
 
-### Response Body Status
-Web service responses might need to contain a "status" that notifies the consumer that the action completed, partially completed, or some other status that instructs the consumer on next steps. 
+### Response Errors
+When any error occurs within the app, like a required field, format error, or an exception it is necessary to communicate back to the consumer the errors that occured in a standard format. According to the HTTP specification, when returning a 400 or 500 range response status code that an explaination of some sort should be included within the body of the response (ie Text, JSON, XML, ...). 
 
-The following example is a situation with a POST request to /users which resulted in a successful saving to the database
+A web services API should have one pattern for returning errors so that the consumers can reliably expect to find the error information in a consistent location and structure. 
+
+__HTTP 400s - Expected__
 ```
-{
-    id: 1,
-    firstName: "John",
-    lastName: "Doe",
-    email: "blah",
-    status: {
-        code: "success", 
-        message: "User was saved successfully!"
-    }
-}
+[
+   {code: "unique.code.here", description: "human readable description"},
+   {code: "unique.code.here", description: "human readable description"},
+]
 ```
+* code (text, required): a human readable code that uniquely identifies the expected error. This code can also be used as a unique key to look up a language translation (i18n) within the consumer app.
+* description (text, required): any human readable text describing the error. Useful for testers, developers, or anyone reading the response.
 
-The 'status' object has the following structure:
-* code (enum/text, required): 'success', 'partial', 'error'
-* message (text, required): any text describing the status
-
-### Response Body Errors
-When an anticipated error occurs within the app, like a required field or format error, it is necessary to communicate back to the consumer the errors that occured in a standard format. All web services should follow the same pattern so that the consumers can reliably expect to find the error information in a consistent location and structure.  
-
-The following example is a situation with a PUT request to /users/1 resulted in rejected request due to invalid data
-
+Example: PUT request to /users/1 resulted in a HTTP 402 Request Failed due to invalid data. 
 ```
-{
-    id: 1,
-    firstName: "",
-    lastName: "Doe",
-    email: "blah",
-    status: {
-        code: "error", 
-        message: "Errors occurred while updating the user record"
-    },
-    errors: [
-       {type: "format", message: "email is not formatted correctly. ex: text@text.ext"}
-       {type: "required", message: "firstName is a required field"}
-    ]
-}
+[
+   {code: "param.invalid.email", description: "`email` is not formatted correctly. ex: text@text.ext"},
+   {code: "param.invalid.phone", description: "`phone` is not formatted correctly. ex: 123-123-1233"},
+   {code: "param.required.email", description: "`email` is a required field"},
+   {code: "param.required.first-name", description: "`firstName` is a required field"}
+]
 ```
 
-The 'errors' list contains 'error' objects with the following structure:
-* type (enum/text, required): 'required', 'format', 'unknown'
-* message (text, required): any human readable text describing the error
-* stackTrace (text, optional): stack trace from an exception thrown by the application.
+__HTTP 500s - Unexpected__
+```
+[
+   {code: "error.unexpected", description: "any text or app stacktrace"},
+   {code: "error.unexpected", description: "any text or app stacktrace"}
+]
+```
+* code (text, required): Any code can be used, but it is likely that only "error.unexpected" would be used since the very nature of 500 errors are unexpected and unknown. 
+* description (text, required): Very likely the stack trace from the exception thrown by the app, although any text describing the error can be included in this place. 
+
+Example: PUT request to /users/1 resulted in a HTTP 500 response with a stack trace
+```
+[
+   {code: "error.unexpected", description: "Exception in thread "main" java.lang.NullPointerException
+        at com.example.myproject.Book.getTitle(Book.java:16)
+        at com.example.myproject.Author.getBookTitles(Author.java:25)
+        at com.example.myproject.Bootstrap.main(Bootstrap.java:14)"}
+]
+```
 
 ## Examples
 
