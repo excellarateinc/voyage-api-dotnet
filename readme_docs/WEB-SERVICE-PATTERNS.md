@@ -77,46 +77,68 @@ Requests the deletion of a specific object. For example, "/users/1" to delete us
 
 
 ## Versioning
-Versioning the API ensures backward compatability with consumers and allows the developers of the API to release new versions of a web services API without impacting existing consumers (unless they choose to be impacted). Where to place the version number value within the request is an (ongoing debate)[http://stackoverflow.com/questions/389169/best-practices-for-api-versioning]. The approach taken by this API follows [Vinay Sahni](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#versioning), which is to include the MAJOR version number of the entire API in the URI and include a sub-version value of the API within a custom HTTP header attribute titled "API-Version".
+Versioning the API ensures backward compatability with consumers and allows the developers of the API to release new versions of a web services API without impacting existing consumers (unless they choose to be impacted). Where to place the version number value within the request is an [ongoing debate](http://stackoverflow.com/questions/389169/best-practices-for-api-versioning). The approach taken by this API follows [Vinay Sahni](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#versioning), which is to include the MAJOR version number of the API in the URI and optionally include a sub-version value of the API within the URL or a custom HTTP header attribute titled "API-Version".
+
+```
+curl https://api.[your-hostname].com/v1/users
+```
+
+```
+curl https://api.[your-hostname].com/v1.1/users
+```
 
 ```
 curl https://api.[your-hostname].com/v1/users -H "API-Version: 2016-11-06"
 ```
 
 ### Incrementing Versions
-When one or more changes are made to any of the web services within the API, the major or minor version of the API should be incremented. 
+Versioning should be viewed from the perspective of the consumer. Incrementing a version number communicates to a consumer that new features are available. If changes are made to the API that do not affect the API schema, then perhaps there is no need to increment the version. For example, if a bug is fixed on version 1.1 that doesn't require a change to the request or response schema, then do not update the API URL version. In this situation, the development team might increment a build number to properly identify the version of the software code that was deployed. 
 
 > NOTE: Versioning is never done at the individual endpoint level as that would create an unmanagable tangle of version numbers that would be difficult for a consumer to follow. For example, /v1/users/1/v3/roles/1/v9/claims. This tells a story of API version 1 with /users version 1 and /roles version 3 that is calling into /claims v9. 
 
 ### Major Versions
-A major version is located within the URL with no sub-version number. Incrementing a major version number is a subjective process to be defined by the development and/or marketing team. In general, increment the major version number by 1 when the API schema has significant changes that will require consumers to invest significant time to refactor their applications to conform to the new web services schema. 
+A major version is located within the URL with an optional sub-version number. Incrementing a major version number is a subjective process to be defined by the development and/or marketing team(s). In general, increment the major version number by 1 when the API changes require consumers to refactor their applications to conform to the new specifications. 
 
-API Version 1 - Initial version with the most current minor version.
+API Version 1 - Initial version with no defined sub-version number.
 ```
 curl https://api.[your-hostname].com/v1/users
 ```
 
-API Version 2 - Latest API with the most current minor version.
+API Version 2 - Version 2 of the API with no defined sub-version number
 ```
 curl https://api.[your-hostname].com/v2/users
 ```
 
 ### Minor Versions
-A minor version is located within the HTTP request header in an attribute titled "API-Version". The minor version is an optional value that will default to the latest minor version of the API.
+A minor version can be located in either the URL after the major version (ie v1.1) or in the HTTP request header in an attribute titled "API-Version". The use of the minor version is optional and a decision of the business and/or development team(s). In general, increment the minor version number by 1 when backward compatible API changes have been made in the current major version, but the consumer will be required to make minor updates or changes to utilize the new features. 
 
-The minor version value strategy of this API is to use a date in the format of "YYYY-MM-DD". The date chosen should be any date after the last minor version date. 
+In most cases, it's wise to increment the version number even for small changes in the request or response. Hopefully the consumers of the services haven't written their code in a such a way that a new element returned in a response would break their app. Since most web service providers work to achieve a highly stable platform, it's best to assume that the consumers will have low quality adapters that break easily and to increment minor versions whenever the request/response schemas change. 
+
+The minor version value strategy when embedding the value in the URL is to use integers. When applying the minor version within the HTTP header, then it is recommended to use a date in the format of "YYYY-MM-DD". The date chosen should be any date after the last minor version date. 
 
 The Major Version number combined with the Minor Version number defines a specific API schema at a point in time. 
 
-API Version 1 - Initial version with specific minor version "2016-11-6"
+API Version 1.1 - Initial version with specific minor version in the URL
+```
+curl https://api.[your-hostname].com/v1.1/users
+```
+
+API Version 1.2016-11-6 - Initial version with specific minor version "2016-11-6" in the header
 ```
 curl https://api.[your-hostname].com/v1/users -H "API-Version: 2016-11-06"
 ```
 
-API Version 2 - Latest API with specific minor version "2016-11-13"
+API Version 2.2 - Version 2 of the API with specific minor version in the URL
 ```
-curl https://api.[your-hostname].com/v2/users -H "API-Version: 2016-11-13"
+curl https://api.[your-hostname].com/v2.1/users
 ```
+
+API Version 2.2016-11-6 - Version 2 of the API with specific minor version "2016-12-6" in the header
+```
+curl https://api.[your-hostname].com/v2/users -H "API-Version: 2016-12-06"
+```
+
+NOTE: As of this writing (11/24/2016) the only supported minor version technique is to use the URL. Header versioning has not yet been implemented.
 
 ## Filtering, Sorting, Searching, Selecting Fields
 The following common actions use query parameters to add provide the web service with options for processing the request and how to return the data in the response.  
