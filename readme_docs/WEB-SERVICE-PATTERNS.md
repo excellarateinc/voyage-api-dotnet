@@ -303,7 +303,7 @@ Follows the same process as /users - GET, but additionally returns the associate
 Returns a specific User with "id" of 1. Returns a 404 response code if no user is found. 
 
 #### /v1/users - POST
-Creates a new user record. Returns a 200 OK if the user is successfully created or if there are validation or other expected errors. See the Status object with an optional Errors object in the response for more information. See [Response Status](#response-status) and [Response Errors](#response-errors) for more information.  
+Creates a new user record. Returns a 201 "Created" HTTP response code if the user is successfully created along with a Location header with the URL to the new record (ie Location: /v1/users/2). 
 
 #### /v1/users/1 - PUT
 Updates an existing user record by overwriting the object in the database with the given request payload. If data is omitted from the request payload, then it will be deleted in the database. PUT represents a complete overwrite, whereas PATCH represents a partial update.
@@ -318,7 +318,7 @@ Returns a list of roles that the consumer is eligible to receive. This is an exa
 Returns a specific User Role from User id=1 and Role id = 2.
 
 #### /v1/users/1/roles - POST
-Creates a new role for User with "id" = 1. Returns a 200 OK if the role is successfully created or if there are validation or other expected errors. See the Status object with an optional Errors object in the response for more information. See [Response Status](#response-status) and [Response Errors](#response-errors) for more information.
+Creates a new role for User with "id" = 1. Returns a 201 "Created" HTTP response code if the role is successfully created along with a Location header with the URL to the new record (ie Location: /v1/users/1/roles/2).
 
 #### /v1/users/1/roles/2 - PUT
 Updates an existing role record (id=2) for existing user record (id=1) by overwriting the object in the database with the given request payload. If data is omitted from the request payload, then it will be deleted in the database. PUT represents a complete overwrite, whereas PATCH represents a partial update.
