@@ -77,7 +77,7 @@ Requests the deletion of a specific object. For example, "/users/1" to delete us
 
 
 ## Versioning
-Versioning the API ensures backward compatability with consumers and allows the developers of the API to release new versions of a web services API without impacting existing consumers (unless they choose to be impacted). Where to place the version number value within the request is an [ongoing debate](http://stackoverflow.com/questions/389169/best-practices-for-api-versioning). The approach taken by this API follows [Vinay Sahni](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#versioning), which is to include the MAJOR version number of the API in the URI and optionally include a sub-version value of the API within the URL or a custom HTTP header attribute titled "API-Version".
+Versioning the API ensures backward compatability with consumers and allows the developers of the API to release new versions of a web services API without impacting existing consumers (unless they choose to be impacted). Where to place the version number value within the request is an [ongoing debate](http://stackoverflow.com/questions/389169/best-practices-for-api-versioning). The approach taken by this API follows [Vinay Sahni](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#versioning), which is to include the MAJOR version number of the API in the URI and optionally include a minor version value of the API within the URL or a custom HTTP header attribute titled "API-Version".
 
 ```
 curl https://api.[your-hostname].com/v1/users
