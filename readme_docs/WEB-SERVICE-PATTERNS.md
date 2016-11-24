@@ -230,14 +230,21 @@ Returned when an unexpected error occurs within the app for any reason. This is 
 ## Response Body
 Every HTTP Response should contain a well defined HEADER and BODY so that the consumer has a well formed and _meaningful_ response message. Consumers of web services can be frustrated during development or while debugging a production issue if the web service response is not informative enough as to the reasons for success, partial success, or failure of a request. 
 
+### HTTP GET
+1. 200 "OK" HTTP Response Status Code should be returned IF the request is successfully processed. See [Response Status Codes](#response-status-code) for other behaviors.
+2. Response body should contain the data requested by the GET request.
+3. Errors should follow the [Response Errors](#response-errors) pattern
+
 ### HTTP POST
 1. 201 "Created" HTTP Response Status Code should be returned IF the request is successfully processed. See [Response Status Codes](#response-status-code) for other behaviors.
 2. HTTP header attribute "Location" should contain the URL to the newly created resource http://api.[your-hostname].com/v1/users/35
 3. Response body should return the full record in JSON format (so that the consumer doesn't have to immediately refetch)
+4. Errors should follow the [Response Errors](#response-errors) pattern
 
 ### HTTP PUT or PATCH
 1. 200 "OK" HTTP Response Status Code should be returned IF the request is successfully processed. See [Response Status Codes](#response-status-code) for other behaviors.
 2. Response body should return the full record in JSON format (so that the consumer doesn't have to immediately refetch)
+3. Errors should follow the [Response Errors](#response-errors) pattern
 
 ### Response Errors
 When any error occurs within the app, like a required field, format error, or an exception it is necessary to communicate back to the consumer the errors that occured in a standard format. According to the HTTP specification, when returning a 400 or 500 range response status code that an explaination of some sort should be included within the body of the response (ie Text, JSON, XML, ...). 
