@@ -5,7 +5,7 @@ If you are extending this API to build a new app, then replace this section with
 
 ## Table of Contents
 * [Quick Start](#quick-start)
-* [Web Services Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
+* [Web Service Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
 * [Development](readme_docs/DEVELOP.md)
 * [Core Service: Auditing] (readme_docs/AUDITING.md)
 * [Testing](readme_docs/TESTING.md)
