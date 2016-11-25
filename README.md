@@ -5,11 +5,11 @@ If you are extending this API to build a new app, then replace this section with
 
 ## Table of Contents
 * [Quick Start](#quick-start)
+* [Web Services Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
 * [Development](readme_docs/DEVELOP.md)
 * [Core Service: Auditing] (readme_docs/AUDITING.md)
 * [Testing](readme_docs/TESTING.md)
 * [Authorization] (readme_docs/AUTHORIZATION.md)
-* [Web Services Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
 
 ## Quick Start
 Describe the bare minimum steps to download, install, configure the API for a local environment
