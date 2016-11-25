@@ -9,8 +9,9 @@ The follow sections include details and helpful information for software develop
 * HOW TO: Workstation Setup
 * HOW TO: Run App Locally
 * HOW TO: Code Review & Commit
-* HOW TO: Deploy to Environments
+* HOW TO: Deploy (QA, UAT, PROD)
 
+## ??
 * [Development Tools](#development-tools)
 * [Build](#build)
 * [Database](#database)
