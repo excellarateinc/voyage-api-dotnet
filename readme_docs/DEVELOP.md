@@ -4,7 +4,13 @@ The follow sections include details and helpful information for software develop
 > NOTE: Each developer on the project should assume responsibility to update this document with the latest dev info to ensure everyone is aware of how to build, development, and deploy the app. 
 
 ## Table of Contents
-* [Current Tech Stack](#current-tech-stack)
+* Best Practices
+* Coding Standards
+* HOW TO: Workstation Setup
+* HOW TO: Run App Locally
+* HOW TO: Code Review & Commit
+* HOW TO: Deploy to Environments
+
 * [Development Tools](#development-tools)
 * [Build](#build)
 * [Database](#database)
@@ -14,6 +20,9 @@ The follow sections include details and helpful information for software develop
 * [API Doc](#api-doc)
 
 ## Current Tech Stack
+
+TODO: Each of these should be their own document (if necessary)
+
 - Autofac
 - EntityFramework
 - Asp.Net Identity
