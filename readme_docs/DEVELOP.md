@@ -104,7 +104,7 @@ Serilog will fail silently if there is an issue logging a message. While this is
 ```
  
  
-This will write Serilog issues to the output window. For more options see the [documentation.](https://github.com/serilog/serilog/wiki/Debugging-and-Diagnostics)
+This will write Serilog issues to the output window. For more options see the [documentation](https://github.com/serilog/serilog/wiki/Debugging-and-Diagnostics).
 
 ```
 016-11-16T16:46:12.8645916Z Exception while emitting periodic batch from Serilog.Sinks.MSSqlServer.MSSqlServerSink: System.AggregateException: One or more errors occurred. ---> System.FormatException: Format String can be only "D", "d", "N", "n", "P", "p", "B", "b", "X" or "x".
@@ -116,7 +116,7 @@ This will write Serilog issues to the output window. For more options see the [d
 ```
 
 ## API Versioning
-API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](https://github.com/lssinc/launchpad-dotnet-api/blob/master/WEB-SERVICE-PATTERNS.md#versioning). 
+API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](WEB-SERVICE-PATTERNS.md#versioning). 
 
 Each version of the an api will have a new controller source file and a unique url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API are roughly as follows:
 
