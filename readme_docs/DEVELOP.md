@@ -1,7 +1,7 @@
 ## Development
 The follow sections include details and helpful information for software developers. 
 
-NOTE: Each developer on the project must update this document with the latest dev info to ensure everyone is aware of how to build, development, and deploy the app. 
+> NOTE: Each developer on the project should assume responsibility to update this document with the latest dev info to ensure everyone is aware of how to build, development, and deploy the app. 
 
 ## Table of Contents
 * [Current Tech Stack](#current-tech-stack)
