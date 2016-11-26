@@ -10,5 +10,3 @@ If you are extending this API to build a new app, then replace this section with
 * [Best Practices](readme_docs/BEST-PRACTICES.md)
 * [Testing](readme_docs/TESTING.md)
 * [Deploy](readme_docs/DEPLOY.md)
-* [Authorization] (readme_docs/AUTHORIZATION.md)
-* [Web Service Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
