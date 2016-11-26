@@ -1,15 +1,35 @@
 ## Development
-The follow sections include details and helpful information for software developers. 
-
-> NOTE: Each developer on the project should assume responsibility to update this document with the latest dev info to ensure everyone is aware of how to build, development, and deploy the app. 
+Information on how to setup your local dev environment, best practices, HOW TOs, etc and so on. Keep this document fresh with any and all information that should be shared with your fellow devs.
 
 ## Table of Contents
-* Best Practices
-* Coding Standards
+* [Core Values](#core-values)
+* Code Standards
 * HOW TO: Workstation Setup
 * HOW TO: Run App Locally
 * HOW TO: Code Review & Commit
 * HOW TO: Deploy (QA, UAT, PROD)
+
+## Core Values
+These are the core standards that our development team agrees to follow. All of our decisions should be tested against our core values. Only a team decision can overrule our core values on a case-by-case basis. 
+
+1. Always act in the best interest of our customer's time, money, and desired quality
+  * We succeed when our customer is amazed at our ability to deliver on-time, within budget, and with the highest possible quality given the time and money constraints. 
+  * Test every decision with the question "Does this align with the customer's budget, timeline, and quality expectations?"
+2. Be respectful always (aka Golden Rule)
+  * Teams that respect each other with their words and actions achieve high throughput consistently
+  * When we talk down to each other we are deciding that WE are more important than the customer!
+3. No Lone Ranger Developers
+  * Acting on your own excludes your team from decision making, which is a form of disrespect
+  * Perfect code is a product of team collaboration and communication
+4. Peer code reviews are required
+  * For every 10 liines of code written, ~ 1 bug is introduced into the code base. 
+  * Peer reviewed code has been found to significantly reduce bugs and missed requirements
+  * Be thorough and respectful!
+5. Build for today's needs, not what might be needed tomorrow
+  * Make the best choices based on the customer's concrete needs today!
+  * Building for the future is subjective guesswork that rarely meets unknowable customer needs
+
+## Code Standards
 
 ## ??
 * [Development Tools](#development-tools)
