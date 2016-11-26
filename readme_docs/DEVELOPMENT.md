@@ -3,11 +3,11 @@ Information on how to setup your local dev environment, best practices, HOW TOs,
 
 ## Table of Contents
 * [Core Values](#core-values)
-* Code Standards
-* [HOW TO: Workstation Setup](#how-to-workstation-setup)
-* [HOW TO: Run App Locally](#how-to-run-app-locally)
-* [HOW TO: Branch, Code Review, Commit](#how-to-branch-code-review-commit)
-* [HOW TO: Deploy (QA, UAT, PROD)](#how-to-deploy-qa-uat-prod)
+* [Code Standards](#code-standards)
+* [Workstation Setup](#workstation-setup)
+* [Run App Locally](#run-app-locally)
+* [Branch, Code Review, Commit](#branch-code-review-commit)
+* [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
 ## Core Values
 These are the core standards that our development team agrees to follow. All of our decisions should be tested against our core values. Only a team decision can overrule our core values on a case-by-case basis. 
@@ -34,13 +34,13 @@ The following coding standards are agreed upon by the development team and are e
 * C#
 * XUnit
 
-## HOW TO: Workstation Setup
+## Workstation Setup
 
-## HOW TO: Run App Locally
+## Run App Locally
 
-## HOW TO: Branch, Code Review, Commit
+## Branch, Code Review, Commit
 
-## HOW TO: Deploy (QA, UAT, PROD)
+## Deploy (QA, UAT, PROD)
 
 ## ??
 * [Development Tools](#development-tools)
