@@ -142,3 +142,5 @@ Notes:
   
 ### 5. Artifacts for deployment
 The artifacts that should be deployed will be contained in the publish\_PublishedWebsites\Launchpad.Web folder. The artifacts will include both the apidoc files as well as the API bin files.
+
+:arrow_up: [Back to Top](#table-of-contents)
