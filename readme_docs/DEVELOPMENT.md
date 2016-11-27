@@ -46,8 +46,9 @@ __Langauges__
 
 __Best Practices__
 * [Database](DATABASE.md)
-* [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
-* [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
+* [Web Service Patterns](WEB-SERVICE-PATTERNS.md)
+* ?? [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
+* ?? [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
 
 :arrow_up: [Back to Top](#table-of-contents)
 
