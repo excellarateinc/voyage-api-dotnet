@@ -55,19 +55,6 @@ If you are extending this API to build a new app, then replace this section with
   - HTTP Request / Response logging to track user activity (anonymous and authenticated users)
   - Database change logging to track manipulation of data over time (anonymous and authenticated users)
 
-### Development Team
-* Team Protocols 
-  - Fast learning curve through clear documentation
-  - Easy values, standards, best practices that most developers will aggreement
-* Core Values
-  - Documented core values that we believe will resonate with most development teams
-  - Unifies teams and promotes healthy communication
-  - See our [Core Values](readme_docs/DEVELOPMENT.md#core-values) documentation
-* Coding Standards 
-  - Industry accepted language coding standards
-  - Best practices when developing within the code base
-  - See our [Development Team Standards](#development-team-standards)
-
 ### Tech Stack
 * JSON RESTful Web Services
   - JSON request/response interaction
@@ -89,6 +76,19 @@ If you are extending this API to build a new app, then replace this section with
   - Jenkins CI jobs able to invoke MSBuild and apiDoc commands to build, test, and package
   - Jenkins jobs included with with API source
   - Supports other CI environments like Team Foundation Server (TFS)
+
+### Developers
+* Team Protocols 
+  - Fast learning curve through clear documentation
+  - Easy values, standards, best practices that most developers will aggreement
+* Core Values
+  - Documented core values that we believe will resonate with most development teams
+  - Unifies teams and promotes healthy communication
+  - See our [Core Values](readme_docs/DEVELOPMENT.md#core-values) documentation
+* Coding Standards 
+  - Industry accepted language coding standards
+  - Best practices when developing within the code base
+  - See our [Development Team Standards](#development-team-standards)
 
 ### System Administrators
 * Deploy Instructions
