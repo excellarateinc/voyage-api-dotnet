@@ -4,7 +4,6 @@ Best practices that all developers on the team agree to adhere to when writing n
 ## Table of Contents
 * [Dependency Injection](#dependency-injection)
 * [Logging](#logging)
-* [API Doc](#api-doc)
 
 ## Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
