@@ -8,7 +8,6 @@ Information on how the development team agrees to work together along with infor
 * [Run App Locally](#run-app-locally)
 * [Code Branching](#code-branching)
 * [Code Review & Commit](#code-review-merge)
-* [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
 Also check out [Development Recipes](DEVELOPMENT-RECIPES.md).
 
