@@ -42,6 +42,7 @@ The following coding standards are agreed upon by the development team and are e
 __Langauges__
 * C#
 * XUnit
+* [Database SQL/DDL](DATABASE.md)
 
 __Best Practices__
 * [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
