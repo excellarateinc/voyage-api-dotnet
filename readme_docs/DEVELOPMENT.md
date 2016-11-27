@@ -45,6 +45,7 @@ __Langauges__
 * XUnit
 
 __Best Practices__
+* [Authorization Standards](STANDARDS-AUTHORIZATION.md)
 * [Database Standards](STANDARDS-DATABASE.md)
 * [Web Service Standards](STANDARDS-WEB-SERVICES.md)
 * ?? [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
