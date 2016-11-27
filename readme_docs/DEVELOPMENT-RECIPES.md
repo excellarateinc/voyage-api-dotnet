@@ -4,9 +4,9 @@ Instructional recipies for how to do something within the codebase.
 > __Keep Organized__ Keep the Table of Contents alphabetized and do your best to extend this document in a way that will be easy to read/scroll for all developers.
 
 ## Table of Contents
-* [APIDoc - Document A Web Service](#apidoc---document-a-web-service)
+* [APIDoc: Document A Web Service](#apidoc-document-a-web-service)
 * [API Versioning](#api-versioning)
-* [Audit - Enable DB Entity Change Tracking](#audit---enable-db-entity-change-tracking)
+* [Audit: Enable DB Entity Change Tracking](#audit-enable-db-entity-change-tracking)
 
 ## APIDoc - Document A Web Service
 Web service documentation for consumers is facilitated through the use of a framework called [apiDoc](http://apidocjs.com). apiDoc provides a set of annotation that are placed in a comment block within the web service controller class. To generate the documentation website for consumers, apiDoc provides a Node script that scans the source files for apiDoc annotations to create a pretty HTML website. 
