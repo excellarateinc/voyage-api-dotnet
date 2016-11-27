@@ -47,12 +47,36 @@ Download and install the following required software for development:
 * SQL Server Express 20xx
 * IIS ?
 * Java 1.8 SDK (for Liquibase Database Migration)
+* [Node](https://nodejs.org/en/)
+* [apiDocJs](http://apidocjs.com/)
+  - npm install -g apidoc 
 
-### Instructions
+### App
 1. Download source via Visual Studio GitHub extension
   * Install GitHub extension [[Download](https://visualstudio.github.com)]
   * GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
+2. SQL Server 
+   - Default instance: localhost\sqlexpress
 2. Finish this guide
+
+### Database
+The application uses a SQL Server database and code first migrations. 
+
+1. In Visual Studio, open the package manager console
+2. Set the Default project to ***Launchpad.Data***
+3. Run Update-Database from the console to create the database
+   - The connection string in ***Launchpad.Web*** web.config determines where the database will be created
+   - The default is localhost/sqlexpress with initial catalog Launchpad
+   - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
+
+__Seed Data__
+
+A default "admin" user with full access to everything will be seeded into the database when _Update-Database_ is run. 
+
+```
+Username: admin@admin.com
+Password: Hello123!
+```
 
 :arrow_up: [Back to Top](#table-of-contents)
 
@@ -194,59 +218,6 @@ If at all possible, automate as much of the deployment process as possible to pr
 
 :arrow_up: [Back to Top](#table-of-contents)
 
-## ??
-* [Development Tools](#development-tools)
-* [Build](#build)
-* [Database](#database)
-* [Dependency Injection](#dependency-injection)
-* [Logging](#logging)
-* [API Versioning](#api-versioning)
-* [API Doc](#api-doc)
-
-## Current Tech Stack
-
-TODO: Each of these should be their own document (if necessary)
-
-- Autofac
-- EntityFramework
-- Asp.Net Identity
-- Asp.Net MVC
-- Asp.Net Web Api 2
-- Owin Middleware for Bearer Security
-- Serilog  
-
-## Development Tools
-The following tools should be installed on the development machine:
-
-1. Visual Studio 2015
-2. SQL Server 
-   - Checked in connection strings point at SQLExpress 
-   - Default instance: localhost\sqlexpress
-3. [Node](https://nodejs.org/en/)
-4. [apiDocJs](http://apidocjs.com/)
-   - npm install -g apidoc 
-
-## Build
-After pulling the source code install the required packages: 
-
-1. Pull the source code from github repo
-2. Perform a Nuget package restore
-3. Perform a npm install in folder ***Launchpad.Web***
-
-## Database
-The application uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
-
-1. In Visual Studio, open the package manager console
-2. Set the Default project to ***Launchpad.Data***
-3. Run Update-Database from the console to create the database
-   - The connection string in ***Launchpad.Web*** web.config determines where the database will be created
-   - The default is localhost/sqlexpress with initial catalog Launchpad
-   - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
-
-### Users
-A default user will be seeded into the database when Update-Database is run. The user is *admin@admin.com* / *Hello123!* - new users can be created using the Register link. 
-
-Each new user will be created with a 'Basic' role whcih allows them to log in. You may notice on the dashboard a 403 (Forbidden) is generated. The basic role does not have the 'list.widgets' claim. To resolve this and see the widgets, login as the admin and select Add Claim. Choose 'Basic' as the role and enter 'lss.permission' and 'list.widgets' for the claim type and claim value respectively. 
 
 ## Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
