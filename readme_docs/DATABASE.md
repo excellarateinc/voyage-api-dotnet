@@ -1,4 +1,4 @@
-## Database Best Practices
+## Database Standards
 The following guide covers the best practices for database structures within this application. 
 
 ## Table of Contents
