@@ -162,7 +162,7 @@ The PROD environment is where stable software is made available for live usage b
 
 Deploying apps to PROD are often times NOT automated processes unless proper controls are in place to prevent accidental deploys. In the case of this guide, all PROD deploys will be initiated manually by first creating a PROD distribution bundle and then manually executing the steps to properly deploy the software. 
 
-__ CI Job Name:__ PROD Build, & Package
+__CI Job Name:__ PROD Build, & Package
 * Requests the source code tag to download and build
 * Pulls the source code for the given tag from Git "master" long running branch
 * Executes the "build" task to compile the source
