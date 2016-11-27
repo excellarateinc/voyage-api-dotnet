@@ -59,7 +59,7 @@ The following code branching strategy is meant to ensure the following objective
 * Tag branches with meaningful names to identify features
 * Only promote peer reviewed code into the "master" branch
   
-> __All Branches Work The Same Way__ There are many strategies that may be employed when branching. Regardless of the branching strategies that are used, it's helpful to know that technically branches all function the same way. Terms like "long running branches" or "topic branches" simply refer to a strategy for how to use the branching technical and do not refer to any specific technical feature of a branch.
+> __All Branches Work The Same Way__ There are many strategies that may be employed when branching. Regardless of the branching strategies that are used, it's helpful to know that technically branches all function the same way. Terms like "long running branches" or "topic branches" simply refer to a strategy for how to use the branching feature of Git.
   
 ### Long Running Branch: Master
 A project can support multiple "long running" branches that are always open and ready for new code. It's typical to have a long running branch called "master" that holds stable code that is currently in production and code soon to be deployed to production. It's not uncommon for development teams to have a long running branch called "develop" that contains less stable code that needs to be tested and verified before being pushed to the more stable "master" branch. 
@@ -98,9 +98,24 @@ This guide is focusing on the simplest branching strategies so that even the lea
 
 Read [Git - Branching Workflows](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows) for more information. 
 
-### Tagging
+## Code Review & Commit
+Peer code reviews are perhaps the _most_ important team development step in a project. Code reviews are an opportunity for team members to catch oversights in code, bugs, standards, and best practices. Code reviews are also opportunities for developers to teach each other about our documented standards and guidelines as well as to share other general development knowledge and best practices from experience. Also, code reviews encourage developers to share work-in-progress frequently and to develop respectful and trusting relationships (ie team building). 
+
+__Rules__
+* It is _your_ responsibility to have your code reviewed in a timely manner
+* It is _never_ acceptable to have your code merged into a long running branch without a code review
+* Code merges into a long running branch can only be performed by the peer code reviewer
+* You are required to fix any violations of the __documented__ team dev standards/guidelines
+* Peer reviewer recommendations that are not supported by documented team dev standards/guidelines are optional
+* Seek to have your code reviewed by someone more experienced so that you can learn something new!
+* Change up who reviews your code to promote cross training and to learn from new people
+* Make time to provide a thoughtful code review. 
+* Be kind and follow the [Golden Rule](https://en.wikipedia.org/wiki/Golden_Rule) 
+
 
 ## Deploy (QA, UAT, PROD)
+
+### Tagging
 
 ## ??
 * [Development Tools](#development-tools)
