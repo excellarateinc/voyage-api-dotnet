@@ -8,9 +8,11 @@ Instructional recipies for how to do something within the codebase.
 * [API Versioning](#api-versioning)
 
 ## APIDoc - Document A Web Service
-The web api controllers are using inline documentation called [apiDoc](http://apidocjs.com). The documentation is embedded as comments above each controller method. For more details see the [documentation](http://apidocjs.com/).
+Web service documentation for consumers is facilitated through the use of a framework called [apiDoc](http://apidocjs.com). apiDoc provides a set of annotation that are placed in a comment block within the web service controller class. To generate the documentation website for consumers, apiDoc provides a Node script that scans the source files for apiDoc annotations to create a pretty HTML website. 
 
-### Sample Documentation Comments
+The complete documenation of apiDoc can be found on their website [http://apidocjs.com](http://apidocjs.com/).
+
+### Example
 Below is an example of the comments used to document an endpoint.
 
 ```
@@ -47,7 +49,6 @@ cuts down on repeated comment blocks for shared elements such as errors.
 All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js***
 
 ### Current @apiDefine blocks
-
 1. BadRequestError
    - Used when an endpoint can return a 400
 2.  NotFoundError
@@ -55,6 +56,7 @@ All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js
 
 ### Generating documentation
 To generate the api docs after a change:
+
 1. In ***Launchpad.Web*** execute npm run doc
    - This is an npm script that is defined in package.json
    - Script: apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\"
