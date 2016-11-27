@@ -181,6 +181,7 @@ __Rules__
 Deploying to production should always be done in pairs of two peers! Accidents will happen, but they can be mostly prevented if by having a peer watchfully checking deployment steps as they are performed. 
 
 __Rules__
+
 1. Production deployments require 2 qualified system and/or software engineers
 2. Production deployment procedures _must_ be documented vertabim so that any system/software engineer can execute them
 3. Production deployment procedures _must_ document rollback procedures in the event of an error
