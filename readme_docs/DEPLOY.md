@@ -103,7 +103,7 @@ The following are the prequisties for building the application from the CI serve
 #### 1. Nuget Restore
 The API project uses nuget to manage external dependencies. The first step of the build process is to run: 
 ```
-nuget.exe restore Launchpad.API.sln**
+nuget.exe restore Launchpad.API.sln
 ```
 
 #### 2. MSBUILD Command
