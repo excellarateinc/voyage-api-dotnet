@@ -13,44 +13,76 @@ If you are extending this API to build a new app, then replace this section with
 
 ## Features
 
-___Web Services___
-* [API Documentation](#consumer-api-docs)
-* [User Management Services](#user-management-services)
-
-__Security__
-* [Role Based Authorization](#role-based-authorization)
-* [OAuth2 Authentication](#oauth2-authentication)
-* [Auditing](#access-and-data-auditing)
-
-__Technology__
-* [RESTful API](#restful-api)
+__Technology__ 
+* JSON RESTful Web Services
+  - JSON request/response interaction
+  - Strict [REST implementation](readme_docs/STANDARDS-WEB-SERVICES.md)
+* Microsoft .NET
+  - [WEB API](https://www.asp.net/web-api) for base web services behavior
+  - [Identity Framework](https://www.asp.net/identity) for Authentication and Authorization
+  - [Entity Framework](https://www.asp.net/entity-framework) for database ORM
+  - Many other frameworks for auditing (OWIN), logging (SeriLog), and much more. 
+* Database Neutral
+  - Capable of integrating with any major database vendor (SQL Server, Oracle, DB2, MySQL, etc)
+  - Database interactions follow [SQL99](https://en.wikipedia.org/wiki/SQL:1999) standards with no vendor specific database features relied upon
+  - Liquibase database migrations produce on-demand SQL specific to the integrated database
 * [Integrated Test Suite](#integrated-test-suite)
+  - Automated test coverage using [XUnit](https://xunit.github.io) and [Moq](https://github.com/Moq/moq4/wiki/Quickstart) frameworks
+  - Tests executed during every build to ensure high quality code coverage
 
-__Team__
-* [Development Team Standards](#development-team-standards)
-* [Documented Best Practices](#documented-best-practices)
+___Web Services___ 
+* HTTP Compliant RESTful API
+  - Follows HTTP protocols for RESTful web services
+  - Lightweight JSON requests and responses
+  - See our [Web Service Standards](readme_docs/STANDARDS-WEB-SERVICES.md)
+* Public API Status Service
+  - Web serbice that provides general status of the API to the public
+  - Helpful endpiont for automated monitoring
+* User Administration Services
+  - Full suite of user administration web services (list, get, create, update, delete)
+  - Secured access through role based security
+* Account Management Services
+  - Users can update their account information themselves
+  - Manage account settings
+  - Password reset
+* API Documentation
+  - Complete documentation for web services consumers
+  - Includes detailed descriptions and example to quickly interact with the API
 
-#### RESTful API
-[Web Service Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
+__Security__ 
+* [OWASP](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project) Hacker Proof
+  - Tested nightly against OWASP common hacks (particularly the top 10)
+  - Tested nightly using 3rd party penetration testing services to ensure entperprise grade security!
+* [OAuth2](https://oauth.net/2/) Authentication
+  - Bearer Token authentication configuraiton
+  - SHA2 hash encrypted user password (when authenticating using the database)
+  - Supports other authentication methods
+* Active Directory / LDAP Authentication
+  - Extends OAuth2 to support authentication with an AD/LDAP system
+  - Supports Enterprise SSO environments using AD/LDAP
+* Role Based Authorization
+  - Custom role definitions to suit any situation
+  - Supports granular security permissions 
+  - Full suite of role administration web services (list, get, create, update, delete)
+* Forgot Username / Password Support
+  - Web services that allow users to reset their username and/or password
+  - Validates a user via their email address
+* Auditing
+  - Complete enterprise access and data auditing to meet compliance requirements
+  - HTTP Request / Response logging to track user activity (anonymous and authenticated users)
+  - Database change logging to track manipulation of data over time (anonymous and authenticated users)
 
-#### API Documentation
-
-#### OAuth2 Authentication
-
-#### Role Based Authorization
-[Authorization](readme_docs/AUTHORIZATION.md)
-
-#### User Management Services
-
-#### Activity and Data Auditing
-
-##### Activity Audit
-Activity auditing captures all requests made to a particular API endpoint and writes a record with metadata to the database. The metadata that is collected would include the authenticated user, requestor's IP Address, current date and time, request URL, request body (if POST, PUT, PATCH), and any other pertinent information the developer has accessible and determines should be in the activity audit log. 
-
-** Talk about response status code and result. How is this logged?
-
-#### Integrated Test Suite
-
-#### Documented Best Practices
+__Development Team__ 
+* Team Protocols 
+  - Fast learning curve through clear documentation
+  - Easy values, standards, best practices that most developers will aggreement
+* Core Values
+  - Documented core values that we believe will resonate with most development teams
+  - Unifies teams and promotes healthy communication
+  - See our [Core Values](readme_docs/DEVELOPMENT.md#core-values) documentation
+* Coding Standards 
+  - Industry accepted language coding standards
+  - Best practices when developing within the code base
+  - See our [Development Team Standards](#development-team-standards)
 
 
