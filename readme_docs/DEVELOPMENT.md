@@ -30,14 +30,14 @@ These are the core standards that our development team agrees to follow. All of 
   * Make the best choices based on the customer's concrete needs today!
   * Building for the future is subjective guesswork that rarely meets unknowable customer needs
 
-[:arrow_up:](#table-of-contents)[Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Standards
 The following coding standards are agreed upon by the development team and are expected to be followed. Where possible, these rules will be enforced by the IDE.
 * C#
 * XUnit
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Workstation Setup
 
@@ -54,11 +54,11 @@ Download and install the following required software for development:
   * GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
 2. Finish this guide
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Run App Locally
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Branching
 The following code branching strategy is meant to ensure the following objectives: 
@@ -106,7 +106,7 @@ This guide is focusing on the simplest branching strategies so that even the lea
 
 Read [Git - Branching Workflows](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows) for more information. 
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Review & Merge
 Peer code reviews are perhaps the _most_ important team development step in a project. Code reviews are an opportunity for team members to catch oversights in code, bugs, standards, and best practices. Code reviews are also opportunities for developers to teach each other about our documented standards and guidelines as well as to share other general development knowledge and best practices from experience. Further more, code reviews encourage developers to share work-in-progress frequently and to develop respectful and trusting relationships (ie team building). 
@@ -124,13 +124,13 @@ __Rules__
 * Make time to provide a thoughtful code review. 
 * Be kind and follow the [Golden Rule](https://en.wikipedia.org/wiki/Golden_Rule) 
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Deploy (QA, UAT, PROD)
 
 ### Tagging
 
-[:arrow_up: Back to Top](#table-of-contents)
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## ??
 * [Development Tools](#development-tools)
