@@ -50,6 +50,7 @@ __Best Practices__
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Workstation Setup
+> __FINISH THIS SECTION__
 
 ### Required Software
 Download and install the following required software for development:
@@ -91,6 +92,8 @@ Password: Hello123!
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Run App Locally
+> __FINISH THIS SECTION__
+
 1. In VS2015...
 
 :arrow_up: [Back to Top](#table-of-contents)
