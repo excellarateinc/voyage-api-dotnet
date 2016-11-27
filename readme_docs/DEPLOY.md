@@ -162,7 +162,9 @@ The artifacts that should be deployed will be contained in the publish\_Publishe
 * AWS Elastic Beanstalk HOWTO
   - how to build the docker zip to upload to AWS
   - How to deploy in AWS EB console
-  
+
+:arrow_up: [Back to Top](#table-of-contents)
+
 ## Ansible Automated Deployment
 > __FINISH DOCUMENTATION__
 
