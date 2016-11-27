@@ -14,21 +14,21 @@ If you are extending this API to build a new app, then replace this section with
 ## Features
 
 ### Web Services
-* HTTP Compliant RESTful API
+* __HTTP Compliant RESTful API__
   - Follows HTTP protocols for RESTful web services
   - Lightweight JSON requests and responses
   - See our [Web Service Standards](readme_docs/STANDARDS-WEB-SERVICES.md)
-* Public API Status Service
+* __Public API Status Service__
   - Web serbice that provides general status of the API to the public
   - Helpful endpiont for automated monitoring
-* User Administration Services
+* __User Administration Services__
   - Full suite of user administration web services (list, get, create, update, delete)
   - Secured access through role based security
-* Account Management Services
+* __Account Management Services__
   - Users can update their account information themselves
   - Manage account settings
   - Password reset
-* API Documentation
+* __API Documentation__
   - Complete documentation for web services consumers
   - Includes detailed descriptions and example to quickly interact with the API
 
