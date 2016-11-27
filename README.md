@@ -7,6 +7,7 @@ If you are extending this API to build a new app, then replace this section with
 * [Quick Start](readme_docs/DEVELOP.md#quick-start)
 * [Features](readme_docs/FEATURES.md)
 * [Development](readme_docs/DEVELOPMENT.md)
+* [Development HOW TO Guide](readme_docs/DEVELOPMENT-HOWTO-GUIDE.md)
 * [Best Practices](readme_docs/BEST-PRACTICES.md)
 * [Testing](readme_docs/TESTING.md)
 * [Deploy](readme_docs/DEPLOY.md)
