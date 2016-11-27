@@ -98,10 +98,12 @@ The following are the prequisties for building the application from the CI serve
 * apiDocJs
   1. npm install -g apidoc
 
-### 1. Nuget Restore
+### Instructions
+
+#### 1. Nuget Restore
 The API project uses nuget to manage external dependencies. The first step of the build process is to run **nuget.exe restore Launchpad.API.sln**
 
-### 2. MSBUILD Command
+#### 2. MSBUILD Command
 The following msbuild command can be used to build the project. 
 
 ```
@@ -116,12 +118,12 @@ Notes:
 * **UseWPP_CopyWebApplication=True;PipelineDependsOnBuild=False** will force the web project output to be placed in the publish/\_publishedWebsite/{ProjectName} folder
   1. These artifacts can be used deploy the website
 
-### 3. Unit Tests
+#### 3. Unit Tests
 Unit tests should be run after MSBUILD by excuting the batch script **execute-unit-tests.bat** - the result code will be non-zero when a test fails. 
 
 The script scans the publish folder for any .dlls that contain "UnitTests" in the filename. This script is purposely excluding integration tests since an integration test strategy has not be finalized. 
 
-### 4. APIDoc
+#### 4. APIDoc
 API doc should be run after unit tests. This process ouputs a set of static files. 
 
 The following command will run the apidoc process
@@ -140,7 +142,7 @@ Notes:
   1. In the above example, there are 2 filters. The first filter includes only .cs files. The second filter, includes a 
   special javascript file that contains reusable comment blocks.
   
-### 5. Artifacts for deployment
+#### 5. Artifacts for deployment
 The artifacts that should be deployed will be contained in the publish\_PublishedWebsites\Launchpad.Web folder. The artifacts will include both the apidoc files as well as the API bin files.
 
 :arrow_up: [Back to Top](#table-of-contents)
