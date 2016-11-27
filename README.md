@@ -5,7 +5,7 @@ If you are extending this API to build a new app, then replace this section with
 
 ## Topics
 * [Quick Start](readme_docs/DEVELOP.md#quick-start)
-* [Features](readme_docs/FEATURES.md)
+* [Features](#features)
 * [Development](readme_docs/DEVELOPMENT.md)
 * [Development Recipes](readme_docs/DEVELOPMENT-RECIPES.md)
 * [Testing](readme_docs/TESTING.md)
