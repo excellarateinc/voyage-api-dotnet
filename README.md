@@ -90,4 +90,19 @@ If you are extending this API to build a new app, then replace this section with
   - Jenkins jobs included with with API source
   - Supports other CI environments like Team Foundation Server (TFS)
 
-
+### System Administrators
+* Deploy Instructions
+  - Full instructions on how to properly build, test, and package the API app for deploy
+  - Continuous Integration job templates for QA, UAT, and PROD
+* Docker Support
+  - Preconfigured Dockerfile for deployment within Amazon Web Services environment
+  - Generate a Docker bundle for distribution using built-in tasks
+  - Customize to fit any environment
+* Amazon Web Services (AWS) - Elastic Beanstalk
+  - Supports AWS Elastic Beanstalk using a Docker image
+  - Run a build task to generate an AWS EB compatible .zip file
+* API Monitoring
+  - Configure automated web uptime monitoring to use the Status Web Service
+* DevOps Ready
+  - [Ansible](https://www.ansible.com) scripts for deploying the API Docker image to the Amazon Web Service (AWS) environment
+  - Customize scripts to support any environment
