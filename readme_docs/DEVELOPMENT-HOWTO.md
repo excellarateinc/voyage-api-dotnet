@@ -4,7 +4,65 @@ Instructional recipies for how to do something within the codebase.
 > __Keep Organized__ Keep the Table of Contents alphabetized and do your best to extend this document in a way that will be easy to read/scroll for all developers.
 
 ## Table of Contents
+* [APIDoc - Document A Web Service](#api-doc-document-a-web-service)
 * [API Versioning](#api-versioning)
+
+## APIDoc - Document A Web Service
+The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For more details see the [documentation](http://apidocjs.com/).
+
+### Sample Documentation Comments
+Below is an example of the comments used to document an endpoint.
+
+```
+         /**
+         * @api {get} /v2/widget/:id Get a widget
+         * @apiVersion 0.2.0
+         * @apiName GetWidget
+         * @apiGroup Widget
+         *
+         * @apiParam {Number} id widget's unique ID.
+         *
+         * @apiSuccess {String} name Name of the widget.
+         * @apiSuccess {Number} id ID of the widget.
+         * @apiSuccess {String} color Color of the widget
+         * 
+         * @apiSuccessExample Success-Response:
+         *     HTTP/1.1 200 OK
+         *     {
+         *        "id": 3,
+         *        "name": "Large Widget"
+         *        "color": "Green"
+         *     }
+         *
+         * @apiUse NotFoundError
+         */
+        [Route("widget/{id:int}")]
+        public IHttpActionResult Get(int id)
+        ...
+```
+
+### Reusable apiDoc blocks
+apiDoc supports creating reusuable documentation blocks using [@apiDefine](http://apidocjs.com/#param-api-define). This 
+cuts down on repeated comment blocks for shared elements such as errors. 
+All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js***
+
+### Current @apiDefine blocks
+
+1. BadRequestError
+   - Used when an endpoint can return a 400
+2.  NotFoundError
+    - Used when an endpoint can return a 404
+
+### Generating documentation
+To generate the api docs after a change:
+1. In ***Launchpad.Web*** execute npm run doc
+   - This is an npm script that is defined in package.json
+   - Script: apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\"
+   - This will scan the Controllers folder for endpoints and place the output in \docs
+
+To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
+
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## API Versioning
 API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](WEB-SERVICE-PATTERNS.md#versioning). 
