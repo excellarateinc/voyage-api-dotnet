@@ -1,40 +1,35 @@
-## Design Priciples
-The database should be platform agnostic. As a result, all scripts should be written using the |insert standard here| SQL standard. This will ensure that the migrations can be deployed to a compliant platform. 
+## Database Best Practices
+The following guide covers the best practices for database structures within this application. 
 
-The |insert standard here| includes support for:
+## Table of Contents
+* [Database Agnostic](#database-agnostic)
+* [Tables](#tables)
+* [Columns](#columns)
+* [Indexes](#indexes)
+* [Logical Deletes](#logical-deletes)
 
-* Feature list here
-* Merge?
+## Database Agnostic
+The Launchpad API app has been designed to be a kick starter app that any .NET development team can pick up and apply their their existing environment and infrastructure. In many Microsoft .NET shops, Microsoft SQL Server is the primary database, but there are also many companies that have a diverse technology infrastructure consisting of every flavor of database in existence. Since any backend database could potentially used with this API app, the position taken within Launchpad API is to follow [ANSI Standard SQL 1999](https://en.wikipedia.org/wiki/SQL:1999), which is supported by nearly all of the major database vendors.  
 
-Avoid writing migrations that use platform specific SQL dialects such as T-SQL. 
-
-## General Naming Conventions
-
-1. Use PascalCase
-
-
-## Schemas
-Schemas should be used to organize related database objects such as tables. For example, all database objects related to the framework are in the [core] schema.
-
-### Names
-* Use names that represent a feature or a logical group of functionality.
+__Rules__
+* Use common data types when possible
+* SQL must conform to [SQL99](https://en.wikipedia.org/wiki/SQL:1999) standards (do not use vendor specific syntax of any kind)
+* Do not use: stored procedures, functions, trigger, or views. 
+* Test all SQL / DDL using SQL Server Express, Oracle XE, and MySQL
 
 ## Tables
 
-
-### Names
-1. Table names should use the singular form. 
- 1. A table that stores user records will be called User. 
- 2. In the case of a join table, such as a table that stores the relationship between a role and claims, use the singular form: RoleClaim.
-2. When modeling a hierarchy, the parent of the relationship should always come first. For example a user has many phone numbers. The table then should be called UserPhoneNumber.
+### Naming
+* Use [PascalCase](https://en.wikipedia.org/wiki/PascalCase)
+* Table names should use the singular form. 
+  - A table that stores user records will be called User. 
+  - In the case of a join table, such as a table that stores the relationship between a role and claims, use the singular form: RoleClaim.
+* When modeling a hierarchy, the parent of the relationship should always come first. For example a user has many phone numbers. The table then should be called UserPhoneNumber.
  
-### Keys
-
-#### Primary Keys
+### Primary Keys
 Every table should have a primary key. Typically this will be surogate key implemented as an identity column. Using an integer primary key value fits well with the web service pattern of being able to reference a particular record within an entity set with a single value. A multipart natural key will not fit this pattern.
 
 These keys should use the following naming convention:
-
 
 ```
 PK_{schema.TableName}
@@ -43,7 +38,7 @@ PK_core.LaunchpadLogs
 
 ```
 
-#### Foreign Keys
+### Foreign Keys
 Referential integrity should be enforced via foreign key relationships. These keys should use the following naming convention:
 
 ```
@@ -53,24 +48,17 @@ FK_core.RoleClaims_core.Roles_RoleId
 
 ```
 
-### Deletes
-The application will follow a soft delete pattern. Every table will have an operational column defined that signifies whether or not the record has been deleted. When a delete is requested, this column value will be set to indicate the record has been deleted.
-
-**Need to determine what the column will be**
-
 #### Cascades
 Soft deletes will cascade to child relationships as soft deletes when the related records cannnot exist or stand alone. For example, when a user is deleted, the phone numbers related to that user will also be deleted. Since the user phone numbers cannot exist without a user those records are no longer valid. On the other hand, if a user is related to an organization, the organization will not be deleted. This scenario is different because an organization can exist without a user. 
 
 ## Columns 
 
-### Names
+### Naming
 1. Column names should be descriptive
 2. Column names should avoid abbreviations
 3. Column names should not contain underscores
 4. Columns in different tables that represent the same type of data should be named the same.
 1. For example a column that holds a zip code should be called ZipCode in all tables. 
-
-
 
 ### Data Types
 Columns should try to adhere to a standard set of data types based on their content.
@@ -95,7 +83,6 @@ For a complete list [see](https://msdn.microsoft.com/en-us/library/cc716729(v=vs
     2. Using characters to represent boolean loses any implicit meaning outside of the English language. (Oui, Si)
    
 
-
 ### Operational Columns
 Operational columns will be added to every table. The standard columns are:
 
@@ -110,10 +97,14 @@ Operational columns will be added to every table. The standard columns are:
 
 **Need to determine how to enforce these columns - triggers for date columns or expect the client to provide the values**
 
-## Stored Procedures
-
-### Names
-1. Do not prefix store procedures with sp_ 
-
 ## Indexes
 1. Create a clustered index on the primary key  (default behavior) 
+
+## Logical Deletes
+> __FINISH DOCUMENTATION__
+
+The application will follow a soft delete pattern. Every table will have an operational column defined that signifies whether or not the record has been deleted. When a delete is requested, this column value will be set to indicate the record has been deleted.
+
+```
+IsDeleted = true/false
+```
