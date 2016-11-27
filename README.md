@@ -3,7 +3,7 @@ A foundational set of web services that implement industry standard guidelines, 
 
 If you are extending this API to build a new app, then replace this section with a detailed overview of the new app. Include as much or as little detail as necessary to convey to the developers what this project is about. Often times less is more. 
 
-## Table of Contents
+## Topics
 * [Quick Start](readme_docs/DEVELOP.md#quick-start)
 * [Features](readme_docs/FEATURES.md)
 * [Development](readme_docs/DEVELOPMENT.md)
