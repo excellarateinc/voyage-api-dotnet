@@ -82,6 +82,8 @@ Each version of the an api will have a new controller source file and a unique u
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Audit - Enable DB Entity Change Tracking
+> __VALIDATE THIS APPROACH__
+
 Data auditing is implemented using the [Tracker Enabled DbContext](https://github.com/bilal-fazlani/tracker-enabled-dbcontext)
 nuget package. This package includes a custom DbContext called TrackerIdentityContext. The LaunchpadDataContext inherits from this class. 
 When save changes is called on the context, the ChangeTracker is used to create audit records. 
