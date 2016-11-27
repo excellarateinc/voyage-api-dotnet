@@ -1,5 +1,6 @@
 ## Database Standards
 > __FINISH DOCUMENTATION__
+
 The following guide covers the best practices for database structures within this application. 
 
 ## Table of Contents
