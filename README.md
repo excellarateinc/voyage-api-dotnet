@@ -12,10 +12,6 @@ If you are extending this API to build a new app, then replace this section with
 * [Deploy](readme_docs/DEPLOY.md)
 
 ## Features
-* [Web Services](#web-services)
-* [Security](#security)
-* [Development Team](#development-team)
-* [Tech Stack](#tech-stack)
 
 ### Web Services
 * HTTP Compliant RESTful API
