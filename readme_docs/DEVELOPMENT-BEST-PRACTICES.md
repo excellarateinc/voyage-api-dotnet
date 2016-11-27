@@ -4,7 +4,6 @@ Best practices that all developers on the team agree to adhere to when writing n
 ## Table of Contents
 * [Dependency Injection](#dependency-injection)
 * [Logging](#logging)
-* [API Versioning](#api-versioning)
 * [API Doc](#api-doc)
 
 ## Dependency Injection
@@ -68,20 +67,6 @@ This will write Serilog issues to the output window. For more options see the [d
    at Serilog.Sinks.MSSqlServer.MSSqlServerSink.FillDataTable(IEnumerable`1 events)
    at Serilog.Sinks.MSSqlServer.MSSqlServerSink.<EmitBatchAsync>d__10.MoveNext()
 ```
-
-:arrow_up: [Back to Top](#table-of-contents)
-
-## API Versioning
-API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](WEB-SERVICE-PATTERNS.md#versioning). 
-
-Each version of the an api will have a new controller source file and a unique url that contains the version. The routing for these versions is handled via attributes. The steps for creating a new version of an API are roughly as follows:
-
-1. If a subfolder does not exist for a version, create it 
-   - \v1, \v2, \v3...
-2. Add a route prefix to the static RoutePrefixes class
-3. Create the a new controller
-4. Add the RoutePrefix attribute at the class level
-5. Add the Route attribute to each operation, specifying the route template
 
 :arrow_up: [Back to Top](#table-of-contents)
 
