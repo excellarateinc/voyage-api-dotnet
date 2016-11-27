@@ -1,12 +1,13 @@
 ## Development
-Information on how to setup your local dev environment, best practices, HOW TOs, etc and so on. Keep this document fresh with any and all information that should be shared with your fellow devs.
+Information on how the development team agrees to work together along with information on setting up a local dev environment. Keep this document fresh with any and all information that should be shared with your fellow devs.
 
 ## Table of Contents
 * [Core Values](#core-values)
 * [Code Standards](#code-standards)
 * [Workstation Setup](#workstation-setup)
 * [Run App Locally](#run-app-locally)
-* [Branch, Code Review, Commit](#branch-code-review-commit)
+* [Code Branching](#code-branching)
+* [Code Review & Commit](#code-review-commit)
 * [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
 ## Core Values
@@ -36,9 +37,66 @@ The following coding standards are agreed upon by the development team and are e
 
 ## Workstation Setup
 
+### Required Software
+Download and install the following required software for development:
+* Visual Studio 2015
+* SQL Server Express 20xx
+* IIS ?
+* Java 1.8 SDK (for Liquibase Database Migration)
+
+### Instructions
+1. Download source via Visual Studio GitHub extension
+  * Install GitHub extension [[Download](https://visualstudio.github.com)]
+  * GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
+2. Finish this guide
+
 ## Run App Locally
 
-## Branch, Code Review, Commit
+## Code Branching
+The following code branching strategy is meant to ensure the following objectives: 
+* Encourage the benefits of frequent commits/pushes to the Git repo
+* Isolate work-in-progress from other developers
+* Tag branches with meaningful names to identify features
+* Only promote peer reviewed code into the "master" branch
+  
+> __All Branches Work The Same Way__ There are many strategies that may be employed when branching. Regardless of the branching strategies that are used, it's helpful to know that technically branches all function the same way. Terms like "long running branches" or "topic branches" simply refer to a strategy for how to use the branching technical and do not refer to any specific technical feature of a branch.
+  
+### Long Running Branch: Master
+A project can support multiple "long running" branches that are always open and ready for new code. It's typical to have a long running branch called "master" that holds stable code that is currently in production and code soon to be deployed to production. It's not uncommon for development teams to have a long running branch called "develop" that contains less stable code that needs to be tested and verified before being pushed to the more stable "master" branch. 
+
+The current development practice for this team is to only support a "master" long running branch that will hold all code currently in production and new code that has been peer code reviewed. 
+
+### Topic Branches
+Topic branches are shorter lived branches are often times referred to as "feature branches". Topic branches can be thought of as workspaces for developers to make their code changes for a single (hopefully small) feature. 
+
+ --------- MASTER ---------------------------------------> Production
+    \-- Topic #123 --/     \---- Topic #124 ----/
+
+The workflow for a Topic branch is as follows:
+1. Create a new branch from a long running branch like "master"
+  * Name the Topic branch with the ticket number from your task management app + short english description (ie LP-1234 Navbar Quick Search)
+  * Creating a good name allows for quick comparison of the task management app and Git for what's in the release and what's not
+3. Make code changes
+  * Commit to the local Git repo as often as necessary using descriptive commit messages
+  * Write meaningful commit messages as these will often be read by peer developers
+4. Push code changes
+  * Push to the Topic branch in the Git repo as often as necessary so that changes wont be lost if your computer blows up
+5. [Pull Request](https://help.github.com/articles/about-pull-requests/)
+  * Create a pull request (if available in your Git repo) and ask 1-2 developers to review the code online
+  * GitHub and BitBucket both have great diff tools for doing code reviews on-demand and providing comments. 
+6. Peer Reviewer Merge
+  * Once the peer reviewer has signed-off on the changes, then ONLY THE PEER REVIEWER can merge the changes into the long running branch "master"
+  * The developer's name on the merge is the official stamp of approval and statement that the code reviewer takes responsibility for the quality of the code. 
+7. Delete Topic Branch
+  * Topic branches that have been merged into "master" should be deleted immediately as they are no longer necessary
+  * Work with the team to determine if a different time interval is needed for retaining old branches and update this document
+  
+### Other Strategies
+This guide is focusing on the simplest branching strategies so that even the least experienced person on the team (at least with Git) can quickly get familiar with the workflow. Starting with a complext branching strategy can be a frustrating experience that can cause confusion in a team. If your team is an advanced group ready for the next level of Git, then consider updating this section with you preferred Git workflow strategies and training your team so as to avoid confusion and mistakes. 
+
+Read [Git - Branching Workflows](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows) for more information. 
+
+### Tagging
 
 ## Deploy (QA, UAT, PROD)
 
