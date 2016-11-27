@@ -12,28 +12,10 @@ If you are extending this API to build a new app, then replace this section with
 * [Deploy](readme_docs/DEPLOY.md)
 
 ## Features
-
-### Technology
-* JSON RESTful Web Services
-  - JSON request/response interaction
-  - Strict [REST implementation](readme_docs/STANDARDS-WEB-SERVICES.md)
-  - [apiDoc](http://apidocjs.com) documentation generated from source code comments
-* Microsoft .NET
-  - [WEB API](https://www.asp.net/web-api) for base web services behavior
-  - [Identity Framework](https://www.asp.net/identity) for Authentication and Authorization
-  - [Entity Framework](https://www.asp.net/entity-framework) for database ORM
-  - Many other frameworks for auditing (OWIN), logging (SeriLog), and much more. 
-* Database Neutral
-  - Capable of integrating with any major database vendor (SQL Server, Oracle, DB2, MySQL, etc)
-  - Database interactions follow [SQL99](https://en.wikipedia.org/wiki/SQL:1999) standards with no vendor specific database features relied upon
-  - Liquibase database migrations produce on-demand SQL specific to the integrated database
-* Integrated Test Suite
-  - Automated test coverage using [XUnit](https://xunit.github.io) and [Moq](https://github.com/Moq/moq4/wiki/Quickstart) frameworks
-  - Tests executed during every build to ensure high quality code coverage
-* Continuous Integration (CI)
-  - Jenkins CI jobs able to invoke MSBuild and apiDoc commands to build, test, and package
-  - Jenkins jobs included with with API source
-  - Supports other CI environments like Team Foundation Server (TFS)
+* [Web Services](#web-services)
+* [Security](#security)
+* [Development Team](#development-team)
+* [Tech Stack](#tech-stack)
 
 ### Web Services
 * HTTP Compliant RESTful API
@@ -89,5 +71,27 @@ If you are extending this API to build a new app, then replace this section with
   - Industry accepted language coding standards
   - Best practices when developing within the code base
   - See our [Development Team Standards](#development-team-standards)
+
+### Tech Stack
+* JSON RESTful Web Services
+  - JSON request/response interaction
+  - Strict [REST implementation](readme_docs/STANDARDS-WEB-SERVICES.md)
+  - [apiDoc](http://apidocjs.com) documentation generated from source code comments
+* Microsoft .NET
+  - [WEB API](https://www.asp.net/web-api) for base web services behavior
+  - [Identity Framework](https://www.asp.net/identity) for Authentication and Authorization
+  - [Entity Framework](https://www.asp.net/entity-framework) for database ORM
+  - Many other frameworks for auditing (OWIN), logging (SeriLog), and much more. 
+* Database Neutral
+  - Capable of integrating with any major database vendor (SQL Server, Oracle, DB2, MySQL, etc)
+  - Database interactions follow [SQL99](https://en.wikipedia.org/wiki/SQL:1999) standards with no vendor specific database features relied upon
+  - Liquibase database migrations produce on-demand SQL specific to the integrated database
+* Integrated Test Suite
+  - Automated test coverage using [XUnit](https://xunit.github.io) and [Moq](https://github.com/Moq/moq4/wiki/Quickstart) frameworks
+  - Tests executed during every build to ensure high quality code coverage
+* Continuous Integration (CI)
+  - Jenkins CI jobs able to invoke MSBuild and apiDoc commands to build, test, and package
+  - Jenkins jobs included with with API source
+  - Supports other CI environments like Team Foundation Server (TFS)
 
 
