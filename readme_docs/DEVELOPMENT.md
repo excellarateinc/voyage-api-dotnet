@@ -62,28 +62,34 @@ Download and install the following required software for development:
 * [apiDocJs](http://apidocjs.com/)
   - npm install -g apidoc 
 
-### App
+### Instructions
+> __EXPLAIN the process start-to-finish with no assumptions__
+
 1. Download source via Visual Studio GitHub extension
-  * Install GitHub extension [[Download](https://visualstudio.github.com)]
-  * GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
-2. SQL Server 
-   - Default instance: localhost\sqlexpress
-2. Finish this guide
+   - Install GitHub extension [[Download](https://visualstudio.github.com)]
+   - GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
+   -  explain the steps...
+2. Nuget Restore
+   - Visual Studio should automatically restore the dependencies on the first build. If this does not occur, use the package manager console to restore the dependencies.
+   - NOTE: Do we need to include instructions for how to do this on the console? 
+3. Create the database
+   - NOTE: This app uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
+   - In Visual Studio, open the package manager console
+   - Set the Default project to Launchpad.Data
+   - Run Update-Database from the console to create the database
+     * The connection string in Launchpad.Web web.config determines where the database will be created
+     * The default is localhost/sqlexpress with initial catalog Launchpad
+     * When the web.config connection string is changed, update the connection string in Launchpad.Data.IntegrationTests
+4. Build
+   - Use the Visual Studio Build/Debug menus to compile and start the project. These menu options will invoke MSBUILD with the appropriate parameters.
+5. Test
+   - Use the Visual Studio Test menu to execute the unit and integration tests. 
+   - The test explorer will show the results. 
+   - NOTE: A local database is required in order for integration tests to complete successfully. 
 
-### Database
-The application uses a SQL Server database and code first migrations. 
-
-1. In Visual Studio, open the package manager console
-2. Set the Default project to ***Launchpad.Data***
-3. Run Update-Database from the console to create the database
-   - The connection string in ***Launchpad.Web*** web.config determines where the database will be created
-   - The default is localhost/sqlexpress with initial catalog Launchpad
-   - When the web.config connection string is changed, update the connection string in ***Launchpad.Data.IntegrationTests***
-
-__Seed Data__
-
-A default "admin" user with full access to everything will be seeded into the database when _Update-Database_ is run. 
-
+> __SEED DATA__
+>
+> A default "admin" user with full access to everything will be seeded into the database when _Update-Database_ is run. 
 ```
 Username: admin@admin.com
 Password: Hello123!
