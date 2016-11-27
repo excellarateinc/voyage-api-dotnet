@@ -125,3 +125,5 @@ The event types map to the following enumeration:
 |Modified|2|
 |SoftDeleted|3|
 |UnDeleted|4|
+
+:arrow_up: [Back to Top](#table-of-contents)
