@@ -7,7 +7,8 @@ Information on how the development team agrees to work together along with infor
 * [Workstation Setup](#workstation-setup)
 * [Run App Locally](#run-app-locally)
 * [Code Branching](#code-branching)
-* [Code Review & merge](#code-review-merge)
+* [Code Review & Merge](#code-review-merge)
+* [Continuous Integration](#continuous-integration)
 
 Also check out [Development Recipes](DEVELOPMENT-RECIPES.md).
 
