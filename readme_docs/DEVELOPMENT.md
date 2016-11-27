@@ -44,7 +44,6 @@ __Langauges__
 __Best Practices__
 * [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
 * [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
-* 
 
 > __NOTE__ FINISH THIS SECTION
 
