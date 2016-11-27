@@ -4,7 +4,7 @@ Instructional recipies for how to do something within the codebase.
 > __Keep Organized__ Keep the Table of Contents alphabetized and do your best to extend this document in a way that will be easy to read/scroll for all developers.
 
 ## Table of Contents
-* [APIDoc - Document A Web Service](#api-doc-document-a-web-service)
+* [APIDoc - Document A Web Service](#api-doc---document-a-web-service)
 * [API Versioning](#api-versioning)
 
 ## APIDoc - Document A Web Service
