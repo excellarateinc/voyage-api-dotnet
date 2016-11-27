@@ -89,7 +89,7 @@ Download and install the following required software for development:
 
 > __SEED DATA__
 >
-> A default "admin" user with full access to everything will be seeded into the database when _Update-Database_ is run. 
+> A default "admin" user with full access to everything will be seeded into the database when _Update-Database_ is run. Use this account when initially interacting with the web services or creating new users or applying new user roles. 
 ```
 Username: admin@admin.com
 Password: Hello123!
