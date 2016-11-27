@@ -89,7 +89,7 @@ Operational columns will be added to every table. The standard columns are:
 | CreateUser | nvarchar(50) | No | Create user |
 | ModifyDate | DateTime | No | Row modify date | 
 | ModifyUser | nvarchar(50) | No | Modify user |
-| IsDeleted  | bit | No | Indicates if the record has been soft deleted|
+| IsDeleted  | bit | No | Indicates if the record has been logically deleted|
 
 **Need to determine how to enforce these columns - triggers for date columns or expect the client to provide the values**
 
