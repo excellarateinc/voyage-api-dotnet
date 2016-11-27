@@ -41,10 +41,11 @@ The following coding standards are agreed upon by the development team and are e
 
 __Langauges__
 * C#
+* SQL
 * XUnit
-* [Database SQL/DDL](DATABASE.md)
 
 __Best Practices__
+* [Database](DATABASE.md)
 * [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
 * [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
 
