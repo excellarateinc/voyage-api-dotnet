@@ -8,6 +8,6 @@ If you are extending this API to build a new app, then replace this section with
 * [Features](readme_docs/FEATURES.md)
 * [Development](readme_docs/DEVELOPMENT.md)
 * [Best Practices](readme_docs/BEST-PRACTICES.md)
-* [HOW TO Guide](readme_docs/DEVELOPMENT-HOWTO-GUIDE.md)
+* [Development Recipes](readme_docs/DEVELOPMENT-RECIPES.md)
 * [Testing](readme_docs/TESTING.md)
 * [Deploy](readme_docs/DEPLOY.md)
