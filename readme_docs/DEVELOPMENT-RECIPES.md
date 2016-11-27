@@ -1,4 +1,4 @@
-## Development HOW TO Guide
+## Development Recipes
 Instructional recipies for how to do something within the codebase. 
 
 > __Keep Organized__ Keep the Table of Contents alphabetized and do your best to extend this document in a way that will be easy to read/scroll for all developers.
