@@ -5,6 +5,8 @@ Deploying to the upper environments (QA -> UAT -> PROD) will be handled by the C
 * [Continuous Integration (CI)](#continuous-integration-ci)
 * [Server Configuration](#server-configuration)
 * [App Build & Test](#app-build--test)
+* [Docker Support](#docker-support)
+* [Ansible Automated Deployment](#ansible-automated-deployment)
 
 ## Continuous Integration (CI)
 [Jenkins](https://jenkins.io) continuous integration build manager will be used to configure jobs and triggers to faciliate the CI process. Reference your development team's WIKI for links to the Jenkins environment. 
@@ -147,5 +149,25 @@ Notes:
   
 #### 5. Artifacts for deployment
 The artifacts that should be deployed will be contained in the publish\_PublishedWebsites\Launchpad.Web folder. The artifacts will include both the apidoc files as well as the API bin files.
+
+:arrow_up: [Back to Top](#table-of-contents)
+
+
+## Docker Support
+> __FINISH DOCUMENTATION__
+
+* Dockerfile configuration
+  - Why the config
+  - AWS EB components
+* AWS Elastic Beanstalk HOWTO
+  - how to build the docker zip to upload to AWS
+  - How to deploy in AWS EB console
+  
+## Ansible Automated Deployment
+> __FINISH DOCUMENTATION__
+
+* Ansible script to deploy to AWS EB
+  - Discuss everything necessary to educate
+  - steps to run the script, variables, etc
 
 :arrow_up: [Back to Top](#table-of-contents)
