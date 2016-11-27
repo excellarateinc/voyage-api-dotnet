@@ -48,9 +48,6 @@ FK_core.RoleClaims_core.Roles_RoleId
 
 ```
 
-#### Cascades
-Soft deletes will cascade to child relationships as soft deletes when the related records cannnot exist or stand alone. For example, when a user is deleted, the phone numbers related to that user will also be deleted. Since the user phone numbers cannot exist without a user those records are no longer valid. On the other hand, if a user is related to an organization, the organization will not be deleted. This scenario is different because an organization can exist without a user. 
-
 ## Columns 
 
 ### Naming
@@ -107,4 +104,30 @@ The application will follow a soft delete pattern. Every table will have an oper
 
 ```
 IsDeleted = true/false
+```
+
+### Cascading Logical Deletes
+> __VERIFIY IMPLEMENTATION__
+
+#### One-to-Many - Parent Owns Childrens
+Logical deletes should cascade down to child tables in one-to-many relationships where the parent _owns_ the children, which should be most cases. This is not an absolute rule, but consider adding an _IsDeleted_ column to a one-to-many table and updating the value when the parent record is deleted or restored. 
+
+__Example:__ When the User record for "John Smith" is logically deleted, then the associated phone records shoudld be logically deleted as well. 
+```
+User
+- Name = John Smith
+- IsDeleted = true
+ |--- UserPhone
+      - PhoneNumber = 123-123-1233
+      - IsDeleted = true
+```
+
+#### Many-to-Many - Parent Doesn't Exclusively Own Children
+When a parent doesn't exclusively own the children it is associated with, then do not cascade logical deletes. Each situation might be different, so this is not an absolute rule. Use good judgement to determine what is necessary. When in doubt, don't cascade deletes.
+
+__Example:__ An Organization has many Users and a User can be associated with many Organizations. Logical deletes should not be cascaded in either direction since they each are independent entities. 
+```
+Organization 
+    |----- OrganizationUser
+                  |----- User
 ```
