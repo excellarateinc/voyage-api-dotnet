@@ -2,13 +2,13 @@
 The following guide covers the best practices for database structures within this application. 
 
 ## Table of Contents
-* [Database Agnostic](#database-agnostic)
+* [Vendor Agnostic](#vendor-agnostic)
 * [Tables](#tables)
 * [Columns](#columns)
 * [Indexes](#indexes)
 * [Logical Deletes](#logical-deletes)
 
-## Database Agnostic
+## Vendor Agnostic
 The Launchpad API app has been designed to be a kick starter app that any .NET development team can pick up and apply their their existing environment and infrastructure. In many Microsoft .NET shops, Microsoft SQL Server is the primary database, but there are also many companies that have a diverse technology infrastructure consisting of every flavor of database in existence. Since any backend database could potentially used with this API app, the position taken within Launchpad API is to follow [ANSI Standard SQL 1999](https://en.wikipedia.org/wiki/SQL:1999), which is supported by nearly all of the major database vendors.  
 
 __Rules__
