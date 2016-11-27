@@ -24,6 +24,8 @@ are registered using scanning. This can simplify the container configuration thr
                 .InstancePerRequest();
 ```
 
+:arrow_up: [Back to Top](#table-of-contents)
+
 ## Logging
 Logging has been configured to use [Serilog](https://serilog.net/) with a SQL Server sink. It is registered as a singleton. 
 
@@ -48,13 +50,13 @@ public IHttpActionResult Get(MonitorType id)
   return Ok(_statusCollector.Collect(id));
 }
 ```
+
 ### Debugging
 Serilog will fail silently if there is an issue logging a message. While this is desirable in production, when debugging it can be hard identify the issue with the message template. Serilog offers debugging out to help troubleshoot issues. To turn on the output, use:
 
 ```
  Serilog.Debugging.SelfLog.Enable(msg => System.Diagnostics.Debug.WriteLine(msg));
 ```
- 
  
 This will write Serilog issues to the output window. For more options see the [documentation](https://github.com/serilog/serilog/wiki/Debugging-and-Diagnostics).
 
@@ -67,6 +69,8 @@ This will write Serilog issues to the output window. For more options see the [d
    at Serilog.Sinks.MSSqlServer.MSSqlServerSink.<EmitBatchAsync>d__10.MoveNext()
 ```
 
+:arrow_up: [Back to Top](#table-of-contents)
+
 ## API Versioning
 API versioning is handled through URL versioning. See the [Web Service Pattern for API Versioning](WEB-SERVICE-PATTERNS.md#versioning). 
 
@@ -78,6 +82,8 @@ Each version of the an api will have a new controller source file and a unique u
 3. Create the a new controller
 4. Add the RoutePrefix attribute at the class level
 5. Add the Route attribute to each operation, specifying the route template
+
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## API Doc
 The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For 
@@ -134,3 +140,5 @@ To generate the api docs after a change:
    - This will scan the Controllers folder for endpoints and place the output in \docs
 
 To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
+
+:arrow_up: [Back to Top](#table-of-contents)
