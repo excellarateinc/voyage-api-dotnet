@@ -13,10 +13,11 @@ If you are extending this API to build a new app, then replace this section with
 
 ## Features
 
-__Technology__ 
+### Technology
 * JSON RESTful Web Services
   - JSON request/response interaction
   - Strict [REST implementation](readme_docs/STANDARDS-WEB-SERVICES.md)
+  - [apiDoc](http://apidocjs.com) documentation generated from source code comments
 * Microsoft .NET
   - [WEB API](https://www.asp.net/web-api) for base web services behavior
   - [Identity Framework](https://www.asp.net/identity) for Authentication and Authorization
@@ -26,11 +27,15 @@ __Technology__
   - Capable of integrating with any major database vendor (SQL Server, Oracle, DB2, MySQL, etc)
   - Database interactions follow [SQL99](https://en.wikipedia.org/wiki/SQL:1999) standards with no vendor specific database features relied upon
   - Liquibase database migrations produce on-demand SQL specific to the integrated database
-* [Integrated Test Suite](#integrated-test-suite)
+* Integrated Test Suite
   - Automated test coverage using [XUnit](https://xunit.github.io) and [Moq](https://github.com/Moq/moq4/wiki/Quickstart) frameworks
   - Tests executed during every build to ensure high quality code coverage
+* Continuous Integration (CI)
+  - Jenkins CI jobs able to invoke MSBuild and apiDoc commands to build, test, and package
+  - Jenkins jobs included with with API source
+  - Supports other CI environments like Team Foundation Server (TFS)
 
-___Web Services___ 
+### Web Services
 * HTTP Compliant RESTful API
   - Follows HTTP protocols for RESTful web services
   - Lightweight JSON requests and responses
@@ -49,7 +54,7 @@ ___Web Services___
   - Complete documentation for web services consumers
   - Includes detailed descriptions and example to quickly interact with the API
 
-__Security__ 
+### Security
 * [OWASP](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project) Hacker Proof
   - Tested nightly against OWASP common hacks (particularly the top 10)
   - Tested nightly using 3rd party penetration testing services to ensure entperprise grade security!
@@ -72,7 +77,7 @@ __Security__
   - HTTP Request / Response logging to track user activity (anonymous and authenticated users)
   - Database change logging to track manipulation of data over time (anonymous and authenticated users)
 
-__Development Team__ 
+### Development Team
 * Team Protocols 
   - Fast learning curve through clear documentation
   - Easy values, standards, best practices that most developers will aggreement
