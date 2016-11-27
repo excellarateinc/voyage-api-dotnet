@@ -1,4 +1,4 @@
-## Authorization
+## Authorization Standards
 The following section covers securing a web api endpoint (controller method)
 
 ##Overview
