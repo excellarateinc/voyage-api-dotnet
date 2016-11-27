@@ -35,6 +35,8 @@ These are the core standards that our development team agrees to follow. All of 
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Standards
+> __FINISH THIS SECTION__
+
 The following coding standards are agreed upon by the development team and are expected to be followed. Where possible, these rules will be enforced by the IDE.
 
 __Langauges__
@@ -44,8 +46,6 @@ __Langauges__
 __Best Practices__
 * [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
 * [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
-
-> __NOTE__ FINISH THIS SECTION
 
 :arrow_up: [Back to Top](#table-of-contents)
 
