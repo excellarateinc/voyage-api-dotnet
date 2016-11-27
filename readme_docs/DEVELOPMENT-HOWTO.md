@@ -8,7 +8,7 @@ Instructional recipies for how to do something within the codebase.
 * [API Versioning](#api-versioning)
 
 ## APIDoc - Document A Web Service
-The web api controllers are using inline documentation called apiDoc. The documentation is embedded as comments above each controller method. For more details see the [documentation](http://apidocjs.com/).
+The web api controllers are using inline documentation called [apiDoc](http://apidocjs.com). The documentation is embedded as comments above each controller method. For more details see the [documentation](http://apidocjs.com/).
 
 ### Sample Documentation Comments
 Below is an example of the comments used to document an endpoint.
