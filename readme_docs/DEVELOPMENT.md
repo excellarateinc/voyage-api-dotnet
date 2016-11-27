@@ -40,13 +40,13 @@ These are the core standards that our development team agrees to follow. All of 
 The following coding standards are agreed upon by the development team and are expected to be followed. Where possible, these rules will be enforced by the IDE.
 
 __Langauges__
-* C#
-* SQL
+* [C#](#STANDARDS-CSHARP.md)
+* [SQL](#STANDARDS-SQL.md)
 * XUnit
 
 __Best Practices__
-* [Database](DATABASE.md)
-* [Web Service Patterns](WEB-SERVICE-PATTERNS.md)
+* [Database Standards](STANDARDS-DATABASE.md)
+* [Web Service Standards](STANDARDS-WEB-SERVICES.md)
 * ?? [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
 * ?? [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
 
