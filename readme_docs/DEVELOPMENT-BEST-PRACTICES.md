@@ -1,3 +1,12 @@
+## Development Best Practices
+Best practices that all developers on the team agree to adhere to when writing new code or refactoring existing code. Peer code reviews should enforce these best practices along with the documented [coding standards](DEVELOPMENT.md#coding-standards). 
+
+## Table of Contents
+* [Dependency Injection](#dependency-injection)
+* [Logging](#logging)
+* [API Versioning](#api-versioning)
+* [API Doc](#api-doc)
+
 ## Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
 components with the container. The overall container is setup in the ContainerConfig in ***Launchpad.Web***.
