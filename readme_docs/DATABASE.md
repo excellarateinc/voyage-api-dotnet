@@ -17,6 +17,8 @@ __Rules__
 * Do not use: stored procedures, functions, trigger, or views. 
 * Test all SQL / DDL using SQL Server Express, Oracle XE, and MySQL
 
+:arrow_up: [Back to Top](#table-of-contents)
+
 ## Tables
 
 ### Naming
@@ -47,6 +49,8 @@ FK_{schema.ForeignKeyTable}_{schema.PrimaryKeyTable}_{PrimaryKeyColmn}
 FK_core.RoleClaims_core.Roles_RoleId
 
 ```
+
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Columns 
 
@@ -91,10 +95,12 @@ Operational columns will be added to every table. The standard columns are:
 | ModifyUser | nvarchar(50) | No | Modify user |
 | IsDeleted  | bit | No | Indicates if the record has been logically deleted|
 
-**Need to determine how to enforce these columns - triggers for date columns or expect the client to provide the values**
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Indexes
 1. Create a clustered index on the primary key  (default behavior) 
+
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## Logical Deletes
 > __FINISH DOCUMENTATION__
@@ -130,3 +136,5 @@ Organization
     |----- OrganizationUser
                   |----- User
 ```
+
+:arrow_up: [Back to Top](#table-of-contents)
