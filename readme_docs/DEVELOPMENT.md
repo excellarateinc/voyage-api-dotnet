@@ -10,7 +10,7 @@ Information on how the development team agrees to work together along with infor
 * [Code Review & Commit](#code-review-merge)
 * [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
-Also check out the [Development HOW TO Guide](DEVELOPMENT-HOWTO.md).
+Also check out the [Development HOW TO Guide](DEVELOPMENT-HOWTO-GUIDE.md).
 
 ## Core Values
 These are the core standards that our development team agrees to follow. All of our decisions should be tested against our core values. Only a team decision can overrule our core values on a case-by-case basis. 
