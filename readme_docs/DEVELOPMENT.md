@@ -180,16 +180,15 @@ __Rules__
 ### Paired PROD Deploys
 Deploying to production should always be done in pairs of two peers! Accidents will happen, but they can be mostly prevented if by having a peer watchfully checking deployment steps as they are performed. 
 
-__Rules__
-
-1. Production deployments require 2 qualified system and/or software engineers
-2. Production deployment procedures _must_ be documented vertabim so that any system/software engineer can execute them
-3. Production deployment procedures _must_ document rollback procedures in the event of an error
-4. Before each action is performed it must be verbally confirmed by the other person(s)
-5. All parties involved in the production deploy _must_ manually test that the deploy released the correct version of the software
-6. All parties involved must verbally agree that the software has been successfully deployed
-7. In the event of an unresolveable error, the deployment team must contact a manager and an expert to assist with the resolution of the issue. 
-8. Once the deploy has been determined a success or failure, then an email must be sent to the entire project team with details (if necessary)
+__Rules__ 
+* Production deployments require 2 qualified system and/or software engineers
+* Production deployment procedures _must_ be documented vertabim so that any system/software engineer can execute them
+* Production deployment procedures _must_ document rollback procedures in the event of an error
+* Before each action is performed it must be verbally confirmed by the other person(s)
+* All parties involved in the production deploy _must_ manually test that the deploy released the correct version of the software
+* All parties involved must verbally agree that the software has been successfully deployed
+* In the event of an unresolveable error, the deployment team must contact a manager and an expert to assist with the resolution of the issue. 
+* Once the deploy has been determined a success or failure, then an email must be sent to the entire project team with details (if necessary)
 
 If at all possible, automate as much of the deployment process as possible to prevent human errors. 
 
