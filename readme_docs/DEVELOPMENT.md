@@ -7,7 +7,7 @@ Information on how the development team agrees to work together along with infor
 * [Workstation Setup](#workstation-setup)
 * [Run App Locally](#run-app-locally)
 * [Code Branching](#code-branching)
-* [Code Review & Commit](#code-review-commit)
+* [Code Review & Commit](#code-review-merge)
 * [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
 ## Core Values
@@ -98,20 +98,21 @@ This guide is focusing on the simplest branching strategies so that even the lea
 
 Read [Git - Branching Workflows](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows) for more information. 
 
-## Code Review & Commit
-Peer code reviews are perhaps the _most_ important team development step in a project. Code reviews are an opportunity for team members to catch oversights in code, bugs, standards, and best practices. Code reviews are also opportunities for developers to teach each other about our documented standards and guidelines as well as to share other general development knowledge and best practices from experience. Also, code reviews encourage developers to share work-in-progress frequently and to develop respectful and trusting relationships (ie team building). 
+## Code Review & Merge
+Peer code reviews are perhaps the _most_ important team development step in a project. Code reviews are an opportunity for team members to catch oversights in code, bugs, standards, and best practices. Code reviews are also opportunities for developers to teach each other about our documented standards and guidelines as well as to share other general development knowledge and best practices from experience. Further more, code reviews encourage developers to share work-in-progress frequently and to develop respectful and trusting relationships (ie team building). 
+
+Once a thorough code review has been completed, the peer reviewer will perform the merge process to the long running branch (i.e. master), which will stamp the reviewers name on the merge to show the code was reviewed and approved. 
 
 __Rules__
 * It is _your_ responsibility to have your code reviewed in a timely manner
 * It is _never_ acceptable to have your code merged into a long running branch without a code review
-* Code merges into a long running branch can only be performed by the peer code reviewer
+* Merging code into a long running branch can only be performed by the peer code reviewer
 * You are required to fix any violations of the __documented__ team dev standards/guidelines
 * Peer reviewer recommendations that are not supported by documented team dev standards/guidelines are optional
 * Seek to have your code reviewed by someone more experienced so that you can learn something new!
 * Change up who reviews your code to promote cross training and to learn from new people
 * Make time to provide a thoughtful code review. 
 * Be kind and follow the [Golden Rule](https://en.wikipedia.org/wiki/Golden_Rule) 
-
 
 ## Deploy (QA, UAT, PROD)
 
