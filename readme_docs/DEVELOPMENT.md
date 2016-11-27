@@ -68,11 +68,13 @@ The current development practice for this team is to only support a "master" lon
 
 ### Topic Branches
 Topic branches are shorter lived branches are often times referred to as "feature branches". Topic branches can be thought of as workspaces for developers to make their code changes for a single (hopefully small) feature. 
-
+```
  --------- MASTER ---------------------------------------> Production
     \-- Topic #123 --/     \---- Topic #124 ----/
+```
 
-The workflow for a Topic branch is as follows:
+Topic Branch Workflow
+
 1. Create a new branch from a long running branch like "master"
   * Name the Topic branch with the ticket number from your task management app + short english description (ie LP-1234 Navbar Quick Search)
   * Creating a good name allows for quick comparison of the task management app and Git for what's in the release and what's not
