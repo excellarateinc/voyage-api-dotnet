@@ -10,7 +10,7 @@ Information on how the development team agrees to work together along with infor
 * [Code Review & Commit](#code-review-merge)
 * [Deploy (QA, UAT, PROD)](#deploy-qa-uat-prod)
 
-Also check out the [Development Recipes](DEVELOPMENT-RECIPES.md).
+Also check out [Development Recipes](DEVELOPMENT-RECIPES.md).
 
 ## Core Values
 These are the core standards that our development team agrees to follow. All of our decisions should be tested against our core values. Only a team decision can overrule our core values on a case-by-case basis. 
@@ -36,8 +36,17 @@ These are the core standards that our development team agrees to follow. All of 
 
 ## Code Standards
 The following coding standards are agreed upon by the development team and are expected to be followed. Where possible, these rules will be enforced by the IDE.
+
+__Langauges__
 * C#
 * XUnit
+
+__Best Practices__
+* [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
+* [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
+* 
+
+> __NOTE__ FINISH THIS SECTION
 
 :arrow_up: [Back to Top](#table-of-contents)
 
