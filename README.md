@@ -12,19 +12,28 @@ If you are extending this API to build a new app, then replace this section with
 * [Deploy](readme_docs/DEPLOY.md)
 
 ## Features
-* [RESTful API](#restful-api)
-* [Consumer API Docs](#consumer-api-docs)
-* [OAuth2 Authentication](#oauth2-authentication)
-* [Role Based Authorization](#role-based-authorization)
+
+___Web Services___
+* [API Documentation](#consumer-api-docs)
 * [User Management Services](#user-management-services)
+
+__Security__
+* [Role Based Authorization](#role-based-authorization)
+* [OAuth2 Authentication](#oauth2-authentication)
 * [Auditing](#access-and-data-auditing)
+
+__Technology__
+* [RESTful API](#restful-api)
 * [Integrated Test Suite](#integrated-test-suite)
+
+__Team__
+* [Development Team Standards](#development-team-standards)
 * [Documented Best Practices](#documented-best-practices)
 
 #### RESTful API
 [Web Service Patterns](readme_docs/WEB-SERVICE-PATTERNS.md)
 
-#### Consumer API Docs
+#### API Documentation
 
 #### OAuth2 Authentication
 
