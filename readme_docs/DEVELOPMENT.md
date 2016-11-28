@@ -87,7 +87,7 @@ Download and install the following required software for development:
    - NOTE: This app uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
    - In Visual Studio, open the package manager console by going to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". 
    - Set the Default project to Launchpad.Data in the "Default project" dropdown.
-   - Type "Update-Database" (no quotes) in the console and hit enter to create the database. This will run the Entity Framework migration scripts.
+   - Type "Update-Database" (no quotes) in the console and hit enter to create the database. This will run the Entity Framework migration scripts. If this fails with a message telling you the command is unrecognized, restart Visual Studio and try again.
      * The connection string in Launchpad.Web web.config determines where the database will be created
      * The default is localhost/sqlexpress with initial catalog Launchpad
      * When the web.config connection string is changed, update the connection string in Launchpad.Data.IntegrationTests
