@@ -5,14 +5,14 @@ using Xunit;
 
 namespace Launchpad.Models.UnitTests
 {
-    public class WidgetModelTests
+    public class ClaimModelTests
     {
         [Fact]
         public void Class_Should_Have_Validator_Class()
         {
-            typeof(WidgetModel)
+            typeof(ClaimModel)
                 .Should()
-                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(WidgetModelValidator));
+                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(ClaimModelValidator));
         }
     }
 }

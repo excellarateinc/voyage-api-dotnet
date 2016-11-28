@@ -1,11 +1,10 @@
-﻿using System;
+﻿using FluentValidation.Attributes;
+using Launchpad.Models.Validators;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Launchpad.Models
 {
+    [Validator(typeof(UserModelValidator))]
     public class UserModel
     {
         public string Id { get; set; }

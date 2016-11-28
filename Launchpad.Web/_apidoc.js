@@ -17,14 +17,18 @@
  *
  * @apiErrorExample Error-Response:
  *  HTTP/1.1 400: Bad Request
- *  {
- *      "message": "The request is invalid.",
- *      "modelState": {
- *          "widget.Name": [
- *              "A widget must have a name"
- *          ]
- *      }
- *  }
+ * [
+ *   {
+ *     "code": "missing.required.field",
+ *     "field": "userModel.LastName",
+ *     "description": "Last name is a required field"
+ *   },
+ *   {
+ *     "code": "invalid.email",
+ *     "field": "userModel.Email",
+ *     "description": "Last name is a required field"
+ *   }
+ * ]
  */
 
 /**
