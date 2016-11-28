@@ -71,23 +71,31 @@ Download and install the following required software for development:
 1. Download source via Visual Studio GitHub extension
    - Install GitHub extension [[Download](https://visualstudio.github.com)]
    - GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
-   -  explain the steps...
+   - Open Visual Studio
+   - Go to the "Team Explorer" tab
+   - Click the "Manage Connections" button.
+   - Under the GitHub section, click "Clone".
+   - Enter your GitHub credentials.
+   - Choose "launchpad-dotnet-api" from the list of repositories.
+   - Once cloning is complete, open the "Launchpad.API" solution.
 2. Nuget Restore
-   - Visual Studio should automatically restore the dependencies on the first build. If this does not occur, use the package manager console to restore the dependencies.
-   - NOTE: Do we need to include instructions for how to do this on the console? 
+   - Visual Studio should automatically restore the dependencies on the first build.
+   - If packages aren't restored on build, you have two options. 
+     * You can right click the solution in Visual Studio and select "Restore NuGet Packages".
+     * Go to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". From the console that shows up, click the "Restore" button in the upper right corner.
 3. Create the database
    - NOTE: This app uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
-   - In Visual Studio, open the package manager console
-   - Set the Default project to Launchpad.Data
-   - Run Update-Database from the console to create the database
+   - In Visual Studio, open the package manager console by going to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". 
+   - Set the Default project to Launchpad.Data in the "Default project" dropdown.
+   - Type "Update-Database" (no quotes) in the console and hit enter to create the database. This will run the Entity Framework migration scripts.
      * The connection string in Launchpad.Web web.config determines where the database will be created
      * The default is localhost/sqlexpress with initial catalog Launchpad
      * When the web.config connection string is changed, update the connection string in Launchpad.Data.IntegrationTests
 4. Build
    - Use the Visual Studio Build/Debug menus to compile and start the project. These menu options will invoke MSBUILD with the appropriate parameters.
 5. Test
-   - Use the Visual Studio Test menu to execute the unit and integration tests. 
-   - The test explorer will show the results. 
+   - Use the Visual Studio Test Explorer to view and execute the unit and integration tests. 
+     * To open the test explorer, click the "Test" tab in Visual Studio, select "Windows" then "Test Explorer".
    - NOTE: A local database is required in order for integration tests to complete successfully. 
 
 > __SEED DATA__
