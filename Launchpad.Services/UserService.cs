@@ -40,7 +40,7 @@ namespace Launchpad.Services
 
         }
 
-            
+
         public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
 
@@ -52,7 +52,7 @@ namespace Launchpad.Services
         public async Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-            
+
             var hydratedRole = _roleService.GetRoleByName(roleModel.Name);
             return new IdentityResult<RoleModel>(IdentityResult.Success, hydratedRole);
         }
@@ -67,7 +67,7 @@ namespace Launchpad.Services
             var user = await _userManager.FindAsync(userName, password);
             return user != null && user.IsActive;
         }
-        
+
         public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)
         {
             var appUser = new ApplicationUser();
@@ -78,8 +78,8 @@ namespace Launchpad.Services
 
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName=model.FirstName, LastName= model.LastName, IsActive = true };
-          
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
+
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
@@ -93,7 +93,7 @@ namespace Launchpad.Services
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentException($"Unable to find user {userId}");
             }
@@ -104,7 +104,7 @@ namespace Launchpad.Services
         public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentException($"Unable to find user {userName}");
             }
@@ -118,13 +118,13 @@ namespace Launchpad.Services
                 .SelectMany(_ => _)
                 .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
             userIdentity.AddClaims(roleClaims);
-                            
+
             return userIdentity;
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
-           
+
             var roles = await _userManager.GetRolesAsync(userId);
 
             //TODO: Refactor this to pass in the role list (IQueryable)
@@ -137,7 +137,7 @@ namespace Launchpad.Services
         public RoleModel GetUserRoleById(string userId, string roleId)
         {
             var role = _roleService.GetRoleById(roleId);
-            
+
             return _userManager.IsInRole(userId, role.Name) ? role : null;
 
         }
@@ -151,8 +151,17 @@ namespace Launchpad.Services
         public async Task<IdentityResult> DeleteUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
-            var identityResult = await _userManager.DeleteAsync(appUser);
-            return identityResult;
+
+            if (appUser == null)
+            {
+                return new IdentityResult(new string[] { });
+            }
+            else
+            {
+                var identityResult = await _userManager.DeleteAsync(appUser);
+
+                return identityResult;
+            }
         }
     }
 }
