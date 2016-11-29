@@ -104,7 +104,14 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
             var result = await _userService.UpdateUserAsync(userId, userModel);
-            return Ok(result.Model);
+            if (result.Result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result.Model);
+            }
         }
 
         /**

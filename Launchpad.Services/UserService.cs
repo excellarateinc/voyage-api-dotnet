@@ -32,14 +32,19 @@ namespace Launchpad.Services
         {
             var appUser = await _userManager.FindByIdAsync(userId);
 
-            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+            if (appUser == null)
+            {
+                return new IdentityResult<UserModel>(null, null);
+            }
+            else
+            {
+                _mapper.Map<UserModel, ApplicationUser>(model, appUser);
 
-            var identityResult = await _userManager.UpdateAsync(appUser);
+                var identityResult = await _userManager.UpdateAsync(appUser);
 
-            return new IdentityResult<UserModel>(identityResult, _mapper.Map<UserModel>(appUser));
-
+                return new IdentityResult<UserModel>(identityResult, _mapper.Map<UserModel>(appUser));
+            }
         }
-
             
         public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
