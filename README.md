@@ -7,7 +7,7 @@ If you are extending this API to build a new app, then replace this section with
 * [Features](#features)
 * [Development](readme_docs/DEVELOPMENT.md)
 * [Development Recipes](readme_docs/DEVELOPMENT-RECIPES.md)
-* [Testing](readme_docs/TESTING.md)
+* [Testing](readme_docs/STANDARDS-TESTING.md)
 * [Deploy](readme_docs/DEPLOY.md)
 
 ## Features
