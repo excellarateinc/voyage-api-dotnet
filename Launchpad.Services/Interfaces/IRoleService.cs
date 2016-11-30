@@ -1,5 +1,4 @@
 ﻿using Launchpad.Models;
-using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,23 +6,24 @@ namespace Launchpad.Services.Interfaces
 {
     public interface IRoleService
     {
-        IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id);
-        RoleModel GetRoleByName(string name);
+        EntityResult<IEnumerable<ClaimModel>> GetRoleClaimsByRoleId(string id);
 
-        RoleModel GetRoleById(string id);
+        EntityResult<RoleModel> GetRoleByName(string name);
 
-        Task<IdentityResult<RoleModel>> CreateRoleAsync(RoleModel model);
+        EntityResult<RoleModel> GetRoleById(string id);
 
-        IEnumerable<RoleModel> GetRoles();
+        Task<EntityResult<RoleModel>> CreateRoleAsync(RoleModel model);
 
-        IEnumerable<ClaimModel> GetRoleClaims(string name);
+        EntityResult<IEnumerable<RoleModel>> GetRoles();
 
-        Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim);
+        EntityResult<IEnumerable<ClaimModel>> GetRoleClaims(string name);
 
-        Task<IdentityResult> RemoveRoleAsync(string roleId);
+        Task<EntityResult<ClaimModel>> AddClaimAsync(string roleId, ClaimModel claim);
 
-         void RemoveClaim(string roleId, int claimId);
+        Task<EntityResult> RemoveRoleAsync(string roleId);
 
-        ClaimModel GetClaimById(string roleId, int claimId);
+        EntityResult RemoveClaim(string roleId, int claimId);
+
+        EntityResult<ClaimModel> GetClaimById(string roleId, int claimId);
     }
 }

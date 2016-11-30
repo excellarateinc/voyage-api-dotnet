@@ -1,16 +1,15 @@
-﻿using Launchpad.Services.Interfaces;
-using System.Threading.Tasks;
-using Launchpad.Models;
-using Microsoft.AspNet.Identity;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Models.EntityFramework;
+﻿using AutoMapper;
 using Launchpad.Core;
+using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
+using Launchpad.Services.IdentityManagers;
+using Launchpad.Services.Interfaces;
+using Microsoft.AspNet.Identity;
 using System;
-using System.Security.Claims;
 using System.Collections.Generic;
-using AutoMapper;
 using System.Linq;
-using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Launchpad.Services
 {
@@ -40,21 +39,21 @@ namespace Launchpad.Services
 
         }
 
-            
+
         public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
 
-            var role = _roleService.GetRoleById(roleId);
-            var result = await _userManager.RemoveFromRoleAsync(userId, role.Name);
+            var entityResult = _roleService.GetRoleById(roleId);
+            var result = await _userManager.RemoveFromRoleAsync(userId, entityResult.Model.Name);
             return result;
         }
 
         public async Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-            
-            var hydratedRole = _roleService.GetRoleByName(roleModel.Name);
-            return new IdentityResult<RoleModel>(IdentityResult.Success, hydratedRole);
+
+            var entityResult = _roleService.GetRoleByName(roleModel.Name);
+            return new IdentityResult<RoleModel>(IdentityResult.Success, entityResult.Model);
         }
 
         public IEnumerable<UserModel> GetUsers()
@@ -67,7 +66,7 @@ namespace Launchpad.Services
             var user = await _userManager.FindAsync(userName, password);
             return user != null && user.IsActive;
         }
-        
+
         public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)
         {
             var appUser = new ApplicationUser();
@@ -78,8 +77,8 @@ namespace Launchpad.Services
 
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName=model.FirstName, LastName= model.LastName, IsActive = true };
-          
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
+
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
@@ -93,7 +92,7 @@ namespace Launchpad.Services
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentException($"Unable to find user {userId}");
             }
@@ -104,7 +103,7 @@ namespace Launchpad.Services
         public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentException($"Unable to find user {userName}");
             }
@@ -115,20 +114,21 @@ namespace Launchpad.Services
             //Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
             var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                .SelectMany(_ => _)
+                .SelectMany(_ => _.Model)
                 .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
             userIdentity.AddClaims(roleClaims);
-                            
+
             return userIdentity;
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
-           
+
             var roles = await _userManager.GetRolesAsync(userId);
 
             //TODO: Refactor this to pass in the role list (IQueryable)
             var roleModels = _roleService.GetRoles()
+                            .Model
                             .Where(_ => roles.Contains(_.Name));
 
             return roleModels;
@@ -136,9 +136,9 @@ namespace Launchpad.Services
 
         public RoleModel GetUserRoleById(string userId, string roleId)
         {
-            var role = _roleService.GetRoleById(roleId);
-            
-            return _userManager.IsInRole(userId, role.Name) ? role : null;
+            var entityResult = _roleService.GetRoleById(roleId);
+
+            return _userManager.IsInRole(userId, entityResult.Model.Name) ? entityResult.Model : null;
 
         }
 

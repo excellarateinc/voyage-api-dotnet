@@ -1,20 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using Ploeh.AutoFixture;
-using FluentAssertions;
-using Xunit;
-using Moq;
-using Launchpad.UnitTests.Common;
-using Launchpad.Models.EntityFramework;
-using Launchpad.Services.IdentityManagers;
-using Microsoft.AspNet.Identity;
+﻿using FluentAssertions;
 using Launchpad.Models;
-using System.Text;
+using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Fixture;
-using System.Linq;
+using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
-using System.Security.Claims;
+using Launchpad.UnitTests.Common;
+using Microsoft.AspNet.Identity;
+using Moq;
+using Ploeh.AutoFixture;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -34,7 +33,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.As<IUserPasswordStore<ApplicationUser>>();
             _mockStore.As<IQueryableUserStore<ApplicationUser>>();
             _mockStore.As<IUserRoleStore<ApplicationUser>>();
-            _mockStore.As<IUserClaimStore<ApplicationUser>>();    
+            _mockStore.As<IUserClaimStore<ApplicationUser>>();
 
             _mockRoleService = Mock.Create<IRoleService>();
             _mapperFixture = mapperFixture;
@@ -78,7 +77,7 @@ namespace Launchpad.Services.UnitTests
                 Email = "bob@bob.com",
                 Id = id
             };
-            
+
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);
 
@@ -86,7 +85,7 @@ namespace Launchpad.Services.UnitTests
                     .ReturnsAsync(appUser);
 
             _mockStore.Setup(_ => _.UpdateAsync(appUser))
-                .Callback<ApplicationUser>( (user) => user.IsActive.Should().BeFalse())
+                .Callback<ApplicationUser>((user) => user.IsActive.Should().BeFalse())
                 .Returns(Task.Delay(0));
 
 
@@ -118,7 +117,7 @@ namespace Launchpad.Services.UnitTests
                 Email = "sue@sue.com",
                 FirstName = "First2",
                 LastName = "Last2"
-                
+
 
             };
 
@@ -174,11 +173,12 @@ namespace Launchpad.Services.UnitTests
                 Id = userId
             };
 
-            
+
 
             var fakeRoles = Fixture.CreateMany<RoleModel>();
+            var entityResult = new EntityResult<IEnumerable<RoleModel>>(fakeRoles, true, false);
 
-            var assignedRoles = fakeRoles.Take(1).Select(_=>_.Name).ToList();
+            var assignedRoles = fakeRoles.Take(1).Select(_ => _.Name).ToList();
 
             _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
@@ -188,7 +188,7 @@ namespace Launchpad.Services.UnitTests
                 .ReturnsAsync(assignedRoles);
 
             _mockRoleService.Setup(_ => _.GetRoles())
-                .Returns(fakeRoles);
+                .Returns(entityResult);
 
             var roles = await _userService.GetUserRolesAsync(userId);
 
@@ -198,7 +198,7 @@ namespace Launchpad.Services.UnitTests
             roles.Should().NotBeNullOrEmpty();
             roles.Should().HaveCount(1);
             roles.First().Name.Should().Be(assignedRoles.First());
-             
+
         }
 
         [Fact]
@@ -207,6 +207,8 @@ namespace Launchpad.Services.UnitTests
             var roles = new string[] { "Admin" };
             var id = Fixture.Create<string>();
             var roleClaims = new[] { new ClaimModel { ClaimType = "type1", ClaimValue = "value1" } };
+            var entityResult = new EntityResult<IEnumerable<ClaimModel>>(roleClaims, true, false);
+
             var appUser = new ApplicationUser
             {
                 Id = id,
@@ -228,7 +230,7 @@ namespace Launchpad.Services.UnitTests
                 .ReturnsAsync(new List<Claim>());
 
             _mockRoleService.Setup(_ => _.GetRoleClaims(roles[0]))
-                .Returns(roleClaims);
+                .Returns(entityResult);
 
             //Act
             var result = await _userService.GetUserClaimsAsync(id);
@@ -245,6 +247,7 @@ namespace Launchpad.Services.UnitTests
             var userId = "user-id";
             var roleId = "role-id";
             var roleModel = Fixture.Create<RoleModel>();
+            var entityResult = new EntityResult<RoleModel>(roleModel, true, false);
 
 
 
@@ -255,7 +258,7 @@ namespace Launchpad.Services.UnitTests
             };
 
             _mockRoleService.Setup(_ => _.GetRoleById(roleId))
-                .Returns(roleModel);
+                .Returns(entityResult);
 
             _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
@@ -290,10 +293,11 @@ namespace Launchpad.Services.UnitTests
                 .With(_ => _.Username, "bob@bob.com")
                 .Create(); ;
 
-        
+
 
             var roleModel = Fixture.Create<RoleModel>();
             var serviceModel = Fixture.Create<RoleModel>();
+            var entityResult = new EntityResult<RoleModel>(serviceModel, true, false);
 
             var applicationUser = new ApplicationUser { Id = userModel.Id, UserName = userModel.Username };
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
@@ -315,8 +319,8 @@ namespace Launchpad.Services.UnitTests
                 .Returns(Task.Delay(0));
 
             _mockRoleService.Setup(_ => _.GetRoleByName(roleModel.Name))
-                .Returns(serviceModel);
-         
+                .Returns(entityResult);
+
 
             //act
             var result = await _userService.AssignUserRoleAsync(userModel.Id, roleModel);
@@ -342,8 +346,9 @@ namespace Launchpad.Services.UnitTests
             };
 
             var model = Fixture.Create<RoleModel>();
+            var entityResult = new EntityResult<RoleModel>(model, true, false);
             _mockRoleService.Setup(_ => _.GetRoleById(roleId))
-                .Returns(model);
+                .Returns(entityResult);
 
             _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
@@ -373,8 +378,9 @@ namespace Launchpad.Services.UnitTests
             };
 
             var model = Fixture.Create<RoleModel>();
+            var entityResult = new EntityResult<RoleModel>(model, true, false);
             _mockRoleService.Setup(_ => _.GetRoleById(roleId))
-                .Returns(model);
+                .Returns(entityResult);
 
             _mockStore.Setup(_ => _.FindByIdAsync(userId))
                 .ReturnsAsync(appUser);
@@ -395,9 +401,10 @@ namespace Launchpad.Services.UnitTests
         public async void CreateClaimsIdentity_Should_Return_Identity()
         {
             var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.widget" } };
+            var entityResult = new EntityResult<IEnumerable<ClaimModel>>(roleClaims, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
-             .Returns(roleClaims);
+             .Returns(entityResult);
 
             string user = "bob@bob.com";
             var model = new ApplicationUser() { UserName = user };
@@ -566,7 +573,7 @@ namespace Launchpad.Services.UnitTests
         }
 
 
-       
+
         [Fact]
         public async Task Register_Should_Call_UserManager()
         {
