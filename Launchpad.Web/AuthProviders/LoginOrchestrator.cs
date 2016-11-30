@@ -11,7 +11,7 @@ namespace Launchpad.Web.AuthProviders
     public class LoginOrchestrator : ILoginOrchestrator
     {
         /**
-        * @api {post} /api/v1/login Login a user
+        * @api {post} /v1/login Login a user
         * @apiVersion 0.1.0
         * @apiName Login 
         * @apiGroup Account

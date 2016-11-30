@@ -3,11 +3,6 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
-using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
@@ -38,9 +33,13 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiSuccess {Object[]} users List of users 
         * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.name Name of the user
-        * @apiSuccess {String} users.firstName First Name
-        * @apiSuccess {String} users.lastName last name
+        * @apiSuccess {String} users.userName Username of the user
+        * @apiSuccess {String} users.email Email
+        * @apiSuccess {String} users.firstName First name
+        * @apiSuccess {String} users.lastName Last name
+        * @apiSuccess {Object[]} users.phones User phone numbers
+        * @apiSuccess {String} users.phones.phoneNumber Phone number
+        * @apiSuccess {String} users.phones.phoneType Phone type  
         * 
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -73,29 +72,8 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse AuthHeader
         * 
-        * @apiParam {String} userId User ID
-        * @apiParam {Object} user User
-        * @apiParam {String} user.name Name of the user
-        * @apiParam {String} user.id User ID  
-        * @apiParam {String} user.firstName First name
-        * @apiParam {String} user.lastName Last name  
-        *   
-        * @apiSuccess {Object} user User 
-        * @apiSuccess {String} user.id User ID
-        * @apiSuccess {String} user.name Name of the user
-        * @apiSuccess {String} user.firstName First name
-        * @apiSuccess {String} user.lastName Last name
-        * 
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   {   
-        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com",
-        *           "firstName": "Admin_First",
-        *           "lastName": "Admin_Last"
-        *           
-        *   }
-        *   
+        * @apiUse UserRequestModel
+        * @apiUse UserSuccessModel   
         * @apiUse UnauthorizedError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.UpdateUser)]
@@ -136,7 +114,8 @@ namespace Launchpad.Web.Controllers.API.V1
             if (result.Succeeded)
             {
                 return StatusCode(System.Net.HttpStatusCode.NoContent);
-            }else
+            }
+            else
             {
                 ModelState.AddErrors(result);
                 return BadRequest(ModelState);
@@ -160,28 +139,8 @@ namespace Launchpad.Web.Controllers.API.V1
         *       "Location": "http://localhost:52431/api/v1/users/b78ae241-1fa6-498c-aa48-9742245d0d2f"
         *   }
         * 
-        * 
-        * @apiParam {Object} user User
-        * @apiParam {String} user.userName Username of the user
-        * @apiParam {String} user.firstName First name
-        * @apiParam {String} user.lastName Last name
-        *   
-        * @apiSuccess {Object} user User 
-        * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.userName Username of the user
-        * @apiSuccess {String} user.firstName First name
-        * @apiSuccess {String} user.lastName Last name
-        * 
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 201 CREATED
-        *   {   
-        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "userName": "admin@admin.com"
-        *           "firstName": "Admin_First",
-        *           "lastName": "Admin_Last",
-        *           "phones": []
-        *   }
-        *   
+        * @apiUse UserRequestModel
+        * @apiUse UserSuccessModel   
         * @apiUse UnauthorizedError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.CreateUser)]
@@ -193,7 +152,8 @@ namespace Launchpad.Web.Controllers.API.V1
             if (result.Result.Succeeded)
             {
                 return CreatedAtRoute("GetUserAsync", new { UserId = result.Model.Id }, result.Model);
-            }else
+            }
+            else
             {
                 ModelState.AddErrors(result.Result);
                 return BadRequest(ModelState);
@@ -212,36 +172,13 @@ namespace Launchpad.Web.Controllers.API.V1
         *  
         * @apiParam {String} userId User ID  
         *   
-        * @apiSuccess {Object} user User
-        * @apiSuccess {String} user.id User ID
-        * @apiSuccess {String} user.userName Username of the user
-        * @apiSuccess {String} user.firstName First name
-        * @apiSuccess {String} user.lastName Last name
-        * 
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK 
-        *   {
-        *       "id":"0ff4c2c7-3d53-4932-84a3-398161ef7c46",
-        *       "firstName":"Admin_First",
-        *       "lastName":"Admin_Last",
-        *       "username":"admin2@admin.com",
-        *       "email":"admin2@admin.com",
-        *       "phones":[
-        *           {
-        *               "id":2,
-        *               "userId":"0ff4c2c7-3d53-4932-84a3-398161ef7c46",
-        *               "phoneNumber":"6125555555",
-        *               "phoneType":"Office"
-        *           }],
-        *        "isActive":false
-        *   }
         *   
-        *   
+        * @apiUse UserSuccessModel  
         * @apiUse UnauthorizedError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
         [HttpGet]
-        [Route("users/{userId}", Name ="GetUserAsync")]
+        [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
             var user = await _userService.GetUserAsync(userId);
@@ -287,7 +224,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]        
+        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
         [Route("users/{userId}/roles")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
@@ -427,7 +364,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = LssClaims.ViewRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
@@ -455,7 +392,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.RevokeRole)]
+        [ClaimAuthorize(ClaimValue = LssClaims.RevokeRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
