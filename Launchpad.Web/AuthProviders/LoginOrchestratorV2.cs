@@ -3,7 +3,7 @@
     public class LoginOrchestratorV2 : LoginOrchestrator
     {
         /**
-        * @api {post} /api/v2/login Login a user
+        * @api {post} /v2/login Login a user
         * @apiVersion 0.2.0
         * @apiName Login
         * @apiGroup Account
