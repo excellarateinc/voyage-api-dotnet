@@ -48,14 +48,31 @@ Below is an example of the comments used to document an endpoint.
 ### Reusable apiDoc blocks
 apiDoc supports creating reusuable documentation blocks using [@apiDefine](http://apidocjs.com/#param-api-define). This 
 cuts down on repeated comment blocks for shared elements such as errors. 
-All reusable blocks should be placed in  ***Launchpad.Web\Controllers\_apidoc.js***
+All reusable blocks should be placed in  ***Launchpad.Web\\_apidoc.js***
 
 ### Current @apiDefine blocks
-1. BadRequestError
-   - Used when an endpoint can return a 400
-2.  NotFoundError
-    - Used when an endpoint can return a 404
 
+#### Headers
+1. AuthHeader
+    - Used when an API requires the authorization header 
+    
+#### Errors
+1. BadRequestError
+   - Used when an API can return a 400
+2.  NotFoundError
+    - Used when an API can return a 404
+3. UnauthorizedError
+    - Used when an API can generate a 401
+
+#### Request Params
+1. UserRequestModel
+    - Used when an API takes a user as input
+
+#### Response Params
+1. UserSuccessModel
+    - Used when an API returns a single user
+
+    
 ### Generating documentation
 To generate the api docs after a change:
 
