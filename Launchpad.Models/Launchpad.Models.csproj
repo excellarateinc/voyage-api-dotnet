@@ -85,6 +85,7 @@
     <Compile Include="EntityFramework\LaunchpadLog.cs" />
     <Compile Include="EntityFramework\RoleClaim.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
+    <Compile Include="EntityResult.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="Extensions\RuleBuilderExtensions.cs" />

@@ -73,19 +73,18 @@
   <ItemGroup>
     <Compile Include="ApplicationInfoService.cs" />
     <Compile Include="AuditService.cs" />
+    <Compile Include="EntityResultService.cs" />
     <Compile Include="IdentityManagers\ApplicationRoleManager.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IApplicationInfoService.cs" />
     <Compile Include="Interfaces\IConfigurationManagerService.cs" />
     <Compile Include="Interfaces\IPathProviderService.cs" />
-   
     <Compile Include="Interfaces\IAuditService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\IFileReaderService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="PathProviderService.cs" />
     <Compile Include="FileReaderService.cs" />
-   
     <Compile Include="RoleService.cs" />
     <Compile Include="ServicesModule.cs" />
     <Compile Include="UserService.cs" />
