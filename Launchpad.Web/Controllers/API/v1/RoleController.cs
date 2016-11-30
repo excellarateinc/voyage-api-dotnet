@@ -239,7 +239,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
-        * 
+        * @apiUse NotFoundError
         * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ViewClaim)]

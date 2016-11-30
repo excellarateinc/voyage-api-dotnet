@@ -102,6 +102,11 @@
 *
 *   @apiErrorExample Error-Response
 *   HTTP/1.1 404: Not Found
+*   {
+*       "code": "missing.entity",
+*       "field": "model",
+*       "description": "Could not locate entity with ID 11bef1e7-3ba3-4669-861e-54e91fd8db79"
+*   }
 */
 
 /**
