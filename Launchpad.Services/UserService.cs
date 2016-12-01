@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Services
 {
-    public class UserService : IUserService
+    public class UserService : EntityResultService, IUserService
     {
         private IRoleService _roleService;
         private ApplicationUserManager _userManager;
@@ -27,38 +27,54 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
-        public async Task<IdentityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
+        public async Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
+            if (appUser != null)
+            {
 
-            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+                _mapper.Map<UserModel, ApplicationUser>(model, appUser);
 
-            var identityResult = await _userManager.UpdateAsync(appUser);
-
-            return new IdentityResult<UserModel>(identityResult, _mapper.Map<UserModel>(appUser));
-
+                var identityResult = await _userManager.UpdateAsync(appUser);
+                return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
+            }
+            else
+            {
+                return NotFound<UserModel>(userId);
+            }
         }
 
 
-        public async Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId)
+        public async Task<EntityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
 
             var entityResult = _roleService.GetRoleById(roleId);
+            if (entityResult.IsEntityNotFound)
+            {
+                return entityResult;
+            }
+
             var result = await _userManager.RemoveFromRoleAsync(userId, entityResult.Model.Name);
-            return result;
+            return FromIdentityResult(result);
         }
 
-        public async Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
+        public async Task<EntityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
             var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-
-            var entityResult = _roleService.GetRoleByName(roleModel.Name);
-            return new IdentityResult<RoleModel>(IdentityResult.Success, entityResult.Model);
+            if (result.Succeeded)
+            {
+                return _roleService.GetRoleByName(roleModel.Name);
+            }
+            else
+            {
+                return FromIdentityResult<RoleModel>(result, null);
+            }
         }
 
-        public IEnumerable<UserModel> GetUsers()
+        public EntityResult<IEnumerable<UserModel>> GetUsers()
         {
-            return _mapper.Map<IEnumerable<UserModel>>(_userManager.Users.ToList());
+            var users = _userManager.Users.ToList();
+            return Success(_mapper.Map<IEnumerable<UserModel>>(users));
         }
 
         public async Task<bool> IsValidCredential(string userName, string password)
@@ -67,15 +83,15 @@ namespace Launchpad.Services
             return user != null && user.IsActive;
         }
 
-        public async Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model)
+        public async Task<EntityResult<UserModel>> CreateUserAsync(UserModel model)
         {
             var appUser = new ApplicationUser();
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
             var result = await _userManager.CreateAsync(appUser, "Hello123!");
-            return new IdentityResult<UserModel>(result, _mapper.Map<UserModel>(appUser));
+            return FromIdentityResult(result, _mapper.Map<UserModel>(appUser));
         }
 
-        public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
+        public async Task<EntityResult> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
 
@@ -86,18 +102,19 @@ namespace Launchpad.Services
                 result = await _userManager.AddToRoleAsync(user.Id, "Basic");
             }
 
-            return result;
+            return FromIdentityResult(result, user);
         }
 
-        public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
+        public async Task<EntityResult<IEnumerable<ClaimModel>>> GetUserClaimsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                throw new ArgumentException($"Unable to find user {userId}");
+                return NotFound<IEnumerable<ClaimModel>>(userId);
             }
+
             var identity = await CreateClaimsIdentityAsync(user.UserName, "OAuth");
-            return _mapper.Map<IEnumerable<ClaimModel>>(identity.Claims);
+            return Success(_mapper.Map<IEnumerable<ClaimModel>>(identity.Claims));
         }
 
         public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
@@ -121,7 +138,7 @@ namespace Launchpad.Services
             return userIdentity;
         }
 
-        public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
+        public async Task<EntityResult<IEnumerable<RoleModel>>> GetUserRolesAsync(string userId)
         {
 
             var roles = await _userManager.GetRolesAsync(userId);
@@ -131,28 +148,44 @@ namespace Launchpad.Services
                             .Model
                             .Where(_ => roles.Contains(_.Name));
 
-            return roleModels;
+            return Success(roleModels);
         }
 
-        public RoleModel GetUserRoleById(string userId, string roleId)
+        public EntityResult<RoleModel> GetUserRoleById(string userId, string roleId)
         {
             var entityResult = _roleService.GetRoleById(roleId);
-
-            return _userManager.IsInRole(userId, entityResult.Model.Name) ? entityResult.Model : null;
-
+            if (entityResult.IsEntityNotFound)
+            {
+                return entityResult;
+            }
+            else if (!_userManager.IsInRole(userId, entityResult.Model.Name))
+            {
+                return NotFound<RoleModel>(roleId);
+            }
+            else
+            {
+                return entityResult;
+            }
         }
 
-        public async Task<UserModel> GetUserAsync(string userId)
+        public async Task<EntityResult<UserModel>> GetUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
-            return _mapper.Map<UserModel>(appUser);
+            return appUser == null
+                ? NotFound<UserModel>(userId)
+                : Success(_mapper.Map<UserModel>(appUser));
         }
 
-        public async Task<IdentityResult> DeleteUserAsync(string userId)
+        public async Task<EntityResult> DeleteUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
+            if (appUser == null)
+            {
+                return NotFound(userId);
+            }
+
             var identityResult = await _userManager.DeleteAsync(appUser);
-            return identityResult;
+            return FromIdentityResult(identityResult);
         }
     }
 }
