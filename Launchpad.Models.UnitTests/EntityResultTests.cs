@@ -12,7 +12,7 @@ namespace Launchpad.Models.UnitTests
         public void Ctor_Should_Initialize_Flags()
         {
             var result = new EntityResult(true, true, "err1");
-            result.IsMissingEntity.Should().BeTrue();
+            result.IsEntityNotFound.Should().BeTrue();
             result.Succeeded.Should().BeTrue();
             result.Errors.Should().HaveCount(1)
                 .And
@@ -25,7 +25,7 @@ namespace Launchpad.Models.UnitTests
             var model = new object();
 
             var result = new EntityResult<object>(model, true, true, "err1");
-            result.IsMissingEntity.Should().BeTrue();
+            result.IsEntityNotFound.Should().BeTrue();
             result.Succeeded.Should().BeTrue();
             result.Errors.Should().HaveCount(1)
                 .And
@@ -48,17 +48,17 @@ namespace Launchpad.Models.UnitTests
         }
 
         [Fact]
-        public void WithMissingEntity_Should_Format_Message_With_Id()
+        public void WithEntityNotFound_Should_Format_Message_With_Id()
         {
             var id = Fixture.Create<string>();
             var result = new EntityResult(true, true)
-                .WithMissingEntity(id);
+                .WithEntityNotFound(id);
 
             result.Errors
                .Should()
                .HaveCount(1)
                .And
-               .HaveElementAt(0, "missing.entity::Could not locate entity with ID " + id);
+               .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
         }
 
         [Fact]
@@ -76,17 +76,17 @@ namespace Launchpad.Models.UnitTests
         }
 
         [Fact]
-        public void WithMissingEntityTModel_Should_Format_Message_With_Id()
+        public void WithEntityNotFoundTModel_Should_Format_Message_With_Id()
         {
             var id = Fixture.Create<string>();
             var result = new EntityResult<object>(null, true, true)
-                .WithMissingEntity(id);
+                .WithEntityNotFound(id);
 
             result.Errors
                .Should()
                .HaveCount(1)
                .And
-               .HaveElementAt(0, "missing.entity::Could not locate entity with ID " + id);
+               .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
         }
     }
 }

@@ -13,15 +13,15 @@ namespace Launchpad.Services.UnitTests
         /// </summary>
         public class TestPassThrough : EntityResultService
         {
-            public EntityResult InvokeMissing(object id)
+            public EntityResult InvokeNotFound(object id)
             {
-                return base.Missing(id);
+                return base.NotFound(id);
             }
 
-            public EntityResult<TModel> InvokeMissing<TModel>(object id)
+            public EntityResult<TModel> InvokeNotFound<TModel>(object id)
                  where TModel : class
             {
-                return base.Missing<TModel>(id);
+                return base.NotFound<TModel>(id);
             }
 
             public EntityResult InvokeSuccess()
@@ -50,7 +50,7 @@ namespace Launchpad.Services.UnitTests
         {
             var result = _testPassThrough.InvokeSuccess();
             result.Succeeded.Should().BeTrue();
-            result.IsMissingEntity.Should().BeFalse();
+            result.IsEntityNotFound.Should().BeFalse();
             result.Errors.Should().HaveCount(0);
         }
 
@@ -60,44 +60,44 @@ namespace Launchpad.Services.UnitTests
             var model = new object();
             var result = _testPassThrough.InvokeSuccess(model);
             result.Succeeded.Should().BeTrue();
-            result.IsMissingEntity.Should().BeFalse();
+            result.IsEntityNotFound.Should().BeFalse();
             result.Errors.Should().HaveCount(0);
             result.Model.Should().Be(model);
         }
 
         [Fact]
-        public void Missing_Should_Return_Result()
+        public void NotFound_Should_Return_Result()
         {
             var id = Fixture.Create<string>();
             var result = _testPassThrough
-                .InvokeMissing(id);
+                .InvokeNotFound(id);
 
             result.Succeeded.Should().BeFalse();
-            result.IsMissingEntity.Should().BeTrue();
+            result.IsEntityNotFound.Should().BeTrue();
             result.Errors
                 .Should()
                 .HaveCount(1)
                 .And
-                .HaveElementAt(0, "missing.entity::Could not locate entity with ID " + id);
+                .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
 
         }
 
 
         [Fact]
-        public void MissingTModel_Should_Returnn_Result()
+        public void NotFoundTModel_Should_Returnn_Result()
         {
 
             var id = Fixture.Create<string>();
             var result = _testPassThrough
-                .InvokeMissing<object>(id);
+                .InvokeNotFound<object>(id);
 
             result.Succeeded.Should().BeFalse();
-            result.IsMissingEntity.Should().BeTrue();
+            result.IsEntityNotFound.Should().BeTrue();
             result.Errors
                 .Should()
                 .HaveCount(1)
                 .And
-                .HaveElementAt(0, "missing.entity::Could not locate entity with ID " + id);
+                .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
 
         }
     }

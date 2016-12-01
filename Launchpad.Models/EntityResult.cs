@@ -20,12 +20,12 @@ namespace Launchpad.Models
         /// <summary>
         /// Indicates if the opearation was missing a specified entity (404 scenario)
         /// </summary>
-        public bool IsMissingEntity { get; }
+        public bool IsEntityNotFound { get; }
 
-        public EntityResult(bool succeeded, bool isMissingEntity, params string[] errors)
+        public EntityResult(bool succeeded, bool isEntityNotFound, params string[] errors)
         {
             Succeeded = succeeded;
-            IsMissingEntity = isMissingEntity;
+            IsEntityNotFound = isEntityNotFound;
             Errors = new List<string>();
             Errors.AddRange(errors);
         }
@@ -47,7 +47,7 @@ namespace Launchpad.Models
         /// </summary>
         /// <param name="id">ID of the entity</param>
         /// <returns></returns>
-        public EntityResult WithMissingEntity(object id)
+        public EntityResult WithEntityNotFound(object id)
         {
             return this.WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
         }
@@ -65,8 +65,8 @@ namespace Launchpad.Models
         /// </summary>
         public TModel Model { get; }
 
-        public EntityResult(TModel model, bool succeeded, bool isMissingEntity, params string[] errors)
-            : base(succeeded, isMissingEntity, errors)
+        public EntityResult(TModel model, bool succeeded, bool isEntityNotFound, params string[] errors)
+            : base(succeeded, isEntityNotFound, errors)
         {
             Model = model;
         }
@@ -88,7 +88,7 @@ namespace Launchpad.Models
         /// </summary>
         /// <param name="id">ID of the entity</param>
         /// <returns></returns>
-        public new EntityResult<TModel> WithMissingEntity(object id)
+        public new EntityResult<TModel> WithEntityNotFound(object id)
         {
             return this.WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
         }

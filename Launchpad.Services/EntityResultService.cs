@@ -14,10 +14,10 @@ namespace Launchpad.Services
         /// </summary>
         /// <param name="id">Entity ID</param>
         /// <returns>EntityResult</returns>
-        protected EntityResult Missing(object id)
+        protected EntityResult NotFound(object id)
         {
             return new EntityResult(false, true)
-              .WithMissingEntity(id);
+              .WithEntityNotFound(id);
         }
 
         /// <summary>
@@ -26,11 +26,11 @@ namespace Launchpad.Services
         /// <typeparam name="TModel">Type of the model</typeparam>
         /// <param name="id">Entity ID</param>
         /// <returns>EntityResult<TModel></returns>
-        protected EntityResult<TModel> Missing<TModel>(object id)
+        protected EntityResult<TModel> NotFound<TModel>(object id)
             where TModel : class
         {
             return new EntityResult<TModel>(null, false, true)
-              .WithMissingEntity(id);
+              .WithEntityNotFound(id);
         }
 
         /// <summary>

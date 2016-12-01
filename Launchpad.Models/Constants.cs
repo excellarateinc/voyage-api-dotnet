@@ -8,7 +8,7 @@
             public const string InvalidEmail = "invalid.email";
             public const string InvalidLength = "invalid.length";
             public const string InvalidDependentRule = "invalid.dependent.rule";
-            public const string EntityNotFound = "missing.entity";
+            public const string EntityNotFound = "notfound.entity";
         }
     }
 }

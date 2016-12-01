@@ -38,7 +38,7 @@ namespace Launchpad.Services
             var role = _roleManager.FindById(id);
 
             return role == null ?
-                Missing<RoleModel>(id) :
+                NotFound<RoleModel>(id) :
                 Success(_mapper.Map<RoleModel>(role));
 
         }
@@ -61,7 +61,7 @@ namespace Launchpad.Services
             }
             else
             {
-                model = Missing<ClaimModel>(roleId);
+                model = NotFound<ClaimModel>(roleId);
             }
             return model;
         }
@@ -77,7 +77,7 @@ namespace Launchpad.Services
             }
             else
             {
-                result = Missing(roleId);
+                result = NotFound(roleId);
             }
             return result;
         }
@@ -133,13 +133,13 @@ namespace Launchpad.Services
         {
             var claim = _roleClaimRepository.Get(claimId);
 
-            return claim == null ? Missing<ClaimModel>(claimId) : Success(_mapper.Map<ClaimModel>(claim));
+            return claim == null ? NotFound<ClaimModel>(claimId) : Success(_mapper.Map<ClaimModel>(claim));
         }
 
         public EntityResult<RoleModel> GetRoleByName(string name)
         {
             var role = _roleManager.FindByName(name);
-            return role == null ? Missing<RoleModel>(name) : Success(_mapper.Map<RoleModel>(role));
+            return role == null ? NotFound<RoleModel>(name) : Success(_mapper.Map<RoleModel>(role));
         }
     }
 }
