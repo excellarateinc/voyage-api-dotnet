@@ -174,7 +174,7 @@ The BaseApiController is an abstract class that provides several helper methods 
 | Method | Description |
 |:----|:----|
 |protected IHttpActionResult CreatedEntityAt`<TModel`>(string routeName, Func`<object`> routeValue, EntityResult`<TModel`> entityResult)|Creates a 201 Response with the entityResult.Model as the body and the location header set to the supplied route. |
-|protected IHttpActionResult CheckErrorResult(EntityResult entityResult)|Check if the EntityResult contains an error. If there is an error, it will create a response with a 404 if the MissingEntity flag is set. Otherwise, it will return a 400. In both cases, any entityResult.Errors will be added to the ModelState|
+|protected IHttpActionResult CheckErrorResult(EntityResult entityResult)|Check if the EntityResult contains an error. If there is an error, it will create a response with a 404 if the IsEntityNotFound flag is set. Otherwise, it will return a 400. In both cases, any entityResult.Errors will be added to the ModelState|
 | protected IHttpActionResult CreateModelResult<TModel>(EntityResult<TModel> entityResult)| Creates a 200 response with the entityResult.Model as the body|
 |protected IHttpActionResult NoContent(EntityResult entityResult)| Creates a 204 response|
 
@@ -184,7 +184,7 @@ Generally speaking, the following HttpMethods map to the following base methods.
 
 | HttpMethod | Base Method | Description |
 |:----|:----|:----|
-|HttpGet|CreateModelResult|GETs should return a payload. When the GET specifies an ID and it is not found, the result will have the IsMissingEntity flag set. The base method will then generate the 404.|
+|HttpGet|CreateModelResult|GETs should return a payload. When the GET specifies an ID and it is not found, the result will have the IsEntityNotFound flag set. The base method will then generate the 404.|
 |HttpPut|CreateModelResult|Puts will operate on a specific instance of an entity and return a model|
 |HttpPost|CreatedEntityAt|Posts include a Location header indicating the URL of the newly created resource|
 |HttpDelete| NoContent| A delete does not have a response body|
@@ -224,14 +224,14 @@ The class draws upon the IdentityResult that is found in the ASP.Net Identity fr
 |TModel|The result of the operation. Note: This is only in the generic version.|
 |Errors|List of errors that occured during the operation. These errors should be added using the WithErrorCodeMessage to ensure correct response formatting|
 |Succeeded|Boolean indicating if the operation was a success|
-|IsEntityNotFound|Boolean indicating if the operation failed due to a missing entity|
+|IsEntityNotFound|Boolean indicating if the operation failed due an entity not being found|
 
 The class has the following methods:
 
 | Method | Description |
 |:----|:----|
 |public EntityResult WithErrorCodeMessage(string code, string message)|Helper method for adding error messages. These errors will be structured to ensure correct response formatting.|
-| public EntityResult WithEntityNotFound(object id)|Helper method for adding an error message for a missing entity. This method help ensures a standard format for any missing entities|
+| public EntityResult WithEntityNotFound(object id)|Helper method for adding an error message for not found entity. This method help ensures a standard format for any not found entities|
 
 Note: The WithErrorCodeMessage has a similar signature to the extension used for adding error messages for validation rules. 
 
@@ -240,8 +240,8 @@ The EntityResultService is an abstract class that services can inherit to provid
 
 | Method | Description |
 |:----|:----|
-|protected EntityResult NotFound(object id)| Generates a result that represents a missing entity |
-|protected EntityResult`<TModel`> NotFound`<TModel`>(object id)| Generates a result that represents a missing entity|
+|protected EntityResult NotFound(object id)| Generates a result that represents a not found entity |
+|protected EntityResult`<TModel`> NotFound`<TModel`>(object id)| Generates a result that represents a not found entity|
 |protected EntityResult`<TModel`> Success`<TModel`>(TModel model)| Genereates a result that represents a succssful operation with a model output|
 |protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)| Converts an IdentityResult to a EntityResult|
 |protected EntityResult FromIdentityResult(IdentityResult result)| Converts an IdentityResult to an EntityResult|
@@ -271,7 +271,7 @@ Sample Method
 
         }
 ```
-In the above example, the method will return an EntityResult containing the model if the role is found. Otherwise, it will generate a failure result indicating that the requested role was missing.
+In the above example, the method will return an EntityResult containing the model if the role is found. Otherwise, it will generate a failure result indicating that the requested role was not found.
 
 :arrow_up: [Back to Top](#table-of-contents)
 
