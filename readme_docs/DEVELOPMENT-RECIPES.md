@@ -224,14 +224,14 @@ The class draws upon the IdentityResult that is found in the ASP.Net Identity fr
 |TModel|The result of the operation. Note: This is only in the generic version.|
 |Errors|List of errors that occured during the operation. These errors should be added using the WithErrorCodeMessage to ensure correct response formatting|
 |Succeeded|Boolean indicating if the operation was a success|
-|IsMissingEntity|Boolean indicating if the operation failed due to a missing entity|
+|IsEntityNotFound|Boolean indicating if the operation failed due to a missing entity|
 
 The class has the following methods:
 
 | Method | Description |
 |:----|:----|
 |public EntityResult WithErrorCodeMessage(string code, string message)|Helper method for adding error messages. These errors will be structured to ensure correct response formatting.|
-| public EntityResult WithMissingEntity(object id)|Helper method for adding an error message for a missing entity. This method help ensures a standard format for any missing entities|
+| public EntityResult WithEntityNotFound(object id)|Helper method for adding an error message for a missing entity. This method help ensures a standard format for any missing entities|
 
 Note: The WithErrorCodeMessage has a similar signature to the extension used for adding error messages for validation rules. 
 
@@ -240,9 +240,9 @@ The EntityResultService is an abstract class that services can inherit to provid
 
 | Method | Description |
 |:----|:----|
-|protected EntityResult Missing(object id)| Generates a result that represents a missing entity |
-|protected EntityResult<TModel> Missing<TModel>(object id)| Generates a result that represents a missing entity|
-|protected EntityResult<TModel> Success<TModel>(TModel model)| Genereates a result that represents a succssful operation with a model output|
+|protected EntityResult NotFound(object id)| Generates a result that represents a missing entity |
+|protected EntityResult`<TModel`> NotFound`<TModel`>(object id)| Generates a result that represents a missing entity|
+|protected EntityResult`<TModel`> Success`<TModel`>(TModel model)| Genereates a result that represents a succssful operation with a model output|
 |protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)| Converts an IdentityResult to a EntityResult|
 |protected EntityResult FromIdentityResult(IdentityResult result)| Converts an IdentityResult to an EntityResult|
 
@@ -266,7 +266,7 @@ Sample Method
             var role = _roleManager.FindById(id);
 
             return role == null ?
-                Missing<RoleModel>(id) :
+                NotFound<RoleModel>(id) :
                 Success(_mapper.Map<RoleModel>(role));
 
         }
