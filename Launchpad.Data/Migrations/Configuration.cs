@@ -145,6 +145,10 @@ namespace Launchpad.Data.Migrations
 
 
             SeedRoleClaim(context, adminRole.Id, claimType, "list.widgets");
+            SeedRoleClaim(context, adminRole.Id, claimType, "view.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "update.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "create.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "delete.widget");
 
 
             SeedRoleClaim(context, adminRole.Id, claimType, "list.role-claims");
