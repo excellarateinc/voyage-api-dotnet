@@ -245,4 +245,127 @@ During the transformation, this message will be split into the code and descript
 While the encoding is is not necessarily desirable, being able to utilize the standard ModelState validation of ASP.Net is easier 
 than implementing a custom validation framework. It will also be familiar to .Net developers.
 
+## Creating a Controller
+Creating a controller will expose a new API endpoint. Controllers should be concerned with the API endpoint route and returning an appropriate HttpStatusCode. They should depend on services to execute to the business logic and return an object that represents that result that should be passed to the client.
+
+### Attributes
+When adding a new controller, there are several attributes that should be used to decorate the class. The table below describes these attributes.
+
+| Attribute  | Scope | Description |
+|:----|:----|:----|
+|AuthorizeAttribute|Class|Any secure API endpoint should have this attribute. It will ensure that the user has been authenticated|
+|RoutePrefixAttribute|Class|The route prefix attribute is used with URL versioning to indicate the controller's version|
+|ClaimAuthorizeAttribute|Method|The attribute is used to define the required claim needed to execute the controller method|
+|RouteAttribute|Method|The attribute is used to define the route of the API endpoint|
+|Http{Verb}Attribute|Method|The attribute is used to define the HTTP method used to invoke the method|
+
+### Consuming Services
+A pattern has been defined to standardize the response of services. Services which operate (Get, Add, Update, Delete) on an entity will return an EntityResult. The result will contain a model (if applicable) as well as properties indicating if the operating was successful. These properties can be used to determine which HttpStatusCode should be used as the result value. 
+
+To cutdown on repeated logic, a base class has been created to handle the selection of the HttpStatusCode for common scenarios. The implementor is free to bypass these base methods as needed.
+
+### BaseApiController
+The BaseApiController is an abstract class that provides several helper methods for determining which IHttpActionResult should be returned to the client based on an EntityResult. By inheriting the class, the derived class will have access to the following methods:
+
+| Method | Description |
+|:----|:----|
+|protected IHttpActionResult CreatedEntityAt`<TModel`>(string routeName, Func`<object`> routeValue, EntityResult`<TModel`> entityResult)|Creates a 201 Response with the entityResult.Model as the body and the location header set to the supplied route. |
+|protected IHttpActionResult CheckErrorResult(EntityResult entityResult)|Check if the EntityResult contains an error. If there is an error, it will create a response with a 404 if the MissingEntity flag is set. Otherwise, it will return a 400. In both cases, any entityResult.Errors will be added to the ModelState|
+| protected IHttpActionResult CreateModelResult<TModel>(EntityResult<TModel> entityResult)| Creates a 200 response with the entityResult.Model as the body|
+|protected IHttpActionResult NoContent(EntityResult entityResult)| Creates a 204 response|
+
+Note: If the EntityResult contains an error, the appropriate error code will be returned instead.
+
+Generally speaking, the following HttpMethods map to the following base methods.
+
+| HttpMethod | Base Method | Description |
+|:----|:----|:----|
+|HttpGet|CreateModelResult|GETs should return a payload. When the GET specifies an ID and it is not found, the result will have the IsMissingEntity flag set. The base method will then generate the 404.|
+|HttpPut|CreateModelResult|Puts will operate on a specific instance of an entity and return a model|
+|HttpPost|CreatedEntityAt|Posts include a Location header indicating the URL of the newly created resource|
+|HttpDelete| NoContent| A delete does not have a response body|
+
+Providing a common base impelementation allows the application to standardize the interpretation of EntityResults as well as standardize the responses that are returned to the client.
+
+### Implementation
+The following steps provide guidance around adding a new service
+
+1. Add a new class file to Launchpad.Web in the correct version folder
+   1. The class should end in the suffix Controller
+2. Inherit from BaseApiController
+3. Add class and method attributes
+4. Add dependencies on services
+5. Invoke the service and pass the result to the appropriate base method to generate the correct IHttpActionResult
+
+Sample Method
+```
+        public IHttpActionResult GetRoleById(string roleId)
+        {
+            var entityResult = _roleService.GetRoleById(roleId);
+            return CreateModelResult(entityResult);
+        }
+```
+
+## Creating a Service
+Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as depenendencies in ApiControllers as well as other services. A pattern has been established for the return value of services. The goal is to standardize the expected shape of the result of a method call on a service. This will help form a consistent model of how the service layer as a whole operates regardless of underlying business logic. 
+
+### EntityResult and EntityResult`<TModel>`
+When a service acts upon an entity within the database, it should use an EntityResult as the method return type. This class encapsulates both the resulting model as well as whether or not the method was successful. This allows common logic to be written to consume any EntityResult - or in otherwords this allows the controller to make a service call and then call common logic to map the result into a response.
+
+The class draws upon the IdentityResult that is found in the ASP.Net Identity framework. The properties of the class are explained below.
+
+| Property  | Description |
+|:----|:----|
+|TModel|The result of the operation. Note: This is only in the generic version.|
+|Errors|List of errors that occured during the operation. These errors should be added using the WithErrorCodeMessage to ensure correct response formatting|
+|Succeeded|Boolean indicating if the operation was a success|
+|IsMissingEntity|Boolean indicating if the operation failed due to a missing entity|
+
+The class has the following methods:
+
+| Method | Description |
+|:----|:----|
+|public EntityResult WithErrorCodeMessage(string code, string message)|Helper method for adding error messages. These errors will be structured to ensure correct response formatting.|
+| public EntityResult WithMissingEntity(object id)|Helper method for adding an error message for a missing entity. This method help ensures a standard format for any missing entities|
+
+Note: The WithErrorCodeMessage has a similar signature to the extension used for adding error messages for validation rules. 
+
+### EntityResultService
+The EntityResultService is an abstract class that services can inherit to provide access to several methods that help ensure consistent creation of EntityResults. 
+
+| Method | Description |
+|:----|:----|
+|protected EntityResult Missing(object id)| Generates a result that represents a missing entity |
+|protected EntityResult<TModel> Missing<TModel>(object id)| Generates a result that represents a missing entity|
+|protected EntityResult<TModel> Success<TModel>(TModel model)| Genereates a result that represents a succssful operation with a model output|
+|protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)| Converts an IdentityResult to a EntityResult|
+|protected EntityResult FromIdentityResult(IdentityResult result)| Copnverts an IdentityResult to an EntityResult|
+
+### Implementation
+The following steps provide guidance around adding a new service
+
+1. Add a new class to Launchpad.Services
+  1. This file should end in the suffix Service to indicate it is a service
+2. If the service handles operations on an entity (User, Role, ect.) inherit from EntityResultService
+3. Add a new interface to Launchpad.Services
+  1. This interface will be the contract that the aformentioned class implements. 
+  2. Define the methods for the service. If the method operates on an entity, it should have a result type of EntityResult
+4. Implement in interface in the class
+5. Utilize the base methods to create the EntityResult 
+
+Sample Method
+```
+       public EntityResult<RoleModel> GetRoleById(string id)
+       {
+            //Attempt to find the role by id
+            var role = _roleManager.FindById(id);
+
+            return role == null ?
+                Missing<RoleModel>(id) :
+                Success(_mapper.Map<RoleModel>(role));
+
+        }
+```
+In the above example, the method will return an EntityResult containing the model if the role is found. Otherwise, it will generate a failure result indicating that the requested role was missing.
+
 :arrow_up: [Back to Top](#table-of-contents)
