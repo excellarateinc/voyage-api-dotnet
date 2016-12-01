@@ -1,14 +1,14 @@
-﻿using Xunit;
-using Moq;
-using Launchpad.UnitTests.Common;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
-using Ploeh.AutoFixture;
-using System.Linq;
-using FluentAssertions;
-using Launchpad.Services.Fixture;
-using System;
 using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
+using Launchpad.Services.Fixture;
+using Launchpad.UnitTests.Common;
+using Moq;
+using Ploeh.AutoFixture;
+using System;
+using System.Linq;
+using Xunit;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -34,9 +34,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockWidgetRepository.Setup(_ => _.GetAll())
                 .Returns(fakeWidgets.AsQueryable());
-            
+
             //Act
-            var widgets = _widgetService.GetWidgets();
+            var entityResult = _widgetService.GetWidgets();
 
             //Assert
 
@@ -47,9 +47,9 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
 
             //Verify the data
-            widgets.Should().HaveSameCount(fakeWidgets);
-            widgets.All(_ => fakeWidgets.Any(fake => fake.Id.Equals(_.Id) && fake.Name.Equals(_.Name))).Should().BeTrue();
-            
+            entityResult.Model.Should().HaveSameCount(fakeWidgets);
+            entityResult.Model.All(_ => fakeWidgets.Any(fake => fake.Id.Equals(_.Id) && fake.Name.Equals(_.Name))).Should().BeTrue();
+
 
         }
 
@@ -62,30 +62,32 @@ namespace Launchpad.Services.UnitTests
             _mockWidgetRepository.Setup(_ => _.Get(fakeWidget.Id)).Returns(fakeWidget);
 
             //Act
-            var widget = _widgetService.GetWidget(fakeWidget.Id);
+            var entityResult = _widgetService.GetWidget(fakeWidget.Id);
 
             //Assert
             Mock.VerifyAll();
-            widget.Name.Should().Be(fakeWidget.Name);
-            widget.Id.Should().Be(fakeWidget.Id);
+            entityResult.Model.Name.Should().Be(fakeWidget.Name);
+            entityResult.Model.Id.Should().Be(fakeWidget.Id);
 
         }
-        
+
         [Fact]
-        public void GetWidget_Should_Return_Null_When_Id_Not_Found()
+        public void GetWidget_Should_Return_IsEntityNotFound_True()
         {
             //Arrange
             Widget fakeWidget = null;
             const int id = -1;
 
-            _mockWidgetRepository.Setup(_ => _.Get(id)).Returns(fakeWidget);
+            _mockWidgetRepository
+                .Setup(_ => _.Get(id))
+                .Returns(fakeWidget);
 
             //Act
             var widget = _widgetService.GetWidget(id);
 
             //Assert
             Mock.VerifyAll();
-            widget.Should().BeNull();
+            widget.IsEntityNotFound.Should().BeTrue();
         }
 
         [Fact]
@@ -110,27 +112,27 @@ namespace Launchpad.Services.UnitTests
 
             _mockWidgetRepository.Setup(_ => _.Add(It.IsAny<Widget>())).Returns(addResult);
 
-            var result = _widgetService.AddWidget(model);
+            var entityResult = _widgetService.AddWidget(model);
 
             Mock.VerifyAll();
-            result.Should().NotBeNull();
-            result.Name.Should().Be(addResult.Name);
-            result.Id.Should().Be(addResult.Id);
+            entityResult.Should().NotBeNull();
+            entityResult.Model.Name.Should().Be(addResult.Name);
+            entityResult.Model.Id.Should().Be(addResult.Id);
         }
 
         [Fact]
-        public void UpdateWidget_Should_Call_Repository_And_Return_Null_When_Not_Found()
+        public void UpdateWidget_Should_Call_Repository_And_Return_IsEntityNotFound_True()
         {
             var model = Fixture.Create<WidgetModel>();
-            Widget getResult = null;
-            _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(getResult);
+            var entityResult = new EntityResult<WidgetModel>(null, false, true);
+            _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(((Widget)null));
 
-            var result = _widgetService.UpdateWidget(model);
+            var result = _widgetService.UpdateWidget(model.Id, model);
 
             Mock.VerifyAll();
-            result.Should().BeNull();
+            result.IsEntityNotFound.Should().BeTrue();
         }
-        
+
         [Fact]
         public void UpdateWidget_Should_Call_Repository_And_Return_Model_When_Found()
         {
@@ -139,12 +141,12 @@ namespace Launchpad.Services.UnitTests
             _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(getResult);
             _mockWidgetRepository.Setup(_ => _.Update(getResult)).Returns(getResult);
 
-            var result = _widgetService.UpdateWidget(model);
+            var entityResult = _widgetService.UpdateWidget(model.Id, model);
 
             Mock.VerifyAll();
-            result.Should().NotBeNull();
-            result.Name.Should().Be(getResult.Name);
-            result.Id.Should().Be(getResult.Id);
+            entityResult.Model.Should().NotBeNull();
+            entityResult.Model.Name.Should().Be(getResult.Name);
+            entityResult.Model.Id.Should().Be(getResult.Id);
 
         }
 

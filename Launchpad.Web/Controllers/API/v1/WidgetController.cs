@@ -1,10 +1,9 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
-using System.Net;
+using Launchpad.Web.Filters;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
-using Launchpad.Web.Filters;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
@@ -12,7 +11,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class WidgetController : ApiController
+    public class WidgetController : BaseApiController
     {
         private IWidgetService _widgetService;
 
@@ -49,11 +48,12 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue =LssClaims.ListWidgets)]
+        [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
         [Route("widgets")]
         public IHttpActionResult Get()
         {
-            return Ok(_widgetService.GetWidgets());
+            var entityResult = _widgetService.GetWidgets();
+            return CreateModelResult(entityResult);
         }
 
 
@@ -82,18 +82,11 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
-        [Route("widgets/{id:int}")]
+        [Route("widgets/{id:int}", Name = "GetWidgetById")]
         public IHttpActionResult Get(int id)
         {
-            var widget = _widgetService.GetWidget(id);
-            if (widget == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(widget);
-            }
+            var entityResult = _widgetService.GetWidget(id);
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -126,9 +119,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [HttpPost]
         public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
         {
-            WidgetModel model = _widgetService.AddWidget(widget);
-            
-            return Created($"/api/widget/{model.Id}", model);
+            var entityResult = _widgetService.AddWidget(widget);
+            return CreatedEntityAt("GetWidgetById", () => new { Id = entityResult.Model.Id }, entityResult);
         }
 
         /**
@@ -153,12 +145,12 @@ namespace Launchpad.Web.Controllers.API.V1
         [HttpDelete]
         public IHttpActionResult DeleteWidget(int id)
         {
-            _widgetService.DeleteWidget(id);
-            return StatusCode(HttpStatusCode.NoContent);
+            var entityResult = _widgetService.DeleteWidget(id);
+            return NoContent(entityResult);
         }
 
         /**
-         * @api {put} /v1/widgets Update an existing widget
+         * @api {put} /v1/widgets/:id Update an existing widget
          * @apiVersion 0.1.0
          * @apiName UpdateWidget
          * @apiGroup Widget
@@ -167,6 +159,7 @@ namespace Launchpad.Web.Controllers.API.V1
          * 
          * @apiParam {String} name Name of the widget
          * @apiParam {Number} id ID of the widget
+         * @apiParam {Number} :id ID of the widget
          * 
          * @apiSuccess {Object} widget Updated widget
          * @apiSuccess {String} widget.name Name of the widget
@@ -178,22 +171,14 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
-        [Route("widgets")]
+        [Route("widgets/{id:int}")]
         [HttpPut]
-        public IHttpActionResult UpdateWidget([FromBody] WidgetModel widget)
+        public IHttpActionResult UpdateWidget([FromUri] int id, [FromBody] WidgetModel widget)
         {
-            WidgetModel model = _widgetService.UpdateWidget(widget);
-
-            if (model == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(model);
-            }
+            var entityResult = _widgetService.UpdateWidget(id, widget);
+            return CreateModelResult(entityResult);
         }
 
-     
+
     }
 }

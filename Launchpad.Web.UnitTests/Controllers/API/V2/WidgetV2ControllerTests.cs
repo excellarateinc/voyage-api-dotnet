@@ -7,31 +7,58 @@ using Moq;
 using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Routing;
 using Xunit;
 using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V2
 {
-    /// <summary>
-    /// This is not DRY - but for now, better to have tests than not 
-    /// </summary>
     public class WidgetV2ControllerTests : BaseUnitTest
     {
         private Mock<IWidgetService> _mockWidgetService;
         private WidgetV2Controller _widgetController;
+        private Mock<UrlHelper> _mockUrlHelper;
+        private string _testUrl;
 
         public WidgetV2ControllerTests()
         {
+            _testUrl = "http://test.com";
             _mockWidgetService = Mock.Create<IWidgetService>();
             _widgetController = new WidgetV2Controller(_mockWidgetService.Object);
             _widgetController.Request = new System.Net.Http.HttpRequestMessage();
             _widgetController.Configuration = new System.Web.Http.HttpConfiguration();
+            _widgetController.Configuration.MapHttpAttributeRoutes();
+            _widgetController.Configuration.EnsureInitialized();
 
+            _mockUrlHelper = Mock.Create<UrlHelper>();
+            _widgetController.Url = _mockUrlHelper.Object;
+
+        }
+
+        [Fact]
+        public async void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
+        {
+            const int id = 55;
+
+            _mockWidgetService.Setup(_ => _.DeleteWidget(id)).Returns(new EntityResult(true, false));
+
+            var result = _widgetController.DeleteWidget(id);
+
+            var message = await result.ExecuteAsync(CancellationToken.None);
+            Mock.VerifyAll();
+            message.Should().NotBeNull();
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public void Class_Should_Have_Authorize_Attribute()
+        {
+            typeof(WidgetV2Controller).Should()
+             .BeDecoratedWith<AuthorizeAttribute>();
         }
 
         [Fact]
@@ -62,69 +89,54 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         [Fact]
         public void UpdateWidget_Should_Have_ClaimAuthorizeAttribute()
         {
-            _widgetController.AssertClaim(_ => _.UpdateWidget(new WidgetModel()), LssClaims.UpdateWidget);
+            _widgetController.AssertClaim(_ => _.UpdateWidget(1, new WidgetModel()), LssClaims.UpdateWidget);
         }
 
-
-
-        [Fact]
-        public async void DeleteWidget_Should_Call_WidgetService_And_Return_No_Content()
-        {
-            const int id = 55;
-
-            _mockWidgetService.Setup(_ => _.DeleteWidget(id));
-
-            var result = _widgetController.DeleteWidget(id);
-
-            var message = await result.ExecuteAsync(CancellationToken.None);
-
-            Mock.VerifyAll();
-            message.Should().NotBeNull();
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
-        }
 
         [Fact]
         public async void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
         {
             //Arrange
-            var fakeWidget = Fixture.Create<WidgetModel>();
-            var fakeResult = Fixture.Create<WidgetModel>();
-            _mockWidgetService.Setup(_ => _.AddWidget(fakeWidget)).Returns(fakeResult);
+            var inputModel = Fixture.Create<WidgetModel>();
+            var outputModel = Fixture.Create<WidgetModel>();
+            var entityResult = new EntityResult<WidgetModel>(outputModel, true, false);
+            _mockWidgetService.Setup(_ => _.AddWidget(inputModel)).Returns(entityResult);
+
+            _mockUrlHelper
+                .Setup(_ => _.Link("GetWidgetByIdV2", It.IsAny<Dictionary<string, object>>()))
+                .Returns(_testUrl);
 
             //Act
-            var result = _widgetController.AddWidget(fakeWidget);
+            var result = _widgetController.AddWidget(inputModel);
 
-            //Assert
-            Mock.VerifyAll();
             var message = await result.ExecuteAsync(CancellationToken.None);
-
             message.StatusCode.Should().Be(HttpStatusCode.Created);
-
+            message.Headers.Location.Should().Be(_testUrl);
             WidgetModel widget;
             message.TryGetContentValue(out widget).Should().BeTrue();
-            widget.ShouldBeEquivalentTo(fakeResult);
+            widget.ShouldBeEquivalentTo(outputModel);
         }
 
         [Fact]
         public async void UpdateWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()
         {
             //Arrange
-            var fakeWidget = Fixture.Create<WidgetModel>();
-            var fakeResult = Fixture.Create<WidgetModel>();
-            _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget)).Returns(fakeResult);
+            var inputModel = Fixture.Create<WidgetModel>();
+            var outputModel = Fixture.Create<WidgetModel>();
+            var entityResult = new EntityResult<WidgetModel>(outputModel, true, false);
+            _mockWidgetService.Setup(_ => _.UpdateWidget(inputModel.Id, inputModel)).Returns(entityResult);
 
             //Act
-            var result = _widgetController.UpdateWidget(fakeWidget);
+            var result = _widgetController.UpdateWidget(inputModel.Id, inputModel);
 
             //Assert
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(CancellationToken.None);
-
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             WidgetModel widget;
             message.TryGetContentValue(out widget).Should().BeTrue();
-            widget.ShouldBeEquivalentTo(fakeResult);
+            widget.ShouldBeEquivalentTo(outputModel);
         }
 
         [Fact]
@@ -132,16 +144,16 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             //Arrange
             var fakeWidget = Fixture.Create<WidgetModel>();
-            WidgetModel fakeResult = null;
-            _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget)).Returns(fakeResult);
+            WidgetModel fakeResult = Fixture.Create<WidgetModel>();
+            var entityResult = new EntityResult<WidgetModel>(fakeResult, false, true);
+            _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget.Id, fakeWidget)).Returns(entityResult);
 
             //Act
-            var result = _widgetController.UpdateWidget(fakeWidget);
+            var result = _widgetController.UpdateWidget(fakeWidget.Id, fakeWidget);
 
             //Assert
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(CancellationToken.None);
-
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
         }
@@ -152,38 +164,41 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             //Arrange
             var fakeWidgets = Fixture.CreateMany<WidgetModel>();
+            var entityResult = new EntityResult<IEnumerable<WidgetModel>>(fakeWidgets, true, false);
 
-            _mockWidgetService.Setup(_ => _.GetWidgets()).Returns(fakeWidgets.AsQueryable());
+            _mockWidgetService.Setup(_ => _.GetWidgets()).Returns(entityResult);
 
             //Act
             var result = _widgetController.Get();
 
             //Assert
-            _mockWidgetService.Verify(_ => _.GetWidgets(), Times.Once());
             var message = await result.ExecuteAsync(CancellationToken.None);
             IEnumerable<WidgetModel> widgets;
-            message.TryGetContentValue(out widgets);
+            message.TryGetContentValue<IEnumerable<WidgetModel>>(out widgets).Should().BeTrue();
+            _mockWidgetService.Verify(_ => _.GetWidgets(), Times.Once());
             Mock.VerifyAll();
             widgets.Should().BeEquivalentTo(fakeWidgets);
 
         }
 
         [Fact]
-        public async void Get_By_Id_Should_Call_WidgetService()
+        public async void GetById_Should_Call_WidgetService()
         {
             //Arrange
 
             var fakeWidget = Fixture.Create<WidgetModel>();
+            var entityResult = new EntityResult<WidgetModel>(fakeWidget, true, false);
 
-            _mockWidgetService.Setup(_ => _.GetWidget(fakeWidget.Id)).Returns(fakeWidget);
+            _mockWidgetService.Setup(_ => _.GetWidget(fakeWidget.Id))
+                .Returns(entityResult);
 
             //Act
             var result = _widgetController.Get(fakeWidget.Id);
 
             //Assert
             _mockWidgetService.Verify(_ => _.GetWidget(fakeWidget.Id), Times.Once());
-            Mock.VerifyAll();
             var message = await result.ExecuteAsync(CancellationToken.None);
+            Mock.VerifyAll();
 
 
             WidgetModel widget;
@@ -197,16 +212,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         {
             //Arrange
             const int id = -1;
-            WidgetModel model = null;
-            _mockWidgetService.Setup(_ => _.GetWidget(id)).Returns(model);
+
+            var entityResult = new EntityResult<WidgetModel>(null, false, true);
+            _mockWidgetService.Setup(_ => _.GetWidget(id)).Returns(entityResult);
 
             //Act
             var result = _widgetController.Get(id);
 
             //Assert
             Mock.VerifyAll();
-            var message = await result.ExecuteAsync(CancellationToken.None);
 
+            var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
         }
@@ -237,24 +253,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         [Fact]
         public void UpdateWidget_Should_Have_HttpPut_Attribute()
         {
-            ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.UpdateWidget(new WidgetModel()))
+            ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.UpdateWidget(1, new WidgetModel()))
                 .Should()
                 .BeDecoratedWith<HttpPutAttribute>();
         }
 
         [Fact]
-        public void Class_Should_Have_V2_RoutePrefix_Attribute()
+        public void Class_Should_Have_V1RoutePrefix_Attribute()
         {
             typeof(WidgetV2Controller).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
                 _ => _.Prefix.Equals(Constants.RoutePrefixes.V2));
-        }
-
-        [Fact]
-        public void Class_Should_Have_Authorize_Attribute()
-        {
-            typeof(WidgetV2Controller).Should()
-             .BeDecoratedWith<AuthorizeAttribute>();
         }
 
         [Fact]
@@ -295,9 +304,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
         [Fact]
         public void UpdateWidget_Should_Have_Route_Attribute()
         {
-            ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.UpdateWidget(new WidgetModel()))
+            ReflectionHelper.GetMethod<WidgetV2Controller>(_ => _.UpdateWidget(1, new WidgetModel()))
                     .Should()
-                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets"));
+                    .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
 
         }
 
