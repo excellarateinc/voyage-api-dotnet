@@ -244,7 +244,7 @@ The EntityResultService is an abstract class that services can inherit to provid
 |protected EntityResult<TModel> Missing<TModel>(object id)| Generates a result that represents a missing entity|
 |protected EntityResult<TModel> Success<TModel>(TModel model)| Genereates a result that represents a succssful operation with a model output|
 |protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)| Converts an IdentityResult to a EntityResult|
-|protected EntityResult FromIdentityResult(IdentityResult result)| Copnverts an IdentityResult to an EntityResult|
+|protected EntityResult FromIdentityResult(IdentityResult result)| Converts an IdentityResult to an EntityResult|
 
 ### Implementation
 The following steps provide guidance around adding a new service
