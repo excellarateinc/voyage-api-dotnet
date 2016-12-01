@@ -165,6 +165,7 @@
     <Compile Include="AuthProviders\LoginOrchestratorV2Tests.cs" />
     <Compile Include="ConstantsTests.cs" />
     <Compile Include="ControllerExtensions.cs" />
+    <Compile Include="Controllers\API\BaseApiControllerTests.cs" />
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
     <Compile Include="Controllers\API\V1\RoleControllerTests.cs" />
     <Compile Include="Controllers\API\V1\ApplicationInfoControllerTests.cs" />

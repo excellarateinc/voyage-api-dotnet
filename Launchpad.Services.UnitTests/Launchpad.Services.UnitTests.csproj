@@ -108,12 +108,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AuditServiceTests.cs" />
+    <Compile Include="EntityResultServiceTests.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="RoleServiceTests.cs" />
     <Compile Include="ApplicationInfoServiceTests.cs" />
-    
     <Compile Include="UserServiceTests.cs" />
     <Compile Include="WidgetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

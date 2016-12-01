@@ -102,6 +102,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ClaimModelTests.cs" />
+    <Compile Include="EntityResultTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />
     <Compile Include="AutoMapperValidationTests.cs" />
