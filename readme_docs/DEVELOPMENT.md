@@ -111,8 +111,46 @@ Password: Hello123!
 ## Run App Locally
 > __FINISH THIS SECTION__
 
-1. In VS2015...
-
+1. Install IIS
+ - Open up the Control Panel
+ - Click "Programs"
+ - Click "Turn Windows features on or off"
+ - Expand the "Internet Information Services" node
+ - Select "World Wide Web Services"
+ - Click "OK"
+2. Add the launchpad application to IIS
+ - Click the start button, and search for "inetmgr". Open the IIS Manager application.
+ - Expand the root node, right click on "Sites" and select "Add Website".
+ - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder.
+ - Change port 80 to 52431.
+ - Click OK
+ - Click "Application Pools" from the left nav. 
+ - Right click the "Launchpad" application pool and select "Advanced Settings...".
+ - Change the .NET CLR Version to v4.0
+ - Under "Identity", right click the "..." button.
+ - Click "Custom account" and click "Set"
+ - Type in your windows credentials and click OK.
+3. Add your windows credentials to SQL Server
+ - Open up SQL Server Management Studio.
+ - Enter "Localhost" as the server name.
+ - Click "Connect"
+ - Expand the "Security" folder
+ - Expand the "Logins" folder
+ - Right click on your windows username and select "Properties".
+ - Click "User Mapping" from the left navigation.
+ - Click the checkbox next to "Launchpad"
+ - Click the checkbox next to "db_owner" in the bottom panel.
+ - Click OK
+4. Install the API Documentation
+  - Open up a command prompt
+  - Change directory "cd" to the Launchpad.Web folder.
+  - Run this command: "npm run doc"
+  - You should see a "Done" message when it is complete.
+5. Run the application
+  - Open Visual Studio
+  - Open the "Launchpad.API" solution.
+  - Press F5
+  - Your browser should open and display the API documentation for the application. Congrats!
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Branching
