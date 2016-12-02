@@ -145,12 +145,12 @@ Password: Hello123!
   - Open up a command prompt
   - Change directory "cd" to the Launchpad.Web folder.
   - Run this command: "npm run doc"
-  - You should see a "Done" message when it is complete.
+  - You will see a "Done" message when it is complete.
 5. Run the application
   - Open Visual Studio
   - Open the "Launchpad.API" solution.
   - Press F5
-  - Your browser should open and display the API documentation for the application. Congrats!
+  - You are now up and running. Your browser will open and display the API documentation for the application.
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Branching
