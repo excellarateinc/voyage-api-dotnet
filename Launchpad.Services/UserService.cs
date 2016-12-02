@@ -60,14 +60,14 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
-            var result = await _userManager.AddToRoleAsync(userId, roleModel.Name);
-            if (result.Succeeded)
+            var identityResult = await _userManager.AddToRoleAsync(userId, roleModel.Name);
+            if (identityResult.Succeeded)
             {
                 return _roleService.GetRoleByName(roleModel.Name);
             }
             else
             {
-                return FromIdentityResult<RoleModel>(result, null);
+                return FromIdentityResult<RoleModel>(identityResult, null);
             }
         }
 
@@ -95,14 +95,14 @@ namespace Launchpad.Services
         {
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
 
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (identityResult.Succeeded)
             {
-                result = await _userManager.AddToRoleAsync(user.Id, "Basic");
+                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
             }
 
-            return FromIdentityResult(result, user);
+            return FromIdentityResult(identityResult, user);
         }
 
         public async Task<EntityResult<IEnumerable<ClaimModel>>> GetUserClaimsAsync(string userId)

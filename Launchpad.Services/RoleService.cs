@@ -46,7 +46,7 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<ClaimModel>> AddClaimAsync(string roleId, ClaimModel claim)
         {
-            EntityResult<ClaimModel> model = null;
+            EntityResult<ClaimModel> entityResult = null;
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
@@ -57,13 +57,13 @@ namespace Launchpad.Services
                     ClaimType = claim.ClaimType
                 };
                 _roleClaimRepository.Add(roleClaim);
-                model = Success(_mapper.Map<ClaimModel>(roleClaim));
+                entityResult = Success(_mapper.Map<ClaimModel>(roleClaim));
             }
             else
             {
-                model = NotFound<ClaimModel>(roleId);
+                entityResult = NotFound<ClaimModel>(roleId);
             }
-            return model;
+            return entityResult;
         }
 
         public async Task<EntityResult> RemoveRoleAsync(string roleId)
@@ -88,12 +88,12 @@ namespace Launchpad.Services
             //Create the role
             var role = new ApplicationRole();
             role.Name = model.Name;
-            var result = await _roleManager.CreateAsync(role);
+            var identityResult = await _roleManager.CreateAsync(role);
 
             //Get the role to return as part of the response
             var entityResult = GetRoleByName(role.Name);
 
-            return FromIdentityResult(result, _mapper.Map<RoleModel>(entityResult.Model));
+            return FromIdentityResult(identityResult, _mapper.Map<RoleModel>(entityResult.Model));
         }
 
         public EntityResult<IEnumerable<RoleModel>> GetRoles()
