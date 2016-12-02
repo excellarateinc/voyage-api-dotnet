@@ -60,7 +60,7 @@ __Best Practices__
 Download and install the following required software for development:
 * [Visual Studio 2015 or greater](https://www.visualstudio.com/vs/)
 * [SQL Server 2012 or greater](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
-* IIS (Turn Windows feature on)
+* IIS (More details [here](#run-app-locally))
 * [Java 1.8 SDK (for Liquibase Database Migration)](http://www.oracle.com/technetwork/java/index.html)
 * [Node](https://nodejs.org/en/)
 * [apiDocJs](http://apidocjs.com/)
