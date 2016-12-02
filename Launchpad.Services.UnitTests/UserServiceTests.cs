@@ -65,6 +65,21 @@ namespace Launchpad.Services.UnitTests
 
         }
 
+        [Fact]
+        public async void DeleteUser_Should_Return_Failed_Result_When_Not_Found()
+        {
+            var id = Fixture.Create<string>();
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(null);
+
+            //Act
+            var result = await _userService.DeleteUserAsync(id);
+
+            //Assert
+            result.Succeeded.Should().BeFalse();
+
+        }
+
 
         [Fact]
         public async void DeleteUser_Should_Call_UserManager()
@@ -96,6 +111,26 @@ namespace Launchpad.Services.UnitTests
             result.Succeeded.Should().BeTrue();
 
             Mock.VerifyAll();
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Return_Failed_Result_When_User_NotFound()
+        {
+            var id = Fixture.Create<string>();
+            var userModel = new UserModel
+            {
+                Id = id,
+                Username = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1"
+            };
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(((ApplicationUser)null));
+
+            var entityResult = await _userService.UpdateUserAsync(id, userModel);
+
+            entityResult.Succeeded.Should().BeFalse();
+            entityResult.IsEntityNotFound.Should().BeTrue();
         }
 
         [Fact]
@@ -202,6 +237,22 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void GetUserClaimsAsync_Should_Return_Failed_Result_When_Not_Found()
+        {
+            //Arrange
+            var id = Fixture.Create<string>();
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync((((ApplicationUser)null)));
+
+            //Act
+            var entityResult = await _userService.GetUserClaimsAsync(id);
+
+            //Assert
+            entityResult.Succeeded.Should().BeFalse();
+            entityResult.IsEntityNotFound.Should().BeTrue();
+        }
+
+        [Fact]
         public async void GetUserClaimsAsync_Should_Call_User_Manager()
         {
             var roles = new string[] { "Admin" };
@@ -239,6 +290,18 @@ namespace Launchpad.Services.UnitTests
             entityResult.Model.Should().NotBeNullOrEmpty();
             entityResult.Model.Any(_ => _.ClaimValue == "value1" && _.ClaimType == "type1").Should().BeTrue();
 
+        }
+
+        public async void RemoveUserFromRoleAsync_Should_Return_Failed_Result_When_Not_Found()
+        {
+            var roleId = "role-id";
+            var userId = "user-id";
+            var entityResult = new EntityResult<RoleModel>(null, false, true);
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+            .Returns(entityResult);
+
+            var methodResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
+            methodResult.Should().Be(entityResult);
         }
 
         [Fact]
@@ -362,6 +425,23 @@ namespace Launchpad.Services.UnitTests
 
             Mock.VerifyAll();
             entityResult.Model.ShouldBeEquivalentTo(model);
+
+        }
+
+        [Fact]
+        public void GetUserRoleById_Should_Return_Failed_Result_When_User_Not_Found()
+        {
+            var userId = Fixture.Create<string>();
+            var roleId = Fixture.Create<string>();
+
+            var roleEntityResult = new EntityResult<RoleModel>(null, false, true);
+            _mockRoleService.Setup(_ => _.GetRoleById(roleId))
+               .Returns(roleEntityResult);
+
+            var entityResult = _userService.GetUserRoleById(userId, roleId);
+
+            entityResult.IsEntityNotFound.Should().BeTrue();
+            entityResult.Succeeded.Should().BeFalse();
 
         }
 
