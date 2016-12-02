@@ -41,10 +41,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var identityResult = IdentityResult.Success;
+            var entityResult = new EntityResult(true, false);
         
             _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(identityResult);
+                .ReturnsAsync(entityResult);
 
             //ACT
             var result = await _accountController.Register(model);
@@ -70,11 +70,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var identityResult = new IdentityResult("My error");
+            var entityResult = new EntityResult(false, false, "My error");
 
 
             _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(identityResult);
+                .ReturnsAsync(entityResult);
 
             //ACT
             var result = await _accountController.Register(model);

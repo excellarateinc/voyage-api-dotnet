@@ -1,7 +1,6 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
-using Launchpad.Web.Extensions;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -11,7 +10,7 @@ namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class UserController : ApiController
+    public class UserController : BaseApiController
     {
         private IUserService _userService;
 
@@ -59,7 +58,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
-            return Ok(_userService.GetUsers());
+            var entityResult = _userService.GetUsers();
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -81,8 +81,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
-            var result = await _userService.UpdateUserAsync(userId, userModel);
-            return Ok(result.Model);
+            var entityResult = await _userService.UpdateUserAsync(userId, userModel);
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -110,16 +110,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
         {
-            var result = await _userService.DeleteUserAsync(userId);
-            if (result.Succeeded)
-            {
-                return StatusCode(System.Net.HttpStatusCode.NoContent);
-            }
-            else
-            {
-                ModelState.AddErrors(result);
-                return BadRequest(ModelState);
-            }
+            var entityResult = await _userService.DeleteUserAsync(userId);
+            return NoContent(entityResult);
         }
 
         /**
@@ -148,16 +140,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
         {
-            var result = await _userService.CreateUserAsync(user);
-            if (result.Result.Succeeded)
-            {
-                return CreatedAtRoute("GetUserAsync", new { UserId = result.Model.Id }, result.Model);
-            }
-            else
-            {
-                ModelState.AddErrors(result.Result);
-                return BadRequest(ModelState);
-            }
+            var entityResult = await _userService.CreateUserAsync(user);
+            return CreatedEntityAt("GetUserAsync", () => new { UserId = entityResult.Model.Id }, entityResult);
         }
 
         /**
@@ -181,8 +165,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
-            var user = await _userService.GetUserAsync(userId);
-            return Ok(user);
+            var entityResult = await _userService.GetUserAsync(userId);
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -229,8 +213,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
         {
-            var roles = await _userService.GetUserRolesAsync(userId);
-            return Ok(roles);
+            var entityResult = await _userService.GetUserRolesAsync(userId);
+            return CreateModelResult(entityResult);
         }
 
 
@@ -270,8 +254,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/claims")]
         public async Task<IHttpActionResult> GetClaims(string userId)
         {
-            var claims = await _userService.GetUserClaimsAsync(userId);
-            return Ok(claims);
+            var entityResult = await _userService.GetUserClaimsAsync(userId);
+            return CreateModelResult(entityResult);
         }
 
 
@@ -313,15 +297,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
-            var identityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
-
-            if (!identityResult.Result.Succeeded)
-            {
-                ModelState.AddErrors(identityResult.Result);
-                return BadRequest(ModelState);
-            }
-
-            return CreatedAtRoute("GetUserRoleById", new { UserId = userId, RoleId = identityResult.Model.Id }, identityResult.Model);
+            var entityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
+            return CreatedEntityAt("GetUserRoleById", () => new { UserId = userId, RoleId = entityResult.Model.Id }, entityResult);
         }
 
 
@@ -369,7 +346,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
         {
-            return Ok(_userService.GetUserRoleById(userId, roleId));
+            var entityResult = _userService.GetUserRoleById(userId, roleId);
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -397,19 +375,9 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
-            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
-            if (result.Succeeded)
-            {
-                return StatusCode(System.Net.HttpStatusCode.NoContent);
-            }
-            else
-            {
-                ModelState.AddErrors(result);
-                if (ModelState.IsValid)
-                    return BadRequest();
-                else
-                    return BadRequest(ModelState);
-            }
+            var entityResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
+            return NoContent(entityResult);
+
         }
     }
 }

@@ -2,7 +2,6 @@
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
-using System.Net;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
 
@@ -10,7 +9,7 @@ namespace Launchpad.Web.Controllers.API.V2
 {
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V2)]
-    public class WidgetV2Controller : ApiController
+    public class WidgetV2Controller : BaseApiController
     {
         private IWidgetService _widgetService;
 
@@ -21,65 +20,59 @@ namespace Launchpad.Web.Controllers.API.V2
 
         /**
          * @api {get} /v2/widgets Get all widgets
-         * @apiVersion 0.2.0
+         * @apiVersion 0.1.0
          * @apiName GetWidgets
          * @apiGroup Widget
          * 
          * @apiPermission lss.permission->list.widgets
          * 
-         * @apiUse AuthHeader
-         * 
          * @apiSuccess {Object[]} widgets List of widgets.
          * @apiSuccess {String} widgets.name Name of the widget.
          * @apiSuccess {Number} widgets.id ID of the widget.
-         * @apiSuccess {String} widgets.color Color of the widget
-         * 
+         *
          * @apiSuccessExample Success-Response:
          *      HTTP/1.1 200 OK
          *      [
          *       {
          *          "id": 3,
-         *          "name": "Large Widget",
-         *          "color": "Green"
+         *          "name": "Large Widget"
          *       },
          *       {
          *          "id": 7,
-         *          "name": "Medium Widget",
-         *          "color": "Blue"
+         *          "name": "Medium Widget"
          *       }
          *      ]
          * 
+         * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
         [Route("widgets")]
         public IHttpActionResult Get()
         {
-            return Ok(_widgetService.GetWidgets());
+            var entityResult = _widgetService.GetWidgets();
+            return CreateModelResult(entityResult);
         }
 
 
         /**
          * @api {get} /v2/widgets/:id Get a widget
-         * @apiVersion 0.2.0
+         * @apiVersion 0.1.0
          * @apiName GetWidget
          * @apiGroup Widget
          *
-         * 
-         * @apiPermission lss.version->view.widget
+         * @apiPermission lss.permission->view.widget
          * 
          * @apiParam {Number} id widget's unique ID.
          *
          * @apiSuccess {String} name Name of the widget.
          * @apiSuccess {Number} id ID of the widget.
-         * @apiSuccess {String} color Color of the widget
-         * 
+         *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
          *     {
          *        "id": 3,
          *        "name": "Large Widget"
-         *        "color": "Green"
          *     }
          *
          * @apiUse NotFoundError
@@ -87,42 +80,32 @@ namespace Launchpad.Web.Controllers.API.V2
          * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
-        [Route("widgets/{id:int}")]
+        [Route("widgets/{id:int}", Name = "GetWidgetByIdV2")]
         public IHttpActionResult Get(int id)
         {
-            var widget = _widgetService.GetWidget(id);
-            if (widget == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(widget);
-            }
+            var entityResult = _widgetService.GetWidget(id);
+            return CreateModelResult(entityResult);
         }
 
         /**
          * @api {post} /v2/widgets Create a new widget
-         * @apiVersion 0.2.0
+         * @apiVersion 0.1.0
          * @apiName CreateWidget
          * @apiGroup Widget
          * 
-         * @apiPermission lss.version->create.widget
+         * @apiPermission lss.permission->create.widget
          * 
          * @apiParam {String} name Name of the widget
-         * @apiParam {String} color Color of the widget
          * 
          * @apiSuccess {Object} widget New widget
          * @apiSuccess {String} widget.name Name of the widget
          * @apiSuccess {Number} widget.id ID of the widget
-         * @apiSuccess {String} widgets.color Color of the widget
          * 
          * @apiSuccessExample Success-Response:
          *      HTTP/1.1 201 CREATED      
          *      {
          *           "id": 70,
-         *           "name": "Small Widget",
-         *           "color": "Magenta"
+         *           "name": "Small Widget"
          *      }
          *      
          * @apiUse BadRequestError
@@ -134,82 +117,64 @@ namespace Launchpad.Web.Controllers.API.V2
         [HttpPost]
         public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
         {
-            WidgetModel model = _widgetService.AddWidget(widget);
-            return Created($"/api/widget/{widget.Id}", model);
+            var entityResult = _widgetService.AddWidget(widget);
+            return CreatedEntityAt("GetWidgetByIdV2", () => new { Id = entityResult.Model.Id }, entityResult);
         }
 
         /**
          * @api {delete} /v2/widgets/:id Delete a widget
-         * @apiVersion 0.2.0 
+         * @apiVersion 0.1.0 
          * @apiName DeleteWidget
          * @apiGroup Widget
          * 
-         * @apiPermission lss.version->delete.widget
+         * @apiPermission lss.permission->delete.widget
          * 
          * @apiParam {Number} id ID of the widget which will be deleted
          * 
          * @apiSuccessExample Success-Response:
          *      HTTP/1.1 204
-         *
+         *      
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
+         * 
          */
         [ClaimAuthorize(ClaimValue = LssClaims.DeleteWidget)]
         [Route("widgets/{id:int}")]
         [HttpDelete]
         public IHttpActionResult DeleteWidget(int id)
         {
-            _widgetService.DeleteWidget(id);
-            return StatusCode(HttpStatusCode.NoContent);
+            var entityResult = _widgetService.DeleteWidget(id);
+            return NoContent(entityResult);
         }
 
         /**
-         * @api {put} /v2/widgets Update an existing widget
-         * @apiVersion 0.2.0
+         * @api {put} /v2/widgets/:id Update an existing widget
+         * @apiVersion 0.1.0
          * @apiName UpdateWidget
          * @apiGroup Widget
          * 
-         * @apiPermission lss.version->update.widget
+         * @apiPermission lss.permission->update.widget
          * 
          * @apiParam {String} name Name of the widget
          * @apiParam {Number} id ID of the widget
-         * @apiParam {String} color Coor of the widget
+         * @apiParam {Number} :id ID of the widget
          * 
          * @apiSuccess {Object} widget Updated widget
          * @apiSuccess {String} widget.name Name of the widget
          * @apiSuccess {Number} widget.id ID of the widget
-         * @apiSuccess {String} widgets.color Color of the widget
-         * 
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     {
-         *        "id": 3,
-         *        "name": "Large Widget"
-         *        "color": "Green"
-         *     }
          * 
          * @apiUse NotFoundError
-         *
-         * @apiUse BadRequestError  
-         * 
+         * @apiUse BadRequestError   
          * @apiUse AuthHeader
-         * @apiUse UnauthorizedError 
+         * @apiUse UnauthorizedError
          */
         [ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
-        [Route("widgets")]
+        [Route("widgets/{id:int}")]
         [HttpPut]
-        public IHttpActionResult UpdateWidget([FromBody] WidgetModel widget)
+        public IHttpActionResult UpdateWidget([FromUri] int id, [FromBody] WidgetModel widget)
         {
-            WidgetModel model = _widgetService.UpdateWidget(widget);
-
-            if (model == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(model);
-            }
+            var entityResult = _widgetService.UpdateWidget(id, widget);
+            return CreateModelResult(entityResult);
         }
 
 

@@ -2,16 +2,17 @@
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
+
+
     [Authorize]
     [RoutePrefix(RoutePrefixes.V1)]
-    public class RoleController : ApiController
+    public class RoleController : BaseApiController
     {
         private IRoleService _roleService;
 
@@ -57,14 +58,17 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue =LssClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = LssClaims.ViewRole)]
         [HttpGet]
         [Route("roles/{roleId}", Name = "GetRoleById")]
         public IHttpActionResult GetRoleById(string roleId)
         {
-            return Ok(_roleService.GetRoleById(roleId));
+            var entityResult = _roleService.GetRoleById(roleId);
+            return CreateModelResult(entityResult);
         }
-        
+
+
+
 
         /**
         * @api {get} /v1/roles Get all roles
@@ -109,8 +113,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("roles")]
         public IHttpActionResult GetRoles()
         {
-            var result = _roleService.GetRoles();
-            return Ok(result);
+            var entityResult = _roleService.GetRoles();
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -151,15 +155,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
-            var result = await _roleService.CreateRoleAsync(model);
-            if (result.Result.Succeeded)
-            {
-                return CreatedAtRoute("GetRoleById", new { roleId = result.Model.Id }, result.Model);
-            }
-            else
-            {
-                return StatusCode(HttpStatusCode.BadRequest);
-            }
+            var entityResult = await _roleService.CreateRoleAsync(model);
+            return CreatedEntityAt("GetRoleById", () => new { roleId = entityResult.Model.Id }, entityResult);
         }
 
         /**
@@ -206,9 +203,15 @@ namespace Launchpad.Web.Controllers.API.V1
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
-            var newModel = await _roleService.AddClaimAsync(roleId, claim);
-            return CreatedAtRoute("GetClaimById", new {RoleId = roleId, ClaimId = newModel.Id }, newModel);
+            var entityResult = await _roleService.AddClaimAsync(roleId, claim);
+            var actionResult = CreatedEntityAt("GetClaimById", () => new
+            {
+                RoleId = roleId,
+                ClaimId = entityResult.Model.Id
+            }, entityResult);
+            return actionResult;
         }
+
 
         /**
         * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
@@ -236,16 +239,16 @@ namespace Launchpad.Web.Controllers.API.V1
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
-        * 
+        * @apiUse NotFoundError
         * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue = LssClaims.ViewClaim)]
-        [Route("roles/{roleId}/claims/{claimId}", Name ="GetClaimById")]
+        [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
         [HttpGet]
         public IHttpActionResult GetClaimById(string roleId, int claimId)
         {
-            var claim = _roleService.GetClaimById(roleId, claimId);
-            return Ok(claim);
+            var entityResult = _roleService.GetClaimById(roleId, claimId);
+            return CreateModelResult(entityResult);
         }
 
 
@@ -273,8 +276,9 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("roles/{roleId}/claims/{claimId}")]
         public IHttpActionResult RemoveClaim(string roleId, int claimId)
         {
-            _roleService.RemoveClaim(roleId, claimId);
-            return StatusCode(HttpStatusCode.NoContent);
+            var entityResult = _roleService.RemoveClaim(roleId, claimId);
+
+            return NoContent(entityResult);
         }
 
         /**
@@ -310,8 +314,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("roles/{roleId}/claims")]
         public IHttpActionResult GetClaims(string roleId)
         {
-            var claims = _roleService.GetRoleClaimsByRoleId(roleId);
-            return Ok(claims);
+            var entityResult = _roleService.GetRoleClaimsByRoleId(roleId);
+            return CreateModelResult(entityResult);
         }
 
         /**
@@ -340,10 +344,7 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
             var result = await _roleService.RemoveRoleAsync(roleId);
-            if (result.Succeeded)
-                return StatusCode(HttpStatusCode.NoContent);
-            else
-                return BadRequest();
+            return NoContent(result);
         }
 
 

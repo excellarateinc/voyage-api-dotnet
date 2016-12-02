@@ -1,10 +1,11 @@
 ﻿using Moq;
 using Ploeh.AutoFixture;
+using System;
 using System.Threading;
 
 namespace Launchpad.UnitTests.Common
 {
-    public abstract class BaseUnitTest
+    public abstract class BaseUnitTest : IDisposable
     {
         /// <summary>
         /// Provides access to a Mock Repository in unit tests
@@ -14,6 +15,11 @@ namespace Launchpad.UnitTests.Common
         protected CancellationToken CreateCancelToken()
         {
             return new CancellationToken();
+        }
+
+        public void Dispose()
+        {
+            Mock.VerifyAll();
         }
 
         /// <summary>

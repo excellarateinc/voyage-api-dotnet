@@ -28,6 +28,16 @@ namespace Launchpad.Web.UnitTests.Extensions
         private string _path;
         private string _overrideId;
 
+        private void SetupAuditModelMocks()
+        {
+            _mockOwinContext.Setup(_ => _.Request).Returns(_mockOwinRequest.Object);
+            _mockOwinContext.Setup(_ => _.Response).Returns(_mockOwinResponse.Object);
+            _mockOwinContext.Setup(_ => _.Environment).Returns(_env);
+            _mockOwinRequest.Setup(_ => _.RemoteIpAddress).Returns(_ipAddress);
+            _mockOwinRequest.Setup(_ => _.Method).Returns(_method);
+            _mockOwinRequest.Setup(_ => _.Path).Returns(new PathString(_path));
+            _mockOwinResponse.Setup(_ => _.StatusCode).Returns(_statusCode);
+        }
 
         public OwinContextExtensionsTests()
         {
@@ -38,18 +48,16 @@ namespace Launchpad.Web.UnitTests.Extensions
             _env = new Dictionary<string, object>();
             _env.Add("owin.RequestId", Guid.NewGuid().ToString());
 
-            _mockOwinContext.Setup(_ => _.Request).Returns(_mockOwinRequest.Object);
-            _mockOwinContext.Setup(_ => _.Response).Returns(_mockOwinResponse.Object);
-            _mockOwinContext.Setup(_ => _.Environment).Returns(_env);
+            
 
             _ipAddress = Fixture.Create<string>();
-            _mockOwinRequest.Setup(_ => _.RemoteIpAddress).Returns(_ipAddress);
+           
             _method = Fixture.Create<string>();
-            _mockOwinRequest.Setup(_ => _.Method).Returns(_method);
+          
             _path = "/" + Fixture.Create<string>();
-            _mockOwinRequest.Setup(_ => _.Path).Returns(new PathString(_path));
+           
             _statusCode = 3000;
-            _mockOwinResponse.Setup(_ => _.StatusCode).Returns(_statusCode);
+           
             _overrideId = Guid.NewGuid().ToString();
         }
 
@@ -57,6 +65,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         public void ToAuditModel_Uses_OverrideId_When_RequestId_Empty()
         {
             //Arrange
+            SetupAuditModelMocks();
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
             _env["owin.RequestId"] = Guid.Empty.ToString();
 
@@ -136,7 +145,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity()
         {
-           
+            SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
 
@@ -155,7 +164,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity_Null_Principal()
         {
-
+            SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)null);
@@ -174,7 +183,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity_Null_Identity()
         {
-
+            SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal());
@@ -194,6 +203,7 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_UserName()
         {
+            SetupAuditModelMocks();
             var principal = new ClaimsPrincipal((new GenericIdentity("admin@admin.com")));
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);

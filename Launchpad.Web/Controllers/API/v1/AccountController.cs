@@ -1,7 +1,6 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
-using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -10,7 +9,7 @@ namespace Launchpad.Web.Controllers.API.V1
 
 
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
         private IUserService _userService;
 
@@ -18,40 +17,6 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             _userService = userService.ThrowIfNull(nameof(userService));
         }
-
-        
-
-        private IHttpActionResult GetErrorResult(IdentityResult result)
-        {
-            if (result == null)
-            {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
-        }
-
-  
-
 
         /**
         * @api {post} /v1/account/register Register a new account
@@ -77,15 +42,9 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
 
-            IdentityResult result = await _userService.RegisterAsync(model);
+            var entityResult = await _userService.RegisterAsync(model);
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return StatusCode(System.Net.HttpStatusCode.NoContent);
-
+            return NoContent(entityResult);
         }
     }
 }

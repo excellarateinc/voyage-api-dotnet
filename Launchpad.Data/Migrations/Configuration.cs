@@ -64,7 +64,7 @@ namespace Launchpad.Data.Migrations
                 FirstName = "Admin_First",
                 IsActive = true
             };
-          
+
             context.Users.AddOrUpdate(_ => _.UserName, adminUser);
 
             SaveChanges(context);
@@ -105,14 +105,14 @@ namespace Launchpad.Data.Migrations
                 Name = "Administrator",
                 Id = Guid.NewGuid().ToString()
             };
-            
+
             context.Roles.AddOrUpdate(_ => _.Name, basicRole, adminRole);
 
             SaveChanges(context);
             #endregion
 
             #region User-Role assignment
-            
+
             AddRole(adminUser, basicRole.Id);
             AddRole(adminUser, adminRole.Id);
 
@@ -132,6 +132,7 @@ namespace Launchpad.Data.Migrations
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.role");
             SeedRoleClaim(context, adminRole.Id, claimType, "list.roles");
             SeedRoleClaim(context, adminRole.Id, claimType, "revoke.role");
+            SeedRoleClaim(context, adminRole.Id, claimType, "view.role");
 
             SeedRoleClaim(context, adminRole.Id, claimType, "view.claim");
 
@@ -142,13 +143,18 @@ namespace Launchpad.Data.Migrations
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.user");
             SeedRoleClaim(context, adminRole.Id, claimType, "create.user");
 
+
             SeedRoleClaim(context, adminRole.Id, claimType, "list.widgets");
+            SeedRoleClaim(context, adminRole.Id, claimType, "view.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "update.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "create.widget");
+            SeedRoleClaim(context, adminRole.Id, claimType, "delete.widget");
 
 
             SeedRoleClaim(context, adminRole.Id, claimType, "list.role-claims");
             SeedRoleClaim(context, adminRole.Id, claimType, "delete.role-claim");
             SeedRoleClaim(context, adminRole.Id, claimType, "create.claim");
-            
+
             SaveChanges(context);
             #endregion
 

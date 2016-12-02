@@ -1,21 +1,19 @@
-﻿using Launchpad.Services.Interfaces;
+﻿using FluentAssertions;
+using Launchpad.Models;
+using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;
+using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
-using Ploeh.AutoFixture;
-using Launchpad.Models;
-using FluentAssertions;
 using System.Net;
-using System.Web.Http;
-using Xunit;
 using System.Net.Http;
-using Microsoft.AspNet.Identity;
 using System.Security.Claims;
-using System.Linq;
-using static Launchpad.Web.Constants;
+using System.Web.Http;
 using System.Web.Http.Routing;
+using Xunit;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -73,10 +71,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //ARRANGE
             var inputModel = Fixture.Create<UserModel>();
-            var serviceResult = new IdentityResult<UserModel>(IdentityResult.Success, Fixture.Create<UserModel>());
+            var entityResult = new EntityResult<UserModel>(Fixture.Create<UserModel>(), true, false);
 
             _mockUserService.Setup(_ => _.CreateUserAsync(inputModel))
-                .ReturnsAsync(serviceResult);
+                .ReturnsAsync(entityResult);
 
             const string url = "http://testlink.com";
 
@@ -84,7 +82,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
             {
                 routeDictionary.ContainsKey("UserId").Should().BeTrue();
-                routeDictionary["UserId"].ToString().Should().Be(serviceResult.Model.Id);
+                routeDictionary["UserId"].ToString().Should().Be(entityResult.Model.Id);
                 return true;
             };
 
@@ -101,7 +99,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             message.Headers.Location.Should().Be(url);
             UserModel messageModel;
             message.TryGetContentValue(out messageModel).Should().BeTrue();
-            messageModel.ShouldBeEquivalentTo(serviceResult.Model);
+            messageModel.ShouldBeEquivalentTo(entityResult.Model);
 
         }
 
@@ -110,11 +108,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //ARRANGE
             var inputModel = Fixture.Create<UserModel>();
-            var serviceResult = new IdentityResult<UserModel>(new IdentityResult("err"), Fixture.Create<UserModel>());
+            var serviceResult = new EntityResult<UserModel>(Fixture.Create<UserModel>(), false, false, "err1");
 
             _mockUserService.Setup(_ => _.CreateUserAsync(inputModel))
                 .ReturnsAsync(serviceResult);
-            
+
             //ACT
             var result = await _userController.CreateUser(inputModel);
 
@@ -152,8 +150,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void DeleteUser_Should_Call_Service_And_Return_NoContent_On_Success()
         {
             var id = Fixture.Create<string>();
+            var entityResult = new EntityResult(true, false);
+
             _mockUserService.Setup(_ => _.DeleteUserAsync(id))
-                .ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(entityResult);
 
             var result = await _userController.DeleteUser(id);
 
@@ -165,15 +165,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void DeleteUser_Should_Call_Service_And_Return_BadRequest_On_Failure()
         {
             var id = Fixture.Create<string>();
+            var entityResult = new EntityResult(false, false, "error");
+
             _mockUserService.Setup(_ => _.DeleteUserAsync(id))
-                .ReturnsAsync(new IdentityResult("error"));
+                .ReturnsAsync(entityResult);
 
             var result = await _userController.DeleteUser(id);
 
             var message = await result.ExecuteAsync(CreateCancelToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-             
+
         }
 
         [Fact]
@@ -205,12 +207,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var userModel = Fixture.Create<UserModel>();
             var returnModel = Fixture.Create<UserModel>();
-            var identityResult = new IdentityResult<UserModel>(IdentityResult.Success
-                , returnModel);
+            var entityResult = new EntityResult<UserModel>(returnModel, true, false);
             var id = Fixture.Create<string>();
 
             _mockUserService.Setup(_ => _.UpdateUserAsync(id, userModel))
-                .ReturnsAsync(identityResult);
+                .ReturnsAsync(entityResult);
 
             var result = await _userController.UpdateUser(id, userModel);
 
@@ -247,11 +248,12 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var model = Fixture.Create<RoleModel>();
             var userId = Fixture.Create<string>();
             var roleId = Fixture.Create<string>();
+            var entityResult = new EntityResult<RoleModel>(model, true, false);
 
             _mockUserService.Setup(_ => _.GetUserRoleById(userId, roleId))
-                .Returns(model);
+                .Returns(entityResult);
 
-         
+
 
 
             var result = _userController.GetUserRoleById(userId, roleId);
@@ -259,7 +261,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-           
+
 
             RoleModel messageModel;
             message.TryGetContentValue(out messageModel).Should().BeTrue();
@@ -274,17 +276,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.AssertRoute(_ => _.GetUsers(), "users");
         }
 
-    
+
 
         [Fact]
         public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
         {
-            _userController.AssertClaim(_ => _.GetUsers(), 
+            _userController.AssertClaim(_ => _.GetUsers(),
                 LssClaims.ListUsers);
 
         }
 
-     
+
 
         [Fact]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
@@ -311,9 +313,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var id = "abc";
             var fakeClaims = Fixture.CreateMany<ClaimModel>();
+            var entityResult = new EntityResult<IEnumerable<ClaimModel>>(fakeClaims, true, false);
 
             _mockUserService.Setup(_ => _.GetUserClaimsAsync(id))
-                .ReturnsAsync(fakeClaims);
+                .ReturnsAsync(entityResult);
 
             var result = await _userController.GetClaims(id);
 
@@ -332,9 +335,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //Arrange 
             var users = Fixture.CreateMany<UserModel>();
+            var entityResult = new EntityResult<IEnumerable<UserModel>>(users, true, false);
 
             _mockUserService.Setup(_ => _.GetUsers())
-                .Returns(users);
+                .Returns(entityResult);
 
             var result = _userController.GetUsers();
 
@@ -360,7 +364,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
             var serviceModel = Fixture.Create<RoleModel>();
-            var identityResult = new IdentityResult<RoleModel>(IdentityResult.Success, serviceModel);
+            var identityResult = new EntityResult<RoleModel>(serviceModel, true, false);
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
                 .ReturnsAsync(identityResult);
 
@@ -377,17 +381,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             };
 
 
-            _mockUrlHelper.Setup(_ => _.Link("GetUserRoleById", It.Is<Dictionary<string,object>>(arg=>routeDictionaryMatcher(arg))))
+            _mockUrlHelper.Setup(_ => _.Link("GetUserRoleById", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
                 .Returns(url);
-            
+
 
             //act
             var result = await _userController.AssignRole(userId, model);
 
-            
+
 
             //assert
-          
+
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
             message.Headers.Location.Should().Be(url);
@@ -401,7 +405,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //arrange
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
-            var identityResult = new IdentityResult<RoleModel>(new IdentityResult("error"), null);
+            var identityResult = new EntityResult<RoleModel>(null, false, false);
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
                 .ReturnsAsync(identityResult);
 
@@ -491,7 +495,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
               .Should()
-              .BeDecoratedWith<RouteAttribute>(_=>_.Template == "users/{userId}/claims");
+              .BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/claims");
         }
 
         [Fact]
@@ -523,17 +527,18 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var userId = Fixture.Create<string>();
             var roleId = Fixture.Create<string>();
-          
+
+            var entityResult = new EntityResult(true, false);
 
             _mockUserService.Setup(_ => _.RemoveUserFromRoleAsync(userId, roleId))
-                .ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(entityResult);
 
             var result = await _userController.RemoveRole(userId, roleId);
 
             var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
-            
+
 
         }
 
@@ -567,8 +572,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //ARRANGE
             var id = Fixture.Create<string>();
             var user = Fixture.Create<UserModel>();
+            var entityResult = new EntityResult<UserModel>(user, true, false);
             _mockUserService.Setup(_ => _.GetUserAsync(id))
-                .ReturnsAsync(user);
+                .ReturnsAsync(entityResult);
 
             //ACT
             var result = await _userController.GetUser(id);

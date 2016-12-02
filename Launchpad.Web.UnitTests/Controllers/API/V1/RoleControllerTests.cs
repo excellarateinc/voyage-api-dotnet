@@ -1,21 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using Xunit;
-using FluentAssertions;
-using Moq;
-using Ploeh.AutoFixture;
+﻿using FluentAssertions;
+using Launchpad.Models;
+using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
-using System.Web.Http;
-using Launchpad.Services.Interfaces;
-using Launchpad.Models;
-using Microsoft.AspNet.Identity;
-using System.Threading;
-using System.Net;
+using Moq;
+using Ploeh.AutoFixture;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using static Launchpad.Web.Constants;
+using System.Threading;
+using System.Web.Http;
 using System.Web.Http.Routing;
+using Xunit;
+using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
@@ -33,7 +31,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _roleController.Configuration = new HttpConfiguration();
             _mockUrlHelper = Mock.Create<UrlHelper>();
             _roleController.Url = _mockUrlHelper.Object;
-           
+
         }
 
         [Fact]
@@ -59,9 +57,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var id = Fixture.Create<string>();
             var claims = Fixture.CreateMany<ClaimModel>();
+            var entityResult = new EntityResult<IEnumerable<ClaimModel>>(claims, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleId(id))
-                .Returns(claims);
+                .Returns(entityResult);
 
             var result = _roleController.GetClaims(id);
 
@@ -80,7 +79,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void CreateRole_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertRoute(_=>_.CreateRole(new RoleModel()), "roles");
+            _roleController.AssertRoute(_ => _.CreateRole(new RoleModel()), "roles");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -98,7 +97,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             _roleController.AssertClaim(_ => _.RemoveClaim("a", 1), LssClaims.DeleteRoleClaim);
         }
-        
+
         [Fact]
         public void GetRoles_Should_Have_RouteAttribute()
         {
@@ -123,7 +122,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void CreateRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_=>_.CreateRole(new RoleModel()), LssClaims.CreateRole);
+            _roleController.AssertClaim(_ => _.CreateRole(new RoleModel()), LssClaims.CreateRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -149,7 +148,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             };
 
             //Crete fake serivce result
-            var identityResult = new IdentityResult<RoleModel>(IdentityResult.Success, model);
+            var entityResult = new EntityResult<RoleModel>(model, true, false);
 
             //Matcher for determining if route params match
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
@@ -160,20 +159,20 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             };
             _mockUrlHelper.Setup(_ => _.Link("GetRoleById", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
                 .Returns(url);
-                
+
 
             _mockRoleService.Setup(_ => _.CreateRoleAsync(model))
-                .ReturnsAsync(identityResult);
+                .ReturnsAsync(entityResult);
 
             //ACT
             var result = await _roleController.CreateRole(model);
-            
+
             //ASSERT
             var message = await result.ExecuteAsync(new CancellationToken());
 
             //should have the location header
-            message.Headers.Location.Should().Be(url); 
-            
+            message.Headers.Location.Should().Be(url);
+
             //should have created status code     
             message.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -190,8 +189,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             var id = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
+            var entityModel = new EntityResult<RoleModel>(model, true, false);
+
             _mockRoleService.Setup(_ => _.GetRoleById(id))
-                .Returns(model);
+                .Returns(entityModel);
 
             var result = _roleController.GetRoleById(id);
 
@@ -213,10 +214,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 Name = "Great Role"
             };
 
-            var identityResult = new IdentityResult<RoleModel>(new IdentityResult("Error1"), null);
+            var entityResult = new EntityResult<RoleModel>(null, false, false, "Error1");
 
             _mockRoleService.Setup(_ => _.CreateRoleAsync(model))
-                .ReturnsAsync(identityResult);
+                .ReturnsAsync(entityResult);
 
             //ACT
             var result = await _roleController.CreateRole(model);
@@ -304,7 +305,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public void GetRoles_Should_Have_HttpGetAttribute() {
+        public void GetRoles_Should_Have_HttpGetAttribute()
+        {
             ReflectionHelper.GetMethod<RoleController>(_ => _.GetRoles())
                 .Should()
                 .BeDecoratedWith<HttpGetAttribute>();
@@ -335,10 +337,11 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
             var claim = Fixture.Create<ClaimModel>();
+            var entityResult = new EntityResult<ClaimModel>(claim, true, false);
 
             _mockRoleService
                 .Setup(_ => _.GetClaimById(roleId, claimId))
-                .Returns(claim);
+                .Returns(entityResult);
 
             //ACT
             var result = _roleController.GetClaimById(roleId, claimId);
@@ -361,9 +364,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public async void GetRoles_Should_Call_RoleService()
         {
             var roles = Fixture.CreateMany<RoleModel>();
+            var entityResult = new EntityResult<IEnumerable<RoleModel>>(roles, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoles())
-                .Returns(roles);
+                .Returns(entityResult);
 
             var result = _roleController.GetRoles();
 
@@ -386,8 +390,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var role = Fixture.Create<RoleModel>();
             var claim = Fixture.Create<ClaimModel>();
             var serviceResult = Fixture.Create<ClaimModel>();
+            var entityResult = new EntityResult<ClaimModel>(serviceResult, true, false);
             _mockRoleService.Setup(_ => _.AddClaimAsync(role.Id, claim))
-                .ReturnsAsync(serviceResult);
+                .ReturnsAsync(entityResult);
 
             var link = "http://fakelink.com";
 
@@ -406,7 +411,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 .Returns(link);
 
             //Act
-            var result  = await _roleController.AddClaim(role.Id, claim);
+            var result = await _roleController.AddClaim(role.Id, claim);
 
             //Assert
             var message = await result.ExecuteAsync(new CancellationToken());
@@ -449,7 +454,8 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId));
+            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId))
+                .Returns(new EntityResult(true, false));
 
             //Act
             var result = _roleController.RemoveClaim(roleId, claimId);
@@ -468,7 +474,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var roleId = Fixture.Create<string>();
 
             _mockRoleService.Setup(_ => _.RemoveRoleAsync(roleId))
-                .ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(new EntityResult(true, false));
 
             //Act
             var result = await _roleController.RemoveRole(roleId);

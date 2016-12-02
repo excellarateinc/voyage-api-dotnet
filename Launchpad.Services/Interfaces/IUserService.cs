@@ -1,5 +1,4 @@
 ﻿using Launchpad.Models;
-using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,31 +7,31 @@ namespace Launchpad.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IdentityResult> RegisterAsync(RegistrationModel model);
+        Task<EntityResult> RegisterAsync(RegistrationModel model);
 
-        Task<IdentityResult<UserModel>> CreateUserAsync(UserModel model);
+        Task<EntityResult<UserModel>> CreateUserAsync(UserModel model);
 
         Task<bool> IsValidCredential(string userName, string password);
 
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
 
-        IEnumerable<UserModel> GetUsers();
+        EntityResult<IEnumerable<UserModel>> GetUsers();
 
-        Task<IdentityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel);
+        Task<EntityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel);
 
-        Task<IdentityResult> RemoveUserFromRoleAsync(string userId, string roleId);
+        Task<EntityResult> RemoveUserFromRoleAsync(string userId, string roleId);
 
-        Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId);
+        Task<EntityResult<IEnumerable<RoleModel>>> GetUserRolesAsync(string userId);
 
-        Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
+        Task<EntityResult<IEnumerable<ClaimModel>>> GetUserClaimsAsync(string userId);
 
-        RoleModel GetUserRoleById(string userId, string roleId);
+        EntityResult<RoleModel> GetUserRoleById(string userId, string roleId);
 
-        Task<UserModel> GetUserAsync(string userId);
+        Task<EntityResult<UserModel>> GetUserAsync(string userId);
 
-        Task<IdentityResult> DeleteUserAsync(string userId);
+        Task<EntityResult> DeleteUserAsync(string userId);
 
-        Task<IdentityResult<UserModel>> UpdateUserAsync(string userId, UserModel model);
+        Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model);
 
     }
 }

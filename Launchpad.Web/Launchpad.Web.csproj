@@ -222,6 +222,7 @@
     <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="AuthProviders\LoginOrchestratorV2.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
