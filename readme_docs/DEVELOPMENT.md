@@ -59,26 +59,25 @@ __Best Practices__
 ### Required Software
 Download and install the following required software for development:
 * [Visual Studio 2015 or greater](https://www.visualstudio.com/vs/)
+* [Visual Studio Github Extension](https://visualstudio.github.com)
 * [SQL Server 2012 or greater](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
-* IIS (More details [here](#run-app-locally))
 * [Java 1.8 SDK (for Liquibase Database Migration)](http://www.oracle.com/technetwork/java/index.html)
 * [Node](https://nodejs.org/en/)
-* [apiDocJs](http://apidocjs.com/)
 
 ### Instructions
 > __EXPLAIN the process start-to-finish with no assumptions__
 
 1. Download source via Visual Studio GitHub extension
-   - Install GitHub extension [[Download](https://visualstudio.github.com)]
-   - GitHub Repo: https://github.com/lssinc/launchpad-dotnet-api
    - Open Visual Studio
    - Go to the "Team Explorer" tab
    - Click the "Manage Connections" button.
    - Under the GitHub section, click "Clone".
    - Enter your GitHub credentials.
    - Choose "launchpad-dotnet-api" from the list of repositories.
+     * The official repository is located here https://github.com/lssinc/launchpad-dotnet-api
    - Once cloning is complete, open the "Launchpad.API" solution.
-2. Nuget Restore
+2. Build it
+   - With the solution open, press Control + Shift + B or right click the solution and select "Build".
    - Visual Studio should automatically restore the dependencies on the first build.
    - If packages aren't restored on build, you have two options. 
      * You can right click the solution in Visual Studio and select "Restore NuGet Packages".
@@ -91,12 +90,42 @@ Download and install the following required software for development:
      * The connection string in Launchpad.Web web.config determines where the database will be created
      * The default is localhost/sqlexpress with initial catalog Launchpad
      * When the web.config connection string is changed, update the connection string in Launchpad.Data.IntegrationTests
-4. Build
-   - Use the Visual Studio Build/Debug menus to compile and start the project. These menu options will invoke MSBUILD with the appropriate parameters.
-5. Test
-   - Use the Visual Studio Test Explorer to view and execute the unit and integration tests. 
-     * To open the test explorer, click the "Test" tab in Visual Studio, select "Windows" then "Test Explorer".
-   - NOTE: A local database is required in order for integration tests to complete successfully. 
+4. Install IIS
+   - Open up the Control Panel
+   - Click "Programs"
+   - Click "Turn Windows features on or off"
+   - Expand the "Internet Information Services" node
+   - Select "World Wide Web Services"
+   - Click "OK"    
+5. Add the launchpad application to IIS
+   - Click the start button, and search for "inetmgr". Open the IIS Manager application.
+   - Expand the root node, right click on "Sites" and select "Add Website".
+   - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder.
+   - Change port 80 to 52431.
+   - Click OK
+   - Click "Application Pools" from the left nav. 
+   - Right click the "Launchpad" application pool and select "Advanced Settings...".
+   - Change the .NET CLR Version to v4.0
+   - Under "Identity", right click the "..." button.
+   - Click "Custom account" and click "Set"
+   - Type in your windows credentials and click OK.   
+6. Add your windows credentials to SQL Server
+   - Open up SQL Server Management Studio.
+   - Enter "Localhost" as the server name.
+   - Click "Connect"
+   - Expand the "Security" folder
+   - Expand the "Logins" folder
+   - Right click on your windows username and select "Properties".
+   - Click "User Mapping" from the left navigation.
+   - Click the checkbox next to "Launchpad"
+   - Click the checkbox next to "db_owner" in the bottom panel.
+   - Click OK   
+7. Install the API Documentation
+   - Open up a command prompt
+   - Run "npm install apidoc -g"
+   - Change directory "cd" to the Launchpad.Web folder.
+   - Run this command: "npm run doc"
+   - You will see a "Done" message when it is complete.   
 
 > __SEED DATA__
 >
@@ -111,46 +140,16 @@ Password: Hello123!
 ## Run App Locally
 > __FINISH THIS SECTION__
 
-1. Install IIS
- - Open up the Control Panel
- - Click "Programs"
- - Click "Turn Windows features on or off"
- - Expand the "Internet Information Services" node
- - Select "World Wide Web Services"
- - Click "OK"
-2. Add the launchpad application to IIS
- - Click the start button, and search for "inetmgr". Open the IIS Manager application.
- - Expand the root node, right click on "Sites" and select "Add Website".
- - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder.
- - Change port 80 to 52431.
- - Click OK
- - Click "Application Pools" from the left nav. 
- - Right click the "Launchpad" application pool and select "Advanced Settings...".
- - Change the .NET CLR Version to v4.0
- - Under "Identity", right click the "..." button.
- - Click "Custom account" and click "Set"
- - Type in your windows credentials and click OK.
-3. Add your windows credentials to SQL Server
- - Open up SQL Server Management Studio.
- - Enter "Localhost" as the server name.
- - Click "Connect"
- - Expand the "Security" folder
- - Expand the "Logins" folder
- - Right click on your windows username and select "Properties".
- - Click "User Mapping" from the left navigation.
- - Click the checkbox next to "Launchpad"
- - Click the checkbox next to "db_owner" in the bottom panel.
- - Click OK
-4. Install the API Documentation
-  - Open up a command prompt
-  - Change directory "cd" to the Launchpad.Web folder.
-  - Run this command: "npm run doc"
-  - You will see a "Done" message when it is complete.
-5. Run the application
-  - Open Visual Studio
-  - Open the "Launchpad.API" solution.
-  - Press F5
-  - You are now up and running. Your browser will open and display the API documentation for the application.
+1. Run the application
+   - Open Visual Studio
+   - Open the "Launchpad.API" solution.
+   - Press F5
+   - You are now up and running. Your browser will open and display the API documentation for the application.
+2. Run the tests
+   - In Visual Studio, click the "Test" tab, select "Windows" then "Test Explorer".
+   - Click "Run All" from this tab. 
+   - The unit and integration tests will execute.
+  
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Branching
