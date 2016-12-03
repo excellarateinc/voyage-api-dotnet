@@ -149,10 +149,9 @@ Password: Hello123!
 1. Run the application
    - Open Visual Studio with administrator privileges.
    - Open the "Launchpad.API" solution.
-   - Press F5.
+   - Press Control + F5.
    - You are now up and running. Your browser will open and display the API documentation for the application.
-2. Run the tests
-   - If you are still debugging from step 1, stop debugging (hit the red square located in the center top of Visual Studio).
+2. Run the tests   
    - In Visual Studio, click the "Test" tab, select "Windows" then "Test Explorer".
    - Click "Run All" from this tab. 
    - The unit and integration tests will execute.
