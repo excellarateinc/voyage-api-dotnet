@@ -68,16 +68,18 @@ Download and install the following required software for development:
 > __EXPLAIN the process start-to-finish with no assumptions__
 
 1. Download source via Visual Studio GitHub extension
-   - Open Visual Studio
-   - Go to the "Team Explorer" tab
-   - Click the "Manage Connections" button.
+   - Open Visual Studio with administrator privileges. 
+   - Go to the "Team Explorer" tab.
+   - Click the "Manage Connections" button (Green electrical outlet icon). 
    - Under the GitHub section, click "Clone".
    - Enter your GitHub credentials.
    - Choose "launchpad-dotnet-api" from the list of repositories.
      * The official repository is located here https://github.com/lssinc/launchpad-dotnet-api
+   - Choose a path. (Example C:\Source)
+   - Click "Clone".
    - Once cloning is complete, open the "Launchpad.API" solution.
 2. Build it
-   - With the solution open, press Control + Shift + B or right click the solution and select "Build".
+   - With the solution open, press Control + Shift + B or right click the solution and select "Build Solution".
    - Visual Studio should automatically restore the dependencies on the first build.
    - If packages aren't restored on build, you have two options. 
      * You can right click the solution in Visual Studio and select "Restore NuGet Packages".
@@ -89,29 +91,33 @@ Download and install the following required software for development:
    - Type "Update-Database" (no quotes) in the console and hit enter to create the database. This will run the Entity Framework migration scripts. If this fails with a message telling you the command is unrecognized, restart Visual Studio and try again.
      * The connection string in Launchpad.Web web.config determines where the database will be created
      * The default is localhost/sqlexpress with initial catalog Launchpad
-     * When the web.config connection string is changed, update the connection string in Launchpad.Data.IntegrationTests
+     * If you have a different instance name, change the "Data Source" portion of this to your instance. Also change this value in the app.config in Launchpad.Data.IntegrationTests.
 4. Install IIS
-   - Open up the Control Panel
-   - Click "Programs"
-   - Click "Turn Windows features on or off"
-   - Expand the "Internet Information Services" node
-   - Select "World Wide Web Services"
-   - Click "OK"    
+   - Open up the Control Panel.
+   - Click "Programs".
+   - Click "Turn Windows features on or off".
+   - Expand the "Internet Information Services" node.
+   - Check the "Web Management Tools" checkbox.
+   - Check the "World Wide Web Services" checkbox.
+   - Expand the "World Wide Web Services node.
+   - Expand the "Application Development Features" node.
+   - Check the "ASP.NET 4.6" checkbox.
+   - Click "OK".
 5. Add the launchpad application to IIS
    - Click the start button, and search for "inetmgr". Open the IIS Manager application.
    - Expand the root node, right click on "Sites" and select "Add Website".
-   - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder.
+   - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder. (Example: C:\Source\launchpad-dotnet-api\Launchpad.Web)
    - Change port 80 to 52431.
    - Click OK
    - Click "Application Pools" from the left nav. 
    - Right click the "Launchpad" application pool and select "Advanced Settings...".
-   - Change the .NET CLR Version to v4.0
-   - Under "Identity", right click the "..." button.
+   - Ensure the .NET CLR Version is v4.0.
+   - Under the "Process Model" section, click the bolded word "ApplicationPoolIdentity", then click the "..." button.
    - Click "Custom account" and click "Set"
    - Type in your windows credentials and click OK.   
 6. Add your windows credentials to SQL Server
    - Open up SQL Server Management Studio.
-   - Enter "Localhost" as the server name.
+   - Enter "localhost" as the server name.
    - Click "Connect"
    - Expand the "Security" folder
    - Expand the "Logins" folder
@@ -141,11 +147,12 @@ Password: Hello123!
 > __FINISH THIS SECTION__
 
 1. Run the application
-   - Open Visual Studio
+   - Open Visual Studio with administrator privileges.
    - Open the "Launchpad.API" solution.
-   - Press F5
+   - Press F5.
    - You are now up and running. Your browser will open and display the API documentation for the application.
 2. Run the tests
+   - If you are still debugging from step 1, stop debugging (hit the red square located in the center top of Visual Studio).
    - In Visual Studio, click the "Test" tab, select "Windows" then "Test Explorer".
    - Click "Run All" from this tab. 
    - The unit and integration tests will execute.
