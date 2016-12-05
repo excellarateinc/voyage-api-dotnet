@@ -61,6 +61,7 @@ Download and install the following required software for development:
 * [Visual Studio 2015 or greater](https://www.visualstudio.com/vs/)
 * [Visual Studio Github Extension](https://visualstudio.github.com)
 * [SQL Server 2012 or greater](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+  1. [SQL Server 2016 SP1] (https://www.microsoft.com/en-us/sql-server/sql-server-editions-developers) can be used locally for development. It has a free license and available via the Visual Studio Dev Essentials. You will have to login to download.
 * [Java 1.8 SDK (for Liquibase Database Migration)](http://www.oracle.com/technetwork/java/index.html)
 * [Node](https://nodejs.org/en/)
 
