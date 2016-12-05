@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201611211755457_User_Add_Deleted_Column.Designer.cs">
       <DependentUpon>201611211755457_User_Add_Deleted_Column.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612051452485_Table_Name_Refactor.cs" />
+    <Compile Include="Migrations\201612051452485_Table_Name_Refactor.Designer.cs">
+      <DependentUpon>201612051452485_Table_Name_Refactor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleClaimRepository.cs" />
@@ -185,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611211755457_User_Add_Deleted_Column.resx">
       <DependentUpon>201611211755457_User_Add_Deleted_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612051452485_Table_Name_Refactor.resx">
+      <DependentUpon>201612051452485_Table_Name_Refactor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

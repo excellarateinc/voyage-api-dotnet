@@ -7,7 +7,7 @@ namespace Launchpad.Data.Configuration
     {
         public RoleClaimsConfiguration()
         {
-            ToTable("RoleClaims", Constants.Schemas.FrameworkTables);
+            ToTable("RoleClaim", Constants.Schemas.FrameworkTables);
 
             HasKey(_ => _.Id);
 
@@ -23,7 +23,7 @@ namespace Launchpad.Data.Configuration
             HasRequired(_ => _.Role)
                 .WithMany(_ => _.Claims)
                 .HasForeignKey(_ => _.RoleId);
-                             
+
 
         }
     }

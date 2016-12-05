@@ -7,7 +7,7 @@ namespace Launchpad.Data.Configuration
     {
         public LaunchpadLogConfiguration()
         {
-            ToTable("LaunchpadLogs", Constants.Schemas.FrameworkTables);
+            ToTable("ApplicationLog", Constants.Schemas.FrameworkTables);
 
             HasKey(_ => _.Id);
 
@@ -17,7 +17,7 @@ namespace Launchpad.Data.Configuration
             Property(_ => _.Level).HasMaxLength(128);
             Property(_ => _.TimeStamp);
             Property(_ => _.Exception);
-            Property(_ => _.Properties).HasColumnType("xml"); 
+            Property(_ => _.Properties).HasColumnType("xml");
             Property(_ => _.LogEvent);
         }
     }
