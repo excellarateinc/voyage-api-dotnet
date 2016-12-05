@@ -8,13 +8,13 @@ namespace Launchpad.Data
     /// <summary>
     /// Following our repository pattern - this is readonly (The logger will write the messages)
     /// </summary>
-    public class LaunchpadLogRepository : BaseRepository<LaunchpadLog>, ILaunchpadLogRepository
+    public class ApplicationLogRepository : BaseRepository<ApplicationLog>, IApplicationLogRepository
     {
-        public LaunchpadLogRepository(ILaunchpadDataContext context) : base(context)
+        public ApplicationLogRepository(ILaunchpadDataContext context) : base(context)
         {
         }
 
-        public override LaunchpadLog Add(LaunchpadLog model)
+        public override ApplicationLog Add(ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }
@@ -24,22 +24,22 @@ namespace Launchpad.Data
             throw new NotImplementedException("Log messages managed by logging interface");
         }
 
-        public override LaunchpadLog Get(object id)
+        public override ApplicationLog Get(object id)
         {
             throw new NotImplementedException("No current use case for retrieving a message by id");
         }
 
-        public override IQueryable<LaunchpadLog> GetAll()
+        public override IQueryable<ApplicationLog> GetAll()
         {
             throw new NotImplementedException("No current user case of retrieving all messages");
         }
 
-        public IQueryable<LaunchpadLog> GetRecentActivity(int maxEvents = 10)
+        public IQueryable<ApplicationLog> GetRecentActivity(int maxEvents = 10)
         {
             return Context.Logs.Take(maxEvents);
         }
 
-        public override LaunchpadLog Update(LaunchpadLog model)
+        public override ApplicationLog Update(ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }

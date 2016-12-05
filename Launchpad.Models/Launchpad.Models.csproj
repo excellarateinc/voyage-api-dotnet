@@ -82,7 +82,7 @@
     <Compile Include="EntityFramework\ActivityAudit.cs" />
     <Compile Include="EntityFramework\ApplicationRole.cs" />
     <Compile Include="EntityFramework\ApplicationUser.cs" />
-    <Compile Include="EntityFramework\LaunchpadLog.cs" />
+    <Compile Include="EntityFramework\ApplicationLog.cs" />
     <Compile Include="EntityFramework\RoleClaim.cs" />
     <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="EntityResult.cs" />

@@ -7,7 +7,7 @@ namespace Launchpad.Data.Interfaces
     {
         IDbSet<Widget> Widgets { get; set; }
 
-        IDbSet<LaunchpadLog> Logs { get; set; }
+        IDbSet<ApplicationLog> Logs { get; set; }
 
         IDbSet<RoleClaim> RoleClaims { get; set; }
 

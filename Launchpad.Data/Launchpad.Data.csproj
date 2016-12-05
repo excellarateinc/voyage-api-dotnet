@@ -86,7 +86,7 @@
     <Compile Include="BaseRepository.cs" />
     <Compile Include="Configuration\ActivityAuditConfiguration.cs" />
     <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
-    <Compile Include="Configuration\LaunchpadLogConfiguration.cs" />
+    <Compile Include="Configuration\ApplicationLogConfiguration.cs" />
     <Compile Include="Configuration\UserPhoneConfiguration.cs" />
     <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="Configuration\WidgetConfiguration.cs" />
@@ -95,12 +95,12 @@
     <Compile Include="Auditing\IAuditConfiguration.cs" />
     <Compile Include="Interfaces\IActivityAuditRepository.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
-    <Compile Include="Interfaces\ILaunchpadLogRepository.cs" />
+    <Compile Include="Interfaces\IApplicationLogRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRoleClaimRepository.cs" />
     <Compile Include="Interfaces\IWidgetRepository.cs" />
     <Compile Include="LaunchpadDataContext.cs" />
-    <Compile Include="LaunchpadLogRepository.cs" />
+    <Compile Include="ApplicationLogRepository.cs" />
     <Compile Include="Migrations\201611101743272_Initial.cs" />
     <Compile Include="Migrations\201611101743272_Initial.Designer.cs">
       <DependentUpon>201611101743272_Initial.cs</DependentUpon>

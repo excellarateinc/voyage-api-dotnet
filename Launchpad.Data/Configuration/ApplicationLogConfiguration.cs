@@ -3,9 +3,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Launchpad.Data.Configuration
 {
-    public class LaunchpadLogConfiguration : EntityTypeConfiguration<LaunchpadLog>
+    public class ApplicationLogConfiguration : EntityTypeConfiguration<ApplicationLog>
     {
-        public LaunchpadLogConfiguration()
+        public ApplicationLogConfiguration()
         {
             ToTable("ApplicationLog", Constants.Schemas.FrameworkTables);
 

@@ -8,21 +8,21 @@ using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.UnitTests
 {
-    public class LaunchpadLogRepositoryTests : BaseUnitTest
+    public class ApplicationLogRepositoryTests : BaseUnitTest
     {
-        private LaunchpadLogRepository _repository;
+        private ApplicationLogRepository _repository;
         private Mock<ILaunchpadDataContext> _mockContext;
 
-        public LaunchpadLogRepositoryTests()
+        public ApplicationLogRepositoryTests()
         {
             _mockContext = Mock.Create<ILaunchpadDataContext>();
-            _repository = new LaunchpadLogRepository(_mockContext.Object);
+            _repository = new ApplicationLogRepository(_mockContext.Object);
         }
 
         [Fact]
         public void Add_Should_Throw_NotImplementedException()
         {
-            Action throwAction = () => _repository.Add(new LaunchpadLog());
+            Action throwAction = () => _repository.Add(new ApplicationLog());
             throwAction.ShouldThrow<NotImplementedException>();
         }
 
@@ -36,7 +36,7 @@ namespace Launchpad.Data.UnitTests
         [Fact]
         public void Update_Should_Throw_NotImplementedException()
         {
-            Action throwAction = () => _repository.Update(new LaunchpadLog());
+            Action throwAction = () => _repository.Update(new ApplicationLog());
             throwAction.ShouldThrow<NotImplementedException>();
         }
 

@@ -18,7 +18,7 @@ namespace Launchpad.Data
         #region DbSets
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
         public IDbSet<Widget> Widgets { get; set; }
-        public IDbSet<LaunchpadLog> Logs { get; set; }
+        public IDbSet<ApplicationLog> Logs { get; set; }
         public IDbSet<RoleClaim> RoleClaims { get; set; }
         public IDbSet<UserPhone> UserPhones { get; set; }
 
