@@ -70,5 +70,55 @@ Post-Deployment Script Template
 
 
 ## Deployment
+When a database project builds, the output is a .dacpac file that can be used to apply the changes against a new or existing database. There are a number of options for deploying the package. 
 
-Coming soon!
+###SqlPackage.exe 
+This is a utility that can deploy a .dacpac file. Additionally, it can also be used to generate script that will update a database to the state in the .dacpac.
+
+#### Sample Command
+```
+"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe" /TargetConnectionString:"Integrated Security=SS
+PI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Launchpad" /SourceFile:".\Launchpad.Database.dacpac" /Action:Publish
+Publishing to database 'Launchpad' on server 'localhost'.
+Initializing deployment (Start)
+Initializing deployment (Complete)
+Analyzing deployment plan (Start)
+Analyzing deployment plan (Complete)
+Updating database (Start)
+Update complete.
+Updating database (Complete)
+Successfully published database.
+```
+
+###Powershell
+PowerShell is another option for deploying a .dapac. Below is a sample script that will deploy a package. Note the links in the comment - this script was developed using those resources.
+
+```
+#https://blogs.msmvps.com/deborahk/deploying-a-dacpac-with-powershell
+#http://www.systemcentercentral.com/deploying-sql-dacpac-t-sql-script-via-powershell/
+#PowerShell.exe -ExecutionPolicy AllSigned
+#https://msdn.microsoft.com/powershell/reference/5.1/Microsoft.PowerShell.Core/about/about_Execution_Policies
+
+add-type -path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\Microsoft.SqlServer.Dac.dll"
+
+$dacService = new-object Microsoft.SqlServer.Dac.DacServices "server=localhost;Integrated Security = True;"
+
+$dp = [Microsoft.SqlServer.Dac.DacPackage]::Load(".\Launchpad.Database.dacpac")
+
+
+
+try{
+    # register event. For info on this cmdlet, see http://technet.microsoft.com/en-us/library/hh849929.aspx 
+    register-objectevent -in $dacService -eventname Message -source "msg" -action { out-host -in $Event.SourceArgs[1].Message.Message } | Out-Null
+ 
+    echo "Starting Deployment"
+    $result =  $dacService.deploy($dp, "Launchpad", "True")     
+}
+catch [Exception]{
+    echo $_.Exception|format-list -force
+}
+
+# clean up event 
+unregister-event -source "msg" 
+echo "Done."
+```
