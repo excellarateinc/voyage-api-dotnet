@@ -43,7 +43,8 @@ namespace Launchpad.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
+            //Disable EF migrations
+            Database.SetInitializer<LaunchpadDataContext>(null);
 
             #region Boilerplate configuration
             //Migrations were not being generated corretly because the order in which the base was executing
