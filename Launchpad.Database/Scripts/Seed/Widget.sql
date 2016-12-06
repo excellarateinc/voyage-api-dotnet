@@ -4,7 +4,7 @@ AS (
 	FROM (
 		VALUES 
 			(N'Seed Widget', N'Green')
-		) AS UserRole(Name, Color)
+		) AS UserRole([Name], [Color])
 	)
 -- Reference Data for Role 
 MERGE INTO dbo.[Widget] AS [Target]
@@ -13,10 +13,11 @@ USING Widget_CTE AS [Source]
 WHEN NOT MATCHED BY TARGET
 	THEN
 		INSERT (
-			[Name], [Color]
+			  [Name] 
+			, [Color]
 			)
 		VALUES (
-			Source.Name,
-			Source.Color
+			[Source].[Name],
+			[Source].[Color]
 			)
 		OUTPUT $action, inserted.*, deleted.*;

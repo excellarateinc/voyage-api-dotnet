@@ -29,18 +29,22 @@ AS (
 		) AS RoleClaimSeed([RoleId], [ClaimType], [ClaimValue])
 	)
 
--- Reference Data for Role 
+-- Reference Data for Role Claim
 MERGE INTO dbo.[ROLECLAIM] AS [Target]
 USING RoleClaim_CTE AS [Source]
-	ON [Target].[RoleId] = Source.RoleId and Target.ClaimValue = Source.ClaimValue
+	ON [Target].[RoleId] = [Source].[RoleId] and [Target].[ClaimValue] = [Source].[ClaimValue]
 WHEN NOT MATCHED BY TARGET
 	THEN
 		INSERT (
-			[RoleId], [ClaimType], [ClaimValue]
+			  [RoleId]
+			, [ClaimType]
+			, [ClaimValue]
 			)
 		VALUES (
 			
-			[Source].[RoleId], [Source].[ClaimType], [Source].[ClaimValue]
+			  [Source].[RoleId]
+			, [Source].[ClaimType]
+			, [Source].[ClaimValue]
 			)
 WHEN MATCHED 
 	THEN
