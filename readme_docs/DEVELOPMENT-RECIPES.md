@@ -7,6 +7,7 @@ Instructional recipies for how to do something within the codebase.
 * [APIDoc - Document A Web Service](#apidoc---document-a-web-service)
 * [API Versioning](#api-versioning)
 * [Audit - Enable DB Entity Change Tracking](#audit---enable-db-entity-change-tracking)
+* [Consuming API Services](#consuming-api-services)
 * [Creating a Controller](#creating-a-controller)
 * [Creating a Service](#creating-a-service)
 * [HTTP Request - Validate Request Data](#http-request---validate-request-data)
@@ -148,6 +149,134 @@ The event types map to the following enumeration:
 |UnDeleted|4|
 
 :arrow_up: [Back to Top](#table-of-contents)
+
+## Consuming API Services
+There are two type of services available via the API: anonymous and secure services. Anonymous services are those that can be used without any authentication. Meanwhile, secure services are those that require a bearer token in order to process the request.
+
+### Anonymous Services
+Anonymous services can be used without including an Authorization header. The following endpoints are anonymous:
+
+| Path | Description | 
+|:----|:----|
+| /api/vX/login | Attempts to authentication the user and returns an authorization token on success.|
+| /api/vX/account/register | Registers a new user|
+| /api/vX/statuses | Returns application status information | 
+
+Each of the services can be used by issuing a standard HTTP Request. For more information, see the API documentation for details on consuming these services.
+
+#### Sample Anonymous Request
+
+```
+GET http://54.196.167.24/api/v1/statuses HTTP/1.1
+Host: 54.196.167.24
+Connection: keep-alive
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36
+Postman-Token: 554afee4-3092-c84e-abb6-5a9467a38c52
+Accept: */*
+Accept-Encoding: gzip, deflate, sdch
+Accept-Language: en-US,en;q=0.8
+```
+
+#### Sample Anonymous Response
+```
+HTTP/1.1 200 OK
+Content-Length: 29
+Content-Type: application/json; charset=utf-8
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+Date: Tue, 06 Dec 2016 21:43:57 GMT
+
+{"buildNumber":"some_number"}
+```
+
+### Secure Services
+Secure services need to have a special header included in the request. The header is:
+
+```
+{
+    "Authorization": "bearer {Token}"
+}
+```
+where {Token} is the access_token returned from the login service.
+
+The workflow for consuming these sevices is as follows:
+
+1. Call the Login api with the username and password
+2. Upon a 200 response, save the access_token
+3. Create a new request and set the Authorization header to bearer + access_token
+4. Configure remaining properties of the request
+5. Execute the request
+
+**Note:** The access_token can be reused for multiple requests. It is unnecessary to call Login prior to every secure request. 
+
+#### Sample Login Request
+```
+POST http://54.196.167.24/api/v1/login HTTP/1.1
+Host: 54.196.167.24
+Connection: keep-alive
+Content-Length: 65
+Postman-Token: 63193519-f0b2-b6eb-b905-939487bc103f
+Cache-Control: no-cache
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+
+grant_type=password&username=admin%40admin.com&password=Hello123!
+
+```
+
+#### Sample Login Response
+
+```
+HTTP/1.1 200 OK
+Cache-Control: no-cache
+Pragma: no-cache
+Content-Length: 921
+Content-Type: application/json;charset=UTF-8
+Expires: -1
+Server: Microsoft-IIS/7.5
+Access-Control-Allow-Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Access-Control-Allow-Credentials: true
+X-Powered-By: ASP.NET
+Date: Tue, 06 Dec 2016 21:47:04 GMT
+
+{"access_token":"eSqrWlnTcxdMBEB_MO-i812xCBysFGidFy2KHsYjRDbP21vBT5XpuHd3f_fxAYMvyuDhC84S02oAAzd8y4JO07R-R4svWnMiF38EOrJIpKJeP9S-aEs9TVpq7LQEJ1fZlSVcDZV_xttBTetveordQl0vKF7021fXCu05N-X4Y_SIQmVliiwk3v4xSx8skrobV4HBEDyiPEjYut04l_9j_m9BiEzfuGp0_B_o8phUu29SLRMhbtCrGHtCxrfW0BqcsRE3eerp2w2U-ynalVAWgTH339CmWFRK44WPgfpTUVNwnKnj2mr40iglYqKCi-ifxlA_9F4dNfJ4ixQj4QpIjXkAV9_WB1bsCnl-0cVsbWAvmHtIrXQKy9LKt7KykncxuCQlOMgt0K8BH-T9kSffiU2xpnBa9pcYsAIVN1ObZpkjV9RhyVwEyNphIEpUqHwir_fRMBtuSiH1gG5v3H60Vdr_cROTui9x-fhizM-s3ZnlviQhHc1qbhAIA48zYm8GOO8XO_z2H8zS-t94NVthBd1Z3QtI-024HmmXd9NzRKg0A30xSQsE0URm7-2jUN1HUwVNbNuDjXEf05FR2yfGnxoIWA5ZP25ozy_3UBsFXXWAiEDumi6Kk57M2B-xoINzxfZIJvcd_H_9EObGG8G_bcyAXHKnbu0Gwrbhb3Zwv4fslPI1diMXox4kJZtYxEOTjCSaZQlM9sq7I64Fl6apzj_PKLtRw1JMOgKLLzF9Ceo","token_type":"bearer","expires_in":86399,"userName":"admin@admin.com",".issued":"Tue, 06 Dec 2016 21:46:56 GMT",".expires":"Wed, 07 Dec 2016 21:46:56 GMT"}
+
+```
+
+#### Sample Secure Request
+
+```
+GET http://54.196.167.24/api/v1/roles HTTP/1.1
+Host: 54.196.167.24
+Connection: keep-alive
+Authorization: bearer eSqrWlnTcxdMBEB_MO-i812xCBysFGidFy2KHsYjRDbP21vBT5XpuHd3f_fxAYMvyuDhC84S02oAAzd8y4JO07R-R4svWnMiF38EOrJIpKJeP9S-aEs9TVpq7LQEJ1fZlSVcDZV_xttBTetveordQl0vKF7021fXCu05N-X4Y_SIQmVliiwk3v4xSx8skrobV4HBEDyiPEjYut04l_9j_m9BiEzfuGp0_B_o8phUu29SLRMhbtCrGHtCxrfW0BqcsRE3eerp2w2U-ynalVAWgTH339CmWFRK44WPgfpTUVNwnKnj2mr40iglYqKCi-ifxlA_9F4dNfJ4ixQj4QpIjXkAV9_WB1bsCnl-0cVsbWAvmHtIrXQKy9LKt7KykncxuCQlOMgt0K8BH-T9kSffiU2xpnBa9pcYsAIVN1ObZpkjV9RhyVwEyNphIEpUqHwir_fRMBtuSiH1gG5v3H60Vdr_cROTui9x-fhizM-s3ZnlviQhHc1qbhAIA48zYm8GOO8XO_z2H8zS-t94NVthBd1Z3QtI-024HmmXd9NzRKg0A30xSQsE0URm7-2jUN1HUwVNbNuDjXEf05FR2yfGnxoIWA5ZP25ozy_3UBsFXXWAiEDumi6Kk57M2B-xoINzxfZIJvcd_H_9EObGG8G_bcyAXHKnbu0Gwrbhb3Zwv4fslPI1diMXox4kJZtYxEOTjCSaZQlM9sq7I64Fl6apzj_PKLtRw1JMOgKLLzF9Ceo
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36
+Postman-Token: 28d8eeb2-8d05-c248-0b68-66589d8f7088
+Accept: */*
+Accept-Encoding: gzip, deflate, sdch
+Accept-Language: en-US,en;q=0.8
+```
+
+#### Sample Secure Response
+```
+HTTP/1.1 200 OK
+Content-Length: 1751
+Content-Type: application/json; charset=utf-8
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+Date: Tue, 06 Dec 2016 21:47:50 GMT
+
+[{"id":"3a408ee9-e99d-4ca3-bc5d-a1dec54d6d85","name":"Administrator","claims":[{"claimType":"lss.permission","claimValue":"assign.role","id":3},{"claimType":"lss.permission","claimValue":"create.role","id":4},{"claimType":"lss.permission","claimValue":"delete.role","id":5},{"claimType":"lss.permission","claimValue":"list.roles","id":6},{"claimType":"lss.permission","claimValue":"revoke.role","id":7},{"claimType":"lss.permission","claimValue":"view.claim","id":8},{"claimType":"lss.permission","claimValue":"list.users","id":9},{"claimType":"lss.permission","claimValue":"list.user-claims","id":10},{"claimType":"lss.permission","claimValue":"view.user","id":11},{"claimType":"lss.permission","claimValue":"update.user","id":12},{"claimType":"lss.permission","claimValue":"delete.user","id":13},{"claimType":"lss.permission","claimValue":"create.user","id":14},{"claimType":"lss.permission","claimValue":"list.widgets","id":15},{"claimType":"lss.permission","claimValue":"list.role-claims","id":16},{"claimType":"lss.permission","claimValue":"delete.role-claim","id":17},{"claimType":"lss.permission","claimValue":"create.claim","id":18},{"claimType":"lss.permission","claimValue":"view.role","id":19},{"claimType":"lss.permission","claimValue":"view.widget","id":20},{"claimType":"lss.permission","claimValue":"update.widget","id":21},{"claimType":"lss.permission","claimValue":"create.widget","id":22},{"claimType":"lss.permission","claimValue":"delete.widget","id":23}]},{"id":"1194fe58-7581-4273-badf-be2a29b939a3","name":"Basic","claims":[{"claimType":"lss.permission","claimValue":"login","id":1},{"claimType":"lss.permission","claimValue":"list.user-claims","id":2}]},{"id":"d090fa99-b987-412d-aad3-6c0090569098","name":"Super","claims":[]}]
+```
+
+:arrow_up: [Back to Top](#table-of-contents)
+
 
 ## Creating a Controller
 Creating a controller will expose a new API endpoint. Controllers should be concerned with the API endpoint route and returning an appropriate HttpStatusCode. They should depend on services to execute to the business logic and return an object that represents that result that should be passed to the client.
