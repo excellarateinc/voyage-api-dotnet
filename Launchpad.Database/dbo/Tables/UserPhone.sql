@@ -3,8 +3,8 @@
     [UserId]      NVARCHAR (128) NOT NULL,
     [PhoneNumber] NVARCHAR (15)  NOT NULL,
     [PhoneType]   INT            NOT NULL,
-    CONSTRAINT [PK_core.UserPhones] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_core.UserPhones_core.Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [PK_dbo.UserPhones] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_dbo.UserPhones_dbo.Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
 );
 
 

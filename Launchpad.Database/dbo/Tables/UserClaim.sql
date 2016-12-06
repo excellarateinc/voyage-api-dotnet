@@ -4,8 +4,8 @@
     [ClaimType]          NVARCHAR (MAX) NULL,
     [ClaimValue]         NVARCHAR (MAX) NULL,
     [ApplicationUser_Id] NVARCHAR (128) NULL,
-    CONSTRAINT [PK_core.UserClaims] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_core.UserClaims_core.Users_ApplicationUser_Id] FOREIGN KEY ([ApplicationUser_Id]) REFERENCES [dbo].[User] ([Id])
+    CONSTRAINT [PK_dbo.UserClaims] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_dbo.UserClaims_dbo.Users_ApplicationUser_Id] FOREIGN KEY ([ApplicationUser_Id]) REFERENCES [dbo].[User] ([Id])
 );
 
 

@@ -249,3 +249,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /Launchpad.Web/doc
+
+*.jfm

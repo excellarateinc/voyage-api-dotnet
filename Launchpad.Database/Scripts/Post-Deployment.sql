@@ -9,10 +9,10 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-:r .\Scripts\Seed\Role.sql
-:r .\Scripts\Seed\User.sql
-:r .\Scripts\Seed\RoleClaim.sql
-:r .\Scripts\Seed\UserPhone.sql
-:r .\Scripts\Seed\UserRole.sql
-:r .\Scripts\Seed\Widget.sql
+:r .\Seed\Role.sql
+:r .\Seed\User.sql
+:r .\Seed\RoleClaim.sql
+:r .\Seed\UserPhone.sql
+:r .\Seed\UserRole.sql
+:r .\Seed\Widget.sql
 

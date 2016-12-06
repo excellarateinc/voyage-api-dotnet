@@ -15,6 +15,6 @@
     [AccessFailedCount]    INT            NOT NULL,
     [UserName]             NVARCHAR (MAX) NULL,
     [Deleted]              BIT            DEFAULT ((0)) NOT NULL,
-    CONSTRAINT [PK_core.Users] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_dbo.Users] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

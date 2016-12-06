@@ -8,6 +8,6 @@
     [StatusCode] INT            NOT NULL,
     [Error]      NVARCHAR (MAX) NULL,
     [UserName]   NVARCHAR (50)  NULL,
-    CONSTRAINT [PK_core.ActivityAudit] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_dbo.ActivityAudit] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

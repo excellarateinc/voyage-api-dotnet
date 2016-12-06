@@ -80,9 +80,7 @@
     <Build Include="dbo\Tables\AuditLogDetail.sql" />
     <Build Include="dbo\Tables\LogMetadata.sql" />
     <None Include="Scripts\Seed\User.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="Post-Deployment.sql" />
+    <PostDeploy Include="Scripts\Post-Deployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Seed\RoleClaim.sql" />
