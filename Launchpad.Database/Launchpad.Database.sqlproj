@@ -61,7 +61,6 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
-    <Folder Include="Security\" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Seed" />
   </ItemGroup>
