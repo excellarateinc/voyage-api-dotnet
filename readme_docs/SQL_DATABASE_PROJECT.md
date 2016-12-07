@@ -1,6 +1,70 @@
 ## Schema Changes
+SQL Server Database projects work by defining the desired state of the database. This means the output of the project (.dacpac) contains the definition of how the database should look after it is applied. It differs from a migration strategy which describes how the database should change. For futher details around this topic [see](http://workingwithdevs.com/delivering-databases-migrations-vs-state/).
 
-Coming soon!
+Schema is defined via DDL. From a developer perspective, all changes will be implemented by modifying or creating a CREATE TABLE statement. When the .dacpac is deployed, the appropriate changes to transition the target to the .dacpac state are generated. For example, when a new column [Deleted] was added to existing the table [UserPhones] the .sql file looked like:
+
+```
+CREATE TABLE [dbo].[UserPhone] (
+    [Id]          INT            IDENTITY (1, 1) NOT NULL,
+    [UserId]      NVARCHAR (128) NOT NULL,
+    [PhoneNumber] NVARCHAR (15)  NOT NULL,
+    [PhoneType]   INT            NOT NULL,
+    [Deleted] BIT NOT NULL DEFAULT 0, 
+    CONSTRAINT [PK_dbo.UserPhones] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_dbo.UserPhones_dbo.Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_UserId]
+    ON [dbo].[UserPhone]([UserId] ASC);
+
+
+```
+
+The actual change applied to the existing database was:
+
+```
+ALTER TABLE [dbo].[UserPhone]
+    ADD [Deleted] BIT DEFAULT 0 NOT NULL;
+```
+
+If the column was renamed to Deleted2 the .sql file in the project would be updated to:
+
+```
+CREATE TABLE [dbo].[UserPhone] (
+    [Id]          INT            IDENTITY (1, 1) NOT NULL,
+    [UserId]      NVARCHAR (128) NOT NULL,
+    [PhoneNumber] NVARCHAR (15)  NOT NULL,
+    [PhoneType]   INT            NOT NULL,
+    [Deleted2] BIT NOT NULL DEFAULT 0, 
+    CONSTRAINT [PK_dbo.UserPhones] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_dbo.UserPhones_dbo.Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_UserId]
+    ON [dbo].[UserPhone]([UserId] ASC);
+```
+
+And the change would be applied to the database as:
+```
+EXECUTE sp_rename @objname = N'[dbo].[UserPhone].[Deleted]', @newname = N'Deleted2', @objtype = N'COLUMN';
+```
+
+### Project Structure
+All .ddl is grouped by namespace and type. The the .sql file is named after the object. For instance, the .sql file that defines [dbo].[User] would be found in dbo\Tables\User.sql.
+
+### Adding or Updating Structures
+1. Create a new .sql file in the corresponding location
+  1. Follow the project structure guidance above - each file should be grouped by namespace and type and named after the object it impacts or creates
+2. Define the object using T-SQL or the built in designer
+3. Build the project
+4. Review generated .ddl by using the generate script functionality of SqlPackage.exe
+  1. This helps ensure the intended change will be applied. Note: This is only of use when there is a database that reflects the current database state
+5. Once the changes are correct, check in the changes and the continuous deployment process will apply the changes to the necessary databases
+
 
 ## Reference Data
 Reference data can be loaded via post-deployment scripts. Note: This option should be used for small datasets. 
