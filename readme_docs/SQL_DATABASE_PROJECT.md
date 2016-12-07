@@ -122,3 +122,15 @@ catch [Exception]{
 unregister-event -source "msg" 
 echo "Done."
 ```
+
+###T-SQL Script
+A T-SQL script can generated using the .dacpac and a target database. This script will upgrade the target to match the state of a .dacpac. In this scenario, a dba can take the package and run this command to review the changes and optionally apply the script to upgrade the database.
+
+####Sample Command
+```
+"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe" /TargetConnectionString:"Integrated Se
+curity=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=lp" /SourceFile:".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac" /Action:S
+cript /OutputPath:Launchpad.Database-2016-07-12-09480717.sql
+Generating publish script for database 'lp' on server 'localhost'.
+Successfully generated script to file C:\code\Launchpad.Database-2016-07-12-09480717.sql.
+```
