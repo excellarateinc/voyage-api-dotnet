@@ -1,21 +1,20 @@
 ﻿using Autofac;
+using Autofac.Integration.WebApi;
 using Launchpad.Core;
+using Launchpad.Models.EntityFramework;
+using Launchpad.Services.IdentityManagers;
+using Launchpad.Web.AuthProviders;
+using Launchpad.Web.Middleware;
+using Launchpad.Web.Middleware.Processors;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
-using Microsoft.Owin.Security;
-using System.Web;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Models.EntityFramework;
-using Launchpad.Web.AuthProviders;
-using System;
-using Launchpad.Web.Middleware;
-using Microsoft.Owin;
 using System.Net.Http;
-using Autofac.Integration.WebApi;
+using System.Web;
 using System.Web.Http;
-using Launchpad.Web.Middleware.Processors;
 
 
 namespace Launchpad.Web.App_Start
@@ -49,7 +48,7 @@ namespace Launchpad.Web.App_Start
             ConfigureIdentityServices(builder);
 
             ConfigureMiddleware(builder);
-            
+
         }
 
         private void ConfigureMiddleware(ContainerBuilder builder)
@@ -92,7 +91,7 @@ namespace Launchpad.Web.App_Start
                 .WithParameter("publicClientId", Startup.PublicClientId)
                 .AsSelf()
                 .SingleInstance();
-           
+
             //Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
             {
@@ -112,9 +111,9 @@ namespace Launchpad.Web.App_Start
             });
 
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
-                          
 
-           
+
+
         }
 
         /// <summary>
@@ -125,11 +124,11 @@ namespace Launchpad.Web.App_Start
         private ILogger ConfigureLogging()
         {
             var connectionString = _connectionString;  //Server=... or the name of a connection string in your .config file
-            var tableName = "core.LaunchpadLogs";
+            var tableName = $"{Data.Constants.Schemas.FrameworkTables}.LaunchpadLogs";
 
             var columnOptions = new ColumnOptions();  // optional
             columnOptions.Store.Add(StandardColumn.LogEvent); //Store the JSON too 
-           
+
 
             var log = new LoggerConfiguration()
                 .WriteTo.MSSqlServer(connectionString, tableName, columnOptions: columnOptions)
