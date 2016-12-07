@@ -27,6 +27,34 @@ namespace Launchpad.Services
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
 
+        void MergeCollection<TSource, TDest>(ICollection<TSource> source, ICollection<TDest> destination, Func<TSource, TDest, bool> predicate)
+        {
+            List<TDest> added = new List<TDest>();
+
+            List<TDest> removed = destination
+                    .Where(_ => !source.Any(s => predicate(s, _)))
+                    .ToList();
+
+
+            foreach (var model in source)
+            {
+                var entity = destination.FirstOrDefault(_ => predicate(model, _));
+                if (entity != null)
+                {
+                    _mapper.Map<TSource, TDest>(model, entity);
+                }
+                else
+                {
+                    entity = _mapper.Map<TSource, TDest>(model);
+                    added.Add(entity);
+                }
+            }
+
+            added.ForEach(_ => destination.Add(_));
+            removed.ForEach(_ => destination.Remove(_));
+        }
+
+
         public async Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
@@ -34,6 +62,8 @@ namespace Launchpad.Services
             {
 
                 _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+                MergeCollection(model.Phones, appUser.Phones, (s, d) => s.Id == d.Id);
 
                 var identityResult = await _userManager.UpdateAsync(appUser);
                 return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
