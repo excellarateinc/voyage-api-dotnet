@@ -43,12 +43,8 @@ The following coding standards are agreed upon by the development team and are e
 2. Enable readers to understand the code more quickly by making assumptions based on previous experience.
 3. Facilitate changing and maintaining the code in a consistent manner.
 
-__Langauges__
-* [C#](#C#.md)
-* [SQL](#STANDARDS-SQL.md)
-* XUnit
-
 ## [C#]
+> These guidelines are cherry picked from the official MSDN C# coding conventions document located [here](https://msdn.microsoft.com/en-us/library/ff926074.aspx).
 
 1. Layout
    - __Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.__
