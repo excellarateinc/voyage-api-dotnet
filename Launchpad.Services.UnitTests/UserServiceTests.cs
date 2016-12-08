@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Fixture;
@@ -25,6 +26,7 @@ namespace Launchpad.Services.UnitTests
         private ApplicationUserManager _userManager;
         private Mock<IUserStore<ApplicationUser>> _mockStore;
         private Mock<IRoleService> _mockRoleService;
+        private Mock<IUserPhoneRepository> _mockPhoneRepository;
         private AutoMapperFixture _mapperFixture;
 
         public UserServiceTests(AutoMapperFixture mapperFixture)
@@ -36,11 +38,12 @@ namespace Launchpad.Services.UnitTests
             _mockStore.As<IUserClaimStore<ApplicationUser>>();
 
             _mockRoleService = Mock.Create<IRoleService>();
+            _mockPhoneRepository = Mock.Create<IUserPhoneRepository>();
             _mapperFixture = mapperFixture;
 
             //Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
-            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object);
+            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, _mockPhoneRepository.Object);
         }
 
         [Fact]
@@ -142,7 +145,8 @@ namespace Launchpad.Services.UnitTests
                 Id = id,
                 Username = "sally@sally.com",
                 FirstName = "First1",
-                LastName = "Last1"
+                LastName = "Last1",
+                Phones = new List<UserPhoneModel>()
             };
 
             var appUser = new ApplicationUser
@@ -151,9 +155,8 @@ namespace Launchpad.Services.UnitTests
                 UserName = "sue@sue.com",
                 Email = "sue@sue.com",
                 FirstName = "First2",
-                LastName = "Last2"
-
-
+                LastName = "Last2",
+                Phones = new List<UserPhone>()
             };
 
             _mockStore.Setup(_ => _.FindByIdAsync(id))
@@ -172,6 +175,158 @@ namespace Launchpad.Services.UnitTests
             entityResult.Model.Username.Should().Be(userModel.Username);
             entityResult.Model.LastName.Should().Be(userModel.LastName);
             entityResult.Model.FirstName.Should().Be(userModel.FirstName);
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Remove_Phone_Numbers_When_Not_In_Source()
+        {
+            var id = Fixture.Create<string>();
+
+            var phone = Fixture.Build<UserPhone>()
+                .With(_ => _.User, null)
+                .Create();
+
+            var userModel = new UserModel
+            {
+                Id = id,
+                Username = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1",
+                Phones = new List<UserPhoneModel> { }
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2",
+                Phones = new List<UserPhone> { phone }
+            };
+
+            _mockPhoneRepository.Setup(_ => _.Delete(phone.Id));
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
+                .ReturnsAsync(appUser);
+
+
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
+                .Returns(Task.Delay(0));
+
+            var entityResult = await _userService.UpdateUserAsync(id, userModel);
+
+            entityResult.Succeeded.Should().BeTrue();
+
+            entityResult.Model
+                .Phones
+                .Should()
+                .BeEmpty();
+
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Update_Existing_Phone_Numbers()
+        {
+            var id = Fixture.Create<string>();
+            var phoneModel = Fixture.Create<UserPhoneModel>();
+
+            var phone = Fixture.Build<UserPhone>()
+                .With(_ => _.User, null)
+                .With(_ => _.Id, phoneModel.Id)
+                .Create();
+
+            var userModel = new UserModel
+            {
+                Id = id,
+                Username = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1",
+                Phones = new List<UserPhoneModel> { phoneModel }
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2",
+                Phones = new List<UserPhone> { phone }
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
+                .ReturnsAsync(appUser);
+
+
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
+                .Returns(Task.Delay(0));
+
+            var entityResult = await _userService.UpdateUserAsync(id, userModel);
+
+            entityResult.Succeeded.Should().BeTrue();
+
+            entityResult.Model
+                .Phones
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(1);
+            entityResult.Model.Phones.First().ShouldBeEquivalentTo(phoneModel);
+        }
+
+        [Fact]
+        public async void UpdateUser_Should_Add_New_Phone_Numbers()
+        {
+            var id = Fixture.Create<string>();
+            var phone = Fixture.Create<UserPhoneModel>();
+
+            var userModel = new UserModel
+            {
+                Id = id,
+                Username = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1",
+                Phones = new List<UserPhoneModel> { phone }
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2",
+                Phones = new List<UserPhone>()
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
+                .ReturnsAsync(appUser);
+
+
+            _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
+                .Returns(Task.Delay(0));
+
+            var entityResult = await _userService.UpdateUserAsync(id, userModel);
+
+            entityResult.Succeeded.Should().BeTrue();
+
+            entityResult.Model
+                .Phones
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(1);
+            entityResult.Model.Phones.First().ShouldBeEquivalentTo(phone);
         }
 
         [Fact]
@@ -596,7 +751,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null, null, null);
+            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -606,9 +761,22 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public void Ctor_Should_Throw_ArgumentNullException_When_UserPhoneRepository_IsNull()
+        {
+            Action throwAction = () => new UserService(_userManager,
+                    _mapperFixture.MapperInstance, _mockRoleService.Object, null);
+
+            throwAction.ShouldThrow<ArgumentNullException>()
+                .And
+                .ParamName
+                .Should()
+                .Be("phoneRepository");
+        }
+
+        [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, null, null);
+            Action throwAction = () => new UserService(_userManager, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -620,7 +788,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_RoleService_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null);
+            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

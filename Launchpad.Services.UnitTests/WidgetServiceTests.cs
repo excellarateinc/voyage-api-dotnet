@@ -93,7 +93,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Is_Null()
         {
-            Action throwAction = () => new WidgetService(null, null);
+            Action throwAction = () => new WidgetService(null, _mappingFixture.MapperInstance);
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("widgetRepository");
         }
 

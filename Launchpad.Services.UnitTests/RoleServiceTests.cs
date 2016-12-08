@@ -336,7 +336,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleManager_Is_Null()
         {
-            Action throwAction = () => new RoleService(null, null, null);
+            Action throwAction = () => new RoleService(null, null, _mapperFixture.MapperInstance);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -346,7 +346,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleClaimRepository_Is_Null()
         {
-            Action throwAction = () => new RoleService(_roleManager, null, null);
+            Action throwAction = () => new RoleService(_roleManager, null, _mapperFixture.MapperInstance);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

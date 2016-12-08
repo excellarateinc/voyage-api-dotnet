@@ -1,5 +1,9 @@
-﻿using Launchpad.Models;
+﻿using AutoMapper;
+using Launchpad.Core;
+using Launchpad.Models;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Launchpad.Services
@@ -9,6 +13,13 @@ namespace Launchpad.Services
     /// </summary>
     public abstract class EntityResultService
     {
+        protected readonly IMapper Mapper;
+
+        public EntityResultService(IMapper mapper)
+        {
+            Mapper = mapper.ThrowIfNull(nameof(mapper));
+        }
+
         /// <summary>
         /// Creates a failure as a result of a missing entity
         /// </summary>
@@ -76,6 +87,37 @@ namespace Launchpad.Services
         protected EntityResult FromIdentityResult(IdentityResult result)
         {
             return new EntityResult(result.Succeeded, false, result.Errors.ToArray());
+        }
+
+        protected void MergeCollection<TSource, TDest>(ICollection<TSource> source,
+            ICollection<TDest> destination,
+            Func<TSource, TDest, bool> predicate,
+            Action<TDest> deleteAction)
+        {
+            foreach (var model in source)
+            {
+                var entity = destination.FirstOrDefault(_ => predicate(model, _));
+                if (entity != null)
+                {
+                    Mapper.Map<TSource, TDest>(model, entity);
+                }
+                else
+                {
+                    entity = Mapper.Map<TSource, TDest>(model);
+                    destination.Add(entity);
+                }
+            }
+
+            //Remove items that exist in destination but not in the source
+            List<TDest> removed = destination
+                .Where(_ => !source.Any(s => predicate(s, _)))
+                .ToList();
+
+            removed.ForEach(_ =>
+            {
+                destination.Remove(_);
+                deleteAction(_);
+            });
         }
 
     }

@@ -10,10 +10,10 @@ namespace Launchpad.Services
 {
     public class WidgetService : EntityResultService, IWidgetService
     {
-        private IWidgetRepository _widgetRepository;
-        private IMapper _mapper;
+        private readonly IWidgetRepository _widgetRepository;
+        private readonly IMapper _mapper;
 
-        public WidgetService(IWidgetRepository widgetRepository, IMapper mapper)
+        public WidgetService(IWidgetRepository widgetRepository, IMapper mapper) : base(mapper)
         {
             _widgetRepository = widgetRepository.ThrowIfNull(nameof(widgetRepository));
             _mapper = mapper.ThrowIfNull(nameof(mapper));

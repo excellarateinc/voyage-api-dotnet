@@ -1,11 +1,18 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using Launchpad.Models;
+using Launchpad.Models.EntityFramework;
+using Launchpad.Services.Fixture;
 using Launchpad.UnitTests.Common;
 using Ploeh.AutoFixture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
 {
+    [Collection(AutoMapperCollection.CollectionName)]
     public class EntityResultServiceTests : BaseUnitTest
     {
         /// <summary>
@@ -13,6 +20,10 @@ namespace Launchpad.Services.UnitTests
         /// </summary>
         public class TestPassThrough : EntityResultService
         {
+            public TestPassThrough(IMapper mapper) : base(mapper)
+            {
+            }
+
             public EntityResult InvokeNotFound(object id)
             {
                 return base.NotFound(id);
@@ -35,14 +46,118 @@ namespace Launchpad.Services.UnitTests
                 return base.Success<TModel>(model);
             }
 
+            public void InvokeMergeCollection<TSource, TDest>(ICollection<TSource> source,
+                    ICollection<TDest> destination,
+                    Func<TSource, TDest, bool> predicate,
+                    Action<TDest> deleteAction)
+            {
+                base.MergeCollection(source, destination, predicate, deleteAction);
+            }
         }
 
+        private readonly AutoMapperFixture _mapperFixture;
 
-        private TestPassThrough _testPassThrough;
+        private readonly TestPassThrough _testPassThrough;
 
-        public EntityResultServiceTests()
+        public EntityResultServiceTests(AutoMapperFixture mapperFixture)
         {
-            _testPassThrough = new TestPassThrough();
+            _mapperFixture = mapperFixture;
+            _testPassThrough = new TestPassThrough(_mapperFixture.MapperInstance);
+        }
+
+        [Fact]
+        public void MergeCollection_Should_Delete_Items_In_Destination_That_Are_Not_In_Source()
+        {
+            int deleteCount = 0;
+
+            var source = new List<UserPhoneModel>
+            {
+            };
+
+            var user = Fixture.Build<UserPhone>()
+                .With(_ => _.User, null)
+                .Create();
+
+            var destination = new List<UserPhone>
+            {
+                user
+            };
+
+
+            _testPassThrough
+                .InvokeMergeCollection(source, destination,
+                    (s, d) => s.Id == d.Id,
+                    phone => ++deleteCount);
+
+
+            destination
+                .Should()
+                .BeEmpty();
+
+            deleteCount.Should().Be(1);
+        }
+
+        [Fact]
+        public void MergeCollection_Should_Update_Matching_Items_In_Destination()
+        {
+            var userPhoneModel = Fixture.Create<UserPhoneModel>();
+
+            var source = new List<UserPhoneModel>
+            {
+                userPhoneModel
+            };
+
+            var user = Fixture.Build<UserPhone>()
+                .With(_ => _.Id, userPhoneModel.Id)
+                .With(_ => _.User, null)
+                .Create();
+
+            var destination = new List<UserPhone>
+            {
+                user
+            };
+            _testPassThrough
+                .InvokeMergeCollection(source, destination, (s, d) => s.Id == d.Id, phone => { });
+
+            destination
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(1);
+
+            destination
+                .First()
+                .ShouldBeEquivalentTo(userPhoneModel,
+                    options => options.Excluding(_ => _.User));
+        }
+
+        [Fact]
+        public void MergeCollection_Should_Add_New_Items_To_Destination()
+        {
+            var userPhoneModel = Fixture.Create<UserPhoneModel>();
+
+            var source = new List<UserPhoneModel>
+            {
+                userPhoneModel
+            };
+
+            var destination = new List<UserPhone>
+            {
+
+            };
+            _testPassThrough
+                .InvokeMergeCollection(source, destination, (s, d) => s.Id == d.Id, phone => { });
+
+            destination
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(1);
+
+            destination
+                .First()
+                .ShouldBeEquivalentTo(userPhoneModel,
+                    options => options.Excluding(_ => _.User));
         }
 
         [Fact]
