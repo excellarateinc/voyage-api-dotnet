@@ -13,7 +13,7 @@
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
 * [Implicit Types](#implicit-types)
-  * [Use 'var' when the type of the variable is obvious]()
+  * [Use 'var' when the type of the variable is obvious](#use-var-when-the-type-of-the-variable-is-obvious)
   * [Do not use 'var' when the type is not apparent from the right side of the assignment]()
   * [Do not rely on the variable name to specify the type of the variable]()
   * [Avoid unsigned data types]()
