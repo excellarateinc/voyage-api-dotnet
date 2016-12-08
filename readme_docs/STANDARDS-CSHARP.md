@@ -5,6 +5,9 @@
 * [Layout](#layout)
 * [Commenting](#commenting)
   * [Place the comment on a separate line, not at the end of a line of code](#place-the-comment-on-a-separate-line-not-at-the-end-of-a-line-of-code)
+  * [Begin comment text with an uppercase letter](#begin-comment-text-with-an-uppercase-letter)
+  * [End comment text with a period](#end-comment-text-with-a-period)
+  * [Insert one space between the comment delimiter (//) and the comment text.]()
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
@@ -26,7 +29,7 @@
 
 ## Commenting
 #### Place the comment on a separate line, not at the end of a line of code
-__DO__
+> Why? Most people read top-to-bottom left-to-right. Keeping comments in line with the code is much easier to read and also hard to miss when scanning code. It's also more work when refactoring code to not accidentally move or delete comments along with code. 
 
     ```
     // Increment foo due to requirement LP-1234 http://ticket.mycompany.com/LP-1234 stating that 
@@ -37,26 +40,21 @@ __DO__
     }
     ```
 
-__DON'T__
-
-    ```    
-    if (foo > bar)         // Increment foo due to requirement LP-1234 http://ticket.mycompany.com/LP-1234 stating that 
-    {                      // 'foo' can never be larger than 'bar'
-        bar += foo;
-    }
-    ```
-
 #### Begin comment text with an uppercase letter
+> Why? TBD
 
+#### End comment text with a period.
+> Why? TBD
 
-* End comment text with a period.
-* Insert one space between the comment delimiter (//) and the comment text.
-   
+#### Insert one space between the comment delimiter (//) and the comment text.
+> Why? TBD
+
      ```
      // This is a comment.
      ```
-* Do not create formatted blocks of asterisks around comments.
-   
+#### Do not create formatted blocks of asterisks around comments.
+> Why? TBD
+
      ```
      // Avoid
      // ****************
@@ -67,13 +65,14 @@ __DON'T__
 ## Strings
 
 #### Use the + operator to concatenate short strings
-     
+> Why? TBD
+
 ```
 string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 ```
        
 #### Use a StringBuilder when concatenating more than a few strings
-Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
+> Why? Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
      
        ```
        var phrase = "my phrase";
@@ -87,7 +86,7 @@ Strings are immutable, so whenever a string is combined within another string th
 ## Implicit Types
 
 #### Use 'var' when the type of the variable is obvious
-Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
+> Why? Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important. Not repeating types in a single line is much faster to read and equally as intuitive. 
      
        ```
        // When the type of a variable is clear from the context, use var 
@@ -98,7 +97,8 @@ Use implicit typing for local variables when the type of the variable is obvious
        ```
 
 #### Do not use var when the type is not apparent from the right side of the assignment
-     
+> Why? TBD
+
        ```
        // When the type of a variable is not clear from the context, use an
        // explicit type.
@@ -106,7 +106,7 @@ Use implicit typing for local variables when the type of the variable is obvious
        ```
 
 #### Do not rely on the variable name to specify the type of the variable
-The variable name might not provide enough information, or perhaps misleading information.
+> Why? The variable name might not provide enough information, or perhaps misleading information.
      
        ```
        // Naming the following variable inputInt is misleading. 
@@ -116,12 +116,12 @@ The variable name might not provide enough information, or perhaps misleading in
        ```
 
 #### Avoid unsigned data types
-In general, use int rather than unsigned types. The use of int is common throughout C&#35;, and it is easier to interact with other libraries when you use int.
- 
+> Why? In general, use 'int' rather than unsigned types because in most cases unsigned numbers are not needed, it's not a common practice, and it is easier to interact with other libraries when you use int.
  
 ## Arrays
 #### Use the concise syntax when you initialize arrays on the declaration line
-     
+> Why? TBD
+
        ```
        // Preferred syntax. Note that you cannot use var here instead of string[].
        string[] vowels1 = { "a", "e", "i", "o", "u" };
@@ -136,8 +136,10 @@ In general, use int rather than unsigned types. The use of int is common through
        ```
 
 ## Exceptions
+
 #### Use a try-catch statement for most exception handling
-     
+> Why? TBD
+
        ```
        static string GetValueFromArray(string[] array, int index)
        {
@@ -173,14 +175,17 @@ In general, use int rather than unsigned types. The use of int is common through
        ```
 
 ## New Operator
+
 #### Use the concise form of object instantiation, with implicit typing
-    
+> Why? TBD
+
        ```
        var instance1 = new ExampleClass();
        ```
 
 #### Use object initializers to simplify object creation
-     
+> Why? TBD
+
        ```
        // Avoid
        var myClass = new ExampleClass();
@@ -200,11 +205,15 @@ In general, use int rather than unsigned types. The use of int is common through
        ```
 
 ## Static Members
+
 #### Call static members by using the class name: ClassName.StaticMember
-This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
+> Why? This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
 
 ## LINQ Queries
+
 #### Use meaningful names for query variables
+> Why? TBD
+
 The following example uses seattleCustomers for customers who are located in Seattle.
      
        ```
@@ -222,6 +231,8 @@ The following example uses seattleCustomers for customers who are located in Sea
        ```
        
 #### Rename properties when the property names in the result would be ambiguous
+> Why? TBD
+
 For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
      
        ```
@@ -231,6 +242,8 @@ For example, if your query returns a customer name and a distributor ID, instead
                        select new { CustomerName = cust.Name, DistributorID = dist.ID };       
        ```
 #### Use 'where' clauses before other 'query' clauses to avoid low-performing queries
+> Why? 
+
 Ensure that 'where' clauses are added before any later query clauses so that the initial query is reduced and the subsequent queries are acting on a filtered set of data. Bundling multiple queries together without proper where clauses can create large datasets that perform very poorly. 
      
        ```
@@ -240,7 +253,9 @@ Ensure that 'where' clauses are added before any later query clauses so that the
                                select cust;       
        ```
        
-#### Use multiple from clauses instead of a join clause to access inner collections
+#### Use multiple 'from' clauses instead of a 'join' clause to access inner collections
+> Why? TBD
+
 For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
      
        ```
