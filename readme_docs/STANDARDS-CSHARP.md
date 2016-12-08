@@ -7,12 +7,32 @@
   * [Place the comment on a separate line, not at the end of a line of code](#place-the-comment-on-a-separate-line-not-at-the-end-of-a-line-of-code)
   * [Begin comment text with an uppercase letter](#begin-comment-text-with-an-uppercase-letter)
   * [End comment text with a period](#end-comment-text-with-a-period)
-  * [Insert one space between the comment delimiter (//) and the comment text.](#insert-one-space-between-the-comment-delimiter--and-the-comment-text)
+  * [Insert one space between the comment delimiter (//) and the comment text](#insert-one-space-between-the-comment-delimiter--and-the-comment-text)
   * [Do not create formatted blocks of asterisks around comments](#do-not-create-formatted-blocks-of-asterisks-around-comments)
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
-
+* [Implicit Types](#implict-types)
+  * [Use 'var' when the type of the variable is obvious]()
+  * [Do not use 'var' when the type is not apparent from the right side of the assignment]()
+  * [Do not rely on the variable name to specify the type of the variable]()
+  * [Avoid unsigned data types]()
+* [Arrays](#arrays)
+  * [Use the concise syntax when you initialize arrays on the declaration line]()
+* [Exceptions)(#exceptions)
+  * [Use a try-catch statement for most exception handling]()
+  * [&& and || Operators]()
+* [New Operator](#new-operator)
+  * [Use the concise form of object instantiation, with implicit typing](#use-the-concise-form-of-object-instantiation--with-implicit-typing)
+  * [Use object initializers to simplify object creation]()
+* [Static Members](#static-members)
+  * [Call static members by using the class name: ClassName.StaticMember]()
+* [LINQ Queries](#linq-queries)
+  * [Use meaningful names for query variables](#use-meaningful-names-for-query-variables)
+  * [Rename properties when the property names in the result would be ambiguous](#rename-properties-when-the-property-names-in-the-result-would-be-ambiguous)
+  * [Use 'where' clauses before other 'query' clauses to avoid low-performing queries]()
+  * [Use multiple 'from' clauses instead of a 'join' clause to access inner collections]()
+  
 ## Layout
 * __Good layout uses formatting to emphasize the structure of your code to make it easier to read.__
 * Use the default Visual Studio settings (smart indenting, four-character indents, tabs saved as spaces).
@@ -97,7 +117,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        var myInteger = Convert.ToInt32(Console.ReadLine());
        ```
 
-#### Do not use var when the type is not apparent from the right side of the assignment
+#### Do not use 'var' when the type is not apparent from the right side of the assignment
 > Why? TBD
 
        ```
