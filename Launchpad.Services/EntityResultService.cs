@@ -89,6 +89,18 @@ namespace Launchpad.Services
             return new EntityResult(result.Succeeded, false, result.Errors.ToArray());
         }
 
+        /// <summary>
+        /// Merges two collections:
+        ///     - New items in source are added to destination
+        ///     - Updated items in source are updated in destination
+        ///     - Items in destination that are not in source are removed
+        /// </summary>
+        /// <typeparam name="TSource">Source collection type</typeparam>
+        /// <typeparam name="TDest">Destination collection type</typeparam>
+        /// <param name="source">Source</param>
+        /// <param name="destination">Destination</param>
+        /// <param name="predicate">Predicate for matching items between collections</param>
+        /// <param name="deleteAction">Action for deleting items</param>
         protected void MergeCollection<TSource, TDest>(ICollection<TSource> source,
             ICollection<TDest> destination,
             Func<TSource, TDest, bool> predicate,
@@ -96,13 +108,17 @@ namespace Launchpad.Services
         {
             foreach (var model in source)
             {
+                //Attempt to find match in destination
                 var entity = destination.FirstOrDefault(_ => predicate(model, _));
+
                 if (entity != null)
                 {
+                    //Update item in destination
                     Mapper.Map<TSource, TDest>(model, entity);
                 }
                 else
                 {
+                    //Add new item in destination
                     entity = Mapper.Map<TSource, TDest>(model);
                     destination.Add(entity);
                 }
@@ -115,7 +131,10 @@ namespace Launchpad.Services
 
             removed.ForEach(_ =>
             {
+                //This will unwire the relationship in the context
                 destination.Remove(_);
+
+                //This will actually delete the object 
                 deleteAction(_);
             });
         }
