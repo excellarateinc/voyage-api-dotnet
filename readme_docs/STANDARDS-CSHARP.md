@@ -4,6 +4,7 @@
 ## Table of Contents
 * [Layout](#layout)
 * [Commenting](#commenting)
+  * [Place the comment on a separate line, not at the end of a line of code](#place-the-comment-on-a-separate-line-not-at-the-end-of-a-line-of-code)
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
@@ -24,8 +25,30 @@
      ```
 
 ## Commenting
-* Place the comment on a separate line, not at the end of a line of code.
-* Begin comment text with an uppercase letter.
+### Place the comment on a separate line, not at the end of a line of code
+__DO__
+
+    ```
+    // Increment foo due to requirement LP-1234 http://ticket.mycompany.com/LP-1234 stating that 
+    // 'foo' can never be larger than 'bar'
+    if (foo > bar)
+    {
+        bar += foo;
+    }
+    ```
+
+__DON'T__
+
+    ```    
+    if (foo > bar)         // Increment foo due to requirement LP-1234 http://ticket.mycompany.com/LP-1234 stating that 
+    {                      // 'foo' can never be larger than 'bar'
+        bar += foo;
+    }
+    ```
+
+### Begin comment text with an uppercase letter
+
+
 * End comment text with a period.
 * Insert one space between the comment delimiter (//) and the comment text.
    
