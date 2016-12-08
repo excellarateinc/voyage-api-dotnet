@@ -85,14 +85,17 @@ namespace Launchpad.Services
 
         public EntityResult<IEnumerable<UserModel>> GetUsers()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager
+                .Users
+                .Where(user => !user.Deleted)
+                .ToList();
             return Success(_mapper.Map<IEnumerable<UserModel>>(users));
         }
 
         public async Task<bool> IsValidCredential(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
-            return user != null && user.IsActive;
+            return user != null && user.IsActive && !user.Deleted;
         }
 
         public async Task<EntityResult<UserModel>> CreateUserAsync(UserModel model)
@@ -105,7 +108,14 @@ namespace Launchpad.Services
 
         public async Task<EntityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
+            var user = new ApplicationUser()
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                IsActive = true
+            };
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
 
@@ -183,7 +193,7 @@ namespace Launchpad.Services
         public async Task<EntityResult<UserModel>> GetUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
-            return appUser == null
+            return appUser == null || appUser.Deleted
                 ? NotFound<UserModel>(userId)
                 : Success(_mapper.Map<UserModel>(appUser));
         }

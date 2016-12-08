@@ -14,18 +14,7 @@ namespace Launchpad.Models.UnitTests.Validators
             _validator = new UserPhoneModelValidator();
         }
 
-        [Fact]
-        public void Should_Have_Error_When_UserId_Null()
-        {
-            _validator.ShouldHaveValidationErrorFor(model => model.UserId, null as string);
-        }
 
-        [Fact]
-        public void Should_Have_Error_When_UserId_Empty()
-        {
-            _validator.ShouldHaveValidationErrorFor(model => model.UserId, string.Empty);
-
-        }
 
         [Fact]
         public void Should_Have_Error_When_PhoneNumber_Null()

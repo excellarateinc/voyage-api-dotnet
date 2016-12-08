@@ -330,6 +330,29 @@ namespace Launchpad.Services.UnitTests
         }
 
         [Fact]
+        public async void GetUser_Should_Return_Not_Found_When_User_Is_Deleted()
+        {
+            var id = Fixture.Create<string>();
+            var appUser = new ApplicationUser
+            {
+                Email = "bob@bob.com",
+                UserName = "bob@bob.com",
+                Id = Guid.NewGuid().ToString(),
+                Deleted = true
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(id))
+                .ReturnsAsync(appUser);
+
+            var entityResult = await _userService.GetUserAsync(id);
+
+            entityResult.IsEntityNotFound.Should().BeTrue();
+            entityResult.Succeeded.Should().BeFalse();
+            Mock.VerifyAll();
+
+        }
+
+        [Fact]
         public async void GetUser_Should_Call_UserManager()
         {
             var id = Fixture.Create<string>();
@@ -795,6 +818,29 @@ namespace Launchpad.Services.UnitTests
                 .ParamName
                 .Should()
                 .Be("roleService");
+        }
+
+        [Fact]
+        public void GetUsers_Should_Not_Return_Deleted()
+        {
+            var user1 = new ApplicationUser
+            {
+                UserName = "bob@bob.com",
+                Id = "abc",
+                Deleted = true
+            };
+
+            var userResults = new[] { user1 };
+
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>()
+                .Setup(_ => _.Users)
+                .Returns(userResults.AsQueryable());
+
+            var entityResult = _userService.GetUsers();
+
+            Mock.VerifyAll();
+            entityResult.Model.Should().BeEmpty();
+
         }
 
         [Fact]
