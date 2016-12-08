@@ -1,14 +1,12 @@
-﻿using Launchpad.Models.Enum;
+﻿using FluentValidation.Attributes;
+using Launchpad.Models.Enum;
+using Launchpad.Models.Validators;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Launchpad.Models
 {
+    [Validator(typeof(UserPhoneModelValidator))]
     public class UserPhoneModel
     {
         public int Id { get; set; }

@@ -31,8 +31,7 @@ namespace Launchpad.Services.IdentityManagers
         }
 
         public override async Task<IdentityResult> DeleteAsync(ApplicationUser user)
-        {
-            user.IsActive = false;
+        {          
             user.Deleted = true;
             var result = await this.UpdateAsync(user);
             return result;

@@ -16,11 +16,11 @@ namespace Launchpad.Services
 
     public class RoleService : EntityResultService, IRoleService
     {
-        private ApplicationRoleManager _roleManager;
-        private IRoleClaimRepository _roleClaimRepository;
-        private IMapper _mapper;
+        private readonly ApplicationRoleManager _roleManager;
+        private readonly IRoleClaimRepository _roleClaimRepository;
+        private readonly IMapper _mapper;
 
-        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper)
+        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper) : base(mapper)
         {
             _roleManager = roleManager.ThrowIfNull(nameof(roleManager));
             _roleClaimRepository = roleClaimRepository.ThrowIfNull(nameof(roleClaimRepository));

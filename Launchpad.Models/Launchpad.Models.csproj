@@ -108,6 +108,7 @@
     <Compile Include="Validators\RegistrationModelValidator.cs" />
     <Compile Include="Validators\RoleModelValidator.cs" />
     <Compile Include="Validators\UserModelValidator.cs" />
+    <Compile Include="Validators\UserPhoneModelValidator.cs" />
     <Compile Include="Validators\WidgetModelValidator.cs" />
     <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

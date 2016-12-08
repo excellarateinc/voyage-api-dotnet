@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Launchpad.Core;
+using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
@@ -15,17 +16,23 @@ namespace Launchpad.Services
 {
     public class UserService : EntityResultService, IUserService
     {
-        private IRoleService _roleService;
-        private ApplicationUserManager _userManager;
-        private IMapper _mapper;
+        private readonly IUserPhoneRepository _phoneRepository;
+        private readonly IRoleService _roleService;
+        private readonly ApplicationUserManager _userManager;
+        private readonly IMapper _mapper;
 
 
-        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService)
+        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService, IUserPhoneRepository phoneRepository) : base(mapper)
         {
+
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
             _roleService = roleService.ThrowIfNull(nameof(roleService));
+            _phoneRepository = phoneRepository.ThrowIfNull(nameof(phoneRepository));
         }
+
+
+
 
         public async Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
         {
@@ -34,6 +41,11 @@ namespace Launchpad.Services
             {
 
                 _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+                MergeCollection(source: model.Phones,
+                    destination: appUser.Phones,
+                    predicate: (s, d) => s.Id == d.Id,
+                    deleteAction: entity => _phoneRepository.Delete(entity.Id));
 
                 var identityResult = await _userManager.UpdateAsync(appUser);
                 return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
@@ -73,14 +85,17 @@ namespace Launchpad.Services
 
         public EntityResult<IEnumerable<UserModel>> GetUsers()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager
+                .Users
+                .Where(user => !user.Deleted)
+                .ToList();
             return Success(_mapper.Map<IEnumerable<UserModel>>(users));
         }
 
         public async Task<bool> IsValidCredential(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
-            return user != null && user.IsActive;
+            return user != null && user.IsActive && !user.Deleted;
         }
 
         public async Task<EntityResult<UserModel>> CreateUserAsync(UserModel model)
@@ -93,7 +108,14 @@ namespace Launchpad.Services
 
         public async Task<EntityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, IsActive = true };
+            var user = new ApplicationUser()
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                IsActive = true
+            };
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
 
@@ -171,7 +193,7 @@ namespace Launchpad.Services
         public async Task<EntityResult<UserModel>> GetUserAsync(string userId)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
-            return appUser == null
+            return appUser == null || appUser.Deleted
                 ? NotFound<UserModel>(userId)
                 : Success(_mapper.Map<UserModel>(appUser));
         }
