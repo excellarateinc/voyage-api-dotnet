@@ -48,6 +48,8 @@
      }
      ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Commenting
 #### Place the comment on a separate line, not at the end of a line of code
 > Why? Most people read top-to-bottom left-to-right. Keeping comments in line with the code is much easier to read and also hard to miss when scanning code. It's also more work when refactoring code to not accidentally move or delete comments along with code. 
@@ -61,11 +63,17 @@
     }
     ```
 
+**[⬆ back to top](#table-of-contents)**
+
 #### Begin comment text with an uppercase letter
 > Why? TBD
 
+**[⬆ back to top](#table-of-contents)**
+
 #### End comment text with a period
 > Why? TBD
+
+**[⬆ back to top](#table-of-contents)**
 
 #### Insert one space between the comment delimiter (//) and the comment text
 > Why? TBD
@@ -73,6 +81,9 @@
      ```
      // This is a comment.
      ```
+     
+**[⬆ back to top](#table-of-contents)**     
+     
 #### Do not create formatted blocks of asterisks around comments
 > Why? TBD
 
@@ -83,6 +94,8 @@
      // ****************
      ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Strings
 
 #### Use the + operator to concatenate short strings
@@ -91,6 +104,8 @@
 ```
 string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 ```
+       
+**[⬆ back to top](#table-of-contents)**
        
 #### Use a StringBuilder when concatenating more than a few strings
 > Why? Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
@@ -104,6 +119,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        }
        ```
        
+**[⬆ back to top](#table-of-contents)**
+
 ## Implicit Types
 
 #### Use 'var' when the type of the variable is obvious
@@ -117,6 +134,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        var myInteger = Convert.ToInt32(Console.ReadLine());
        ```
 
+**[⬆ back to top](#table-of-contents)**
+
 #### Do not use 'var' when the type is not apparent from the right side of the assignment
 > Why? TBD
 
@@ -125,6 +144,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        // explicit type.
        int result = ExampleClass.ResultSoFar();       
        ```
+
+**[⬆ back to top](#table-of-contents)**
 
 #### Do not rely on the variable name to specify the type of the variable
 > Why? The variable name might not provide enough information, or perhaps misleading information.
@@ -136,9 +157,13 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        Console.WriteLine(inputInt);
        ```
 
+**[⬆ back to top](#table-of-contents)**
+
 #### Avoid unsigned data types
 > Why? In general, use 'int' rather than unsigned types because in most cases unsigned numbers are not needed, it's not a common practice, and it is easier to interact with other libraries when you use int.
- 
+
+**[⬆ back to top](#table-of-contents)**
+
 ## Arrays
 #### Use the concise syntax when you initialize arrays on the declaration line
 > Why? TBD
@@ -155,6 +180,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        vowels3[0] = "a";
        vowels3[1] = "e";
        ```
+
+**[⬆ back to top](#table-of-contents)**
 
 ## Exceptions
 
@@ -176,6 +203,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        }       
        ```
 
+**[⬆ back to top](#table-of-contents)**
+
 #### && and || Operators
 * To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
      
@@ -195,6 +224,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        }     
        ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ## New Operator
 
 #### Use the concise form of object instantiation, with implicit typing
@@ -203,6 +234,8 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        ```
        var instance1 = new ExampleClass();
        ```
+
+**[⬆ back to top](#table-of-contents)**
 
 #### Use object initializers to simplify object creation
 > Why? TBD
@@ -225,10 +258,14 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        };
        ```
 
+**[⬆ back to top](#table-of-contents)**
+
 ## Static Members
 
 #### Call static members by using the class name: ClassName.StaticMember
 > Why? This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
+
+**[⬆ back to top](#table-of-contents)**
 
 ## LINQ Queries
 
@@ -250,7 +287,9 @@ The following example uses seattleCustomers for customers who are located in Sea
            join distributor in distributors on customer.City equals distributor.City
            select new { Customer = customer, Distributor = distributor };       
        ```
-       
+
+**[⬆ back to top](#table-of-contents)**
+
 #### Rename properties when the property names in the result would be ambiguous
 > Why? TBD
 
@@ -262,6 +301,9 @@ For example, if your query returns a customer name and a distributor ID, instead
                        join dist in distributors on cust.City equals dist.City
                        select new { CustomerName = cust.Name, DistributorID = dist.ID };       
        ```
+
+**[⬆ back to top](#table-of-contents)**
+
 #### Use 'where' clauses before other 'query' clauses to avoid low-performing queries
 > Why? 
 
@@ -273,7 +315,9 @@ Ensure that 'where' clauses are added before any later query clauses so that the
                                orderby cust.Name
                                select cust;       
        ```
-       
+
+**[⬆ back to top](#table-of-contents)**
+
 #### Use multiple 'from' clauses instead of a 'join' clause to access inner collections
 > Why? TBD
 
@@ -286,3 +330,5 @@ For example, a collection of Student objects might each contain a collection of 
                         where score > 90
                         select new { Last = student.LastName, score };       
        ```
+
+**[⬆ back to top](#table-of-contents)**
