@@ -7,7 +7,7 @@
   * [Place the comment on a separate line, not at the end of a line of code](#place-the-comment-on-a-separate-line-not-at-the-end-of-a-line-of-code)
   * [Begin comment text with an uppercase letter](#begin-comment-text-with-an-uppercase-letter)
   * [End comment text with a period](#end-comment-text-with-a-period)
-  * [Insert one space between the comment delimiter (//) and the comment text.]()
+  * [Insert one space between the comment delimiter (//) and the comment text.](insert-one-space-between-the-comment-delimiter--and-the-comment-text)
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
