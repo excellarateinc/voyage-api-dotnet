@@ -5,7 +5,7 @@
 * [Layout](#layout)
 * [Commenting](#commenting)
 * [Strings](#strings)
-  * [Use the + operator to concatenate short strings](#use-the-+-operator-to-concatenate-short-strings)
+  * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatonating more than a few strings](use-a-stringbuilder-when-concatonating-more-than-a-few-strings)
 
 ## Layout
