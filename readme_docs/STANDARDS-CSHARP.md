@@ -25,7 +25,7 @@
      ```
 
 ## Commenting
-### Place the comment on a separate line, not at the end of a line of code
+#### Place the comment on a separate line, not at the end of a line of code
 __DO__
 
     ```
@@ -46,7 +46,7 @@ __DON'T__
     }
     ```
 
-### Begin comment text with an uppercase letter
+#### Begin comment text with an uppercase letter
 
 
 * End comment text with a period.
@@ -64,7 +64,7 @@ __DON'T__
      // ****************
      ```
 
-### Strings
+## Strings
 
 #### Use the + operator to concatenate short strings
      
@@ -84,7 +84,7 @@ Strings are immutable, so whenever a string is combined within another string th
        }
        ```
        
-### Implicit Types
+## Implicit Types
 
 #### Use 'var' when the type of the variable is obvious
 Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
@@ -119,7 +119,7 @@ The variable name might not provide enough information, or perhaps misleading in
 In general, use int rather than unsigned types. The use of int is common throughout C&#35;, and it is easier to interact with other libraries when you use int.
  
  
-### Arrays
+## Arrays
 #### Use the concise syntax when you initialize arrays on the declaration line
      
        ```
@@ -135,7 +135,7 @@ In general, use int rather than unsigned types. The use of int is common through
        vowels3[1] = "e";
        ```
 
-### Exceptions
+## Exceptions
 #### Use a try-catch statement for most exception handling
      
        ```
@@ -172,7 +172,7 @@ In general, use int rather than unsigned types. The use of int is common through
        }     
        ```
 
-### New Operator
+## New Operator
 #### Use the concise form of object instantiation, with implicit typing
     
        ```
@@ -199,11 +199,11 @@ In general, use int rather than unsigned types. The use of int is common through
        };
        ```
 
-### Static Members
+## Static Members
 #### Call static members by using the class name: ClassName.StaticMember
 This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
 
-### LINQ Queries
+## LINQ Queries
 #### Use meaningful names for query variables
 The following example uses seattleCustomers for customers who are located in Seattle.
      
