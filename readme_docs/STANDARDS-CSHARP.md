@@ -37,7 +37,34 @@ Wherever possible these best practices are enforced with the default Resharper s
   * [Rename properties when the property names in the result would be ambiguous](#rename-properties-when-the-property-names-in-the-result-would-be-ambiguous)
   * [Use 'where' clauses before other 'query' clauses to avoid low-performing queries](#use-where-clauses-before-other-query-clauses-to-avoid-low-performing-queries)
   * [Use multiple 'from' clauses instead of a 'join' clause to access inner collections](#use-multiple-from-clauses-instead-of-a-join-clause-to-access-inner-collections)
-  
+* [Code Style](#code-style)
+    * [Add Parentheses to Avoid Non-Obvious Precedence](#add-parentheses-to-avoid-non-obvious-precedence)
+    * [Remove Redundant 'this' Qualifier](#remove-redundant-'this.'-qualifier)
+    * [Adjust Modifiers Declaration Order](#adjust-modifiers-declaration-order)
+    * [Convert Nullable of T to 'T?'](#convert-nullable-of-t-to-'t?')
+    * [Convert Property to Auto-Property](#convert-property-to-auto-property)
+    * [Convert to Property with Expression Body](#convert-to-property-with-expression-body)
+    * [Avoid Empty Constructors](#avoid-empty-constructors)
+    * [Avoid Empty Control Statement Bodies](#avoid-empty-control-statement-body)
+    * [Avoid Empty General Catch Clauses](#avoid-empty-general-catch-clause)
+    * [Field Can Be Made Readonly (Private Accessibility)](#field-can-be-made-readonly-(private-accessibility))
+    * [Inconsistent Naming](#inconsistent-naming)
+    * [Introduce Optional Parameters (Private Accessibility)](#introduce-optional-parameters-(private-accessibility))
+    * [Invert 'if' Statement to Reduce Nesting](#invert-'if'-statement-to-reduce-nesting)
+    * [Join Local Variable Declaration and Assignment](#join-local-variable-declaration-and-assignment)
+    * [Join or separate attributes in section](#join-or-separate-attributes-in-section)
+    * [Use the null-conditional operator (?.)](#use-the-null-conditional-operator-(?.))
+    * [Merge sequential checks in && or || expressions](#merge-sequential-checks-in-&&-or-||-expressions)
+    * [Namespace Does Not Correspond to File Location](#namespace-does-not-correspond-to-file-location)
+    * [Parameter Type Can Be IEnumerable of T](#parameter-type-can-be-ienumerable-of-t)
+    * [Possible multiple enumeration of IEnumerable](#possible-multiple-enumeration-of-ienumerable)
+    * [Redundant 'else' keyword](#redundant-'else'-keyword)
+    * [Remove Redundant Parentheses](#remove-redundant-parentheses)
+    * [Replace Built-in Type Reference with a CLR Type Name or a Keyword](#replace-built-in-type-reference-with-a-clr-type-name-or-a-keyword)
+    * [Use 'String.IsNullOrEmpty'](#use-'string.isnullorempty')
+    * [Use Preferred 'var' Style](#use-preferred-'var'-style)
+    
+    
 ## Layout
 * __Good layout uses formatting to emphasize the structure of your code to make it easier to read.__
 * Use the default Visual Studio settings (smart indenting, four-character indents, tabs saved as spaces).
@@ -45,13 +72,6 @@ Wherever possible these best practices are enforced with the default Resharper s
 * Write only one declaration per line.
 * If continuation lines are not indented automatically, indent them one tab stop (four spaces).
 * Add at least one blank line between method definitions and property definitions.
-* Use parentheses to make clauses in an expression apparent.  
-     ```
-     if ((val1 > val2) && (val1 > val3))
-     {
-         // Take appropriate action.
-     }
-     ```
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -334,6 +354,164 @@ For example, a collection of Student objects might each contain a collection of 
                         from score in student.Scores
                         where score > 90
                         select new { Last = student.LastName, score };       
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Code Style
+
+#### Add Parentheses to Avoid Non-Obvious Precedence
+> Why? It makes is much easier to determine the order of operations in the expression.
+
+     
+       ```
+       // Avoid.
+       if (a & b | c)
+       
+       // Recommended.
+       if ((a & b) | c)
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Remove Redundant 'this' Qualifier
+> Why? It doesn't serve any practical purpose. It makes the code harder to read.
+
+     
+       ```
+       // Avoid.
+       this._service = service;
+       
+       // Recommended.
+       _service = service;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Put Access Modifier First
+> Why? It makes it easy to see the accessibility of the item. Also, arranging them in a similar way throughout your code is a good practice, which improves code readability.
+
+     
+       ```
+       // Avoid.
+       static private int count;
+       
+       // Recommended.
+       private static int count;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Convert Nullable of T to 'T?'
+> Why? 'T?' is built into the language as a shorthand for Nullable<T>. It is easier to quickly see that the object is nullable.
+
+       ```
+       // Avoid.
+       Nullable<int> count;
+       
+       // Recommended.
+       int? count;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Convert Property to Auto-Property
+> Why? Auto properties are simpler to read as well as write.
+
+     
+       ```
+       // Avoid.
+       private Color bgColor;
+       public Color BackgroundColor
+       {
+           get { return bgColor; }
+           set { bgColor = value; }
+       }
+       
+       // Recommended.
+       public Color BackgroundColor { get; set; }
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Convert to Property with Expression Body
+> Why? Expression-bodied properties, introduced in C# 6 are both more concise and readable
+
+     
+       ```
+       // Avoid.
+       private string _name;
+       public int NameLength
+       {
+         get
+         {
+           return string.IsNullOrEmpty(_name) ? 0 : _name.Length;
+         }
+       }
+       
+       // Recommended.
+       private string _name;
+       public int NameLength => string.IsNullOrEmpty(_name) ? 0 : _name.Length;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Avoid Empty Constructors
+> Why? Having an empty constructor (whether static or not) in a class is redundant.
+
+     
+       ```
+       // Avoid.
+       
+       // Recommended.
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### 
+> Why? 
+
+     
+       ```
+       // Avoid.
+       
+       // Recommended.       
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### 
+> Why? 
+
+     
+       ```
+       // Avoid.
+       
+       // Recommended.       
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### 
+> Why? 
+
+     
+       ```
+       // Avoid.
+       
+       // Recommended.       
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### 
+> Why? 
+
+     
+       ```
+       
        ```
 
 **[⬆ back to top](#table-of-contents)**
