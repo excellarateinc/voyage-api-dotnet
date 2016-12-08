@@ -4,7 +4,9 @@
 ## Table of Contents
 * [Layout](#layout)
 * [Commenting](#commenting)
-* [Language](#language)
+* [Strings](#strings)
+  * [Use the + operator to concatenate short strings](#use-the-+-operator-to-concatenate-short-strings)
+  * [Use a StringBuilder when concatonating more than a few strings](use-a-stringbuilder-when-concatonating-more-than-a-few-strings)
 
 ## Layout
 * __Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.__
@@ -39,16 +41,15 @@
      // ****************
      ```
 
-## Language
 ### Strings
 
-#### Use the + operator to concatenate short strings.
+#### Use the + operator to concatenate short strings
      
        ```
        string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        ```
        
-#### Use a StringBuilder when concatonating more than a few strings. 
+#### Use a StringBuilder when concatonating more than a few strings
 Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
      
        ```
