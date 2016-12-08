@@ -61,7 +61,7 @@ Strings are immutable, so whenever a string is combined within another string th
        ```
        
 #### Implicit Types
-     * Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
+* Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
      
        ```
        // When the type of a variable is clear from the context, use var 
@@ -70,14 +70,16 @@ Strings are immutable, so whenever a string is combined within another string th
        var myNumber = 27;
        var myInteger = Convert.ToInt32(Console.ReadLine());
        ```
-     * Do not use var when the type is not apparent from the right side of the assignment.
+
+* Do not use var when the type is not apparent from the right side of the assignment.
      
        ```
        // When the type of a variable is not clear from the context, use an
        // explicit type.
        int result = ExampleClass.ResultSoFar();       
        ```
-     * Do not rely on the variable name to specify the type of the variable. It might not be correct.
+
+* Do not rely on the variable name to specify the type of the variable. It might not be correct.
      
        ```
        // Naming the following variable inputInt is misleading. 
@@ -85,11 +87,12 @@ Strings are immutable, so whenever a string is combined within another string th
        var inputInt = Console.ReadLine();
        Console.WriteLine(inputInt);
        ```
+
 #### Unsigned Data Type
      * In general, use int rather than unsigned types. The use of int is common throughout C#, and it is easier to interact with other libraries when you use int.
      
 #### Arrays
-     * Use the concise syntax when you initialize arrays on the declaration line.
+* Use the concise syntax when you initialize arrays on the declaration line.
      
        ```
        // Preferred syntax. Note that you cannot use var here instead of string[].
@@ -103,8 +106,9 @@ Strings are immutable, so whenever a string is combined within another string th
        vowels3[0] = "a";
        vowels3[1] = "e";
        ```
+
 #### Exceptions
-     * Use a try-catch statement for most exception handling.
+* Use a try-catch statement for most exception handling.
      
        ```
        static string GetValueFromArray(string[] array, int index)
@@ -122,7 +126,7 @@ Strings are immutable, so whenever a string is combined within another string th
        ```
 
 #### && and || Operators
-     * To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
+* To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
      
        ```
        // If the divisor is 0, the second clause in the following condition
@@ -141,12 +145,12 @@ Strings are immutable, so whenever a string is combined within another string th
        ```
 
 #### New Operator
-     * Use the concise form of object instantiation, with implicit typing, as shown in the following declaration.
+* Use the concise form of object instantiation, with implicit typing, as shown in the following declaration.
     
        ```
        var instance1 = new ExampleClass();
        ```
-     * Use object initializers to simplify object creation.
+* Use object initializers to simplify object creation.
      
        ```
        // Avoid
@@ -167,10 +171,10 @@ Strings are immutable, so whenever a string is combined within another string th
        ```
 
 #### Static Members
-     * Call static members by using the class name: ClassName.StaticMember. This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
+* Call static members by using the class name: ClassName.StaticMember. This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
 
 #### LINQ Queries
-     * Use meaningful names for query variables. The following example uses seattleCustomers for customers who are located in Seattle.
+* Use meaningful names for query variables. The following example uses seattleCustomers for customers who are located in Seattle.
      
        ```
        var seattleCustomers = from cust in customers
@@ -185,7 +189,7 @@ Strings are immutable, so whenever a string is combined within another string th
            join distributor in distributors on customer.City equals distributor.City
            select new { Customer = customer, Distributor = distributor };       
        ```
-     * Rename properties when the property names in the result would be ambiguous. For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
+* Rename properties when the property names in the result would be ambiguous. For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
      
        ```
        var localDistributors2 =
@@ -193,7 +197,7 @@ Strings are immutable, so whenever a string is combined within another string th
                        join dist in distributors on cust.City equals dist.City
                        select new { CustomerName = cust.Name, DistributorID = dist.ID };       
        ```
-     * Use where clauses before other query clauses to ensure that later query clauses operate on the reduced, filtered set of data.
+* Use where clauses before other query clauses to ensure that later query clauses operate on the reduced, filtered set of data.
      
        ```
        var seattleCustomers2 = from cust in customers
@@ -201,7 +205,7 @@ Strings are immutable, so whenever a string is combined within another string th
                                orderby cust.Name
                                select cust;       
        ```
-     * Use multiple from clauses instead of a join clause to access inner collections. For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
+* Use multiple from clauses instead of a join clause to access inner collections. For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
      
        ```
        // Use a compound from to access the inner sequence within each element.
