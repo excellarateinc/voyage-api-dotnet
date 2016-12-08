@@ -19,7 +19,7 @@
   * [Avoid unsigned data types]()
 * [Arrays](#arrays)
   * [Use the concise syntax when you initialize arrays on the declaration line]()
-* [Exceptions)(#exceptions)
+* [Exceptions](#exceptions)
   * [Use a try-catch statement for most exception handling]()
   * [&& and || Operators]()
 * [New Operator](#new-operator)
