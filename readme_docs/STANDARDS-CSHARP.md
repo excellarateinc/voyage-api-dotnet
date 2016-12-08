@@ -8,6 +8,7 @@
   * [Begin comment text with an uppercase letter](#begin-comment-text-with-an-uppercase-letter)
   * [End comment text with a period](#end-comment-text-with-a-period)
   * [Insert one space between the comment delimiter (//) and the comment text.](#insert-one-space-between-the-comment-delimiter--and-the-comment-text)
+  * [Do not create formatted blocks of asterisks around comments](#do-not-create-formatted-blocks-of-asterisks-around-comments)
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
   * [Use a StringBuilder when concatenating more than a few strings](#use-a-stringbuilder-when-concatenating-more-than-a-few-strings)
@@ -43,16 +44,16 @@
 #### Begin comment text with an uppercase letter
 > Why? TBD
 
-#### End comment text with a period.
+#### End comment text with a period
 > Why? TBD
 
-#### Insert one space between the comment delimiter (//) and the comment text.
+#### Insert one space between the comment delimiter (//) and the comment text
 > Why? TBD
 
      ```
      // This is a comment.
      ```
-#### Do not create formatted blocks of asterisks around comments.
+#### Do not create formatted blocks of asterisks around comments
 > Why? TBD
 
      ```
