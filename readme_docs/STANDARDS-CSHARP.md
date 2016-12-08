@@ -38,6 +38,7 @@
      // * Comment here *
      // ****************
      ```
+
 ## Language
 ### Strings
 
@@ -46,7 +47,9 @@
        ```
        string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        ```
-#### To append strings in loops, especially when you are working with large amounts of text, use a StringBuilder object.
+       
+#### Use a StringBuilder when concatonating more than a few strings. 
+Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
      
        ```
        var phrase = "my phrase";
@@ -56,6 +59,7 @@
            manyPhrases.Append(phrase);
        }
        ```
+       
 #### Implicit Types
      * Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
      
@@ -81,9 +85,10 @@
        var inputInt = Console.ReadLine();
        Console.WriteLine(inputInt);
        ```
-   - Unsigned Data Type
+#### Unsigned Data Type
      * In general, use int rather than unsigned types. The use of int is common throughout C#, and it is easier to interact with other libraries when you use int.
-   - Arrays
+     
+#### Arrays
      * Use the concise syntax when you initialize arrays on the declaration line.
      
        ```
@@ -98,7 +103,7 @@
        vowels3[0] = "a";
        vowels3[1] = "e";
        ```
-   - Exceptions
+#### Exceptions
      * Use a try-catch statement for most exception handling.
      
        ```
@@ -115,7 +120,8 @@
            }
        }       
        ```
-   - && and || Operators
+
+#### && and || Operators
      * To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
      
        ```
@@ -133,7 +139,8 @@
            Console.WriteLine("Attempted division by 0 ends up here.");
        }     
        ```
-   - New Operator
+
+#### New Operator
      * Use the concise form of object instantiation, with implicit typing, as shown in the following declaration.
     
        ```
@@ -158,9 +165,11 @@
            Age = 2.3 
        };
        ```
-   - Static Members
+
+#### Static Members
      * Call static members by using the class name: ClassName.StaticMember. This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
-   - LINQ Queries
+
+#### LINQ Queries
      * Use meaningful names for query variables. The following example uses seattleCustomers for customers who are located in Seattle.
      
        ```
