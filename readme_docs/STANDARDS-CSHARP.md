@@ -1,31 +1,36 @@
-## C#
-> These guidelines are cherry picked from the official MSDN C# coding conventions document located [here](https://msdn.microsoft.com/en-us/library/ff926074.aspx).
+## C&#35;
+> These guidelines are cherry picked from the official MSDN [C# coding conventions document](https://msdn.microsoft.com/en-us/library/ff926074.aspx).
 
-1. Layout
-   - __Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.__
-   - Use the default Visual Studio settings (smart indenting, four-character indents, tabs saved as spaces).
-   - Write only one statement per line.
-   - Write only one declaration per line.
-   - If continuation lines are not indented automatically, indent them one tab stop (four spaces).
-   - Add at least one blank line between method definitions and property definitions.
-   - Use parentheses to make clauses in an expression apparent.
-   
+## Table of Contents
+* [Layout](#layout)
+* [Commenting](#commenting)
+* [Language](#language)
+
+## Layout
+* __Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.__
+* Use the default Visual Studio settings (smart indenting, four-character indents, tabs saved as spaces).
+* Write only one statement per line.
+* Write only one declaration per line.
+* If continuation lines are not indented automatically, indent them one tab stop (four spaces).
+* Add at least one blank line between method definitions and property definitions.
+* Use parentheses to make clauses in an expression apparent.  
      ```
      if ((val1 > val2) && (val1 > val3))
      {
          // Take appropriate action.
      }
      ```
-2. Commenting
-   - Place the comment on a separate line, not at the end of a line of code.
-   - Begin comment text with an uppercase letter.
-   - End comment text with a period.
-   - Insert one space between the comment delimiter (//) and the comment text.
+
+## Commenting
+* Place the comment on a separate line, not at the end of a line of code.
+* Begin comment text with an uppercase letter.
+* End comment text with a period.
+* Insert one space between the comment delimiter (//) and the comment text.
    
      ```
      // This is a comment.
      ```
-   - Do not create formatted blocks of asterisks around comments.
+* Do not create formatted blocks of asterisks around comments.
    
      ```
      // Avoid
@@ -33,14 +38,15 @@
      // * Comment here *
      // ****************
      ```
-3. Language
-   - Strings
-     * Use the + operator to concatenate short strings.
+## Language
+### Strings
+
+#### Use the + operator to concatenate short strings.
      
        ```
        string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
        ```
-     * To append strings in loops, especially when you are working with large amounts of text, use a StringBuilder object.
+#### To append strings in loops, especially when you are working with large amounts of text, use a StringBuilder object.
      
        ```
        var phrase = "my phrase";
@@ -50,7 +56,7 @@
            manyPhrases.Append(phrase);
        }
        ```
-   - Implicit Types
+#### Implicit Types
      * Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
      
        ```
