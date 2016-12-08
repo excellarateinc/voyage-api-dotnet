@@ -51,15 +51,18 @@ namespace Launchpad.Data
 
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
-            //if (entityEntry != null && entityEntry.State == EntityState.Added)
-            //{
-            //    var errors = new List<DbValidationError>();
-            //    if ((entityEntry.Entity is ApplicationUser) || (entityEntry.Entity is ApplicationRole))
-            //    {
-            //        return new DbEntityValidationResult(entityEntry, errors);
-            //    }
+            //Disable the default validation for users and roles otherwise
+            //Create a new user with a deleted user's email address will 
+            //throw an error.        
+            if (entityEntry != null && entityEntry.State == EntityState.Added)
+            {
+                var errors = new List<DbValidationError>();
+                if ((entityEntry.Entity is ApplicationUser) || (entityEntry.Entity is ApplicationRole))
+                {
+                    return new DbEntityValidationResult(entityEntry, errors);
+                }
 
-            //}
+            }
             return base.ValidateEntity(entityEntry, items);
 
         }
