@@ -124,7 +124,7 @@ namespace Launchpad.Web.App_Start
         private ILogger ConfigureLogging()
         {
             var connectionString = _connectionString;  //Server=... or the name of a connection string in your .config file
-            var tableName = $"{Data.Constants.Schemas.FrameworkTables}.LaunchpadLogs";
+            var tableName = $"{Data.Constants.Schemas.FrameworkTables}.ApplicationLog";
 
             var columnOptions = new ColumnOptions();  // optional
             columnOptions.Store.Add(StandardColumn.LogEvent); //Store the JSON too 
