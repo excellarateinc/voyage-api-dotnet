@@ -6,10 +6,10 @@
 * [Commenting](#commenting)
 * [Strings](#strings)
   * [Use the + operator to concatenate short strings](#use-the--operator-to-concatenate-short-strings)
-  * [Use a StringBuilder when concatonating more than a few strings](use-a-stringbuilder-when-concatonating-more-than-a-few-strings)
+  * [Use a StringBuilder when concatonating more than a few strings](#use-a-stringbuilder-when-concatonating-more-than-a-few-strings)
 
 ## Layout
-* __Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.__
+* __Good layout uses formatting to emphasize the structure of your code to make it easier to read.__
 * Use the default Visual Studio settings (smart indenting, four-character indents, tabs saved as spaces).
 * Write only one statement per line.
 * Write only one declaration per line.
@@ -45,9 +45,9 @@
 
 #### Use the + operator to concatenate short strings
      
-       ```
-       string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
-       ```
+```
+string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
+```
        
 #### Use a StringBuilder when concatonating more than a few strings
 Strings are immutable, so whenever a string is combined within another string then a new string is created in memory. The prior two strings remain in memory until garbage collection occurs. If hundreds of concatonations occur in a loop, then hundreds of strings will be left orphaned and consuming memory until the next schedule memory garbage collection. StringBuilder was created to prevent many string objects from being orphaned when merging text many times over. 
@@ -61,8 +61,10 @@ Strings are immutable, so whenever a string is combined within another string th
        }
        ```
        
-#### Implicit Types
-* Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
+### Implicit Types
+
+#### Use 'var' when the type of the variable is obvious
+Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
      
        ```
        // When the type of a variable is clear from the context, use var 
@@ -72,7 +74,7 @@ Strings are immutable, so whenever a string is combined within another string th
        var myInteger = Convert.ToInt32(Console.ReadLine());
        ```
 
-* Do not use var when the type is not apparent from the right side of the assignment.
+#### Do not use var when the type is not apparent from the right side of the assignment
      
        ```
        // When the type of a variable is not clear from the context, use an
@@ -80,7 +82,8 @@ Strings are immutable, so whenever a string is combined within another string th
        int result = ExampleClass.ResultSoFar();       
        ```
 
-* Do not rely on the variable name to specify the type of the variable. It might not be correct.
+#### Do not rely on the variable name to specify the type of the variable
+The variable name might not provide enough information, or perhaps misleading information.
      
        ```
        // Naming the following variable inputInt is misleading. 
@@ -89,11 +92,12 @@ Strings are immutable, so whenever a string is combined within another string th
        Console.WriteLine(inputInt);
        ```
 
-#### Unsigned Data Type
-     * In general, use int rather than unsigned types. The use of int is common throughout C#, and it is easier to interact with other libraries when you use int.
-     
-#### Arrays
-* Use the concise syntax when you initialize arrays on the declaration line.
+#### Avoid unsigned data types
+In general, use int rather than unsigned types. The use of int is common throughout C&#35;, and it is easier to interact with other libraries when you use int.
+ 
+ 
+### Arrays
+#### Use the concise syntax when you initialize arrays on the declaration line
      
        ```
        // Preferred syntax. Note that you cannot use var here instead of string[].
@@ -108,8 +112,8 @@ Strings are immutable, so whenever a string is combined within another string th
        vowels3[1] = "e";
        ```
 
-#### Exceptions
-* Use a try-catch statement for most exception handling.
+### Exceptions
+#### Use a try-catch statement for most exception handling
      
        ```
        static string GetValueFromArray(string[] array, int index)
@@ -145,13 +149,14 @@ Strings are immutable, so whenever a string is combined within another string th
        }     
        ```
 
-#### New Operator
-* Use the concise form of object instantiation, with implicit typing, as shown in the following declaration.
+### New Operator
+#### Use the concise form of object instantiation, with implicit typing
     
        ```
        var instance1 = new ExampleClass();
        ```
-* Use object initializers to simplify object creation.
+
+#### Use object initializers to simplify object creation
      
        ```
        // Avoid
@@ -171,11 +176,13 @@ Strings are immutable, so whenever a string is combined within another string th
        };
        ```
 
-#### Static Members
-* Call static members by using the class name: ClassName.StaticMember. This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
+### Static Members
+#### Call static members by using the class name: ClassName.StaticMember
+This practice makes code more readable by making static access clear. Do not qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code may break in the future if you add a static member with the same name to the derived class.
 
-#### LINQ Queries
-* Use meaningful names for query variables. The following example uses seattleCustomers for customers who are located in Seattle.
+### LINQ Queries
+#### Use meaningful names for query variables
+The following example uses seattleCustomers for customers who are located in Seattle.
      
        ```
        var seattleCustomers = from cust in customers
@@ -190,7 +197,9 @@ Strings are immutable, so whenever a string is combined within another string th
            join distributor in distributors on customer.City equals distributor.City
            select new { Customer = customer, Distributor = distributor };       
        ```
-* Rename properties when the property names in the result would be ambiguous. For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
+       
+#### Rename properties when the property names in the result would be ambiguous
+For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
      
        ```
        var localDistributors2 =
@@ -198,7 +207,8 @@ Strings are immutable, so whenever a string is combined within another string th
                        join dist in distributors on cust.City equals dist.City
                        select new { CustomerName = cust.Name, DistributorID = dist.ID };       
        ```
-* Use where clauses before other query clauses to ensure that later query clauses operate on the reduced, filtered set of data.
+#### Use 'where' clauses before other 'query' clauses to avoid low-performing queries
+Ensure that 'where' clauses are added before any later query clauses so that the initial query is reduced and the subsequent queries are acting on a filtered set of data. Bundling multiple queries together without proper where clauses can create large datasets that perform very poorly. 
      
        ```
        var seattleCustomers2 = from cust in customers
@@ -206,7 +216,9 @@ Strings are immutable, so whenever a string is combined within another string th
                                orderby cust.Name
                                select cust;       
        ```
-* Use multiple from clauses instead of a join clause to access inner collections. For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
+       
+#### Use multiple from clauses instead of a join clause to access inner collections
+For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
      
        ```
        // Use a compound from to access the inner sequence within each element.
