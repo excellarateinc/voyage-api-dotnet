@@ -211,7 +211,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 **[⬆ back to top](#table-of-contents)**
 
 #### && and || Operators
-* To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
+> Why? To avoid exceptions and increase performance by skipping unnecessary comparisons, use && instead of & and || instead of | when you perform comparisons, as shown in the following example.
      
        ```
        // If the divisor is 0, the second clause in the following condition
