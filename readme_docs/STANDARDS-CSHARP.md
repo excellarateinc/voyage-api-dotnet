@@ -1,4 +1,7 @@
 ## C&#35;
+This guide includes a select set of best practices when writing C&#35;, specifically when building .NET Web API apps. The coding standards and examples in this guide are not meant to imporve upon existing Microsoft standards, but to clarify and provide additional information to ensure clarity. 
+
+Wherever possible these best practices are enforced with the default Resharper static code analysis plus some modification defined in this guide. 
 
 ## References
 * [MSDN C&#35; coding conventions](https://msdn.microsoft.com/en-us/library/ff926074.aspx)
