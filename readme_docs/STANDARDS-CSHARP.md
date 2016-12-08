@@ -1,5 +1,7 @@
 ## C&#35;
-These guidelines are cherry picked from the official MSDN [C# coding conventions document](https://msdn.microsoft.com/en-us/library/ff926074.aspx) to highlight a few common standards that go a long way towards a easy-to-read and performant codebase.
+
+## References
+* [MSDN C&#35; coding conventions](https://msdn.microsoft.com/en-us/library/ff926074.aspx)
 
 ## Table of Contents
 * [Layout](#layout)
