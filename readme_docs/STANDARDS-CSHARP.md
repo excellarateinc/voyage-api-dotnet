@@ -59,7 +59,7 @@ Wherever possible these best practices are enforced with the default Resharper s
     * [Avoid Redundant 'else' Keyword](#avoid-redundant-else-keyword)
     * [Remove Redundant Parentheses](#remove-redundant-parentheses)
     * [Replace Built in Type Reference with a CLR Type Name or a Keyword](#replace-built-in-type-reference-with-a-clr-type-name-or-a-keyword)
-    * [Use String.IsNullOrEmpty](#use-string-isnullorempty)
+    * [Use IsNullOrEmpty for strings](#use-isnullorempty-for-strings)
     
     
 ## Layout
@@ -751,7 +751,7 @@ For example, a collection of Student objects might each contain a collection of 
 
 **[⬆ back to top](#table-of-contents)**
 
-#### Use String.IsNullOrEmpty
+#### Use IsNullOrEmpty for strings
 > Why? This avoids redundant null and length checks for strings, allowing for cleaner code.
 
      
