@@ -5,7 +5,7 @@ integration test suite are:
 1. To exercise the database project (albeit from a empty state)
 2. To exercise the full HTTP request/response lifecycle
 3. To isolate test data from other environments
-4. To exercise EntityFramework against a true SQL database
+4. To exercise EntityFramework against a SQL database
 
 ### Hosting
 Since the application is built using Owin, the API can be self-hosted without IIS. This allows us to execute integration tests that 
@@ -38,6 +38,23 @@ hosts.
 
 #### Requests and Responses
 HTTP communication is handled with the standard HttpClient. 
+
+*Configuring the request*
+
+Requests are configured using the HttpResponseRequest class. This class will be used by the HttpClient to send the request to the API. The test can use the OwinFixture extension method GetEndPoint to form the full URL of the hosted services.
+
+```
+public static string GetEndpoint(this OwinFixture fixture, string path)
+{
+    return $"{fixture.BaseAddress}{path}";
+}
+```
+
+Usage
+
+```
+OwinFixture.GetEndpoint("/api/v1/statuses")
+```
 
 *Authentication*
 
