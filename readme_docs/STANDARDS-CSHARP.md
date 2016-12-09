@@ -54,12 +54,12 @@ Wherever possible these best practices are enforced with the default Resharper s
     * [Use the null-conditional operator](#use-the-null-conditional-operator)
     * [Merge Sequential Checks in AND or OR Expressions](#merge-sequential-checks-in-and-or-or-expressions)
     * [Ensure Namespace Corresponds to File Location](#ensure-namespace-corresponds-to-file-location)
-    * [Make Parameter Type IEnumerable of T When the parameter implements IEnumerable](#parameter-type-can-be-ienumerable-of-t)
+    * [Make Parameter Type IEnumerable of T When the parameter implements IEnumerable](#make-parameter-type-ienumerable-of-t-when-the-parameter-implements-ienumerable)
     * [Avoid Possible multiple enumeration of IEnumerable](#avoid-possible-multiple-enumeration-of-ienumerable)
     * [Avoid Redundant 'else' Keyword](#avoid-redundant-else-keyword)
     * [Remove Redundant Parentheses](#remove-redundant-parentheses)
     * [Replace Built in Type Reference with a CLR Type Name or a Keyword](#replace-built-in-type-reference-with-a-clr-type-name-or-a-keyword)
-    * [Use String.IsNullOrEmpty](#use-string.isnullorempty)
+    * [Use String.IsNullOrEmpty](#use-string-isnullorempty)
     
     
 ## Layout
