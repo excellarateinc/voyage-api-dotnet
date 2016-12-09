@@ -41,9 +41,9 @@ Wherever possible these best practices are enforced with the default Resharper s
 * [Code Style](#code-style)
     * [Add Parentheses to Avoid Non Obvious Precedence](#add-parentheses-to-avoid-non-obvious-precedence)
     * [Remove Redundant 'this' Qualifier](#remove-redundant-this-qualifier)
-    * [Adjust Modifiers Declaration Order](#adjust-modifiers-declaration-order)
-    * [Convert Nullable of T to 'T?'](#convert-nullable-of-t-to-t?)
-    * [Convert Property to Auto-Property](#convert-property-to-auto-property)
+    * [Put Access Modifier First](#put-access-modifier-first)
+    * [Convert Nullable of T to 'T?'](#convert-nullable-of-t-to-t)
+    * [Convert Property to Auto Property](#convert-property-to-auto-property)
     * [Convert to Property with Expression Body](#convert-to-property-with-expression-body)
     * [Use Readonly Fields](#use-readonly-fields)
     * [Use Consistent Naming](#use-consistent-naming)
@@ -412,7 +412,7 @@ For example, a collection of Student objects might each contain a collection of 
 
 **[⬆ back to top](#table-of-contents)**
 
-#### Convert Property to Auto-Property
+#### Convert Property to Auto Property
 > Why? Auto properties are simpler to read as well as write.
 
      
