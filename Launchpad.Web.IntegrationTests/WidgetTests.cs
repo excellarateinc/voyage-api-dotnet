@@ -27,7 +27,7 @@ namespace Launchpad.Web.IntegrationTests
             {
                 await OwinFixture.Init();
                 //ARRANGE
-                var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets");
+                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets");
                 var model = new WidgetModel { Name = "Some test model", Color = "Very green" };
                 httpRequestMessage.Content = new ObjectContent<WidgetModel>(model, new JsonMediaTypeFormatter());
 
@@ -49,7 +49,7 @@ namespace Launchpad.Web.IntegrationTests
             {
                 await OwinFixture.Init();
                 //ARRANGE
-                var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
+                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
 
                 //ACT
                 var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);

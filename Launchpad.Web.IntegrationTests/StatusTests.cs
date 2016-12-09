@@ -22,7 +22,7 @@ namespace Launchpad.Web.IntegrationTests
             {
                 var response = await OwinFixture
                                     .DefaultClient
-                                    .GetAsync(GetEndpoint("/api/v1/statuses"));
+                                    .GetAsync(OwinFixture.GetEndpoint("/api/v1/statuses"));
 
                 //ASSERT
                 ApplicationInfoModel model = await response.ShouldHaveStatusAndPayload<ApplicationInfoModel>(HttpStatusCode.OK);

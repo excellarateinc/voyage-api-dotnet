@@ -16,5 +16,10 @@ namespace Launchpad.Web.IntegrationTests.Extensions
             models.Should().NotBeNull();
             return models;
         }
+
+        public static void ShouldHaveStatusCode(this HttpResponseMessage message, HttpStatusCode code)
+        {
+            message.StatusCode.Should().Be(code);
+        }
     }
 }
