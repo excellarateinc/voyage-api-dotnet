@@ -117,3 +117,10 @@ For local development, everything that is needed to create the LocalDb instance 
 5. Using SqlPackage.exe deploy the .dacpac from the Launchpad.Database project
 
 Since the .dacpac contains all the schema and seed data to run the application, this process gives a new instance of the database with all required data.
+
+### Limitations
+The above approach has the following limitations:
+
+1. Owin selfhosting is used for the API - live deployments will use IIS. (One of the main points of Owin is to separate the application from the host - this is a feature)
+2. Additional dependencies on localdb and management utilities requires more dependencies for local and CI environments
+3. Less flexible than in-memory implementations
