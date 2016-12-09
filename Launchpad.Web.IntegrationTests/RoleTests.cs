@@ -28,7 +28,9 @@ namespace Launchpad.Web.IntegrationTests
                 //ACT
                 var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
 
-                response.ShouldHaveStatusCode(HttpStatusCode.NotFound);
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.NotFound);
+
             }
 
         }
@@ -48,6 +50,10 @@ namespace Launchpad.Web.IntegrationTests
                 var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
 
                 //ASSERT
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.OK);
+
+
                 RoleModel model = await response.ShouldHaveStatusAndPayload<RoleModel>(HttpStatusCode.OK);
                 model.Should().NotBeNull();
                 model.Id.Should().Be(roleId);

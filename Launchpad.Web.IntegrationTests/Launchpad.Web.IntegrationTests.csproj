@@ -125,10 +125,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseEndpointTest.cs" />
+    <Compile Include="Extensions\AssertionExtensions.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Extensions\OwinFixtureExtensions.cs" />
     <Compile Include="Fixture\OwinCollectionFixture.cs" />
     <Compile Include="Fixture\OwinFixture.cs" />
+    <Compile Include="Assertions\HttpResponseMessageAssertions.cs" />
     <Compile Include="RoleTests.cs" />
     <Compile Include="StatusTests.cs" />
     <Compile Include="WidgetTests.cs" />

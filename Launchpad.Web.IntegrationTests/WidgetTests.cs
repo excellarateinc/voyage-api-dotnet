@@ -37,6 +37,11 @@ namespace Launchpad.Web.IntegrationTests
 
 
                 //ASSERT
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.Created)
+                    .And
+                    .HaveHeader("location");
+
                 WidgetModel responseModel = await response.ShouldHaveStatusAndPayload<WidgetModel>(HttpStatusCode.Created);
                 responseModel.Should().NotBeNull();
             }
