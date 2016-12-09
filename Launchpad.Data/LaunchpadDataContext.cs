@@ -2,9 +2,15 @@
 using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Serilog;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.Annotations;
+using System.Data.Entity.Validation;
+using System.Linq;
+using System.Threading.Tasks;
 using TrackerEnabledDbContext.Common.Models;
 
 namespace Launchpad.Data
@@ -14,6 +20,7 @@ namespace Launchpad.Data
     public class LaunchpadDataContext : TrackerEnabledDbContext.Identity.TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
         private readonly IIdentityProvider _identityProvider;
+        private readonly ILogger _logger;
 
         #region DbSets
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
@@ -33,13 +40,33 @@ namespace Launchpad.Data
         /// Pass in the connection string to eliminate the "magic string" above
         /// </summary>
         /// <param name="connectionString">Connection string from the web.config or app.config</param>
-        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider) : base(connectionString)
+        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger) : base(connectionString)
         {
             _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
+            _logger = logger.ThrowIfNull(nameof(logger));
 
             //Configure the username factory for the auditing 
             base.ConfigureUsername(() => _identityProvider.GetUserName());
         }
+
+        protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
+        {
+            //Disable the default validation for users and roles otherwise
+            //Create a new user with a deleted user's email address will 
+            //throw an error.        
+            if (entityEntry != null && entityEntry.State == EntityState.Added)
+            {
+                var errors = new List<DbValidationError>();
+                if ((entityEntry.Entity is ApplicationUser) || (entityEntry.Entity is ApplicationRole))
+                {
+                    return new DbEntityValidationResult(entityEntry, errors);
+                }
+
+            }
+            return base.ValidateEntity(entityEntry, items);
+
+        }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -58,8 +85,7 @@ namespace Launchpad.Data
             user.HasMany(u => u.Logins).WithRequired().HasForeignKey(ul => ul.UserId);
             user.Property(u => u.UserName)
                 .IsRequired()
-                .HasMaxLength(256)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UserNameIndex") { IsUnique = true }));
+                .HasMaxLength(256);
 
             // CONSIDER: u.Email is Required if set on options?
             user.Property(u => u.Email).HasMaxLength(256);
@@ -97,6 +123,28 @@ namespace Launchpad.Data
 
             modelBuilder.Entity<LogMetadata>()
                 .ToTable("LogMetadata", Constants.Schemas.FrameworkTables);
+        }
+
+        public async override Task<int> SaveChangesAsync()
+        {
+            try
+            {
+                return await base.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException validationException)
+            {
+                //Log errors generated from attempting to commit changes
+                var errorMessages = validationException.EntityValidationErrors
+                    .SelectMany(entityError => entityError.ValidationErrors)
+                    .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");
+
+
+                _logger
+                    .ForContext<LaunchpadDataContext>()
+                    .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
+
+                throw;
+            }
         }
     }
 }

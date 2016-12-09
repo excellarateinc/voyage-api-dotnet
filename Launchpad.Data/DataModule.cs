@@ -3,6 +3,7 @@ using Autofac.Core;
 using Launchpad.Core;
 using Launchpad.Data.Auditing;
 using Launchpad.Data.Interfaces;
+using Launchpad.Data.Stores;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity;
@@ -36,14 +37,14 @@ namespace Launchpad.Data
                 .Configuration
                 .GlobalTrackingConfig
                 .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
-                
+
             var auditing = typeof(IAuditConfiguration)
                 .Assembly
                 .GetTypes()
                 .Where(_ => _.IsAssignableTo<IAuditConfiguration>() && !_.IsAbstract)
                 .Select(_ => Activator.CreateInstance(_) as IAuditConfiguration);
 
-            foreach(var config in auditing)
+            foreach (var config in auditing)
             {
                 config.Configure();
             }
@@ -65,7 +66,7 @@ namespace Launchpad.Data
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-           
+
             //Shortcut to register all repositories using a marker interface
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IRepository>()
@@ -74,7 +75,7 @@ namespace Launchpad.Data
 
 
             //Register the user store (wrapper around the identity tables)
-            builder.RegisterType<UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>>()
+            builder.RegisterType<CustomUserStore>()
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
                 .As<IUserStore<ApplicationUser, string>>()
                 .AsImplementedInterfaces()

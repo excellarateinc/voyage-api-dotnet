@@ -2,7 +2,8 @@
 {
     public static class EventCodes
     {
-        public static readonly string ActivityAudit = "Activity";
-        public static readonly string Authorization = "Authorization";
+        public const string ActivityAudit = "Activity";
+        public const string Authorization = "Authorization";
+        public const string EntityValidation = "EntityValidation";
     }
 }
