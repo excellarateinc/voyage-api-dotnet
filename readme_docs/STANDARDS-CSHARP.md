@@ -5,6 +5,7 @@ Wherever possible these best practices are enforced with the default Resharper s
 
 ## References
 * [MSDN C&#35; coding conventions](https://msdn.microsoft.com/en-us/library/ff926074.aspx)
+* [Resharper Code Inspections Reference](https://www.jetbrains.com/help/resharper/2016.3/Reference_Code_Inspections.html)
 
 ## Table of Contents
 * [Layout](#layout)
