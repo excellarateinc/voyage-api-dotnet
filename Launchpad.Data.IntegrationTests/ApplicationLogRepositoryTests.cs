@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Launchpad.Data.IntegrationTests
 {
+    [Collection(Constants.CollectionName)]
     public class ApplicationLogRepositoryTests
     {
         [Fact]
