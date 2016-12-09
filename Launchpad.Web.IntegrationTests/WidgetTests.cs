@@ -2,9 +2,9 @@
 using Launchpad.Models;
 using Launchpad.Web.IntegrationTests.Extensions;
 using Launchpad.Web.IntegrationTests.Fixture;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using Xunit;
 
 
@@ -21,19 +21,46 @@ namespace Launchpad.Web.IntegrationTests
         }
 
         [Fact]
-        public async void CreateWidget_Should_Return_201()
+        public async void CreateWidget_Should_Return_400_When_Body_Invalid()
         {
             using (var instance = OwinFixture.Start())
             {
                 await OwinFixture.Init();
                 //ARRANGE
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets");
+                var model = new WidgetModel();
+
+                var httpRequestMessage = OwinFixture
+                                            .CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets")
+                                            .WithJson(model);
+
+                //ACT
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
+
+
+                //ASSERT
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.BadRequest);
+
+                var errors = await response.ReadBody<BadRequestErrorModel[]>();
+                errors.Should().NotBeNullOrEmpty();
+                errors.Any(error => error.Code == Models.Constants.ErrorCodes.MissingField && error.Field == "widget.Name").Should().BeTrue();
+
+            }
+        }
+
+        [Fact]
+        public async void CreateWidget_Should_Return_201()
+        {
+            using (var instance = OwinFixture.Start())
+            {
+                //ARRANGE
+                await OwinFixture.Init();
                 var model = new WidgetModel { Name = "Some test model", Color = "Very green" };
-                httpRequestMessage.Content = new ObjectContent<WidgetModel>(model, new JsonMediaTypeFormatter());
+                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets").WithJson(model);
 
 
                 //ACT
-                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
 
                 //ASSERT
@@ -57,7 +84,7 @@ namespace Launchpad.Web.IntegrationTests
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
 
                 //ACT
-                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
                 //ASSERT
                 response.Should()

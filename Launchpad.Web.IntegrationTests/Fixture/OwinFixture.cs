@@ -17,7 +17,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         Lazy<HttpClient> _lazyClient = new Lazy<HttpClient>(() => new HttpClient());
 
-        public HttpClient DefaultClient => _lazyClient.Value;
+        public HttpClient Client => _lazyClient.Value;
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
             httpRequestMessage.Content = new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
                                 "application/x-www-form-urlencoded");
 
-            var response = await DefaultClient.SendAsync(httpRequestMessage);
+            var response = await Client.SendAsync(httpRequestMessage);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -65,9 +65,9 @@ namespace Launchpad.Web.IntegrationTests.Fixture
         public void Dispose()
         {
 
-            if (DefaultClient != null)
+            if (Client != null)
             {
-                DefaultClient.Dispose();
+                Client.Dispose();
             }
 
         }

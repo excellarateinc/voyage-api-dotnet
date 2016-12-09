@@ -21,7 +21,7 @@ namespace Launchpad.Web.IntegrationTests
             using (var instance = OwinFixture.Start())
             {
                 var response = await OwinFixture
-                                    .DefaultClient
+                                    .Client
                                     .GetAsync(OwinFixture.GetEndpoint("/api/v1/statuses"));
 
                 //ASSERT

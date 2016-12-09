@@ -26,7 +26,7 @@ namespace Launchpad.Web.IntegrationTests
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}");
 
                 //ACT
-                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.NotFound);
@@ -47,7 +47,7 @@ namespace Launchpad.Web.IntegrationTests
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{roleId}");
 
                 //ACT
-                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
                 //ASSERT
                 response.Should()
@@ -73,7 +73,7 @@ namespace Launchpad.Web.IntegrationTests
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
 
                 //ACT
-                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
                 //ASSERT
                 response.Should()

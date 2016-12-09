@@ -126,6 +126,7 @@
   <ItemGroup>
     <Compile Include="BaseEndpointTest.cs" />
     <Compile Include="Extensions\AssertionExtensions.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Extensions\OwinFixtureExtensions.cs" />
     <Compile Include="Fixture\OwinCollectionFixture.cs" />
