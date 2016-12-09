@@ -31,6 +31,46 @@ hosts.
 #### Requests and Responses
 HTTP communication is handled with the standard HttpClient. 
 
+*Authentication*
+
+When issuing requests to secure endpoints, it is necessary to add the Authorization token to the request. Simply set the header on the request:
+
+```
+ message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", fixture.DefaultToken);
+```
+
+There is a helper extension method that will create a secure request with the default token.
+
+```
+public static HttpRequestMessage CreateSecureRequest(this OwinFixture fixture, HttpMethod method, string path)
+{
+   var message = new HttpRequestMessage(method, fixture.GetEndpoint(path)); 
+   message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", fixture.DefaultToken);
+   return message;
+}
+```
+
+*Sending the Request*
+
+Requests can be sent with the default client on the fixture using SendAsync. This method is awaitable and will return the HttpResponseMessage.
+
+```
+var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
+```
+
+*Reading the Response*
+
+Custom assertions can be used to help verify the response. Additionally, there response body is available for inspection. There is an extension method that will deserialize a JSON payload to a concrete C# type. 
+
+```
+public static async Task<TType> ReadBody<TType>(this HttpResponseMessage message)
+{
+    var rawContent = await message.Content.ReadAsStringAsync();
+    TType models = JsonConvert.DeserializeObject<TType>(rawContent);
+    return models;
+}
+```
+
 #### Custom Assertions
 Custom assertions have been added to help create better BDD-style tests. The current custom assertions include:
 
