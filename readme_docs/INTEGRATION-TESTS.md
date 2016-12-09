@@ -1,0 +1,44 @@
+## Approach
+Integration testing helps ensure all components work together at runtime. The main testing goals of the application 
+integration test suite are:
+
+1. To exercise the database project (albeit from a empty state)
+2. To exercise the full HTTP request/response lifecycle
+3. To isolate test data from other environments
+4. To exercise EntityFramework against a true SQL database
+
+### Hosting
+Since the application is built using Owin, the API can be self-hosted without IIS. This allows us to execute integration tests that 
+exercise the full HTTP stack. 
+
+### Database Interaction
+ There are several approaches to handling database interaction with the application technology stack:
+ 
+1. Mocking: The datacontext can be mocked. However, this will not exercise EF configuration and Linq to Objects does not work 
+the same as Linq to Entities. For more information, see the [documentation](https://msdn.microsoft.com/en-us/library/dn314429(v=vs.113).aspx).
+2. Test Doubles: The datacontext can be replaced with a test double. This approach has the same issues as #1. 
+For more information, see the [documentation](https://msdn.microsoft.com/en-us/library/dn314431(v=vs.113).aspx).
+3. Use a database: While there are some in-memory implementations such as Effort these do not seem maintained and still have similar 
+limitations to the aformentioned options. In the future, .Net Core EF will support an in memory database to help with testing. 
+Outside of an in-memory database there is using a real database instance. 
+
+### Creating Tests
+
+#### OwinFixture
+This is a shared test fixture which ensures tests do not run concurrently as this could cause issues with spinning up and tearing down the 
+hosts. 
+
+#### Requests and Responses
+HTTP communication is handled with the standard HttpClient. 
+
+#### Custom Assertions
+Custom assertions have been added to help create better BDD-style tests. The current custom assertions include:
+
+*HttpResponseMessageAssertions*
+
+|Method|Description|
+|:----|:----|
+|HaveHeader|Asserts the response has the expected header|
+|HaveStatusCode|Asserts the response has the expected status code.|
+
+
