@@ -11,6 +11,12 @@ integration test suite are:
 Since the application is built using Owin, the API can be self-hosted without IIS. This allows us to execute integration tests that 
 exercise the full HTTP stack. 
 
+Using Microsoft.Owin.Hosting.WebApp will take in a bootstrapping class and start a webserver. In the case of the test fixture, the services will be hosted on http://localhost:9000.
+
+```
+var webAppInstance = WebApp.Start<Startup>(url: BaseAddress);
+```
+
 ### Database Interaction
  There are several approaches to handling database interaction with the application technology stack:
  
@@ -21,6 +27,8 @@ For more information, see the [documentation](https://msdn.microsoft.com/en-us/l
 3. Use a database: While there are some in-memory implementations such as Effort these do not seem maintained and still have similar 
 limitations to the aformentioned options. In the future, .Net Core EF will support an in memory database to help with testing. 
 Outside of an in-memory database there is using a real database instance. 
+
+In order to meet the goals of the integration testing approach, the tests will use a SQL Server database. A lightweight engine is available with Visual Studio called LocalDb. This will allow the API to not only excercise the EntityFramework configuration but also provide a true SQL Database interaction.
 
 ### Creating Tests
 
@@ -82,3 +90,13 @@ Custom assertions have been added to help create better BDD-style tests. The cur
 |HaveStatusCode|Asserts the response has the expected status code.|
 
 
+### LocalDb
+For local development, everything that is needed to create the LocalDb instance is installed with Visual Studio. There is a .bat file called configure-test-db.bat which automates the deployment of the integration test database. At a high level, the .bat file performs the following steps using out of box utilities:
+
+1. Using SqlLocalDb.exe stop the instance
+2. Using SqlLocalDb.exe delete the instance
+3. Delete the log and data files
+4. Using SqlLocalDb.exe create and start the instance
+5. Using SqlPackage.exe deploy the .dacpac from the Launchpad.Database project
+
+Since the .dacpac contains all the schema and seed data to run the application, this process gives a new instance of the database with all required data.
