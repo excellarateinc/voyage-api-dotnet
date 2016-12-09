@@ -30,6 +30,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models.UnitTests", "Launchpad.Models.UnitTests\Launchpad.Models.UnitTests.csproj", "{42218F10-4745-4F8B-9CF0-68855BE9CE99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Web.IntegrationTests", "Launchpad.Web.IntegrationTests\Launchpad.Web.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F68702B-28CF-4E1F-9D58-1092785C3106} = {5F68702B-28CF-4E1F-9D58-1092785C3106}
+	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Launchpad.Database", "Launchpad.Database\Launchpad.Database.sqlproj", "{5F68702B-28CF-4E1F-9D58-1092785C3106}"
 EndProject

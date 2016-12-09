@@ -19,15 +19,26 @@ SET sqlInstanceName="Integration-Test-Instance"
 
 ::Path to the dacpac
 SET sourcePath=".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
+if not [%1]==[] if not [%1]==[-] set sourcePath=%1
 
 ::Connection string for the target
 SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=(localdb)\Integration-Test-Instance;Initial Catalog=Launchpad"
 
-::Stop and recreate the database
+::Clean up mdf Files
+SET dataPath="%UserProfile%\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\Integration-Test-Instance"
+
+::Stop the localdb instance
 sqlLocalDb stop %sqlInstanceName%
 
+::Delete the localdb instance
 sqlLocalDb delete %sqlInstanceName%
 
+::Delete the old database files
+@echo on
+DEL /Q %dataPath%
+@echo off
+
+::Create the database
 sqlLocalDb create %sqlInstanceName% -s
 
 ::Publish the database 
