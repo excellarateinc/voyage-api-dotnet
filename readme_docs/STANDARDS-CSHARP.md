@@ -38,31 +38,27 @@ Wherever possible these best practices are enforced with the default Resharper s
   * [Use 'where' clauses before other 'query' clauses to avoid low-performing queries](#use-where-clauses-before-other-query-clauses-to-avoid-low-performing-queries)
   * [Use multiple 'from' clauses instead of a 'join' clause to access inner collections](#use-multiple-from-clauses-instead-of-a-join-clause-to-access-inner-collections)
 * [Code Style](#code-style)
-    * [Add Parentheses to Avoid Non-Obvious Precedence](#add-parentheses-to-avoid-non-obvious-precedence)
-    * [Remove Redundant 'this' Qualifier](#remove-redundant-'this.'-qualifier)
+    * [Add Parentheses to Avoid Non Obvious Precedence](#add-parentheses-to-avoid-non-obvious-precedence)
+    * [Remove Redundant 'this' Qualifier](#remove-redundant-this-qualifier)
     * [Adjust Modifiers Declaration Order](#adjust-modifiers-declaration-order)
-    * [Convert Nullable of T to 'T?'](#convert-nullable-of-t-to-'t?')
+    * [Convert Nullable of T to 'T?'](#convert-nullable-of-t-to-t?)
     * [Convert Property to Auto-Property](#convert-property-to-auto-property)
     * [Convert to Property with Expression Body](#convert-to-property-with-expression-body)
-    * [Avoid Empty Constructors](#avoid-empty-constructors)
-    * [Avoid Empty Control Statement Bodies](#avoid-empty-control-statement-body)
-    * [Avoid Empty General Catch Clauses](#avoid-empty-general-catch-clause)
-    * [Field Can Be Made Readonly (Private Accessibility)](#field-can-be-made-readonly-(private-accessibility))
-    * [Inconsistent Naming](#inconsistent-naming)
-    * [Introduce Optional Parameters (Private Accessibility)](#introduce-optional-parameters-(private-accessibility))
-    * [Invert 'if' Statement to Reduce Nesting](#invert-'if'-statement-to-reduce-nesting)
+    * [Use Readonly Fields](#use-readonly-fields)
+    * [Use Consistent Naming](#use-consistent-naming)
+    * [Use Optional Parameters](#use-optional-parameters)
+    * [Invert 'if' Statement to Reduce Nesting](#invert-if-statement-to-reduce-nesting)
     * [Join Local Variable Declaration and Assignment](#join-local-variable-declaration-and-assignment)
-    * [Join or separate attributes in section](#join-or-separate-attributes-in-section)
-    * [Use the null-conditional operator (?.)](#use-the-null-conditional-operator-(?.))
-    * [Merge sequential checks in && or || expressions](#merge-sequential-checks-in-&&-or-||-expressions)
-    * [Namespace Does Not Correspond to File Location](#namespace-does-not-correspond-to-file-location)
-    * [Parameter Type Can Be IEnumerable of T](#parameter-type-can-be-ienumerable-of-t)
-    * [Possible multiple enumeration of IEnumerable](#possible-multiple-enumeration-of-ienumerable)
-    * [Redundant 'else' keyword](#redundant-'else'-keyword)
+    * [Separate Attributes In Section](#separate-attributes-in-section)
+    * [Use the null-conditional operator](#use-the-null-conditional-operator)
+    * [Merge Sequential Checks in AND or OR Expressions](#merge-sequential-checks-in-and-or-or-expressions)
+    * [Ensure Namespace Corresponds to File Location](#ensure-namespace-corresponds-to-file-location)
+    * [Make Parameter Type IEnumerable of T When the parameter implements IEnumerable](#parameter-type-can-be-ienumerable-of-t)
+    * [Avoid Possible multiple enumeration of IEnumerable](#avoid-possible-multiple-enumeration-of-ienumerable)
+    * [Avoid Redundant 'else' Keyword](#avoid-redundant-else-keyword)
     * [Remove Redundant Parentheses](#remove-redundant-parentheses)
-    * [Replace Built-in Type Reference with a CLR Type Name or a Keyword](#replace-built-in-type-reference-with-a-clr-type-name-or-a-keyword)
-    * [Use 'String.IsNullOrEmpty'](#use-'string.isnullorempty')
-    * [Use Preferred 'var' Style](#use-preferred-'var'-style)
+    * [Replace Built in Type Reference with a CLR Type Name or a Keyword](#replace-built-in-type-reference-with-a-clr-type-name-or-a-keyword)
+    * [Use String.IsNullOrEmpty](#use-string.isnullorempty)
     
     
 ## Layout
@@ -434,7 +430,6 @@ For example, a collection of Student objects might each contain a collection of 
 
 **[⬆ back to top](#table-of-contents)**
 
-**[⬆ back to top](#table-of-contents)**
 
 #### Convert to Property with Expression Body
 > Why? Expression-bodied properties, introduced in C# 6 are both more concise and readable
@@ -458,60 +453,326 @@ For example, a collection of Student objects might each contain a collection of 
 
 **[⬆ back to top](#table-of-contents)**
 
-#### Avoid Empty Constructors
-> Why? Having an empty constructor (whether static or not) in a class is redundant.
+
+#### Use Readonly Fields
+> Why? To ensure that this class will not inadvertently assign fields anywhere within its methods.
 
      
        ```
        // Avoid.
+       public class MyClass
+       {
+           private string _name;
+           public MyClass(string name) 
+           {
+               _name = name
+           }
+       }
+       
+       // Recommended.       
+       public class MyClass
+       {
+           private readonly string _name;
+           public MyClass(string name) 
+           {
+               _name = name
+           }
+       }
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Use Consistent Naming
+> Why? This ensures consistency and readability throughout the application. 
+
+  - The PascalCasing convention, used for all identifiers except parameter names, capitalizes the first character of each word (including acronyms over two letters in length), as shown in the following examples:
+    * PropertyDescriptor
+    * HtmlTag
+  A special case is made for two-letter acronyms in which both letters are capitalized, as shown in the following identifier:
+  IOStream
+  - The camelCasing convention, used only for parameter names, capitalizes the first character of each word except the first word, as shown in the following examples. As the example also shows, two-letter acronyms that begin a camel-cased identifier are both lowercase.
+    * propertyDescriptor
+    * ioStream
+    * htmlTag
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Use Optional Parameters
+> Why? Allows you to write less code and is easier to read. 
+
+     
+       ```
+       // Avoid.
+       void Foo(object value)
+       {
+          Foo(value, true);
+       }
+       void Foo(object value, bool flag)
+       {
+          //implementation
+       }       
+       
+       // Recommended.      
+       void Foo(object value, bool flag = true)
+       {
+          //implementation
+       }       
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Invert if Statement to Reduce Nesting
+> Why? Without inversion, If blocks can encompass the whole body of the method. Inversion makes the code more readable by getting rid of the nested scope.
+
+     
+       ```
+       // Avoid.
+       void PrintName(Person p)
+       {
+           if (p != null)
+           {
+               if (p.Name != null)
+               {
+                 Console.WriteLine(p.Name);
+               }
+           }
+       }       
        
        // Recommended.
+       void PrintName(Person p)
+       {
+           if (p == null) return
+           if (p.Name == null) return;
+           Console.WriteLine(p.Name);
+       }       
        ```
 
 **[⬆ back to top](#table-of-contents)**
 
-#### 
-> Why? 
+#### Join Local Variable Declaration and Assignment
+> Why? Removes an unnecessary line and improves readability of your code.
 
      
        ```
        // Avoid.
+       int Bar()
+       {
+           int myInt;
+           myInt = 3;
+           return myInt - 1;
+       }       
        
-       // Recommended.       
+       // Recommended.
+       int Bar()
+       {
+           var myInt = 3;
+           return myInt - 1;
+       }       
        ```
 
 **[⬆ back to top](#table-of-contents)**
 
-#### 
-> Why? 
+#### Separate Attributes In Section
+> Why? Makes attributes easier to read. Easier to keep separate attributes from appearing coupled.
 
      
        ```
        // Avoid.
+       [Attribute1, Attribute2]
+       public class MyClass { }
        
-       // Recommended.       
+       // Recommended.
+       [Attribute1]
+       [Attribute2]
+       public class MyClass { }
        ```
 
 **[⬆ back to top](#table-of-contents)**
 
-#### 
-> Why? 
+#### Use the null-conditional operator
+> Why? C# 6 introduced this shorthand notation to test for null before member access. It is easier to read and less code to write.
 
      
        ```
        // Avoid.
+       string GetAttr(XElement node, string attrName)
+       {
+           var attrNode = node.Attribute(attrName);
+           return attrNode == null ? null : attrNode.Value;
+       }       
        
-       // Recommended.       
+       // Recommended.
+       string GetAttr(XElement node, string attrName)
+       {
+           var attrNode = node.Attribute(attrName);
+           return attrNode?.Value;
+       }
        ```
 
 **[⬆ back to top](#table-of-contents)**
 
-#### 
-> Why? 
+#### Merge Sequential Checks in AND or OR Expressions
+> Why? Makes the code footprint smaller by utilizing shorthand notation introduced in C# 6.
 
      
        ```
+       // Avoid.
+       if (p == null || p.Arguments == null) { } 
        
+       // Recommended.
+       if (p?.Arguments == null) { }
        ```
 
 **[⬆ back to top](#table-of-contents)**
+
+#### Ensure Namespace Corresponds to File Location
+> Why? This makes it miuch easier to see where a code file exists in the solution, which in turn makes importing classes easier.
+
+     
+       ```
+       // Assume we are in a class called MyClass in a project called MyProject.Services.
+       // Avoid.
+       namespace Random.Namespace
+       {
+           public class MyClass { }
+       }
+       
+       // Recommended.
+       namespace MyProject.Services
+       {
+           public class MyClass { }
+       }
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Make Parameter Type IEnumerable of T When the parameter implements IEnumerable
+> Why? Makes the method agnostic with respect to the type of collection you give it, making it more resusable.
+
+     
+       ```
+       // Avoid.
+       public void DoStuff(List<Person> personList) { }
+       
+       // Recommended.
+       public void DoStuff(IEnumerable<Person> personList) { }
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Avoid Possible multiple enumeration of IEnumerable
+> Why? Multiple enumeration could lead to a major performance penalty, especially when using LINQ to SQL.
+
+     
+       ```
+       // Avoid.
+       IEnumerable<string> names = GetNames();
+       foreach (var name in names)
+       {
+           Console.WriteLine("Found " + name);
+       }         
+       var allNames = new StringBuilder();
+       foreach (var name in names)
+       {
+            allNames.Append(name + " ");   
+       }  
+       
+       // Recommended.
+       IEnumerable<string> names = GetNames().ToList();
+       foreach (var name in names)
+       {
+           Console.WriteLine("Found " + name);
+       }         
+       var allNames = new StringBuilder();
+       foreach (var name in names)
+       {
+            allNames.Append(name + " ");   
+       }         
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Avoid Redundant Else Keyword
+> Why? Removes unnecessary boilerplate from the method, making it easier to read.
+
+     
+       ```
+       // Avoid.
+       public int Sign(double d)
+       {
+           if (d > 0.0)
+           {
+               return 1;
+           }
+           else 
+           {
+               return -1;
+           }                    
+       }       
+       
+       // Recommended.
+       public int Sign(double d)
+       {
+           if (d > 0.0)
+           {
+               return 1;
+           }
+           return -1;                   
+       }          
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Remove Redundant Parentheses
+> Why? They do not help at all and just add up to dead code as well as adding complexity.
+
+     
+       ```
+       // Avoid.
+       Thing item = ((Thing))myThing;
+       // Recommended.
+       Thing item = (Thing)myThing;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Replace Built in Type Reference with a CLR Type Name or a Keyword
+> Why? The C# keywords are easier to read and allow more consistent code, instead of having a mix of keywords and built in types.
+
+     
+       ```
+       // Avoid.
+       Boolean hasCount;
+       
+       // Recommended.
+       bool hasCount;
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
+#### Use String.IsNullOrEmpty
+> Why? This avoids redundant null and length checks for strings, allowing for cleaner code.
+
+     
+       ```
+       // Avoid.
+       public void SetName(string name)
+       {
+           if (name != null && name.Length > 0)
+           {
+               myName = name;
+           }        
+       }       
+       
+       // Recommended.
+       public void SetName(string name)
+       {
+           if (!string.IsNullOrEmpty(name))
+           {
+               myName = name;
+           }        
+       }            
+       ```
+
+**[⬆ back to top](#table-of-contents)**
+
