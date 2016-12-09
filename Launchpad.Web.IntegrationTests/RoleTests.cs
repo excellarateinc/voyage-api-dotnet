@@ -16,18 +16,23 @@ namespace Launchpad.Web.IntegrationTests
         {
         }
 
-        [Fact(Skip ="Skip until container overrides are in place")]
+        [Fact]
         public async void GetRoles_Should_Return_Models()
         {
-            //ARRANGE
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
+            using (var instance = OwinFixture.Start())
+            {
+                await OwinFixture.Init();
 
-            //ACT
-            var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+                //ARRANGE
+                var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
 
-            //ASSERT
-            RoleModel[] models = await response.ShouldHaveStatusAndPayload<RoleModel[]>(HttpStatusCode.OK);
-            models.Should().NotBeNullOrEmpty();
+                //ACT
+                var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
+
+                //ASSERT
+                RoleModel[] models = await response.ShouldHaveStatusAndPayload<RoleModel[]>(HttpStatusCode.OK);
+                models.Should().NotBeNullOrEmpty();
+            }
         }
     }
 }

@@ -11,13 +11,14 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 {
     public class OwinFixture : IDisposable
     {
-        private IDisposable _webApp;
-        
         public string BaseAddress => "http://localhost:9000";
 
-        public string DefaultToken { get; }
+        public string DefaultToken { get; set; }
 
-        public HttpClient DefaultClient { get; private set; }
+        Lazy<HttpClient> _lazyClient = new Lazy<HttpClient>(() => new HttpClient());
+
+        public HttpClient DefaultClient => _lazyClient.Value;
+
 
         /// <summary>
         /// Requests a new authorization token from the server
@@ -25,7 +26,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
         /// <returns>Authorization Token</returns>
         protected async Task<string> GenerateToken()
         {
-           
+
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/v1/login");
             httpRequestMessage.Content = new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
@@ -45,26 +46,30 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
 
         public OwinFixture()
-        {           
-            _webApp = WebApp.Start<Startup>(url: BaseAddress);
-            DefaultClient = new HttpClient();
-            DefaultToken = GenerateToken().Result;
+        {
+        }
+
+        public IDisposable Start()
+        {
+
+            var webAppInstance = WebApp.Start<Startup>(url: BaseAddress);
+            return webAppInstance;
+        }
+
+        public async Task Init()
+        {
+            DefaultToken = await GenerateToken();
         }
 
 
         public void Dispose()
         {
-            if(_webApp != null)
-            {
-                _webApp.Dispose();
-                _webApp = null;
-            }
 
             if (DefaultClient != null)
             {
                 DefaultClient.Dispose();
             }
-            
+
         }
     }
 }

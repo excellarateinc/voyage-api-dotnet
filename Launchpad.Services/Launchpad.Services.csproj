@@ -62,12 +62,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -77,18 +75,14 @@
     <Compile Include="IdentityManagers\ApplicationRoleManager.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IApplicationInfoService.cs" />
-    <Compile Include="Interfaces\IConfigurationManagerService.cs" />
-    <Compile Include="Interfaces\IPathProviderService.cs" />
     <Compile Include="Interfaces\IAuditService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\IFileReaderService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="PathProviderService.cs" />
     <Compile Include="FileReaderService.cs" />
     <Compile Include="RoleService.cs" />
     <Compile Include="ServicesModule.cs" />
     <Compile Include="UserService.cs" />
-    <Compile Include="ConfigurationManagerService.cs" />
     <Compile Include="WidgetService.cs" />
     <Compile Include="Interfaces\IWidgetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

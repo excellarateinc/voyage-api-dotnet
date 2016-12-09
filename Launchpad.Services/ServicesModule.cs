@@ -1,9 +1,6 @@
 ﻿using Autofac;
 using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
+using System.Configuration;
 
 namespace Launchpad.Services
 {
@@ -22,25 +19,13 @@ namespace Launchpad.Services
                 .InstancePerRequest();
 
             builder.RegisterType<ApplicationInfoService>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
-            builder.RegisterType<ConfigurationManagerService>()
+                .WithParameter("fileName", ConfigurationManager.AppSettings["ApplicationInfoFileName"])
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
             builder.RegisterType<FileReaderService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-
-            builder.RegisterType<PathProviderService>()
-                .AsImplementedInterfaces()
-                .WithParameter("localPath", System.Web.HttpContext.Current.Server.MapPath("~"));
-
-            builder.RegisterType<HttpClient>()
-                .InstancePerRequest(); //Let the container dispose of it at the end of the request
-
-           
 
             builder.RegisterType<UserService>()
                 .AsImplementedInterfaces()
