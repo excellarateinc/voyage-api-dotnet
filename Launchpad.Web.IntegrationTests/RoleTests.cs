@@ -54,7 +54,7 @@ namespace Launchpad.Web.IntegrationTests
                     .HaveStatusCode(HttpStatusCode.OK);
 
 
-                RoleModel model = await response.ShouldHaveStatusAndPayload<RoleModel>(HttpStatusCode.OK);
+                RoleModel model = await response.ReadBody<RoleModel>();
                 model.Should().NotBeNull();
                 model.Id.Should().Be(roleId);
 
@@ -76,7 +76,9 @@ namespace Launchpad.Web.IntegrationTests
                 var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
 
                 //ASSERT
-                RoleModel[] models = await response.ShouldHaveStatusAndPayload<RoleModel[]>(HttpStatusCode.OK);
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.OK);
+                RoleModel[] models = await response.ReadBody<RoleModel[]>();
                 models.Should().NotBeNullOrEmpty();
             }
         }

@@ -42,7 +42,7 @@ namespace Launchpad.Web.IntegrationTests
                     .And
                     .HaveHeader("location");
 
-                WidgetModel responseModel = await response.ShouldHaveStatusAndPayload<WidgetModel>(HttpStatusCode.Created);
+                WidgetModel responseModel = await response.ReadBody<WidgetModel>();
                 responseModel.Should().NotBeNull();
             }
         }
@@ -60,7 +60,10 @@ namespace Launchpad.Web.IntegrationTests
                 var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
 
                 //ASSERT
-                WidgetModel[] models = await response.ShouldHaveStatusAndPayload<WidgetModel[]>(HttpStatusCode.OK);
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.OK);
+
+                WidgetModel[] models = await response.ReadBody<WidgetModel[]>();
                 models.Should().NotBeNullOrEmpty();
             }
 

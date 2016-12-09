@@ -2,6 +2,9 @@
 
 namespace Launchpad.Web.IntegrationTests.Extensions
 {
+    /// <summary>
+    /// Extension method that provides the Should() syntax for custom assertions
+    /// </summary>
     public static class AssertionExtensions
     {
 

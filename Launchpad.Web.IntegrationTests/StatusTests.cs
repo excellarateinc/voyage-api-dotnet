@@ -25,7 +25,10 @@ namespace Launchpad.Web.IntegrationTests
                                     .GetAsync(OwinFixture.GetEndpoint("/api/v1/statuses"));
 
                 //ASSERT
-                ApplicationInfoModel model = await response.ShouldHaveStatusAndPayload<ApplicationInfoModel>(HttpStatusCode.OK);
+                response.Should()
+                    .HaveStatusCode(HttpStatusCode.OK);
+
+                ApplicationInfoModel model = await response.ReadBody<ApplicationInfoModel>();
                 model.Should().NotBeNull();
             }
         }
