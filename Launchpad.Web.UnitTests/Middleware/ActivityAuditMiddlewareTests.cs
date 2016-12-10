@@ -19,23 +19,18 @@ namespace Launchpad.Web.UnitTests.Middleware
     [Trait("Category", "CustomMiddleware")]
     public class ActivityAuditMiddlewareTests : BaseUnitTest
     {
-        private Mock<ILogger> _mockLogger;
         private Mock<IAuditService> _mockAuditService;
         private Mock<ErrorResponseProcessor> _mockProcessor;
 
         public ActivityAuditMiddlewareTests()
         {
-           
-            _mockLogger = Mock.Create<ILogger>();
             _mockAuditService = Mock.Create<IAuditService>();
             _mockProcessor = Mock.Create<ErrorResponseProcessor>();
         }
-
     
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService()
         {
- 
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                 .Returns(false);
 
@@ -52,7 +47,6 @@ namespace Launchpad.Web.UnitTests.Middleware
 
                 //Middleware under test
                 app.Use(typeof(ActivityAuditMiddleware), 
-                    _mockLogger.Object, 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -100,7 +94,6 @@ namespace Launchpad.Web.UnitTests.Middleware
 
                 //Middleware under test
                 app.Use(typeof(ActivityAuditMiddleware),
-                    _mockLogger.Object,
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -137,7 +130,6 @@ namespace Launchpad.Web.UnitTests.Middleware
 
                 //Middleware under test
                 app.Use(typeof(ActivityAuditMiddleware), 
-                    _mockLogger.Object, 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
