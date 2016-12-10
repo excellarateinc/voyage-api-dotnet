@@ -1,5 +1,6 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.Configuration
 {
@@ -12,7 +13,7 @@ namespace Launchpad.Data.Configuration
             HasKey(_ => _.Id);
 
             Property(_ => _.Id)
-                .HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(_ => _.ClaimType);
             Property(_ => _.ClaimValue);
@@ -23,8 +24,6 @@ namespace Launchpad.Data.Configuration
             HasRequired(_ => _.Role)
                 .WithMany(_ => _.Claims)
                 .HasForeignKey(_ => _.RoleId);
-
-
         }
     }
 }

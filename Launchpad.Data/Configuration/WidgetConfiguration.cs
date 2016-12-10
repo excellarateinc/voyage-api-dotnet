@@ -1,6 +1,6 @@
-﻿using Launchpad.Models.EntityFramework;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.Configuration
 {

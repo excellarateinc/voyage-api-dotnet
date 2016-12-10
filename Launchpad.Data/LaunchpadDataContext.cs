@@ -1,9 +1,4 @@
-﻿using Launchpad.Core;
-using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Serilog;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -11,13 +6,17 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
+using Launchpad.Core;
+using Launchpad.Data.Interfaces;
+using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Serilog;
 using TrackerEnabledDbContext.Common.Models;
+using TrackerEnabledDbContext.Identity;
 
 namespace Launchpad.Data
 {
-
-
-    public class LaunchpadDataContext : TrackerEnabledDbContext.Identity.TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
+    public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
         private readonly IIdentityProvider _identityProvider;
         private readonly ILogger _logger;
@@ -28,25 +27,25 @@ namespace Launchpad.Data
         public IDbSet<ApplicationLog> Logs { get; set; }
         public IDbSet<RoleClaim> RoleClaims { get; set; }
         public IDbSet<UserPhone> UserPhones { get; set; }
-
         #endregion 
 
         public LaunchpadDataContext() : base("LaunchpadDataContext")
         {
-
         }
 
         /// <summary>
         /// Pass in the connection string to eliminate the "magic string" above
         /// </summary>
         /// <param name="connectionString">Connection string from the web.config or app.config</param>
+        /// <param name="identityProvider"></param>
+        /// <param name="logger"></param>
         public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger) : base(connectionString)
         {
             _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
             _logger = logger.ThrowIfNull(nameof(logger));
 
             //Configure the username factory for the auditing 
-            base.ConfigureUsername(() => _identityProvider.GetUserName());
+            ConfigureUsername(() => _identityProvider.GetUserName());
         }
 
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
@@ -64,9 +63,7 @@ namespace Launchpad.Data
 
             }
             return base.ValidateEntity(entityEntry, items);
-
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -125,7 +122,7 @@ namespace Launchpad.Data
                 .ToTable("LogMetadata", Constants.Schemas.FrameworkTables);
         }
 
-        public async override Task<int> SaveChangesAsync()
+        public override async Task<int> SaveChangesAsync()
         {
             try
             {
@@ -137,7 +134,6 @@ namespace Launchpad.Data
                 var errorMessages = validationException.EntityValidationErrors
                     .SelectMany(entityError => entityError.ValidationErrors)
                     .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");
-
 
                 _logger
                     .ForContext<LaunchpadDataContext>()

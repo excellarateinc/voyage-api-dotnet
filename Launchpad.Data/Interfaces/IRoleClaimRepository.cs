@@ -1,5 +1,5 @@
-﻿using Launchpad.Models.EntityFramework;
-using System.Linq;
+﻿using System.Linq;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.Interfaces
 {
