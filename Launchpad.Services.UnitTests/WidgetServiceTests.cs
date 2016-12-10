@@ -4,7 +4,6 @@ using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
-using Launchpad.Services.Fixture;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Moq;
@@ -67,7 +66,6 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             entityResult.Model.Name.Should().Be(fakeWidget.Name);
             entityResult.Model.Id.Should().Be(fakeWidget.Id);
-
         }
 
         [Fact]

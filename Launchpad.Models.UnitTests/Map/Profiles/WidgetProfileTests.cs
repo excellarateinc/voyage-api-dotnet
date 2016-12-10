@@ -10,7 +10,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
     [Collection(AutoMapperCollection.CollectionName)]
     public class WidgetProfileTests : BaseUnitTest
     {
-        private AutoMapperFixture _mappingFixture;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public WidgetProfileTests(AutoMapperFixture mappingFixture)
         {

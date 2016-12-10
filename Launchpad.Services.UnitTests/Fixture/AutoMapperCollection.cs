@@ -1,7 +1,6 @@
-﻿using Launchpad.Services.UnitTests.Fixture;
-using Xunit;
+﻿using Xunit;
 
-namespace Launchpad.Services.Fixture
+namespace Launchpad.Services.UnitTests.Fixture
 {
     [CollectionDefinition(CollectionName)]
     public class AutoMapperCollection : ICollectionFixture<AutoMapperFixture>

@@ -24,13 +24,13 @@ namespace Launchpad.Models.UnitTests.Validators
         [Fact]
         public void Should_Have_Error_When_Password_Is_Too_Short()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.Password, "abc" as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "abc");
         }
 
         [Fact]
         public void Should_Have_Error_When_Password_Is_Too_Long()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.Password, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
         }
 
         [Fact]

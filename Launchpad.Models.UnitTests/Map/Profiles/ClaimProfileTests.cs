@@ -1,5 +1,4 @@
 ﻿using Launchpad.Models.UnitTests.Fixture;
-using Launchpad.UnitTests.Common;
 using Xunit;
 using FluentAssertions;
 using Launchpad.Models.EntityFramework;
@@ -10,7 +9,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
     [Collection(AutoMapperCollection.CollectionName)]
     public class ClaimProfileTests
     {
-        private AutoMapperFixture _mappingFixture;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public ClaimProfileTests(AutoMapperFixture mappingFixture)
         {
@@ -45,6 +44,5 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             claim.ClaimValue.Should().Be(roleClaim.ClaimValue);
             claim.ClaimType.Should().Be(roleClaim.ClaimType);
         }
-
     }
 }

@@ -7,7 +7,6 @@ using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
-using Launchpad.Services.Fixture;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
 using Launchpad.Services.UnitTests.Fixture;
