@@ -9,7 +9,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void GetRecentActivity_Should_Return_QueryDatabase()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {

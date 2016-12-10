@@ -2,6 +2,7 @@
 using Launchpad.Data.IntegrationTests.Extensions;
 using Launchpad.Models.EntityFramework;
 using System;
+using System.Globalization;
 using System.Transactions;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void GetAll_Should_Return_Widgets()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -31,7 +32,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Get_Should_Return_Widget_If_Exists()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -49,7 +50,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Get_Should_Return_Null_If_Does_Not_Exist()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -65,7 +66,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Add_Should_Create_New_Widget()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -80,8 +81,7 @@ namespace Launchpad.Data.IntegrationTests
                     var retrievedWidget = repository.Get(newWidget.Id);
                     retrievedWidget.Should().NotBeNull();
                     retrievedWidget.Name.Should().Be(widget.Name);
-                    retrievedWidget.Id.Should().Be(widget.Id);
-                    
+                    retrievedWidget.Id.Should().Be(widget.Id);                    
                 }
             }
         }
@@ -89,13 +89,13 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Update_Should_Modify_Widget()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
                     var repository = new WidgetRepository(context);
                     var widget = context.AddWidget();
-                    var name = DateTime.Now.ToString();
+                    var name = DateTime.Now.ToString(CultureInfo.InvariantCulture);
                     widget.Name = name;
 
                     repository.Update(widget);
@@ -104,13 +104,12 @@ namespace Launchpad.Data.IntegrationTests
                     retrievedWidget.Name.Should().Be(name);
                 }
             }
-
         }
 
         [Fact]
         public void Delete_Should_Remove_Widget()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -124,6 +123,5 @@ namespace Launchpad.Data.IntegrationTests
                 }
             }
         }
-        
     }
 }

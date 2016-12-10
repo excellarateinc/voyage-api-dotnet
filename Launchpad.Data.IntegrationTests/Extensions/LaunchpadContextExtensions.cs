@@ -24,7 +24,7 @@ namespace Launchpad.Data.IntegrationTests.Extensions
 
         public static Widget AddWidget(this LaunchpadDataContext context)
         {
-            var widget = new Models.EntityFramework.Widget { Name = "My Test Widget", Color="Blue" };
+            var widget = new Widget { Name = "My Test Widget", Color="Blue" };
             context.Widgets.Add(widget);
             context.SaveChanges();
             return widget;
@@ -32,7 +32,7 @@ namespace Launchpad.Data.IntegrationTests.Extensions
 
         public static ApplicationRole AddRole(this LaunchpadDataContext context)
         {
-            var role = new ApplicationRole() { Name = "MyRoleName" };
+            var role = new ApplicationRole { Name = "MyRoleName" };
             var roleStore = new RoleStore<ApplicationRole>(context);
             roleStore.CreateAsync(role).Wait();
             return role;
@@ -40,10 +40,12 @@ namespace Launchpad.Data.IntegrationTests.Extensions
         
         public static RoleClaim AddRoleClaim(this LaunchpadDataContext context, ApplicationRole role, string type = "type1", string value = "value1")
         {
-            var roleClaim = new RoleClaim();
-            roleClaim.ClaimType = "type1";
-            roleClaim.ClaimValue = "value1";
-            roleClaim.RoleId = role.Id;
+            var roleClaim = new RoleClaim
+            {
+                ClaimType = "type1",
+                ClaimValue = "value1",
+                RoleId = role.Id
+            };
             context.RoleClaims.Add(roleClaim);
             context.SaveChanges();
             return roleClaim;

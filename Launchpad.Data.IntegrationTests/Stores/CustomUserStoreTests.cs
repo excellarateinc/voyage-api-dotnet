@@ -11,7 +11,7 @@ namespace Launchpad.Data.IntegrationTests.Stores
         [Fact]
         public async void FindByEmailAsync_Should_Not_Match_Deleted_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
@@ -33,11 +33,10 @@ namespace Launchpad.Data.IntegrationTests.Stores
         [Fact]
         public async void FindByIdAsync_Should_Not_Match_Deleted_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-
                     //Arrange
                     var user = ctx.Users.First();
                     user.Deleted = true;
@@ -56,7 +55,7 @@ namespace Launchpad.Data.IntegrationTests.Stores
         [Fact]
         public async void FindByNameAsync_Should_Not_Match_Deleted_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
@@ -79,13 +78,12 @@ namespace Launchpad.Data.IntegrationTests.Stores
         [Fact]
         public async void FindByEmailAsync_Should_Match_Existing_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
                     //Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
-
 
                     //Act
                     var userStore = new CustomUserStore(ctx);
@@ -100,13 +98,12 @@ namespace Launchpad.Data.IntegrationTests.Stores
         [Fact]
         public async void FindByIdAsync_Should_Match_Existing_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
                     //Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
-
 
                     //Act
                     var userStore = new CustomUserStore(ctx);
@@ -116,19 +113,17 @@ namespace Launchpad.Data.IntegrationTests.Stores
                     matched.Should().NotBeNull();
                 }
             }
-
         }
 
         [Fact]
         public async void FindByNameAsync_Should_Match_Existing_User()
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
                     //Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
-
 
                     //Act
                     var userStore = new CustomUserStore(ctx);
@@ -139,8 +134,5 @@ namespace Launchpad.Data.IntegrationTests.Stores
                 }
             }
         }
-
-
-
     }
 }
