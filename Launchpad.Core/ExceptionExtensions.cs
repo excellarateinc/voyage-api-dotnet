@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace Launchpad.Core
 {
     public static class ExceptionExtensions
     {
-
         /// <summary>
         /// 
         /// </summary>
@@ -15,9 +13,9 @@ namespace Launchpad.Core
         public static string FlattenMessages(this AggregateException exception)
         {
             const int maxDepth = 5;
-            int depth = 0;
+            var depth = 0;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             Exception ex = exception;
             
