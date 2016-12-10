@@ -1,11 +1,11 @@
-﻿using Launchpad.Web.Middleware;
-using Microsoft.Owin.Testing;
-using Xunit;
+﻿using System.IO;
 using System.Net.Http;
-using Launchpad.UnitTests.Common;
-using Owin;
 using FluentAssertions;
-using System.IO;
+using Launchpad.UnitTests.Common;
+using Launchpad.Web.Middleware;
+using Microsoft.Owin.Testing;
+using Owin;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.Middleware
 {
@@ -17,7 +17,6 @@ namespace Launchpad.Web.UnitTests.Middleware
         {
             using (var server = TestServer.Create(app =>
             {
-
                 app.Use<RewindResponseMiddleware>();
 
                 app.Run(context =>

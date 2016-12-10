@@ -1,17 +1,18 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Web.Http;
+using System.Web.Http.Routing;
+using FluentAssertions;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;
 using Ploeh.AutoFixture;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Web.Http;
-using System.Web.Http.Routing;
 using Xunit;
 using static Launchpad.Web.Constants;
 
@@ -19,23 +20,23 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class WidgetControllerTests : BaseUnitTest
     {
-        private Mock<IWidgetService> _mockWidgetService;
-        private WidgetController _widgetController;
-        private Mock<UrlHelper> _mockUrlHelper;
-        private string _testUrl;
-
+        private readonly Mock<IWidgetService> _mockWidgetService;
+        private readonly WidgetController _widgetController;
+        private readonly Mock<UrlHelper> _mockUrlHelper;
+        private readonly string _testUrl;
 
         public WidgetControllerTests()
         {
             _testUrl = "http://test.com";
             _mockWidgetService = Mock.Create<IWidgetService>();
-            _widgetController = new WidgetController(_mockWidgetService.Object);
-            _widgetController.Request = new System.Net.Http.HttpRequestMessage();
-            _widgetController.Configuration = new System.Web.Http.HttpConfiguration();
+            _widgetController = new WidgetController(_mockWidgetService.Object)
+            {
+                Request = new HttpRequestMessage(),
+                Configuration = new HttpConfiguration()
+            };
 
             _mockUrlHelper = Mock.Create<UrlHelper>();
             _widgetController.Url = _mockUrlHelper.Object;
-
         }
 
         [Fact]
@@ -146,7 +147,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             //Arrange
             var fakeWidget = Fixture.Create<WidgetModel>();
-            WidgetModel inputModel = Fixture.Create<WidgetModel>();
+            Fixture.Create<WidgetModel>();
             var entityResult = new EntityResult<WidgetModel>(null, false, true);
             _mockWidgetService.Setup(_ => _.UpdateWidget(fakeWidget.Id, fakeWidget)).Returns(entityResult);
 
@@ -157,15 +158,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
-
         }
-
 
         [Fact]
         public async void Get_Should_Call_WidgetService()
         {
             //Arrange
-            var fakeWidgets = Fixture.CreateMany<WidgetModel>();
+            var fakeWidgets = Fixture.CreateMany<WidgetModel>().ToList();
             var entityResult = new EntityResult<IEnumerable<WidgetModel>>(fakeWidgets, true, false);
 
             _mockWidgetService.Setup(_ => _.GetWidgets()).Returns(entityResult);
@@ -176,18 +175,16 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             //Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
             IEnumerable<WidgetModel> widgets;
-            message.TryGetContentValue<IEnumerable<WidgetModel>>(out widgets).Should().BeTrue();
+            message.TryGetContentValue(out widgets).Should().BeTrue();
             _mockWidgetService.Verify(_ => _.GetWidgets(), Times.Once());
             Mock.VerifyAll();
             widgets.Should().BeEquivalentTo(fakeWidgets);
-
         }
 
         [Fact]
         public async void GetById_Should_Call_WidgetService()
         {
             //Arrange
-
             var fakeWidget = Fixture.Create<WidgetModel>();
             var entityResult = new EntityResult<WidgetModel>(fakeWidget, true, false);
 
@@ -202,11 +199,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var message = await result.ExecuteAsync(CancellationToken.None);
             Mock.VerifyAll();
 
-
             WidgetModel widget;
-            message.TryGetContentValue<WidgetModel>(out widget).Should().BeTrue(); //Deserialize response content
+            message.TryGetContentValue(out widget).Should().BeTrue(); //Deserialize response content
             widget.ShouldBeEquivalentTo(fakeWidget);
-
         }
 
         [Fact]
@@ -226,7 +221,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             var message = await result.ExecuteAsync(CancellationToken.None);
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
-
         }
 
         [Fact]
@@ -265,7 +259,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             typeof(WidgetController).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
-                _ => _.Prefix.Equals(Constants.RoutePrefixes.V1));
+                _ => _.Prefix.Equals(RoutePrefixes.V1));
         }
 
         [Fact]
@@ -282,7 +276,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<WidgetController>(_ => _.Get(1))
                     .Should()
                     .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
-
         }
 
         [Fact]
@@ -291,7 +284,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<WidgetController>(_ => _.AddWidget(new WidgetModel()))
                     .Should()
                     .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets"));
-
         }
 
         [Fact]
@@ -300,7 +292,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<WidgetController>(_ => _.DeleteWidget(1))
                     .Should()
                     .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
-
         }
 
         [Fact]
@@ -309,8 +300,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<WidgetController>(_ => _.UpdateWidget(1, new WidgetModel()))
                     .Should()
                     .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("widgets/{id:int}"));
-
         }
-
     }
 }

@@ -1,33 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ploeh.AutoFixture;
-using FluentAssertions;
-using Xunit;
-using Moq;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.AuthProviders;
-using Microsoft.Owin.Security.OAuth;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin;
-using Launchpad.Services.Interfaces;
 using System.Security.Claims;
 using Autofac;
-using Autofac.Core;
+using FluentAssertions;
+using Launchpad.Services.Interfaces;
+using Launchpad.UnitTests.Common;
+using Launchpad.Web.AuthProviders;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.OAuth.Messages;
+using Moq;
+using Ploeh.AutoFixture;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.AuthProviders
 {
     [Trait("Category", "OAuthProvider")]
     public class ApplicationOAuthProviderTests : BaseUnitTest
     {
-        const string _pathString = "/api/v1/login";
-        private string _clientId;
-        ApplicationOAuthProvider _provider;
-        private Mock<IOwinContext> _mockOwinContext;
-        private Mock<ILoginOrchestrator> _mockLoginOrchestrator;
+        private const string PathString = "/api/v1/login";
+        private readonly string _clientId;
+        private readonly ApplicationOAuthProvider _provider;
+        private readonly Mock<IOwinContext> _mockOwinContext;
+        private readonly Mock<ILoginOrchestrator> _mockLoginOrchestrator;
 
         public ApplicationOAuthProviderTests()
         {
@@ -36,11 +33,10 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             _mockLoginOrchestrator = Mock.Create<ILoginOrchestrator>();
 
             //Setup login delegate
-            _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(_pathString);
+            _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(PathString);
             _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
         }
         
-
         [Fact]
         public async void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
         {
@@ -48,7 +44,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var mockRequest = Mock.Create<IOwinRequest>();
 
             mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(_pathString));
+              .Returns(new PathString(PathString));
 
             _mockOwinContext.Setup(_ => _.Request)
               .Returns(mockRequest.Object);
@@ -68,7 +64,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var mockRequest = Mock.Create<IOwinRequest>();
 
             mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(_pathString + "!"));
+              .Returns(new PathString(PathString + "!"));
 
             _mockOwinContext.Setup(_ => _.Request)
               .Returns(mockRequest.Object);
@@ -85,7 +81,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>();
             var readableCollection = new ReadableStringCollection(pairs);
-            var mockValidatingCtx = Mock.Create<BaseValidatingClientContext>();
+            Mock.Create<BaseValidatingClientContext>();
 
             var validatingCtx = new OAuthValidateClientAuthenticationContext(
                 context: _mockOwinContext.Object,
@@ -100,7 +96,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var mockRequest = Mock.Create<IOwinRequest>();
 
             mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(_pathString));
+              .Returns(new PathString(PathString));
 
             _mockOwinContext.Setup(_ => _.Request)
               .Returns(mockRequest.Object);
@@ -108,9 +104,8 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var ctx = new OAuthValidateTokenRequestContext(
                 context: _mockOwinContext.Object,
                 options: new OAuthAuthorizationServerOptions(),
-                tokenRequest: new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(readableCollection),
+                tokenRequest: new TokenEndpointRequest(readableCollection),
                 clientContext: validatingCtx);
-
 
             await _provider.ValidateTokenRequest(ctx);
 
@@ -123,7 +118,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>();
             var readableCollection = new ReadableStringCollection(pairs);
-            var mockValidatingCtx = Mock.Create<BaseValidatingClientContext>();
+            Mock.Create<BaseValidatingClientContext>();
 
             var validatingCtx = new OAuthValidateClientAuthenticationContext(
                 context: _mockOwinContext.Object,
@@ -138,7 +133,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var mockRequest = Mock.Create<IOwinRequest>();
 
             mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(_pathString));
+              .Returns(new PathString(PathString));
 
             _mockOwinContext.Setup(_ => _.Request)
               .Returns(mockRequest.Object);
@@ -146,16 +141,14 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var ctx = new OAuthValidateTokenRequestContext(
                 context: _mockOwinContext.Object,
                 options: new OAuthAuthorizationServerOptions(),
-                tokenRequest: new Microsoft.Owin.Security.OAuth.Messages.TokenEndpointRequest(readableCollection),
+                tokenRequest: new TokenEndpointRequest(readableCollection),
                 clientContext: validatingCtx);
-
 
             await _provider.ValidateTokenRequest(ctx);
 
             ctx.HasError.Should().BeTrue();
             ctx.IsValidated.Should().BeFalse();
         }
-
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
@@ -186,15 +179,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             var user = "bob@bob.com";
             var password = "giraffe";
             OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
-
-
-            
-
+           
             //Setup the request
             var mockRequest = Mock.Create<IOwinRequest>();
 
             mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(_pathString));
+              .Returns(new PathString(PathString));
 
             _mockOwinContext.Setup(_ => _.Request)
               .Returns(mockRequest.Object);
@@ -202,12 +192,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             //Setup the login orchestrator
             _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
                 .ReturnsAsync(false);
-                
-          
-
+                         
             //ACT
             await _provider.GrantResourceOwnerCredentials(oAuthContext);
-
 
             //ASSERT
             Mock.VerifyAll();
@@ -239,12 +226,10 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, CookieAuthenticationDefaults.AuthenticationType))
                 .ReturnsAsync(identity);
 
-
             //Skip mocking out autofac, just build the container to use
             var containerBuilder = new ContainerBuilder();
             containerBuilder.Register(c => mockUserService.Object);
             var container = containerBuilder.Build();
-
 
             //Property used for sign in
             var mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
@@ -254,22 +239,18 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             //Configure the context properties
             var mockOwinRequest = Mock.Create<IOwinRequest>();
             mockOwinRequest.Setup(_ => _.Path)
-                .Returns(new PathString(_pathString));
+                .Returns(new PathString(PathString));
           
             mockOwinRequest.Setup(_ => _.Context).Returns(_mockOwinContext.Object);
             _mockOwinContext.Setup(_ => _.Request).Returns(mockOwinRequest.Object);    
             _mockOwinContext.Setup(_ => _.Get<ILifetimeScope>(It.IsAny<string>()))
                 .Returns(container);
 
-    
-
             //ACT
-            await _provider.GrantResourceOwnerCredentials(oAuthContext);
-
+            await _provider.GrantResourceOwnerCredentials(oAuthContext);        
           
             //ASSERT
             Mock.VerifyAll();
         }
-
     }
 }

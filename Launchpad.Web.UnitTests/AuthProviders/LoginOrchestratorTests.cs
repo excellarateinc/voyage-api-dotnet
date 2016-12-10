@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using Autofac;
 using FluentAssertions;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
@@ -6,7 +7,6 @@ using Launchpad.Web.AuthProviders;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Moq;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.AuthProviders
@@ -34,8 +34,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
             //Setup the user service
             var mockUserService = Mock.Create<IUserService>();
             mockUserService.Setup(_ => _.IsValidCredential("userName", "password"))
-                .ReturnsAsync(true);
-            
+                .ReturnsAsync(true);            
 
             //Skip mocking out autofac, just build the container to use
             var containerBuilder = new ContainerBuilder();
@@ -65,11 +64,13 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_There_Are_Too_Many_Parameters()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "password" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "password" });
-            pairs.Add("foo", new[] { "bar" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"password"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {"password"}},
+                {"foo", new[] {"bar"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -81,10 +82,11 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_There_Are_Too_Few_Parameters()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "password" });
-            pairs.Add("username", new[] { "username" });
-             
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"password"}},
+                {"username", new[] {"username"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -96,10 +98,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Missing_Password()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "password" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password1", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"password"}},
+                {"username", new[] {"username"}},
+                {"password1", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -111,10 +115,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Missing_Username()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "password" });
-            pairs.Add("username1", new[] { "username" });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"password"}},
+                {"username1", new[] {"username"}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -126,10 +132,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Missing_GrantType()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type1", new[] { "password" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type1", new[] {"password"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -141,10 +149,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Empty_GrantType()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {""}},
+                {"username", new[] {"username"}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -156,10 +166,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Empty_Username()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "grant_type" });
-            pairs.Add("username", new[] { "" });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"grant_type"}},
+                {"username", new[] {""}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -171,10 +183,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Empty_Password()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "grant_type" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"grant_type"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {""}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -186,10 +200,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Grant_Type_Not_Password()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "grant_type" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "credential" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"grant_type"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {"credential"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -201,10 +217,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Username_Too_Long()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "grant_type" });
-            pairs.Add("username", new[] { new string('a', 51) });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"grant_type"}},
+                {"username", new[] {new string('a', 51)}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -216,10 +234,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_False_When_Password_Too_Long()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "grant_type" });
-            pairs.Add("username", new[] {  "username" });
-            pairs.Add("password", new[] { new string('a', 251) });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"grant_type"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {new string('a', 251)}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -231,10 +251,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void Validate_Request_Should_Return_True_When_ValidInput()
         {
-            var pairs = new Dictionary<string, string[]>();
-            pairs.Add("grant_type", new[] { "password" });
-            pairs.Add("username", new[] { "username" });
-            pairs.Add("password", new[] { "password" });
+            var pairs = new Dictionary<string, string[]>
+            {
+                {"grant_type", new[] {"password"}},
+                {"username", new[] {"username"}},
+                {"password", new[] {"password"}}
+            };
 
             var readableCollection = new ReadableStringCollection(pairs);
 
@@ -242,8 +264,5 @@ namespace Launchpad.Web.UnitTests.AuthProviders
                 .Should()
                 .BeTrue();
         }
-
-
-
     }
 }

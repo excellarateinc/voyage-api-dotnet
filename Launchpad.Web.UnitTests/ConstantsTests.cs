@@ -1,7 +1,6 @@
-﻿using Launchpad.UnitTests.Common;
+﻿using FluentAssertions;
+using Launchpad.UnitTests.Common;
 using Xunit;
-using FluentAssertions;
-
 
 namespace Launchpad.Web.UnitTests
 {
@@ -28,6 +27,5 @@ namespace Launchpad.Web.UnitTests
         {
             Constants.RoutePrefixes.V2.Should().Be("api/v2");
         }
-
     }
 }

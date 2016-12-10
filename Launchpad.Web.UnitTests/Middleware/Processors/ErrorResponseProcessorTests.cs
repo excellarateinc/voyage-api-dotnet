@@ -1,19 +1,19 @@
-﻿using Xunit;
+﻿using System.IO;
 using FluentAssertions;
 using Launchpad.UnitTests.Common;
-using Moq;
 using Launchpad.Web.Middleware.Processors;
 using Microsoft.Owin;
-using System.IO;
+using Moq;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.Middleware.Processors
 {
     [Trait("Category", "Processors")]
     public class ErrorResponseProcessorTests  : BaseUnitTest
     {
-        readonly ErrorResponseProcessor _processor;
-        readonly Mock<IOwinResponse> _mockResponse;
-        readonly Mock<Stream> _mockStream;
+        private readonly ErrorResponseProcessor _processor;
+        private readonly Mock<IOwinResponse> _mockResponse;
+        private readonly Mock<Stream> _mockStream;
 
         public ErrorResponseProcessorTests()
         {
@@ -27,7 +27,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
         public void ShouldProcess_Should_Return_False_When_CanSeek_False()
         {
             _mockStream.Setup(_ => _.CanSeek).Returns(false);
-
            
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
@@ -38,7 +37,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
         {
             _mockStream.Setup(_ => _.CanSeek).Returns(true);
             _mockStream.Setup(_ => _.CanRead).Returns(false);
-
            
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
@@ -52,7 +50,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
             _mockStream.Setup(_ => _.CanSeek).Returns(true);
             _mockStream.Setup(_ => _.CanRead).Returns(true);
             _mockResponse.Setup(_ => _.StatusCode).Returns(statusCode);
-
             
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
@@ -95,8 +92,7 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
             _mockResponse.Setup(_ => _.StatusCode).Returns(statusCode);
 
             _processor.ShouldProcess(_mockResponse.Object).Should().BeTrue();
-            Mock.VerifyAll();
-            
+            Mock.VerifyAll();            
         }
 
         [Theory]
@@ -113,8 +109,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
 
             _processor.ShouldProcess(_mockResponse.Object).Should().BeTrue();
             Mock.VerifyAll();
-
         }
-
     }
 }

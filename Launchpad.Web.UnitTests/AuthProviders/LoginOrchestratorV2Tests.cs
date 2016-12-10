@@ -1,7 +1,6 @@
-﻿using Launchpad.Web.AuthProviders;
+﻿using FluentAssertions;
+using Launchpad.Web.AuthProviders;
 using Xunit;
-using FluentAssertions;
-
 
 namespace Launchpad.Web.UnitTests.AuthProviders
 {
