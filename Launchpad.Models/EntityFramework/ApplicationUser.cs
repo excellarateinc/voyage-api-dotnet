@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
-using System;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Models.EntityFramework
 {
@@ -10,8 +9,11 @@ namespace Launchpad.Models.EntityFramework
     public class ApplicationUser : IdentityUser, ISoftDeleteable
     {
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         public virtual ICollection<UserPhone> Phones { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool Deleted { get; set; }

@@ -24,9 +24,6 @@ namespace Launchpad.Models.Validators
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Email is a required field")
                 .EmailAddress()
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidEmail, "Email is invalid");
-
-
-
         }
     }
 }

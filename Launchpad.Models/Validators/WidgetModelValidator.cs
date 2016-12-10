@@ -10,7 +10,6 @@ namespace Launchpad.Models.Validators
             RuleFor(_=>_.Name)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Name is a required field");
-
         }
     }
 }

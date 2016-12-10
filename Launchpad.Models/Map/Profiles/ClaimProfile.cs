@@ -1,10 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Launchpad.Models.EntityFramework;
-using System.Security.Claims;
 
 namespace Launchpad.Models.Map.Profiles
-{
-  
+{  
     public class ClaimProfile : Profile
     {
         public ClaimProfile()
@@ -15,8 +14,6 @@ namespace Launchpad.Models.Map.Profiles
                 .ForMember(_ => _.ClaimValue, opt => opt.MapFrom(src => src.Value))
                 .ForMember(_ => _.ClaimType, opt => opt.MapFrom(src => src.Type))
                 .ForMember(_ => _.Id, opt => opt.Ignore());
-        }
-
-        
+        }        
     }
 }

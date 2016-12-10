@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using AutoMapper;
 
 namespace Launchpad.Models.Map
 {
@@ -12,8 +11,6 @@ namespace Launchpad.Models.Map
             //The mapper can be shared for the lifetime of the application, register it as a singleton 
             builder.RegisterInstance(instance)
                 .SingleInstance();
-        }
-
-        
+        }        
     }
 }

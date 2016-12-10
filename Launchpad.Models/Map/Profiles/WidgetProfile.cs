@@ -18,6 +18,5 @@ namespace Launchpad.Models.Map.Profiles
             CreateMap<WidgetModel, Widget>()
                 .ForMember(_ => _.Id, opt => opt.Ignore());
         }
-
     }
 }
