@@ -1,13 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using FluentAssertions;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Fixture;
+using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Ploeh.AutoFixture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -26,24 +27,24 @@ namespace Launchpad.Services.UnitTests
 
             public EntityResult InvokeNotFound(object id)
             {
-                return base.NotFound(id);
+                return NotFound(id);
             }
 
             public EntityResult<TModel> InvokeNotFound<TModel>(object id)
                  where TModel : class
             {
-                return base.NotFound<TModel>(id);
+                return NotFound<TModel>(id);
             }
 
             public EntityResult InvokeSuccess()
             {
-                return base.Success();
+                return Success();
             }
 
             public EntityResult<TModel> InvokeSuccess<TModel>(TModel model)
                  where TModel : class
             {
-                return base.Success<TModel>(model);
+                return Success(model);
             }
 
             public void InvokeMergeCollection<TSource, TDest>(ICollection<TSource> source,
@@ -51,18 +52,15 @@ namespace Launchpad.Services.UnitTests
                     Func<TSource, TDest, bool> predicate,
                     Action<TDest> deleteAction)
             {
-                base.MergeCollection(source, destination, predicate, deleteAction);
+                MergeCollection(source, destination, predicate, deleteAction);
             }
         }
-
-        private readonly AutoMapperFixture _mapperFixture;
 
         private readonly TestPassThrough _testPassThrough;
 
         public EntityResultServiceTests(AutoMapperFixture mapperFixture)
         {
-            _mapperFixture = mapperFixture;
-            _testPassThrough = new TestPassThrough(_mapperFixture.MapperInstance);
+            _testPassThrough = new TestPassThrough(mapperFixture.MapperInstance);
         }
 
         [Fact]
@@ -70,9 +68,7 @@ namespace Launchpad.Services.UnitTests
         {
             int deleteCount = 0;
 
-            var source = new List<UserPhoneModel>
-            {
-            };
+            var source = new List<UserPhoneModel>();
 
             var user = Fixture.Build<UserPhone>()
                 .With(_ => _.User, null)
@@ -141,10 +137,7 @@ namespace Launchpad.Services.UnitTests
                 userPhoneModel
             };
 
-            var destination = new List<UserPhone>
-            {
-
-            };
+            var destination = new List<UserPhone>();
             _testPassThrough
                 .InvokeMergeCollection(source, destination, (s, d) => s.Id == d.Id, phone => { });
 
