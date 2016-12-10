@@ -2,7 +2,6 @@
 using Xunit;
 using FluentAssertions;
 using Launchpad.UnitTests.Common;
-using Moq;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 
@@ -10,13 +9,12 @@ namespace Launchpad.Data.UnitTests
 {
     public class ApplicationLogRepositoryTests : BaseUnitTest
     {
-        private ApplicationLogRepository _repository;
-        private Mock<ILaunchpadDataContext> _mockContext;
+        private readonly ApplicationLogRepository _repository;
 
         public ApplicationLogRepositoryTests()
         {
-            _mockContext = Mock.Create<ILaunchpadDataContext>();
-            _repository = new ApplicationLogRepository(_mockContext.Object);
+            var mockContext = Mock.Create<ILaunchpadDataContext>();
+            _repository = new ApplicationLogRepository(mockContext.Object);
         }
 
         [Fact]

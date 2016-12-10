@@ -1,6 +1,5 @@
 ﻿using Launchpad.Data.Interfaces;
 using Launchpad.UnitTests.Common;
-using Moq;
 using System;
 using FluentAssertions;
 using Xunit;
@@ -10,13 +9,12 @@ namespace Launchpad.Data.UnitTests
     [Trait("Category", "Auditing")]
     public class ActivityAuditRepositoryTests : BaseUnitTest
     {
-        ActivityAuditRepository _repository;
-        Mock<ILaunchpadDataContext> _mockContext;
+        private readonly ActivityAuditRepository _repository;
 
         public ActivityAuditRepositoryTests()
         {
-            _mockContext = Mock.Create<ILaunchpadDataContext>();
-            _repository = new ActivityAuditRepository(_mockContext.Object);
+            var mockContext = Mock.Create<ILaunchpadDataContext>();
+            _repository = new ActivityAuditRepository(mockContext.Object);
         }
 
         [Fact]
