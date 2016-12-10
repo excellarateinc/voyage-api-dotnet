@@ -9,9 +9,7 @@ namespace Launchpad.Web.Extensions
     {
         public static BadRequestErrorModel ToModel(this ModelError error, string field)
         {
-            var model = new BadRequestErrorModel();
-            model.Field = field;
-
+            var model = new BadRequestErrorModel { Field = field };
             var codedMessage = error.ErrorMessage.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
             if(codedMessage.Length == 2)
             {
@@ -37,7 +35,6 @@ namespace Launchpad.Web.Extensions
                     errorList.Add(converted);
                 }
             }
-
             return errorList;
         }
     }

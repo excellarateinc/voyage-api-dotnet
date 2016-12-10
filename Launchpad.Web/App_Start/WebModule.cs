@@ -16,16 +16,15 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
-
-namespace Launchpad.Web.App_Start
+namespace Launchpad.Web
 {
     /// <summary>
     /// Configures the registrations for Autofac
     /// </summary>
     public class WebModule : Module
     {
-        private string _connectionString;
-        private HttpConfiguration _httpConfig;
+        private readonly string _connectionString;
+        private readonly HttpConfiguration _httpConfig;
 
         public WebModule(string connectionString, HttpConfiguration httpConfig)
         {
@@ -41,14 +40,12 @@ namespace Launchpad.Web.App_Start
                 .As<ILogger>()
                 .SingleInstance();
 
-
             builder.RegisterHttpRequestMessage(_httpConfig);
 
             //Register Identity services
             ConfigureIdentityServices(builder);
 
             ConfigureMiddleware(builder);
-
         }
 
         private void ConfigureMiddleware(ContainerBuilder builder)
@@ -75,7 +72,6 @@ namespace Launchpad.Web.App_Start
             builder.RegisterType<IdentityProvider>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-
 
             //Login orchestrators - these will be passed into the 
             //OAuthProvider implementation which is a single instance. 
@@ -111,9 +107,6 @@ namespace Launchpad.Web.App_Start
             });
 
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
-
-
-
         }
 
         /// <summary>
@@ -128,7 +121,6 @@ namespace Launchpad.Web.App_Start
 
             var columnOptions = new ColumnOptions();  // optional
             columnOptions.Store.Add(StandardColumn.LogEvent); //Store the JSON too 
-
 
             var log = new LoggerConfiguration()
                 .WriteTo.MSSqlServer(connectionString, tableName, columnOptions: columnOptions)

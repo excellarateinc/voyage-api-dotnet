@@ -6,12 +6,10 @@ using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-
-
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AccountController : BaseApiController
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public AccountController(IUserService userService)
         {
@@ -43,7 +41,6 @@ namespace Launchpad.Web.Controllers.API.V1
         {
 
             var entityResult = await _userService.RegisterAsync(model);
-
             return NoContent(entityResult);
         }
     }

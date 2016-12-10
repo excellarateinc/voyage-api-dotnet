@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
 using Launchpad.Core;
-using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -14,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Web.AuthProviders
 {
-
     /// <summary>
     /// This provider is a singleton - since our dependency are per request, we cannot inject the dependencies via the constructor
     /// Use the service locator pattern to resolve dependencies here
@@ -27,10 +25,7 @@ namespace Launchpad.Web.AuthProviders
         //Backed off from using a dictionary here - there is no guarantee that the IsMatch logic will be as straight 
         //forward as checking the path 
         private readonly Dictionary<string, ILoginOrchestrator> _loginOrchestrators;
-
-        
-
-
+       
         public ApplicationOAuthProvider(string publicClientId, IEnumerable<ILoginOrchestrator> loginOrchestrators)
         {
             publicClientId.ThrowIfNull(nameof(publicClientId));
@@ -59,7 +54,6 @@ namespace Launchpad.Web.AuthProviders
             //If it does not match a token endpoint, execute the default behavior 
             return base.MatchEndpoint(context);
         }
-
     
         public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
         {
@@ -70,7 +64,8 @@ namespace Launchpad.Web.AuthProviders
             if (loginOrchestrator.ValidateRequest(context.TokenRequest.Parameters))
             {
                 context.Validated();
-            }else
+            }
+            else
             {
                 context.SetError("error", "invalid_request");
             }
@@ -95,7 +90,7 @@ namespace Launchpad.Web.AuthProviders
             ClaimsIdentity cookiesIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, CookieAuthenticationDefaults.AuthenticationType);
 
             AuthenticationProperties properties = CreateProperties(context.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
@@ -144,6 +139,5 @@ namespace Launchpad.Web.AuthProviders
             };
             return new AuthenticationProperties(data);
         }
-
     }
 }

@@ -14,7 +14,6 @@ namespace Launchpad.Web.AuthProviders
         }
         public string GetUserName()
         {
-
             return _context.GetIdentityName();
         }
     }
