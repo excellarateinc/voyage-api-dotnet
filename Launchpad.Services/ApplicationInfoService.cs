@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.IO;
+﻿using System.IO;
 using Launchpad.Models;
 using Launchpad.Core;
 using Launchpad.Services.Interfaces;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Launchpad.Services
@@ -30,7 +28,7 @@ namespace Launchpad.Services
 
             var buildNumber = (string)JObject.Parse(text).SelectToken("build.buildNumber");
 
-            return new ApplicationInfoModel()
+            return new ApplicationInfoModel
             {
                 BuildNumber = buildNumber
             };

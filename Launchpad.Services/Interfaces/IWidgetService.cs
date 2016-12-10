@@ -31,6 +31,7 @@ namespace Launchpad.Services.Interfaces
         /// <summary>
         /// Update a widget by ID
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="widget">Model containing updated properties</param>
         /// <returns>Updated entity</returns>
         EntityResult<WidgetModel> UpdateWidget(int id, WidgetModel widget);

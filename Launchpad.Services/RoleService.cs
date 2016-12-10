@@ -12,8 +12,6 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Services
 {
-
-
     public class RoleService : EntityResultService, IRoleService
     {
         private readonly ApplicationRoleManager _roleManager;
@@ -40,13 +38,11 @@ namespace Launchpad.Services
             return role == null ?
                 NotFound<RoleModel>(id) :
                 Success(_mapper.Map<RoleModel>(role));
-
         }
-
 
         public async Task<EntityResult<ClaimModel>> AddClaimAsync(string roleId, ClaimModel claim)
         {
-            EntityResult<ClaimModel> entityResult = null;
+            EntityResult<ClaimModel> entityResult;
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
@@ -84,10 +80,8 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<RoleModel>> CreateRoleAsync(RoleModel model)
         {
-
             //Create the role
-            var role = new ApplicationRole();
-            role.Name = model.Name;
+            var role = new ApplicationRole { Name = model.Name };
             var identityResult = await _roleManager.CreateAsync(role);
 
             //Get the role to return as part of the response
@@ -115,7 +109,6 @@ namespace Launchpad.Services
                 .Where(_ => _.RoleId == id)
                 .ToList();
             return Success(_mapper.Map<IEnumerable<ClaimModel>>(claims));
-
         }
 
         public EntityResult RemoveClaim(string roleId, int claimId)
@@ -126,7 +119,6 @@ namespace Launchpad.Services
             _roleClaimRepository.Delete(claimId);
 
             return Success();
-
         }
 
         public EntityResult<ClaimModel> GetClaimById(string roleId, int claimId)

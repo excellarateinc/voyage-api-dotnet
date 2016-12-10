@@ -12,13 +12,13 @@ namespace Launchpad.Services.IdentityManagers
 
         public ApplicationUserManager(IUserStore<ApplicationUser,string> store, IUserTokenProvider<ApplicationUser, string> tokenProvider) : base(store)
         {
-            this.UserValidator = new UserValidator<ApplicationUser>(this)
+            UserValidator = new UserValidator<ApplicationUser>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 
-            this.PasswordValidator = new PasswordValidator
+            PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
                 RequireNonLetterOrDigit = true,
@@ -27,15 +27,14 @@ namespace Launchpad.Services.IdentityManagers
                 RequireUppercase = true,
             };
 
-            this.UserTokenProvider = tokenProvider;
+            UserTokenProvider = tokenProvider;
         }
 
         public override async Task<IdentityResult> DeleteAsync(ApplicationUser user)
         {          
             user.Deleted = true;
-            var result = await this.UpdateAsync(user);
+            var result = await UpdateAsync(user);
             return result;
         }
-
     }
 }

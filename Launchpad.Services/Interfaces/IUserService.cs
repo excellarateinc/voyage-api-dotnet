@@ -32,6 +32,5 @@ namespace Launchpad.Services.Interfaces
         Task<EntityResult> DeleteUserAsync(string userId);
 
         Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model);
-
     }
 }
