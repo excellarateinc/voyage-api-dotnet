@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using FluentValidation.WebApi;
-using Launchpad.Web.App_Start;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
 using Microsoft.Owin;
@@ -18,15 +17,11 @@ namespace Launchpad.Web
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
         public static string PublicClientId => "self"; // Configure the application for OAuth based flow
 
-
         public static void Configure(IAppBuilder app)
         {
-
             #region Container and Route Configuration
             var httpConfig = new HttpConfiguration();
-
-          
-            
+                     
             //Build the container
             ContainerConfig.Register(httpConfig);
 
@@ -50,7 +45,6 @@ namespace Launchpad.Web
 
             //4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
-
 
             //5. Configure oAuth
             var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();

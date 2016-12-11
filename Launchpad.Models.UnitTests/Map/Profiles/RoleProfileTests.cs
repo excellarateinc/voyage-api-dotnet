@@ -9,7 +9,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
     [Collection(AutoMapperCollection.CollectionName)]
     public class RoleProfileTests : BaseUnitTest
     {
-        private AutoMapperFixture _mappingFixture;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public RoleProfileTests(AutoMapperFixture mappingFixture)
         {
@@ -19,9 +19,11 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
         [Fact]
         public void ApplicationRole_Should_Map_To_RoleModel()
         {
-            var appRole = new ApplicationRole();
-            appRole.Name = "role1";
-            appRole.Id = "123";
+            var appRole = new ApplicationRole
+            {
+                Name = "role1",
+                Id = "123"
+            };
 
             var role = _mappingFixture.MapperInstance.Map<RoleModel>(appRole);
 
@@ -29,6 +31,5 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             role.Name.Should().Be(appRole.Name);
             role.Id.Should().Be(appRole.Id);
         }
-
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Autofac;
 using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace Launchpad.Services
@@ -37,10 +34,9 @@ namespace Launchpad.Services
                 .AsImplementedInterfaces()
                 .WithParameter("localPath", System.Web.HttpContext.Current.Server.MapPath("~"));
 
+            //Let the container dispose of it at the end of the request    
             builder.RegisterType<HttpClient>()
-                .InstancePerRequest(); //Let the container dispose of it at the end of the request
-
-           
+                .InstancePerRequest();        
 
             builder.RegisterType<UserService>()
                 .AsImplementedInterfaces()
@@ -61,7 +57,6 @@ namespace Launchpad.Services
             builder.RegisterType<AuditService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-
         }
     }
 }

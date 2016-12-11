@@ -1,8 +1,8 @@
-﻿using Launchpad.UnitTests.Common;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Web.Http;
 using FluentAssertions;
+using Launchpad.UnitTests.Common;
 using Launchpad.Web.Filters;
 
 namespace Launchpad.Web.UnitTests

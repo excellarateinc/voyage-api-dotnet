@@ -21,6 +21,7 @@ namespace Launchpad.Core.UnitTests
         {
             object input = null;
 
+            // ReSharper disable once ExpressionIsAlwaysNull
             Action throwAction = () => input.ThrowIfNull();
 
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("Object");
@@ -32,6 +33,7 @@ namespace Launchpad.Core.UnitTests
             object input = null;
             const string name = "My Name";
 
+            // ReSharper disable once ExpressionIsAlwaysNull
             Action throwAction = () => input.ThrowIfNull(name);
 
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be(name);

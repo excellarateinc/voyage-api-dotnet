@@ -2,8 +2,6 @@
 
 namespace Launchpad.Data.Auditing
 {
-   
-
     public class IdentityUserRoleAuditConfiguration : BaseAuditConfiguration<IdentityUserRole>
     {
     }

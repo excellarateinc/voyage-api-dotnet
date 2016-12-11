@@ -1,17 +1,17 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
-using Launchpad.Services.Fixture;
 using Launchpad.Services.IdentityManagers;
+using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -20,11 +20,11 @@ namespace Launchpad.Services.UnitTests
     [Collection(AutoMapperCollection.CollectionName)]
     public class RoleServiceTests : BaseUnitTest
     {
-        private RoleService _roleService;
-        private ApplicationRoleManager _roleManager;
-        private Mock<IRoleClaimRepository> _mockRepository;
-        private Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
-        private AutoMapperFixture _mapperFixture;
+        private readonly RoleService _roleService;
+        private readonly ApplicationRoleManager _roleManager;
+        private readonly Mock<IRoleClaimRepository> _mockRepository;
+        private readonly Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
+        private readonly AutoMapperFixture _mapperFixture;
 
         public RoleServiceTests(AutoMapperFixture mapperFixture)
         {
@@ -38,7 +38,6 @@ namespace Launchpad.Services.UnitTests
             _mapperFixture = mapperFixture;
 
             _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance);
-
         }
 
         [Fact]
@@ -127,7 +126,7 @@ namespace Launchpad.Services.UnitTests
             var id = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
-               .ReturnsAsync(((ApplicationRole)null));
+               .ReturnsAsync(null);
 
             //act
             var entityResult = _roleService.GetRoleById(id);
@@ -135,8 +134,6 @@ namespace Launchpad.Services.UnitTests
             //assert
             entityResult.IsEntityNotFound.Should().BeTrue();
             entityResult.Succeeded.Should().BeFalse();
-
-
         }
 
         [Fact]
@@ -167,7 +164,7 @@ namespace Launchpad.Services.UnitTests
             var name = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
-               .ReturnsAsync(((ApplicationRole)null));
+               .ReturnsAsync(null);
 
             var entityResult = _roleService.GetRoleByName(name);
 
@@ -258,8 +255,7 @@ namespace Launchpad.Services.UnitTests
         {
             var model = Fixture.Create<RoleModel>();
 
-            var appRole = new ApplicationRole();
-            appRole.Id = "abc";
+            var appRole = new ApplicationRole { Id = "abc" };
 
             var claim = Fixture.Create<ClaimModel>();
 
@@ -290,14 +286,12 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(null);
 
-
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
             entityResult.Succeeded.Should().BeFalse();
             entityResult.IsEntityNotFound.Should().BeTrue();
         }
-
 
         [Fact]
         public async void CreateRoleAsync_Should_Call_RoleManager()
@@ -317,12 +311,8 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByNameAsync(model.Name))
                .Returns(() => Task.FromResult(returnQueue.Dequeue()));
 
-
-
             _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<ApplicationRole>(value => value.Name == model.Name)))
                 .Returns(Task.FromResult(0));
-
-
 
             var result = await _roleService.CreateRoleAsync(model);
 
@@ -366,11 +356,11 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void GetRoles_Should_Return_All_Roles()
         {
-            var roles = new ApplicationRole[] {
-                    new ApplicationRole() {Name="Role1" },
-                    new ApplicationRole() {Name="Role2" }
-                };
-
+            var roles = new[] 
+            {
+                new ApplicationRole {Name="Role1" },
+                new ApplicationRole {Name="Role2" }
+            };
 
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>()
                 .Setup(_ => _.Roles)
@@ -385,8 +375,6 @@ namespace Launchpad.Services.UnitTests
             roles.All(_ => result.Model.Any(r => r.Name == _.Name))
                 .Should()
                 .BeTrue();
-
-
         }
     }
 }

@@ -12,13 +12,15 @@ namespace Launchpad.Web.Controllers.API
         /// <summary>
         /// Creates (201) a Created response 
         /// </summary>
+        /// <param name="routeValue"></param>
         /// <param name="entityResult">Result</param>
+        /// <param name="routeName"></param>
         /// <returns>Created response if there is not an error, otherwise BadRequest or NotFound</returns>
         protected IHttpActionResult CreatedEntityAt<TModel>(string routeName, Func<object> routeValue, EntityResult<TModel> entityResult)
             where TModel : class
         {
             var errorResult = CheckErrorResult(entityResult);
-            return errorResult != null ? errorResult : CreatedAtRoute(routeName, routeValue(), entityResult.Model);
+            return errorResult ?? CreatedAtRoute(routeName, routeValue(), entityResult.Model);
         }
 
         /// <summary>
@@ -43,10 +45,7 @@ namespace Launchpad.Web.Controllers.API
                 {
                     return Content(HttpStatusCode.NotFound, ModelState.ConvertToResponseModel());
                 }
-                else
-                {
-                    return Content(HttpStatusCode.BadRequest, ModelState.ConvertToResponseModel());
-                }
+                return Content(HttpStatusCode.BadRequest, ModelState.ConvertToResponseModel());
             }
             return null;
         }
@@ -60,7 +59,7 @@ namespace Launchpad.Web.Controllers.API
             where TModel : class
         {
             var errorResult = CheckErrorResult(entityResult);
-            return errorResult != null ? errorResult : Ok(entityResult.Model);
+            return errorResult ?? Ok(entityResult.Model);
         }
 
         /// <summary>
@@ -71,7 +70,7 @@ namespace Launchpad.Web.Controllers.API
         protected IHttpActionResult NoContent(EntityResult entityResult)
         {
             var errorResult = CheckErrorResult(entityResult);
-            return errorResult != null ? errorResult : StatusCode(HttpStatusCode.NoContent);
+            return errorResult ?? StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

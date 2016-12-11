@@ -38,7 +38,7 @@ namespace Launchpad.Models
         /// <returns></returns>
         public EntityResult WithErrorCodeMessage(string code, string message)
         {
-            Errors.Add(string.Format("{0}::{1}", code, message));
+            Errors.Add($"{code}::{message}");
             return this;
         }
 
@@ -49,9 +49,8 @@ namespace Launchpad.Models
         /// <returns></returns>
         public EntityResult WithEntityNotFound(object id)
         {
-            return this.WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
+            return WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
         }
-
     }
 
     /// <summary>
@@ -90,8 +89,7 @@ namespace Launchpad.Models
         /// <returns></returns>
         public new EntityResult<TModel> WithEntityNotFound(object id)
         {
-            return this.WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
+            return WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
         }
     }
-
 }

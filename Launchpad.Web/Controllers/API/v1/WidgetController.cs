@@ -3,17 +3,14 @@ using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Web.Http;
-using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-
-
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class WidgetController : BaseApiController
     {
-        private IWidgetService _widgetService;
+        private readonly IWidgetService _widgetService;
 
         public WidgetController(IWidgetService widgetService)
         {
@@ -48,14 +45,13 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.ListWidgets)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListWidgets)]
         [Route("widgets")]
         public IHttpActionResult Get()
         {
             var entityResult = _widgetService.GetWidgets();
             return CreateModelResult(entityResult);
         }
-
 
         /**
          * @api {get} /v1/widgets/:id Get a widget
@@ -81,7 +77,7 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.ViewWidget)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewWidget)]
         [Route("widgets/{id:int}", Name = "GetWidgetById")]
         public IHttpActionResult Get(int id)
         {
@@ -114,13 +110,13 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.CreateWidget)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateWidget)]
         [Route("widgets")]
         [HttpPost]
         public IHttpActionResult AddWidget([FromBody] WidgetModel widget)
         {
             var entityResult = _widgetService.AddWidget(widget);
-            return CreatedEntityAt("GetWidgetById", () => new { Id = entityResult.Model.Id }, entityResult);
+            return CreatedEntityAt("GetWidgetById", () => new { entityResult.Model.Id }, entityResult);
         }
 
         /**
@@ -140,7 +136,7 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse UnauthorizedError
          * 
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.DeleteWidget)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteWidget)]
         [Route("widgets/{id:int}")]
         [HttpDelete]
         public IHttpActionResult DeleteWidget(int id)
@@ -170,7 +166,7 @@ namespace Launchpad.Web.Controllers.API.V1
          * @apiUse AuthHeader
          * @apiUse UnauthorizedError
          */
-        [ClaimAuthorize(ClaimValue = LssClaims.UpdateWidget)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.UpdateWidget)]
         [Route("widgets/{id:int}")]
         [HttpPut]
         public IHttpActionResult UpdateWidget([FromUri] int id, [FromBody] WidgetModel widget)
@@ -178,7 +174,5 @@ namespace Launchpad.Web.Controllers.API.V1
             var entityResult = _widgetService.UpdateWidget(id, widget);
             return CreateModelResult(entityResult);
         }
-
-
     }
 }

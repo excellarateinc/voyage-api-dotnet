@@ -1,7 +1,6 @@
-﻿using Launchpad.Data.Interfaces;
+﻿using System.Linq;
+using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
-using System.Linq;
-using System;
 
 namespace Launchpad.Data
 {
@@ -21,11 +20,11 @@ namespace Launchpad.Data
         public override void Delete(object id)
         {
             var entity = Get(id);
-            if(entity != null)
-            {
-                Context.Widgets.Remove(entity);
-                Context.SaveChanges();
-            }
+            if (entity == null)
+                return;
+
+            Context.Widgets.Remove(entity);
+            Context.SaveChanges();
         }
 
         public override Widget Get(object id)

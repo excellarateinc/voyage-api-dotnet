@@ -6,6 +6,6 @@
         HttpEndpoint,
         Error,
         Activity,
-        Other,
+        Other
     }
 }

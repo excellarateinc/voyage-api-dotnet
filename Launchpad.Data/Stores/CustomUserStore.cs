@@ -1,7 +1,7 @@
-﻿using Launchpad.Models.EntityFramework;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
+using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Data.Stores
 {
@@ -10,8 +10,6 @@ namespace Launchpad.Data.Stores
         public CustomUserStore(DbContext context) : base(context)
         {
         }
-
-
 
         public override Task<ApplicationUser> FindByEmailAsync(string email)
         {

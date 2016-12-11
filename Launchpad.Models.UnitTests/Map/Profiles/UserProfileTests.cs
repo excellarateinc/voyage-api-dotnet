@@ -7,28 +7,28 @@ using Xunit;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
 {
-
     [Trait("Category", "Mapping")]
     [Collection(AutoMapperCollection.CollectionName)]
     public class UserProfileTests : BaseUnitTest
     {
-        private AutoMapperFixture _mappingFixture;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public UserProfileTests(AutoMapperFixture mappingFixture)
         {
             _mappingFixture = mappingFixture;
         }
-
       
         [Fact]
         public void ApplicationUser_Should_Map_To_UserModel()
         {
-            var appUser = new ApplicationUser();
-            appUser.UserName = "user1";
-            appUser.Id = "123";
-            appUser.FirstName = "First";
-            appUser.LastName = "Last";
-            appUser.IsActive = true;
+            var appUser = new ApplicationUser
+            {
+                UserName = "user1",
+                Id = "123",
+                FirstName = "First",
+                LastName = "Last",
+                IsActive = true
+            };
 
             var user = _mappingFixture.MapperInstance.Map<UserModel>(appUser);
 
@@ -62,7 +62,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
                 LastName = "Fourth"
             };
 
-            var mapResult = _mappingFixture.MapperInstance.Map(userModel, appUser);
+            _mappingFixture.MapperInstance.Map(userModel, appUser);
 
             appUser.IsActive.Should().BeTrue();
             appUser.UserName.Should().Be(userModel.Username);
@@ -71,6 +71,5 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
             appUser.FirstName.Should().Be(userModel.FirstName);
             appUser.LastName.Should().Be(userModel.LastName);
         }
-
     }
 }

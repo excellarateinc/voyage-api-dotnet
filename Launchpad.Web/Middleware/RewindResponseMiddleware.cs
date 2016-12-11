@@ -16,7 +16,7 @@ namespace Launchpad.Web.Middleware
         {
         }
 
-        public async override Task Invoke(IOwinContext context)
+        public override async Task Invoke(IOwinContext context)
         {
             using (var pipelineStream = new MemoryStream())
             {

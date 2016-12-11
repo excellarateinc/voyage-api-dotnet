@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Ploeh.AutoFixture;
 using Xunit;
 using Launchpad.UnitTests.Common;
@@ -15,7 +10,7 @@ namespace Launchpad.Models.UnitTests.Map.Profiles
     [Collection(AutoMapperCollection.CollectionName)]
     public class ActivityAuditProfileTests : BaseUnitTest
     {
-        private AutoMapperFixture _mappingFixture;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public ActivityAuditProfileTests(AutoMapperFixture mappingFixture)
         {

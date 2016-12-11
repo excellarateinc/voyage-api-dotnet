@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
-using Moq;
 using FluentAssertions;
-using Ploeh.AutoFixture;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Middleware.Processors;
 using Microsoft.Owin;
-using System.IO;
+using Moq;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.Middleware.Processors
 {
@@ -36,7 +33,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
             _testProcessor = new TestProcessor();
         }
 
-        //
         [Fact]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async void GetResponseStringAsync_Should_Throw_Exception_When_Stream_Not_MemoryStream()
@@ -56,7 +52,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
                 .Message
                 .Should()
                 .Be("The response.body could not be cast as MemoryStream. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
-
         }
 
         [Fact]
@@ -78,9 +73,7 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
                 .Message
                 .Should()
                 .Be("The body does not support seek. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
-
         }
-
 
         [Fact]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -101,7 +94,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
                 .Should()
                 .Be("ShouldProcess predicate failed. This processor should not read this type of response");
         }
-
 
         [Fact]
         public async void GetResponseStringAsync_Should_Read_Body_And_Return_String()

@@ -6,15 +6,12 @@ using System.Net;
 using Launchpad.Models;
 using Launchpad.Web.IntegrationTests.Extensions;
 
-
 namespace Launchpad.Web.IntegrationTests
-{
-  
+{  
     [Trait("Category", "Self-Hosted")]
     [Collection(OwinCollectionFixture.Name)]
     public class WidgetTests : BaseEndpointTest
-    {
-     
+    {     
         public WidgetTests(OwinFixture owin) : base(owin)
         {
         }
@@ -31,7 +28,6 @@ namespace Launchpad.Web.IntegrationTests
             //ASSERT
             WidgetModel[] models = await response.ShouldHaveStatusAndPayload<WidgetModel[]>(HttpStatusCode.OK);
             models.Should().NotBeNullOrEmpty();
-
         }
     }
 }

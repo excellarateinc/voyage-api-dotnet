@@ -1,13 +1,13 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Linq;
+using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
-using Launchpad.Services.Fixture;
+using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Moq;
 using Ploeh.AutoFixture;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -15,9 +15,9 @@ namespace Launchpad.Services.UnitTests
     [Collection(AutoMapperCollection.CollectionName)]
     public class WidgetServiceTests : BaseUnitTest
     {
-        private WidgetService _widgetService;
-        private Mock<IWidgetRepository> _mockWidgetRepository;
-        private AutoMapperFixture _mappingFixture;
+        private readonly WidgetService _widgetService;
+        private readonly Mock<IWidgetRepository> _mockWidgetRepository;
+        private readonly AutoMapperFixture _mappingFixture;
 
         public WidgetServiceTests(AutoMapperFixture mappingFixture)
         {
@@ -49,8 +49,6 @@ namespace Launchpad.Services.UnitTests
             //Verify the data
             entityResult.Model.Should().HaveSameCount(fakeWidgets);
             entityResult.Model.All(_ => fakeWidgets.Any(fake => fake.Id.Equals(_.Id) && fake.Name.Equals(_.Name))).Should().BeTrue();
-
-
         }
 
         [Fact]
@@ -68,19 +66,17 @@ namespace Launchpad.Services.UnitTests
             Mock.VerifyAll();
             entityResult.Model.Name.Should().Be(fakeWidget.Name);
             entityResult.Model.Id.Should().Be(fakeWidget.Id);
-
         }
 
         [Fact]
         public void GetWidget_Should_Return_IsEntityNotFound_True()
         {
             //Arrange
-            Widget fakeWidget = null;
             const int id = -1;
 
             _mockWidgetRepository
                 .Setup(_ => _.Get(id))
-                .Returns(fakeWidget);
+                .Returns((Widget) null);
 
             //Act
             var widget = _widgetService.GetWidget(id);
@@ -124,7 +120,7 @@ namespace Launchpad.Services.UnitTests
         public void UpdateWidget_Should_Call_Repository_And_Return_IsEntityNotFound_True()
         {
             var model = Fixture.Create<WidgetModel>();
-            var entityResult = new EntityResult<WidgetModel>(null, false, true);
+            new EntityResult<WidgetModel>(null, false, true);
             _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(((Widget)null));
 
             var result = _widgetService.UpdateWidget(model.Id, model);
@@ -147,7 +143,6 @@ namespace Launchpad.Services.UnitTests
             entityResult.Model.Should().NotBeNull();
             entityResult.Model.Name.Should().Be(getResult.Name);
             entityResult.Model.Id.Should().Be(getResult.Id);
-
         }
 
         [Fact]

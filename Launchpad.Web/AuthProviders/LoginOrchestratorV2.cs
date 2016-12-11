@@ -43,6 +43,5 @@
         * @apiUse BadRequestError  
         */
         public override string TokenPath => "/api/v2/login";
-
     }
 }

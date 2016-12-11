@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Launchpad.Data.Interfaces;
 using Launchpad.Core;
+using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data
 {
@@ -12,7 +12,7 @@ namespace Launchpad.Data
     {
         protected ILaunchpadDataContext Context;
 
-        public BaseRepository(ILaunchpadDataContext context)
+        protected BaseRepository(ILaunchpadDataContext context)
         {
             Context = context.ThrowIfNull(nameof(context));
         }

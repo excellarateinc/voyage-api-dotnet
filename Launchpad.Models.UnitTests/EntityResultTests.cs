@@ -3,7 +3,6 @@ using Launchpad.UnitTests.Common;
 using Ploeh.AutoFixture;
 using Xunit;
 
-
 namespace Launchpad.Models.UnitTests
 {
     public class EntityResultTests : BaseUnitTest
@@ -44,7 +43,6 @@ namespace Launchpad.Models.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "code1::err1");
-
         }
 
         [Fact]
@@ -72,7 +70,6 @@ namespace Launchpad.Models.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "code1::err1");
-
         }
 
         [Fact]

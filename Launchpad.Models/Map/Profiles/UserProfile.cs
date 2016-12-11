@@ -20,7 +20,6 @@ namespace Launchpad.Models.Map.Profiles
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
                 .ForMember(dest => dest.Phones, opt => opt.Ignore())
                 .ForAllOtherMembers(opt => opt.Ignore());
-
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Get_Should_Return_Phone()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -41,7 +41,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Delete_Should_Remove_Phone()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {

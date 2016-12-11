@@ -6,7 +6,7 @@ using Xunit;
 namespace Launchpad.Models.UnitTests.Validators
 {
     [Trait("Category", "Model.Validation")]
-    class WidgetModelValidatorTests : BaseUnitTest
+    public class WidgetModelValidatorTests : BaseUnitTest
     {
         private readonly WidgetModelValidator _validator;
 

@@ -4,7 +4,6 @@ using System.Web.Http;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]
     public class ApplicationInfoController : ApiController
@@ -14,7 +13,6 @@ namespace Launchpad.Web.Controllers.API.V1
         public ApplicationInfoController(IApplicationInfoService applicationInfoService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
-
         }
 
         /**
@@ -37,7 +35,6 @@ namespace Launchpad.Web.Controllers.API.V1
         public IHttpActionResult Get()
         {
             var appInfo = _applicationInfoService.GetApplicationInfo();
-
             return Ok(appInfo);
         }
     }

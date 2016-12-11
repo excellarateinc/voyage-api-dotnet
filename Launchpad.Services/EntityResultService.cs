@@ -65,7 +65,6 @@ namespace Launchpad.Services
             return new EntityResult(true, false);
         }
 
-
         /// <summary>
         /// Converts IdentityResult to an EntityResult 
         /// </summary>
@@ -138,6 +137,5 @@ namespace Launchpad.Services
                 deleteAction(_);
             });
         }
-
     }
 }

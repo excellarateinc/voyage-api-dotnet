@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Launchpad.Models.Extensions;
 
 namespace Launchpad.Models.Validators
@@ -23,13 +22,10 @@ namespace Launchpad.Models.Validators
             RuleFor(_ => _.ConfirmPassword)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Confirm password is a required field")
-                .Must((model, value) => {
-                    return !string.IsNullOrEmpty(model.Password) &&
-                               model.Password.Equals(value);
-                 })
+                .Must((model, value) => !string.IsNullOrEmpty(model.Password) &&
+                                        model.Password.Equals(value))
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidDependentRule, "Confirm password must match password");
-            
-             
+                         
             RuleFor(_ => _.FirstName)
                .NotEmpty()
                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "First name is a required field");
@@ -37,8 +33,6 @@ namespace Launchpad.Models.Validators
             RuleFor(_ => _.LastName)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Last name is a required field");
-
-
         }
     }
 }

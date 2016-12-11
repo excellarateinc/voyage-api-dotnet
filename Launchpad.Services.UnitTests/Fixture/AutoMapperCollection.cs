@@ -1,8 +1,8 @@
 ﻿using Xunit;
 
-namespace Launchpad.Services.Fixture
+namespace Launchpad.Services.UnitTests.Fixture
 {
-    [CollectionDefinition(AutoMapperCollection.CollectionName)]
+    [CollectionDefinition(CollectionName)]
     public class AutoMapperCollection : ICollectionFixture<AutoMapperFixture>
     {
         public const string CollectionName = "AutoMapper Collection";

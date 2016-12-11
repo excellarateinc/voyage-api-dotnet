@@ -1,6 +1,6 @@
-﻿using FluentValidation.Attributes;
+﻿using System.Collections.Generic;
+using FluentValidation.Attributes;
 using Launchpad.Models.Validators;
-using System.Collections.Generic;
 
 namespace Launchpad.Models
 {

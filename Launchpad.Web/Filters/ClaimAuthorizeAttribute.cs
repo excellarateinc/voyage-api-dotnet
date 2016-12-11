@@ -19,17 +19,17 @@ namespace Launchpad.Web.Filters
         public ClaimAuthorizeAttribute()
         {
             ClaimType = Constants.LssClaims.Type;
- 
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
-            if (!identity.IsAuthenticated)
+            if (identity != null && !identity.IsAuthenticated)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(statusCode: HttpStatusCode.Unauthorized);
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            else if (!identity.HasClaim(ClaimType, ClaimValue)) //Check if the user has the correct claim
+            //Check if the user has the correct claim
+            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
                 Log.Logger
                       .ForContext<ClaimAuthorizeAttribute>()
@@ -43,12 +43,12 @@ namespace Launchpad.Web.Filters
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
 
             //User has not authenticated / signed in
-            if (!identity.IsAuthenticated)
-            {
-            
-                actionContext.Response = actionContext.Request.CreateResponse(statusCode: HttpStatusCode.Unauthorized);
+            if (identity != null && !identity.IsAuthenticated)
+            {            
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            else if (!identity.HasClaim(ClaimType, ClaimValue)) //Check if the user has the correct claim
+            //Check if the user has the correct claim
+            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue)) 
             {
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
@@ -56,8 +56,6 @@ namespace Launchpad.Web.Filters
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
             return Task.FromResult<object>(null);
-
         }
-
     }
 }

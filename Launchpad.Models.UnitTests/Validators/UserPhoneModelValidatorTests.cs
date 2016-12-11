@@ -14,8 +14,6 @@ namespace Launchpad.Models.UnitTests.Validators
             _validator = new UserPhoneModelValidator();
         }
 
-
-
         [Fact]
         public void Should_Have_Error_When_PhoneNumber_Null()
         {
@@ -26,8 +24,6 @@ namespace Launchpad.Models.UnitTests.Validators
         public void Should_Have_Error_When_PhoneNumber_Empty()
         {
             _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumber, string.Empty);
-
         }
-
     }
 }

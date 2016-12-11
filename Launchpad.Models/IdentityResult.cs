@@ -6,8 +6,8 @@ namespace Launchpad.Models
     {
         public IdentityResult(IdentityResult result, TModel model)
         {
-            this.Result = result;
-            this.Model = model;
+            Result = result;
+            Model = model;
         }
 
         public IdentityResult Result { get; }

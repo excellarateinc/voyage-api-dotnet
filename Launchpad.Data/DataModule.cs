@@ -1,4 +1,7 @@
-﻿using Autofac;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
+using Autofac;
 using Autofac.Core;
 using Launchpad.Core;
 using Launchpad.Data.Auditing;
@@ -8,15 +11,13 @@ using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Data.Entity;
-using System.Linq;
+using TrackerEnabledDbContext.Common.Configuration;
 
 namespace Launchpad.Data
 {
     public class DataModule : Module
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         /// <summary>
         /// Creates a new data module for registration with autofac
@@ -32,10 +33,7 @@ namespace Launchpad.Data
         /// </summary>
         protected void ConfigureAuditing()
         {
-            TrackerEnabledDbContext
-                .Common
-                .Configuration
-                .GlobalTrackingConfig
+            GlobalTrackingConfig
                 .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
 
             var auditing = typeof(IAuditConfiguration)
@@ -66,13 +64,11 @@ namespace Launchpad.Data
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-
             //Shortcut to register all repositories using a marker interface
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IRepository>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-
 
             //Register the user store (wrapper around the identity tables)
             builder.RegisterType<CustomUserStore>()
@@ -85,9 +81,6 @@ namespace Launchpad.Data
                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
                .As<IRoleStore<ApplicationRole, string>>()
                .InstancePerRequest();
-
-
         }
-
     }
 }

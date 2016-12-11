@@ -1,14 +1,13 @@
-﻿
+﻿using System.Configuration;
+using System.Reflection;
+using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
-using System.Reflection;
-using Launchpad.Services;
 using Launchpad.Data;
-using System.Configuration;
 using Launchpad.Models.Map;
-using System.Web.Http;
+using Launchpad.Services;
 
-namespace Launchpad.Web.App_Start
+namespace Launchpad.Web
 {
     /// <summary>
     /// This is vanilla autofac configuration based on:
@@ -16,7 +15,6 @@ namespace Launchpad.Web.App_Start
     /// </summary>
     public class ContainerConfig
     {
-
         public static IContainer Container { get; private set; }
 
         public static void Register(HttpConfiguration httpConfig)

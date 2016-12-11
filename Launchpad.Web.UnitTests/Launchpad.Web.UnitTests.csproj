@@ -183,6 +183,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+      <Project>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</Project>
+      <Name>Launchpad.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
       <Name>Launchpad.Models</Name>

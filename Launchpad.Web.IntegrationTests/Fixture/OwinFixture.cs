@@ -25,11 +25,12 @@ namespace Launchpad.Web.IntegrationTests.Fixture
         /// <returns>Authorization Token</returns>
         protected async Task<string> GenerateToken()
         {
-           
-
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/v1/login");
-            httpRequestMessage.Content = new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
-                                "application/x-www-form-urlencoded");
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/v1/login")
+            {
+                Content =
+                    new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
+                        "application/x-www-form-urlencoded")
+            };
 
             var response = await DefaultClient.SendAsync(httpRequestMessage);
 
@@ -43,14 +44,12 @@ namespace Launchpad.Web.IntegrationTests.Fixture
             return token;
         }
 
-
         public OwinFixture()
         {           
             _webApp = WebApp.Start<Startup>(url: BaseAddress);
             DefaultClient = new HttpClient();
             DefaultToken = GenerateToken().Result;
         }
-
 
         public void Dispose()
         {
@@ -63,8 +62,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
             if (DefaultClient != null)
             {
                 DefaultClient.Dispose();
-            }
-            
+            }            
         }
     }
 }
