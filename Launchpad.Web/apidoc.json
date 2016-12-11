@@ -1,8 +1,8 @@
 {
-  "name": "Launchpad .Net API",
-  "description": "Sample ASP.Net Web API Project - Including the usage of EntityFramework",
+  "name": "Launchpad API",
+  "description": "Web services API for the Launchpad platform",
   "version": "0.2.0",
-  "title": "Launchpad .Net API",
+  "title": "Launchpad API",
   "template": {
     "withCompare": true,
     "withGenerator": true
