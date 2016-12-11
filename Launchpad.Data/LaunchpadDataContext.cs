@@ -33,12 +33,6 @@ namespace Launchpad.Data
         {
         }
 
-        /// <summary>
-        /// Pass in the connection string to eliminate the "magic string" above
-        /// </summary>
-        /// <param name="connectionString">Connection string from the web.config or app.config</param>
-        /// <param name="identityProvider"></param>
-        /// <param name="logger"></param>
         public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger) : base(connectionString)
         {
             _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));

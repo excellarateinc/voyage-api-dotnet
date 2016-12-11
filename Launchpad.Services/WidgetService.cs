@@ -41,8 +41,7 @@ namespace Launchpad.Services
         }
 
         public EntityResult<WidgetModel> UpdateWidget(int id, WidgetModel widget)
-        {
-            //Mapping in the services comes back to bite me, alternative is to attach the entity
+        {            
             var target = _widgetRepository.Get(id); 
             if (target == null)
                 return NotFound<WidgetModel>(id);

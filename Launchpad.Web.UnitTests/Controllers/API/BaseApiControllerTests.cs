@@ -18,9 +18,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API
 {
     public class BaseApiControllerTests : BaseUnitTest
     {
-        /// <summary>
-        /// Create a pass through for testing the abstract class
-        /// </summary>
         [RoutePrefix("test")]
         public class TestPassThrough : BaseApiController
         {

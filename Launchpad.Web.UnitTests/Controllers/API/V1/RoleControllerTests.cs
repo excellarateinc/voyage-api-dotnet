@@ -23,6 +23,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         private readonly RoleController _roleController;
         private readonly Mock<IRoleService> _mockRoleService;
         private readonly Mock<UrlHelper> _mockUrlHelper;
+
         public RoleControllerTests()
         {
             _mockRoleService = Mock.Create<IRoleService>();
