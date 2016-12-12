@@ -41,11 +41,19 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
-        *       {   
-        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com",
-        *           "firstName": "Admin_First",
-        *           "lastName": "Admin_Last"
+        *      {
+        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *          "userName": "admin",
+        *          "email": "admin@admin.com",
+        *          "firstName": "Admin_First",
+        *          "lastName": "Admin_Last",
+        *          "phones": 
+        *          [
+        *             {
+        *                 "phoneNumber": "123-123-1233", 
+        *                 "phoneType": "mobile"
+        *             }
+        *          ]
         *       }
         *   ]
         *   
