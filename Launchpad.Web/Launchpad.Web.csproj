@@ -209,7 +209,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="_apidoc.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthProviders\ApplicationOAuthProvider.cs" />
@@ -246,8 +245,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="apidoc.json" />
-    <Content Include="package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
