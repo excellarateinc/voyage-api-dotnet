@@ -5,7 +5,9 @@ For complete information on how to use and deploy API Doc for this application, 
 
 ## Quick Start
 ### 1. Install NodeJS 
-To install NodeJS, go to the NodeJS website at [https://nodejs.org](https://nodejs.org) and download the distribution for your OS. 
+* Go to the NodeJS website at [https://nodejs.org](https://nodejs.org) 
+* Download the distribution for your OS
+* Double-click the download to initiate the installation process
 
 ### 2. Install apiDoc
 * Open a terminal / command prompt 
