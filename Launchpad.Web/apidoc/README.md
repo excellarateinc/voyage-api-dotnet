@@ -1,7 +1,7 @@
 ## apiDoc
 [apiDoc](http://apidocjs.com) is a NodeJS app that scans files for documentation relating to a web services API. apiDoc is used within this app to generate human readable JSON web services API documentation in HTML/CSS. 
 
-For complete information on how to use and deploy API Doc for this application, see the [Deploy documentation](../readme_docs/DEPLOY.md). 
+For complete information on how to use and deploy API Doc for this application, see the [Deploy documentation](../../readme_docs/DEPLOY.md). 
 
 ## Quick Start
 ### 1. Install NodeJS 
@@ -38,7 +38,7 @@ npm run apidoc
 
 
 ### 4. Open the docs in a browser
-This assumes that you are wanting to view the apidoc generated HTML locally on your own machine. If you are deploying the documentation to a server, then read the [DEPLOY documentation](../readme_docs/DEPLOY.md) for detailed instructions on how to deploy to a server. 
+This assumes that you are wanting to view the apidoc generated HTML locally on your own machine. If you are deploying the documentation to a server, then read the [DEPLOY documentation](../../readme_docs/DEPLOY.md) for detailed instructions on how to deploy to a server. 
 
 #### Open your favorite web browser
 
