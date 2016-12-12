@@ -11,13 +11,13 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 {
     public class OwinFixture : IDisposable
     {
-        private IDisposable _webApp;
-        
         public string BaseAddress => "http://localhost:9000";
 
-        public string DefaultToken { get; }
+        public string DefaultToken { get; set; }
 
-        public HttpClient DefaultClient { get; private set; }
+        private Lazy<HttpClient> _lazyClient = new Lazy<HttpClient>(() => new HttpClient());
+
+        public HttpClient Client => _lazyClient.Value;
 
         /// <summary>
         /// Requests a new authorization token from the server
@@ -34,7 +34,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
                     "application/x-www-form-urlencoded")
             };
 
-            var response = await DefaultClient.SendAsync(httpRequestMessage);
+            var response = await Client.SendAsync(httpRequestMessage);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -47,24 +47,26 @@ namespace Launchpad.Web.IntegrationTests.Fixture
         }
 
         public OwinFixture()
-        {           
-            _webApp = WebApp.Start<Startup>(url: BaseAddress);
-            DefaultClient = new HttpClient();
-            DefaultToken = GenerateToken().Result;
+        {
+        }
+
+        public IDisposable Start()
+        {
+            var webAppInstance = WebApp.Start<Startup>(url: BaseAddress);
+            return webAppInstance;
+        }
+
+        public async Task Init()
+        {
+            DefaultToken = await GenerateToken();
         }
 
         public void Dispose()
         {
-            if (_webApp != null)
+            if (Client != null)
             {
-                _webApp.Dispose();
-                _webApp = null;
+                Client.Dispose();
             }
-
-            if (DefaultClient != null)
-            {
-                DefaultClient.Dispose();
-            }            
         }
     }
 }

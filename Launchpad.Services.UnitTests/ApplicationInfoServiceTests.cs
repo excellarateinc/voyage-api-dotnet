@@ -12,15 +12,14 @@ namespace Launchpad.Services.UnitTests
         
         public ApplicationInfoServiceTests()
         {
-            var configurationManagerService = new Mock<IConfigurationManagerService>();
-            var pathProviderService = new Mock<IPathProviderService>();
-            var fileReaderService = new Mock<IFileReaderService>();
+            const string fileName = "MyFile";
+            var _fileReaderService = new Mock<IFileReaderService>();
 
-            configurationManagerService.Setup(_ => _.GetAppSetting("ApplicationInfoFileName")).Returns(string.Empty);
-            pathProviderService.Setup(_ => _.LocalPath).Returns(string.Empty);
-            fileReaderService.Setup(_ => _.ReadAllText(string.Empty)).Returns("{ 'build': { 'buildNumber': 'some_number'}}");
+            _fileReaderService.Setup(_ =>
+                _.ReadAllText(It.IsAny<string>()))
+                .Returns("{ 'build': { 'buildNumber': 'some_number'}}");
 
-            _applicationInfoService = new ApplicationInfoService(configurationManagerService.Object, fileReaderService.Object, pathProviderService.Object);
+            _applicationInfoService = new ApplicationInfoService(_fileReaderService.Object, fileName);
         }
 
         [Fact]

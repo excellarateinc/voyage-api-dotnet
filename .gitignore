@@ -250,5 +250,7 @@ ModelManifest.xml
 .fake/
 /Launchpad.Web/doc
 
-*.jfm
+
 Launchpad.Web/apidoc
+*.jfm
+/xunit-integration-results.xml

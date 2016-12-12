@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Launchpad.Data.IntegrationTests.Stores
 {
+    [Collection(Constants.CollectionName)]
     public class CustomUserStoreTests
     {
         [Fact]

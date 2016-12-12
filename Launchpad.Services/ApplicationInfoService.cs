@@ -1,30 +1,26 @@
-﻿using System.IO;
+﻿using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Core;
 using Launchpad.Services.Interfaces;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
 
 namespace Launchpad.Services
 {
     public class ApplicationInfoService : IApplicationInfoService
     {
-        private readonly IConfigurationManagerService _configurationManagerService;
         private readonly IFileReaderService _fileReaderService;
-        private readonly IPathProviderService _pathProviderService;
+        private readonly string _fileName;
 
-        public ApplicationInfoService(IConfigurationManagerService configurationManagerService, IFileReaderService fileReaderService, IPathProviderService pathProviderService)
+        public ApplicationInfoService(IFileReaderService fileReaderService, string fileName)
         {
-            _configurationManagerService = configurationManagerService.ThrowIfNull(nameof(configurationManagerService));
             _fileReaderService = fileReaderService.ThrowIfNull(nameof(fileReaderService));
-            _pathProviderService = pathProviderService.ThrowIfNull(nameof(pathProviderService));
+            _fileName = fileName.ThrowIfNullOrEmpty(nameof(fileName));
         }
 
         public ApplicationInfoModel GetApplicationInfo()
         {
-            var filePath = _pathProviderService.LocalPath;
-            var fileName = _configurationManagerService.GetAppSetting("ApplicationInfoFileName");
-
-            var text = _fileReaderService.ReadAllText(Path.Combine(filePath, fileName));
+            var text = _fileReaderService.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _fileName));
 
             var buildNumber = (string)JObject.Parse(text).SelectToken("build.buildNumber");
 
