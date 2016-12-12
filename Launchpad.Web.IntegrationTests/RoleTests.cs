@@ -36,7 +36,6 @@ namespace Launchpad.Web.IntegrationTests
                     .And
                     .HaveHeader("Location");
 
-
                 var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
                 responseModel.Name.Should().Be(roleModel.Name);
 
