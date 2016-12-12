@@ -118,6 +118,14 @@ For local development, everything that is needed to create the LocalDb instance 
 
 Since the .dacpac contains all the schema and seed data to run the application, this process gives a new instance of the database with all required data.
 
+#### Seed Data
+Currently, all seed data is contained as post-deployment scripts in the .dacpac. In the future, if additional seed data is needed for tests there are a few options:
+
+1. Modify the database project to conditional execute post-deployment scripts
+2. Create .sql scripts and modify the configure-test-db.bat to execute them
+3. Within the Owin fixture programmatically seed the data
+
+
 ### Limitations
 The above approach has the following limitations:
 
