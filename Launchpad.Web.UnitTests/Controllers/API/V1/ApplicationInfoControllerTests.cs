@@ -1,28 +1,31 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Results;
+using FluentAssertions;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;
-using System;
-using System.Web.Http;
-using System.Web.Http.Results;
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class ApplicationInfoControllerTests : BaseUnitTest
     {
-        private ApplicationInfoController _controller;
-        private Mock<IApplicationInfoService> _mockApplicationInfoService;
+        private readonly ApplicationInfoController _controller;
+        private readonly Mock<IApplicationInfoService> _mockApplicationInfoService;
 
         public ApplicationInfoControllerTests()
         {
             _mockApplicationInfoService = Mock.Create<IApplicationInfoService>();
 
-            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object);
-            _controller.Request = new System.Net.Http.HttpRequestMessage();
-            _controller.Configuration = new System.Web.Http.HttpConfiguration();
+            _controller = new ApplicationInfoController(_mockApplicationInfoService.Object)
+            {
+                Request = new HttpRequestMessage(),
+                Configuration = new HttpConfiguration()
+            };
         }
 
         [Fact]
@@ -36,17 +39,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void Get_Should_Call_Status()
         {
-            //Arrange
-
+            // Arrange
             _mockApplicationInfoService.Setup(_ => _.GetApplicationInfo())
-                .Returns(new ApplicationInfoModel() { BuildNumber = "some_number" });
+                .Returns(new ApplicationInfoModel { BuildNumber = "some_number" });
 
-            //Act
-
+            // Act
             var result = _controller.Get();
 
-            //Assert
-
+            // Assert
             result.Should().BeOfType<OkNegotiatedContentResult<ApplicationInfoModel>>();
 
             var resultContent = result.As<OkNegotiatedContentResult<ApplicationInfoModel>>();

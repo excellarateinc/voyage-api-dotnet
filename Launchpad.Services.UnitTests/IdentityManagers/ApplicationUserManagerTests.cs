@@ -1,31 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using FluentAssertions;
-using Ploeh.AutoFixture;
-using Moq;
-using Launchpad.UnitTests.Common;
-using Launchpad.Services.IdentityManagers;
+﻿using FluentAssertions;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.IdentityManagers;
+using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;
+using Moq;
+using Xunit;
 
 namespace Launchpad.Services.UnitTests.IdentityManagers
 {
     public class ApplicationUserManagerTests : BaseUnitTest
     {
-        private ApplicationUserManager _manager;
-        private Mock<IUserStore<ApplicationUser>> _mockStore;
-        private Mock<IUserTokenProvider<ApplicationUser, string>> _mockProvider;
+        private readonly ApplicationUserManager _manager;
+        private readonly Mock<IUserTokenProvider<ApplicationUser, string>> _mockProvider;
 
         public ApplicationUserManagerTests()
         {
             _mockProvider = Mock.Create<IUserTokenProvider<ApplicationUser, string>>();
-            _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
+            var mockStore = Mock.Create<IUserStore<ApplicationUser>>();
 
-            _manager = new ApplicationUserManager(_mockStore.Object, _mockProvider.Object);
+            _manager = new ApplicationUserManager(mockStore.Object, _mockProvider.Object);
         }
 
         [Fact]
@@ -33,13 +26,12 @@ namespace Launchpad.Services.UnitTests.IdentityManagers
         {
             var validator = _manager.PasswordValidator as PasswordValidator;
             validator.Should().NotBeNull();
-            
+
             validator.RequiredLength.Should().Be(6);
             validator.RequireNonLetterOrDigit.Should().BeTrue();
             validator.RequireDigit.Should().BeTrue();
             validator.RequireLowercase.Should().BeTrue();
             validator.RequireUppercase.Should().BeTrue();
-
         }
 
         [Fact]
@@ -49,7 +41,6 @@ namespace Launchpad.Services.UnitTests.IdentityManagers
 
             validator.AllowOnlyAlphanumericUserNames.Should().BeFalse();
             validator.RequireUniqueEmail.Should().BeTrue();
-
         }
 
         [Fact]
@@ -57,7 +48,5 @@ namespace Launchpad.Services.UnitTests.IdentityManagers
         {
             _manager.UserTokenProvider.Should().Be(_mockProvider.Object);
         }
-
-
     }
 }

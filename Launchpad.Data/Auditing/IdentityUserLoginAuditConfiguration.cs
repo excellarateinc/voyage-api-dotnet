@@ -4,6 +4,5 @@ namespace Launchpad.Data.Auditing
 {
     public class IdentityUserLoginAuditConfiguration : BaseAuditConfiguration<IdentityUserLogin>
     {
-
     }
 }

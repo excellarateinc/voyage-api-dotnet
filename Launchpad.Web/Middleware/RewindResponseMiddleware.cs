@@ -16,21 +16,20 @@ namespace Launchpad.Web.Middleware
         {
         }
 
-        public async override Task Invoke(IOwinContext context)
+        public override async Task Invoke(IOwinContext context)
         {
             using (var pipelineStream = new MemoryStream())
             {
-                //replace the context response with our buffer
+                // replace the context response with our buffer
                 var remoteStream = context.Response.Body;
                 context.Response.Body = pipelineStream;
 
-                //invoke the rest of the pipeline
+                // invoke the rest of the pipeline
                 await Next.Invoke(context);
 
                 pipelineStream.Seek(0, SeekOrigin.Begin);
                 await pipelineStream.CopyToAsync(remoteStream);
                 context.Response.Body = remoteStream;
-
             }
         }
     }

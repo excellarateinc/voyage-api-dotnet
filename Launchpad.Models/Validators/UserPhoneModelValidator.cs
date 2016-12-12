@@ -10,8 +10,6 @@ namespace Launchpad.Models.Validators
             RuleFor(_ => _.PhoneNumber)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone number is a required field");
-
-
         }
     }
 }

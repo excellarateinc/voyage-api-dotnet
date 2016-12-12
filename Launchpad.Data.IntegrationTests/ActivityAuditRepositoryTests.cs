@@ -13,8 +13,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Get_Should_Return_Record()
         {
-
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -32,8 +31,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void GetAll_Should_Return_Records()
         {
-
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -51,8 +49,7 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Add_Should_Create_Record()
         {
-
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
@@ -72,11 +69,9 @@ namespace Launchpad.Data.IntegrationTests
 
                     var newEntity = repository.Get(audit.Id);
 
-
                     newEntity.Should().NotBeNull();
                 }
             }
         }
     }
-
 }

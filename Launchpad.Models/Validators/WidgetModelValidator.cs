@@ -7,10 +7,9 @@ namespace Launchpad.Models.Validators
     {
         public WidgetModelValidator()
         {
-            RuleFor(_=>_.Name)
+            RuleFor(_ => _.Name)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Name is a required field");
-
         }
     }
 }

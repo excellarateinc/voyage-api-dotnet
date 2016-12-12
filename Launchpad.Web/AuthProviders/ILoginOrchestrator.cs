@@ -1,5 +1,4 @@
-﻿using Launchpad.Services.Interfaces;
-using Microsoft.Owin.Security.OAuth;
+﻿using Microsoft.Owin.Security.OAuth;
 using System.Threading.Tasks;
 
 namespace Launchpad.Web.AuthProviders

@@ -21,45 +21,34 @@ namespace Launchpad.Services
         private readonly ApplicationUserManager _userManager;
         private readonly IMapper _mapper;
 
-
         public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService, IUserPhoneRepository phoneRepository) : base(mapper)
         {
-
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
             _roleService = roleService.ThrowIfNull(nameof(roleService));
             _phoneRepository = phoneRepository.ThrowIfNull(nameof(phoneRepository));
         }
 
-
-
-
         public async Task<EntityResult<UserModel>> UpdateUserAsync(string userId, UserModel model)
         {
             var appUser = await _userManager.FindByIdAsync(userId);
-            if (appUser != null)
-            {
-
-                _mapper.Map<UserModel, ApplicationUser>(model, appUser);
-
-                MergeCollection(source: model.Phones,
-                    destination: appUser.Phones,
-                    predicate: (s, d) => s.Id == d.Id,
-                    deleteAction: entity => _phoneRepository.Delete(entity.Id));
-
-                var identityResult = await _userManager.UpdateAsync(appUser);
-                return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
-            }
-            else
-            {
+            if (appUser == null)
                 return NotFound<UserModel>(userId);
-            }
-        }
 
+            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+            MergeCollection(
+                source: model.Phones,
+                destination: appUser.Phones,
+                predicate: (s, d) => s.Id == d.Id,
+                deleteAction: entity => _phoneRepository.Delete(entity.Id));
+
+            var identityResult = await _userManager.UpdateAsync(appUser);
+            return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
+        }
 
         public async Task<EntityResult> RemoveUserFromRoleAsync(string userId, string roleId)
         {
-
             var entityResult = _roleService.GetRoleById(roleId);
             if (entityResult.IsEntityNotFound)
             {
@@ -77,10 +66,8 @@ namespace Launchpad.Services
             {
                 return _roleService.GetRoleByName(roleModel.Name);
             }
-            else
-            {
-                return FromIdentityResult<RoleModel>(identityResult, null);
-            }
+
+            return FromIdentityResult<RoleModel>(identityResult, null);
         }
 
         public EntityResult<IEnumerable<UserModel>> GetUsers()
@@ -150,7 +137,7 @@ namespace Launchpad.Services
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await _userManager.CreateIdentityAsync(user, authenticationType);
 
-            //Add in role claims
+            // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
             var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
                 .SelectMany(_ => _.Model)
@@ -162,10 +149,9 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<IEnumerable<RoleModel>>> GetUserRolesAsync(string userId)
         {
-
             var roles = await _userManager.GetRolesAsync(userId);
 
-            //TODO: Refactor this to pass in the role list (IQueryable)
+            // TODO: Refactor this to pass in the role list (IQueryable)
             var roleModels = _roleService.GetRoles()
                             .Model
                             .Where(_ => roles.Contains(_.Name));
@@ -180,14 +166,13 @@ namespace Launchpad.Services
             {
                 return entityResult;
             }
-            else if (!_userManager.IsInRole(userId, entityResult.Model.Name))
+
+            if (!_userManager.IsInRole(userId, entityResult.Model.Name))
             {
                 return NotFound<RoleModel>(roleId);
             }
-            else
-            {
-                return entityResult;
-            }
+
+            return entityResult;
         }
 
         public async Task<EntityResult<UserModel>> GetUserAsync(string userId)

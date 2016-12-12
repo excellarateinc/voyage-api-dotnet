@@ -27,7 +27,7 @@ namespace Launchpad.UnitTests.Common
         /// </summary>
         protected Fixture Fixture;
 
-        public BaseUnitTest()
+        protected BaseUnitTest()
         {
             Fixture = new Fixture();
             Mock = new MockRepository(MockBehavior.Strict);

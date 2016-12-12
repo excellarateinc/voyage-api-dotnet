@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http.ModelBinding;
 
 namespace Launchpad.Web.Extensions
@@ -13,7 +9,7 @@ namespace Launchpad.Web.Extensions
         {
             foreach (var error in identityResult.Errors)
             {
-                state.AddModelError("", error);
+                state.AddModelError(string.Empty, error);
             }
         }
     }

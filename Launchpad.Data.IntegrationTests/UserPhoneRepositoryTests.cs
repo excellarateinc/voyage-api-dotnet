@@ -12,12 +12,12 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Get_Should_Return_Phone()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
-                    //Arrange
-                    //Create a user phone number
+                    // Arrange
+                    // Create a user phone number
                     var user = context.Users.First();
                     var phone = new UserPhone
                     {
@@ -29,10 +29,10 @@ namespace Launchpad.Data.IntegrationTests
                     user.Phones.Add(phone);
                     context.SaveChanges();
 
-                    //Act
+                    // Act
                     var repository = new UserPhoneRepository(context);
 
-                    //Assert
+                    // Assert
                     var retrievedPhone = repository.Get(phone.Id);
                     retrievedPhone.Should().NotBeNull();
                 }
@@ -42,12 +42,12 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Delete_Should_Remove_Phone()
         {
-            using (var transactionScope = new TransactionScope())
+            using (new TransactionScope())
             {
                 using (var context = new LaunchpadDataContext())
                 {
-                    //Arrange
-                    //Create a user phone number
+                    // Arrange
+                    // Create a user phone number
                     var user = context.Users.First();
                     var phone = new UserPhone
                     {
@@ -59,13 +59,12 @@ namespace Launchpad.Data.IntegrationTests
                     user.Phones.Add(phone);
                     context.SaveChanges();
 
-
-                    //Act
+                    // Act
                     var repository = new UserPhoneRepository(context);
                     repository.Delete(phone.Id);
                     context.SaveChanges();
 
-                    //Assert
+                    // Assert
                     var retrievedPhone = repository.Get(phone.Id);
                     retrievedPhone.Should().BeNull();
                 }

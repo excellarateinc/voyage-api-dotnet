@@ -1,41 +1,39 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Xunit;
-using Moq;
-using FluentAssertions;
-using Ploeh.AutoFixture;
-using Launchpad.UnitTests.Common;
-using System.Web.Http;
-using Launchpad.Web.Controllers.API.V1;
-using Launchpad.Models;
-using Microsoft.AspNet.Identity;
 using System.Net;
-using Launchpad.Services.Interfaces;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
+using FluentAssertions;
+using Launchpad.Models;
+using Launchpad.Services.Interfaces;
+using Launchpad.UnitTests.Common;
+using Launchpad.Web.Controllers.API.V1;
+using Moq;
+using Ploeh.AutoFixture;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
     public class AccountControllerTests : BaseUnitTest
     {
-        private AccountController _accountController;
-        private Mock<IUserService> _mockUserService;
+        private readonly AccountController _accountController;
+        private readonly Mock<IUserService> _mockUserService;
 
         public AccountControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
-
-         
-            _accountController = new AccountController(_mockUserService.Object);
-            _accountController.Request = new System.Net.Http.HttpRequestMessage();
-            _accountController.Configuration = new System.Web.Http.HttpConfiguration();
+            _accountController = new AccountController(_mockUserService.Object)
+            {
+                Request = new HttpRequestMessage(),
+                Configuration = new HttpConfiguration()
+            };
         }
 
         [Fact]
-        public async Task Register_Should_Call_UserManager() {
-
-            //ARRANGE
-
+        public async Task Register_Should_Call_UserManager()
+        {
+            // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
@@ -46,25 +44,21 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockUserService.Setup(_ => _.RegisterAsync(model))
                 .ReturnsAsync(entityResult);
 
-            //ACT
+            // ACT
             var result = await _accountController.Register(model);
 
-
-            //ASSERT
+            // ASSERT
             Mock.VerifyAll();
 
-            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+            var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
         }
 
         [Fact]
         public async Task Register_Should_Return_BadRequest_When_Model_Is_Invalid()
         {
-
-            //ARRANGE
-
+            // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "testtestcom")
                 .With(_ => _.Password, "cool1Password!!")
@@ -72,20 +66,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             var entityResult = new EntityResult(false, false, "My error");
 
-
             _mockUserService.Setup(_ => _.RegisterAsync(model))
                 .ReturnsAsync(entityResult);
 
-            //ACT
+            // ACT
             var result = await _accountController.Register(model);
 
-
-            //ASSERT
+            // ASSERT
             Mock.VerifyAll();
-            var message = await result.ExecuteAsync(new System.Threading.CancellationToken());
+            var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
         }
 
         [Fact]
@@ -112,24 +103,20 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         public void Register_Should_Have_Route_Attribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new Models.RegistrationModel()))
+            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
-              
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));             
         }
 
         [Fact]
         public void Register_Should_Have_AllowAnonymous_Attribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new Models.RegistrationModel()))
+            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
                 .BeDecoratedWith<AllowAnonymousAttribute>();
-
         }
-
-
     }
 }

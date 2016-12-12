@@ -1,9 +1,6 @@
-﻿using Microsoft.Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Owin;
 
 namespace Launchpad.Web.UnitTests.Middleware
 {
@@ -13,20 +10,21 @@ namespace Launchpad.Web.UnitTests.Middleware
     /// </summary>
     public class TestEnvironmentMiddleware : OwinMiddleware
     {
-        Dictionary<string, object> _env;
+        private readonly Dictionary<string, object> _env;
+
         public TestEnvironmentMiddleware(OwinMiddleware next, Dictionary<string, object> env) : base(next)
         {
             _env = env;
-
         }
-        public async override Task Invoke(IOwinContext context)
+
+        public override async Task Invoke(IOwinContext context)
         {
             foreach (var pair in _env)
             {
                 context.Environment.Add(pair.Key, pair.Value);
             }
-            await Next.Invoke(context);
 
+            await Next.Invoke(context);
         }
     }
 }

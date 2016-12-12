@@ -1,13 +1,12 @@
-﻿using Launchpad.UnitTests.Common;
+﻿using FluentAssertions;
+using Launchpad.UnitTests.Common;
 using Xunit;
-using FluentAssertions;
-
 
 namespace Launchpad.Web.UnitTests
 {
     /// <summary>
-    // The route prefixes are critical to web api routing, let's test the constants so that 
-    // if they accidently change a test breaks
+    /// The route prefixes are critical to web api routing, let's test the constants so that 
+    /// if they accidently change a test breaks
     /// </summary>
     public class ConstantsTests : BaseUnitTest
     {
@@ -28,6 +27,5 @@ namespace Launchpad.Web.UnitTests
         {
             Constants.RoutePrefixes.V2.Should().Be("api/v2");
         }
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using FluentValidation.Attributes;
 using Launchpad.Models.Validators;
-using System.ComponentModel.DataAnnotations;
 
 namespace Launchpad.Models
 {

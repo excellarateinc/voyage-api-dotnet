@@ -1,5 +1,6 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.Configuration
 {
@@ -7,18 +8,17 @@ namespace Launchpad.Data.Configuration
     {
         public UserPhoneConfiguration()
         {
-            this.ToTable("UserPhone", Constants.Schemas.FrameworkTables);
-            this.HasKey(_ => _.Id);
+            ToTable("UserPhone", Constants.Schemas.FrameworkTables);
+            HasKey(_ => _.Id);
 
-            this.Property(_ => _.Id).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+            Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            this.Property(_ => _.PhoneNumber).HasMaxLength(15).IsRequired();
-            this.Property(_ => _.PhoneType).IsRequired();
+            Property(_ => _.PhoneNumber).HasMaxLength(15).IsRequired();
+            Property(_ => _.PhoneType).IsRequired();
 
             HasRequired(_ => _.User)
                 .WithMany(_ => _.Phones)
                 .HasForeignKey(_ => _.UserId);
-
         }
     }
 }

@@ -3,17 +3,14 @@ using FluentAssertions;
 using Launchpad.UnitTests.Common;
 using Xunit;
 using Launchpad.Data.Interfaces;
-using Moq;
 
 namespace Launchpad.Data.UnitTests
 {
     public class WidgetRepositoryTests : BaseUnitTest
     {
-        private Mock<ILaunchpadDataContext> _mockContext;
-
         public WidgetRepositoryTests()
         {
-            _mockContext = Mock.Create<ILaunchpadDataContext>();
+            Mock.Create<ILaunchpadDataContext>();
         }
 
         [Fact]

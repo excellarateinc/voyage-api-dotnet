@@ -8,7 +8,7 @@ namespace Launchpad.Models.UnitTests.Validators
     [Trait("Category", "Model.Validation")]
     public class ClaimModelValidatorTests : BaseUnitTest
     {
-        private ClaimModelValidator _validator;
+        private readonly ClaimModelValidator _validator;
 
         public ClaimModelValidatorTests()
         {
@@ -20,7 +20,6 @@ namespace Launchpad.Models.UnitTests.Validators
         {
             _validator.ShouldHaveValidationErrorFor(claim => claim.ClaimType, null as string);
         }
-
 
         [Fact]
         public void Should_Have_Error_When_ClaimValue_Is_Null()

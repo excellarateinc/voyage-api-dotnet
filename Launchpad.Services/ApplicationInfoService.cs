@@ -25,7 +25,7 @@ namespace Launchpad.Services
 
             var buildNumber = (string)JObject.Parse(text).SelectToken("build.buildNumber");
 
-            return new ApplicationInfoModel()
+            return new ApplicationInfoModel
             {
                 BuildNumber = buildNumber
             };

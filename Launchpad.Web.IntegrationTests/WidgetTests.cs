@@ -7,15 +7,12 @@ using System.Net;
 using System.Net.Http;
 using Xunit;
 
-
 namespace Launchpad.Web.IntegrationTests
-{
-
+{  
     [Trait("Category", "Self-Hosted")]
     [Collection(OwinCollectionFixture.Name)]
     public class WidgetTests : BaseEndpointTest
-    {
-
+    {     
         public WidgetTests(OwinFixture owin) : base(owin)
         {
         }

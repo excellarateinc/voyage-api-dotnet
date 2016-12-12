@@ -11,13 +11,12 @@ namespace Launchpad.Models.Map.Profiles
     {
         public WidgetProfile()
         {
-            //Map EF Widget to WidgetModel
+            // Map EF Widget to WidgetModel
             CreateMap<Widget, WidgetModel>();
 
-            //Map WidgetModel to EF Widget
+            // Map WidgetModel to EF Widget
             CreateMap<WidgetModel, Widget>()
                 .ForMember(_ => _.Id, opt => opt.Ignore());
         }
-
     }
 }

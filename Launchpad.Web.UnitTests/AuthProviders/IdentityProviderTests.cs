@@ -1,20 +1,20 @@
 ﻿using System;
-using Xunit;
+using System.Security.Claims;
+using System.Security.Principal;
 using FluentAssertions;
-using Moq;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.AuthProviders;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using System.Security.Claims;
-using System.Security.Principal;
+using Moq;
+using Xunit;
 
 namespace Launchpad.Web.UnitTests.AuthProviders
 {
     public class IdentityProviderTests : BaseUnitTest
     {
-        readonly IdentityProvider _provider;
-        readonly Mock<IOwinContext> _mockContext;
+        private readonly IdentityProvider _provider;
+        private readonly Mock<IOwinContext> _mockContext;
 
         public IdentityProviderTests()
         {
@@ -36,19 +36,18 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void GetUserName_Should_Call_Mock_Context_And_Return_Name()
         {
-            //Arrange
+            // Arrange
             const string name = "admin@admin.com";
             var mockAuthManager = Mock.Create<IAuthenticationManager>();
-            _mockContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)mockAuthManager.Object);
+            _mockContext.Setup(_ => _.Authentication).Returns(mockAuthManager.Object);
             mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity(name)));
 
-            //Act
+            // Act
             var value = _provider.GetUserName();
 
-            //Assert
+            // Assert
             Mock.VerifyAll();
             value.Should().Be(name);
         }
-
     }
 }

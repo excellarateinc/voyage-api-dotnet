@@ -3,11 +3,11 @@
     public static class Constants
     {
         public static string ApplicationName = "Launchpad .Net API";
+
         public static class RoutePrefixes
         {
             public const string V1 = "api/v1";
-            public const string V2 = "api/v2";
-           
+            public const string V2 = "api/v2";           
         }
 
         public static class LssClaims
@@ -37,8 +37,7 @@
             public const string ViewWidget = "view.widget";
             public const string CreateWidget = "create.widget";
             public const string DeleteWidget = "delete.widget";
-            public const string UpdateWidget = "update.widget";
-           
+            public const string UpdateWidget = "update.widget";           
         }
     }
 }

@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 using FluentAssertions;
-using Ploeh.AutoFixture;
-using Launchpad.UnitTests.Common;
-using Moq;
 using Launchpad.Data.Interfaces;
-using AutoMapper;
-using Launchpad.Services.Fixture;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.UnitTests.Fixture;
+using Launchpad.UnitTests.Common;
+using Moq;
+using Ploeh.AutoFixture;
+using Xunit;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -20,15 +15,13 @@ namespace Launchpad.Services.UnitTests
     [Collection(AutoMapperCollection.CollectionName)]
     public class AuditServiceTests : BaseUnitTest
     {
-        private AuditService _auditService;
-        private Mock<IActivityAuditRepository> _mockAuditRepository;
-        private AutoMapperFixture _mapperFixture;
+        private readonly AuditService _auditService;
+        private readonly Mock<IActivityAuditRepository> _mockAuditRepository;
 
         public AuditServiceTests(AutoMapperFixture mapperFixture)
         {
             _mockAuditRepository = Mock.Create<IActivityAuditRepository>();
-            _mapperFixture = mapperFixture;
-            _auditService = new AuditService(_mockAuditRepository.Object, _mapperFixture.MapperInstance);
+            _auditService = new AuditService(_mockAuditRepository.Object, mapperFixture.MapperInstance);
         }
 
         [Fact]
@@ -81,5 +74,4 @@ namespace Launchpad.Services.UnitTests
                 .Be("mapper");
         }
     }
-}
- 
+} 

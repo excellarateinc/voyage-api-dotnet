@@ -1,5 +1,6 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.Configuration
 {
@@ -8,10 +9,8 @@ namespace Launchpad.Data.Configuration
         public ApplicationLogConfiguration()
         {
             ToTable("ApplicationLog", Constants.Schemas.FrameworkTables);
-
             HasKey(_ => _.Id);
-
-            Property(_ => _.Id).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+            Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(_ => _.Message);
             Property(_ => _.MessageTemplate);
             Property(_ => _.Level).HasMaxLength(128);

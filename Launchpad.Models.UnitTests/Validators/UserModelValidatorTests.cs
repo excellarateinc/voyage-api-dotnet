@@ -8,7 +8,7 @@ namespace Launchpad.Models.UnitTests.Validators
     [Trait("Category", "Model.Validation")]
     public class UserModelValidatorTests : BaseUnitTest
     {
-        private UserModelValidator _validator;
+        private readonly UserModelValidator _validator;
 
         public UserModelValidatorTests()
         {

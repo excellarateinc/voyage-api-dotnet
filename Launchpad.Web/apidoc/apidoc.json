@@ -1,0 +1,11 @@
+{
+  "name": "Launchpad API",
+  "description": "Web services API for the Launchpad platform",
+  "version": "0.2.0",
+  "title": "Launchpad API",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "url": "/api"
+}

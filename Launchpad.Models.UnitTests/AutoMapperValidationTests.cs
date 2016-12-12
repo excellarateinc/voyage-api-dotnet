@@ -19,6 +19,5 @@ namespace Launchpad.Models.UnitTests
         {
             _mappingFixture.MapperInstance.ConfigurationProvider.AssertConfigurationIsValid();
         } 
-
     }
 }

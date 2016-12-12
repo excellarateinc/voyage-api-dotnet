@@ -7,13 +7,12 @@ namespace Launchpad.Web.IntegrationTests
     {
         protected OwinFixture OwinFixture;
 
-
         protected string GetEndpoint(string path)
         {
             return $"{OwinFixture.BaseAddress}{path}";
         }
 
-        public BaseEndpointTest(OwinFixture owin)
+        protected BaseEndpointTest(OwinFixture owin)
         {
             OwinFixture = owin;
         }
@@ -24,6 +23,5 @@ namespace Launchpad.Web.IntegrationTests
             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", OwinFixture.DefaultToken);
             return message;
         }
-
     }
 }

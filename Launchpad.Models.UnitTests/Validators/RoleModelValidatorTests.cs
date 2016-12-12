@@ -5,12 +5,10 @@ using FluentValidation.TestHelper;
 
 namespace Launchpad.Models.UnitTests.Validators
 {
-
-
     [Trait("Category", "Model.Validation")]
     public class RoleModelValidatorTests : BaseUnitTest
     {
-        private RoleModelValidator _validator;
+        private readonly RoleModelValidator _validator;
 
         public RoleModelValidatorTests()
         {

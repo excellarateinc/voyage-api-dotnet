@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using System.Web.Http.ModelBinding;
+using FluentAssertions;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Extensions;
-using System.Linq;
-using System.Web.Http.ModelBinding;
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.Extensions
@@ -54,11 +54,11 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ConvertToResponseModel_Should_Return_Enumerable_Of_Models()
         {
-            ModelStateDictionary dictionary = new ModelStateDictionary();
+            var dictionary = new ModelStateDictionary();
 
             dictionary.AddModelError("field1", "Required field is missing");
 
-            var result = dictionary.ConvertToResponseModel();
+            var result = dictionary.ConvertToResponseModel().ToList();
 
             result.Should().NotBeNullOrEmpty();
             result.Should().HaveCount(1);

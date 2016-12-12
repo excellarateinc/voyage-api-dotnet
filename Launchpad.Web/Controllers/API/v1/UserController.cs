@@ -4,7 +4,6 @@ using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
-using static Launchpad.Web.Constants;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
@@ -12,12 +11,11 @@ namespace Launchpad.Web.Controllers.API.V1
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class UserController : BaseApiController
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
-
         }
 
         /**
@@ -43,17 +41,25 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
-        *       {   
-        *           "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *           "name": "admin@admin.com",
-        *           "firstName": "Admin_First",
-        *           "lastName": "Admin_Last"
+        *      {
+        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *          "userName": "admin",
+        *          "email": "admin@admin.com",
+        *          "firstName": "Admin_First",
+        *          "lastName": "Admin_Last",
+        *          "phones": 
+        *          [
+        *             {
+        *                 "phoneNumber": "123-123-1233", 
+        *                 "phoneType": "mobile"
+        *             }
+        *          ]
         *       }
         *   ]
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
         [HttpGet]
         [Route("users")]
         public IHttpActionResult GetUsers()
@@ -76,7 +82,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UserSuccessModel   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.UpdateUser)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
@@ -105,7 +111,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.DeleteUser)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteUser)]
         [HttpDelete]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
@@ -135,7 +141,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UserSuccessModel   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.CreateUser)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateUser)]
         [HttpPost]
         [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
@@ -160,7 +166,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UserSuccessModel  
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ViewUser)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewUser)]
         [HttpGet]
         [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
@@ -208,7 +214,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
         [Route("users/{userId}/roles")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
@@ -216,7 +222,6 @@ namespace Launchpad.Web.Controllers.API.V1
             var entityResult = await _userService.GetUserRolesAsync(userId);
             return CreateModelResult(entityResult);
         }
-
 
         /**
         * @api {get} /v1/users/:userId/claims Get user claims
@@ -249,7 +254,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ListUserClaims)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUserClaims)]
         [HttpGet]
         [Route("users/{userId}/claims")]
         public async Task<IHttpActionResult> GetClaims(string userId)
@@ -257,7 +262,6 @@ namespace Launchpad.Web.Controllers.API.V1
             var entityResult = await _userService.GetUserClaimsAsync(userId);
             return CreateModelResult(entityResult);
         }
-
 
         /**
         * @api {post} /v1/users/:userId/roles Assign role to user 
@@ -292,7 +296,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.AssignRole)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.AssignRole)]
         [HttpPost]
         [Route("users/{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
@@ -300,7 +304,6 @@ namespace Launchpad.Web.Controllers.API.V1
             var entityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
             return CreatedEntityAt("GetUserRoleById", () => new { UserId = userId, RoleId = entityResult.Model.Id }, entityResult);
         }
-
 
         /**
         * @api {get} /v1/users/:userId/roles/:roleId Get role 
@@ -341,7 +344,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UnauthorizedError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
@@ -370,14 +373,13 @@ namespace Launchpad.Web.Controllers.API.V1
         * 
         * @apiUse BadRequestError  
         **/
-        [ClaimAuthorize(ClaimValue = LssClaims.RevokeRole)]
+        [ClaimAuthorize(ClaimValue = Constants.LssClaims.RevokeRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
             var entityResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             return NoContent(entityResult);
-
         }
     }
 }

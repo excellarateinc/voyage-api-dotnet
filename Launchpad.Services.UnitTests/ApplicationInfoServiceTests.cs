@@ -8,8 +8,8 @@ namespace Launchpad.Services.UnitTests
 {
     public class ApplicationInfoServiceTests : BaseUnitTest
     {
-        private ApplicationInfoService _applicationInfoService;
-
+        private readonly ApplicationInfoService _applicationInfoService;
+        
         public ApplicationInfoServiceTests()
         {
             const string fileName = "MyFile";

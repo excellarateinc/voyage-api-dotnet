@@ -49,6 +49,59 @@ public IHttpActionResult Get(MonitorType id)
 }
 ```
 
+### Creating Good Log Messages
+Logging is only as useful as the content of the messages. With structured logging, searching and reading log messages can be made easy. Use the following guidelines to create good error messages:
+
+#### Event Codes
+Prepend a human readable event code to classify messages. For example, anytime an action fails because of a missing claim log a message with the event code of 'Authorization.' The event code will be visible in not only the message but as well as the JSON properties. This will allow for easy filtering by feature or logical group.
+
+```
+Logger.Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
+```
+
+#### Logging Context
+Utilize the ForContext method to provide additional information about the class that generated the message. This helps identify the component that raised the error and especially useful if different components can log similar messages. 
+
+```
+Log.Logger
+   .ForContext<ClaimAuthorizeAttribute>()
+   .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
+```
+
+#### Structuring Messages
+Take advantage of Serilog by using the message template to provide both a human readable message and a structured JSON object containing key message properties. The message templates can be formed using {} as placeholders. The placeholder name will become the name of the property on the JSON object. Placeholder values are specified as arguments after the template - these arguments are applied to the placeholders in the order which they are specified. 
+
+For example, given the following message template:
+
+```
+ _logger.ForContext<LaunchpadDataContext>()
+        .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
+```
+
+The human readable message will be:
+
+```
+(EntityValidation) "'User' has error 'User name delete@admin.com is already taken.'"
+```
+
+And the JSON object will be:
+
+```
+{
+  "Timestamp":"2016-12-08T13:59:25.7642779-06:00",
+  "Level":"Error",
+  "MessageTemplate":"({eventCode:l}) {validationErrors}",
+  "Exception":"<Omitted for Clarify>",
+  "Properties":{
+      "eventCode":"EntityValidation",
+      "validationErrors":"'User' has error 'User name delete@admin.com is already taken.'",
+      "SourceContext":"Launchpad.Data.LaunchpadDataContext"},
+      "Renderings":{"eventCode":[{"Format":"l","Rendering":"EntityValidation"}]
+    }
+  }
+```
+
+
 ### Debugging
 Serilog will fail silently if there is an issue logging a message. While this is desirable in production, when debugging it can be hard identify the issue with the message template. Serilog offers debugging out to help troubleshoot issues. To turn on the output, use:
 

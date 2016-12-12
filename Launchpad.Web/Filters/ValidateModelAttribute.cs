@@ -6,8 +6,6 @@ using System.Web.Http.Filters;
 
 namespace Launchpad.Web.Filters
 {
-
-
     /// <summary>
     /// Returns a BadRequest response if the model is invalid
     /// </summary>
@@ -19,7 +17,8 @@ namespace Launchpad.Web.Filters
             {
                 actionContext.Response = actionContext
                     .Request
-                    .CreateResponse(HttpStatusCode.BadRequest,
+                    .CreateResponse(
+                        HttpStatusCode.BadRequest,
                         actionContext.ModelState.ConvertToResponseModel());
             }
         }
