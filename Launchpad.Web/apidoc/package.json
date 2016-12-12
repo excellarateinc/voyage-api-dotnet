@@ -3,9 +3,6 @@
   "name": "launchpad-app",
   "private": true,
   "scripts": {
-    "doc": "apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\" "
-  },
-  "devDependencies": {
- 
+    "apidoc": "apidoc -o docs -i ..\\ -f \".cs$\" -f \".js$\" "
   }
 }
