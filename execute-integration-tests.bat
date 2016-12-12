@@ -65,7 +65,7 @@ for /f "tokens=*" %%a in ('dir /b /s "%root%\publish\*.IntegrationTests.dll"') d
 
 echo on
 
-"%bin%\xunit.console.exe" %testAssemblies% -xml %outputPath% -parallel all
+"%bin%\xunit.console.exe" %testAssemblies% -xml %outputPath% -parallel none
 
 @echo off
 if /i %failOnError% neq 0 (
