@@ -57,12 +57,12 @@ namespace Launchpad.Web.AuthProviders
             const string username = "username";
             const string password = "password";
 
-            return parameters.Count() == 3 && //Check that only the required fields have been posted
-                    !string.IsNullOrEmpty(parameters[grantType]) && //Grant type exists
-                    !string.IsNullOrEmpty(parameters[username]) && //username exists
-                    !string.IsNullOrEmpty(parameters[password]) && //password exissts
-                    parameters[password].Length <= 250 &&  //password length is not too long
-                    parameters[username].Length <= 50 && //username length is not too long
+            return parameters.Count() == 3 && // Check that only the required fields have been posted
+                    !string.IsNullOrEmpty(parameters[grantType]) && // Grant type exists
+                    !string.IsNullOrEmpty(parameters[username]) && // username exists
+                   !string.IsNullOrEmpty(parameters[password]) && // password exissts
+                    parameters[password].Length <= 250 &&  // password length is not too long
+                    parameters[username].Length <= 50 && // username length is not too long
                     "password".Equals(parameters[grantType]);
         }
 

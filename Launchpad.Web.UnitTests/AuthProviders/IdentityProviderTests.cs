@@ -36,16 +36,16 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public void GetUserName_Should_Call_Mock_Context_And_Return_Name()
         {
-            //Arrange
+            // Arrange
             const string name = "admin@admin.com";
             var mockAuthManager = Mock.Create<IAuthenticationManager>();
             _mockContext.Setup(_ => _.Authentication).Returns(mockAuthManager.Object);
             mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity(name)));
 
-            //Act
+            // Act
             var value = _provider.GetUserName();
 
-            //Assert
+            // Assert
             Mock.VerifyAll();
             value.Should().Be(name);
         }

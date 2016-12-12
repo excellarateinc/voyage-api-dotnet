@@ -46,10 +46,11 @@ namespace Launchpad.Services.UnitTests
                 return Success(model);
             }
 
-            public void InvokeMergeCollection<TSource, TDest>(ICollection<TSource> source,
-                    ICollection<TDest> destination,
-                    Func<TSource, TDest, bool> predicate,
-                    Action<TDest> deleteAction)
+            public void InvokeMergeCollection<TSource, TDest>(
+                ICollection<TSource> source,
+                ICollection<TDest> destination,
+                Func<TSource, TDest, bool> predicate,
+                Action<TDest> deleteAction)
             {
                 MergeCollection(source, destination, predicate, deleteAction);
             }
@@ -78,10 +79,10 @@ namespace Launchpad.Services.UnitTests
                 user
             };
 
-
-            _testPassThrough
-                .InvokeMergeCollection(source, destination,
-                    (s, d) => s.Id == d.Id,
+            _testPassThrough.InvokeMergeCollection(
+                source,
+                destination,
+                (s, d) => s.Id == d.Id,
                     phone => ++deleteCount);
 
 
@@ -122,7 +123,8 @@ namespace Launchpad.Services.UnitTests
 
             destination
                 .First()
-                .ShouldBeEquivalentTo(userPhoneModel,
+                .ShouldBeEquivalentTo(
+                    userPhoneModel,
                     options => options.Excluding(_ => _.User));
         }
 
@@ -148,7 +150,8 @@ namespace Launchpad.Services.UnitTests
 
             destination
                 .First()
-                .ShouldBeEquivalentTo(userPhoneModel,
+                .ShouldBeEquivalentTo(
+                    userPhoneModel,
                     options => options.Excluding(_ => _.User));
         }
 

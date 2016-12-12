@@ -13,7 +13,7 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
 {
     public class ResponseProcessorTests : BaseUnitTest
     {
-        //Test class for testing the base methods
+        // Test class for testing the base methods
         internal class TestProcessor : ResponseProcessor
         {
             public bool Valid { get; set; }

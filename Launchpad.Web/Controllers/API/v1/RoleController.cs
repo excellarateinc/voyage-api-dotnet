@@ -198,11 +198,14 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
             var entityResult = await _roleService.AddClaimAsync(roleId, claim);
-            var actionResult = CreatedEntityAt("GetClaimById", () => new
-            {
-                RoleId = roleId,
-                ClaimId = entityResult.Model.Id
-            }, entityResult);
+            var actionResult = CreatedEntityAt(
+                "GetClaimById",
+                () => new
+                    {
+                        RoleId = roleId,
+                        ClaimId = entityResult.Model.Id
+                    },
+                entityResult);
             return actionResult;
         }
 

@@ -32,7 +32,7 @@ namespace Launchpad.Web.Controllers.API
         {
             if (!entityResult.Succeeded)
             {
-                //If there are any errors, add them 
+                // If there are any errors, add them 
                 if (entityResult.Errors.Any())
                 {
                     foreach (var error in entityResult.Errors)

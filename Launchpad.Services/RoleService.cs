@@ -32,7 +32,7 @@ namespace Launchpad.Services
         /// <returns>EnttiyResult</returns>
         public EntityResult<RoleModel> GetRoleById(string id)
         {
-            //Attempt to find the role by id
+            // Attempt to find the role by id
             var role = _roleManager.FindById(id);
 
             return role == null ?
@@ -80,11 +80,11 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<RoleModel>> CreateRoleAsync(RoleModel model)
         {
-            //Create the role
+            // Create the role
             var role = new ApplicationRole { Name = model.Name };
             var identityResult = await _roleManager.CreateAsync(role);
 
-            //Get the role to return as part of the response
+            // Get the role to return as part of the response
             var entityResult = GetRoleByName(role.Name);
 
             return FromIdentityResult(identityResult, _mapper.Map<RoleModel>(entityResult.Model));
@@ -104,7 +104,7 @@ namespace Launchpad.Services
 
         public EntityResult<IEnumerable<ClaimModel>> GetRoleClaimsByRoleId(string id)
         {
-            //Take advantage of queryable
+            // Take advantage of queryable
             var claims = _roleClaimRepository.GetAll()
                 .Where(_ => _.RoleId == id)
                 .ToList();
@@ -113,9 +113,9 @@ namespace Launchpad.Services
 
         public EntityResult RemoveClaim(string roleId, int claimId)
         {
-            //With the current model, the claim id uniquely identifies the RoleClaim
-            //It is not normalized - the record contains the RoleId and the complete definition of the claim
-            //This means something like a "login" claim is repeated for each role
+            // With the current model, the claim id uniquely identifies the RoleClaim
+            // It is not normalized - the record contains the RoleId and the complete definition of the claim
+            // This means something like a "login" claim is repeated for each role
             _roleClaimRepository.Delete(claimId);
 
             return Success();

@@ -21,20 +21,20 @@ namespace Launchpad.Web.Middleware
 
         public override async Task Invoke(IOwinContext context)
         {
-            //Create a request id - depending on deployment, the 
-            //owin variable may or may not be initialized
+            // Create a request id - depending on deployment, the 
+            // owin variable may or may not be initialized
             var requestId = Guid.NewGuid().ToString();
 
-            //Record the request
+            // Record the request
             var requestAudit = context.ToAuditModel(requestId);
             await _auditService.RecordAsync(requestAudit);
 
-            //Continue pipeline execution
+            // Continue pipeline execution
             await Next.Invoke(context);
 
-            //Record the response
+            // Record the response
             var responseAudit = context.ToAuditModel(requestId);
-            //Check if the response is an error that should be processed
+            // Check if the response is an error that should be processed
             if (_processor.ShouldProcess(context.Response))
             {
                 responseAudit.Error = await _processor.GetResponseStringAsync(context.Response);

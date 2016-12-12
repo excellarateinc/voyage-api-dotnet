@@ -37,7 +37,8 @@ namespace Launchpad.Services
 
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
 
-            MergeCollection(source: model.Phones,
+            MergeCollection(
+                source: model.Phones,
                 destination: appUser.Phones,
                 predicate: (s, d) => s.Id == d.Id,
                 deleteAction: entity => _phoneRepository.Delete(entity.Id));
@@ -135,7 +136,7 @@ namespace Launchpad.Services
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await _userManager.CreateIdentityAsync(user, authenticationType);
 
-            //Add in role claims
+            // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
             var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
                 .SelectMany(_ => _.Model)
@@ -150,7 +151,7 @@ namespace Launchpad.Services
 
             var roles = await _userManager.GetRolesAsync(userId);
 
-            //TODO: Refactor this to pass in the role list (IQueryable)
+            // TODO: Refactor this to pass in the role list (IQueryable)
             var roleModels = _roleService.GetRoles()
                             .Model
                             .Where(_ => roles.Contains(_.Name));

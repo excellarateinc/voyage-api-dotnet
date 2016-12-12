@@ -9,7 +9,8 @@ namespace Launchpad.Web.UnitTests
 {
     public static class ControllerExtensions
     {
-        public static void AssertClaim<TType>(this TType controller, 
+        public static void AssertClaim<TType>(
+            this TType controller, 
             Expression<Action<TType>> expression, 
             string claimValue, 
             string claimType = Constants.LssClaims.Type) where TType : ApiController
@@ -19,7 +20,8 @@ namespace Launchpad.Web.UnitTests
                 .BeDecoratedWith<ClaimAuthorizeAttribute>(_ => _.ClaimValue == claimValue && _.ClaimType == claimType);
         }
 
-        public static void AssertRoute<TType>(this TType controller,
+        public static void AssertRoute<TType>(
+            this TType controller,
          Expression<Action<TType>> expression,
          string template) where TType : ApiController
         {
@@ -28,7 +30,8 @@ namespace Launchpad.Web.UnitTests
                 .BeDecoratedWith<RouteAttribute>(_ => template.Equals(_.Template));
         }
 
-        public static void AssertAttribute<TType, TAttribute>(this TType controller,
+        public static void AssertAttribute<TType, TAttribute>(
+            this TType controller,
             Expression<Action<TType>> expression) 
             where TType : ApiController
             where TAttribute : Attribute

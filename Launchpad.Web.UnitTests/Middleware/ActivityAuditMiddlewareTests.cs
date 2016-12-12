@@ -40,11 +40,12 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", id } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), 
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware), 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -57,7 +58,7 @@ namespace Launchpad.Web.UnitTests.Middleware
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }
@@ -87,11 +88,12 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", id } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware),
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -104,7 +106,7 @@ namespace Launchpad.Web.UnitTests.Middleware
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }
@@ -123,11 +125,12 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", Guid.Empty } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), 
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware), 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -140,7 +143,7 @@ namespace Launchpad.Web.UnitTests.Middleware
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }

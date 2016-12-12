@@ -66,7 +66,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _testPassThrough.Configuration.MapHttpAttributeRoutes();
             _testPassThrough.Configuration.EnsureInitialized();
 
-            //Add mock URL processor 
+            // Add mock URL processor 
             _mockUrlHelper = Mock.Create<UrlHelper>();
             _testPassThrough.Url = _mockUrlHelper.Object;
         }
@@ -74,13 +74,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void NoContent_Should_Return_204_When_No_Error()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult(true, false);
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeNoContent(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -89,14 +89,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void NoContent_Should_Return_404_When_MissingEntity_Flag_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult(false, true, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeNoContent(entityResult);
 
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -115,14 +115,14 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void NoContent_Should_Return_400_When_Succeeded_False_And_MissingEntity_Flag_Not_Set()
         {
-            //Arrange
+            // Arrange
 
             var entityResult = new EntityResult(false, false, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeNoContent(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -141,7 +141,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreatedEntityAt_Should_Return_200_When_No_Error()
         {
-            //Arrange
+            // Arrange
             var id = Fixture.Create<string>();
 
             var widget = new WidgetModel();
@@ -151,10 +151,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             _mockUrlHelper.Setup(_ => _.Link("GetRoleById", It.IsAny<Dictionary<string, object>>()))
                .Returns("http://testlink.com");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCreatedEntityAt("GetRoleById", () => new { Id = id }, entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode
@@ -179,15 +179,15 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreatedEntityAt_Should_Return_404_When_MissingEntity_Flag_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult<WidgetModel>(null, false, true, "err1");
 
             var result = _testPassThrough.InvokeCreatedEntityAt("route", () => new { }, entityResult);
 
-            //Act
+            // Act
             var message = await result.ExecuteAsync(CancellationToken.None);
 
-            //Assert
+            // Assert
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
             List<BadRequestErrorModel> messageModel;
@@ -204,15 +204,15 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreatedEntityAt_Should_Return_400_When_Succeeded_False_And_MissingEntity_Flag_Not_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult<WidgetModel>(null, false, false, "err1");
 
             var result = _testPassThrough.InvokeCreatedEntityAt("route", () => new { }, entityResult);
 
-            //Act
+            // Act
             var message = await result.ExecuteAsync(CancellationToken.None);
 
-            //Assert
+            // Assert
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
             List<BadRequestErrorModel> messageModel;
@@ -233,15 +233,15 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreateModelResult_Should_Return_200_When_No_Error()
         {
-            //Arrange
+            // Arrange
             var widget = new WidgetModel();
 
             var entityResult = new EntityResult<WidgetModel>(widget, true, false);
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCreateModelResult(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -253,13 +253,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreateModelResult_Should_Return_404_When_MissingEntity_Flag_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult<WidgetModel>(null, false, true, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCreateModelResult(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -281,13 +281,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CreateModelResult_Should_Return_400_When_Succeeded_False_And_MissingEntity_Flag_Not_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult<WidgetModel>(null, false, false, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCreateModelResult(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -306,13 +306,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CheckErrorResult_Should_Return_404_When_MissingEntity_Flag_Set()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult(false, true, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCheckErrorResult(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -331,13 +331,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public async void CheckErrorResult_Should_Return_400_When_Succeed_False_MissingEntity_False()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult(false, false, "err1");
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCheckErrorResult(entityResult);
 
-            //Assert
+            // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -356,13 +356,13 @@ namespace Launchpad.Web.UnitTests.Controllers.API
         [Fact]
         public void CheckErrorResult_Returns_Null_When_EntityResult_Succeeded()
         {
-            //Arrange
+            // Arrange
             var entityResult = new EntityResult(true, false);
 
-            //Act
+            // Act
             var result = _testPassThrough.InvokeCheckErrorResult(entityResult);
 
-            //Assert
+            // Assert
             result.Should().BeNull();
         }
     }

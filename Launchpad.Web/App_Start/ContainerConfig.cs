@@ -21,7 +21,7 @@ namespace Launchpad.Web
         {
             var builder = new ContainerBuilder();
 
-            //Register the types in the container
+            // Register the types in the container
             var connectionString = ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString;
             builder.RegisterModule(new DataModule(connectionString));
             builder.RegisterModule<AutoMapperModule>();

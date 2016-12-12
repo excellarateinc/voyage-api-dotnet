@@ -21,7 +21,7 @@ namespace Launchpad.Web.UnitTests.Middleware
 
                 app.Run(context =>
                 {
-                    //Assert that after the middleware executes, it is a memory stream
+                    // Assert that after the middleware executes, it is a memory stream
                     context.Response.Body.Should().BeOfType<MemoryStream>();
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
@@ -32,7 +32,7 @@ namespace Launchpad.Web.UnitTests.Middleware
                 var payload = await response.Content.ReadAsStringAsync();
                 
                 payload.Should().Be("Hello world using OWIN TestServer");
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }

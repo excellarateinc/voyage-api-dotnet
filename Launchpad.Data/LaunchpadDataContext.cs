@@ -16,6 +16,8 @@ using TrackerEnabledDbContext.Identity;
 
 namespace Launchpad.Data
 {
+    using System.Diagnostics.CodeAnalysis;
+
     public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
         private readonly IIdentityProvider _identityProvider;

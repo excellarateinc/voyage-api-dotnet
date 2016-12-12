@@ -9,7 +9,7 @@ using Xunit;
 namespace Launchpad.Web.UnitTests.Middleware.Processors
 {
     [Trait("Category", "Processors")]
-    public class ErrorResponseProcessorTests  : BaseUnitTest
+    public class ErrorResponseProcessorTests : BaseUnitTest
     {
         private readonly ErrorResponseProcessor _processor;
         private readonly Mock<IOwinResponse> _mockResponse;
