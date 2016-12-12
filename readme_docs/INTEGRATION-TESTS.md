@@ -117,7 +117,7 @@ Custom assertions have been added to help create better BDD-style tests. The cur
 |HaveStatusCode|Asserts the response has the expected status code.|
 
 #### Test Coverage
-The integration tests should try to exercise the most critical portions of the application. Given that the application is a set of services consumed by clients, the publically documented API is critical. Developers can use the documentation as a guide for creating good test coverage. For example, if the documentation lists the success response as 200 and the possible error responses as 403 and 404 good test coverage would have a test for each of the responses. 
+The integration tests should try to exercise the most critical portions of the application. Given that the application is a set of services consumed by clients, the publically documented API is critical. Developers can use the documentation as a guide for creating good test coverage. For example, if the documentation lists the success response as 200 and the possible error responses as 401 and 404 good test coverage would have a test for each of the responses. 
 
 ### LocalDb
 For local development, everything that is needed to create the LocalDb instance is installed with Visual Studio. There is a .bat file called configure-test-db.bat which automates the deployment of the integration test database. At a high level, the .bat file performs the following steps using out of box utilities:
