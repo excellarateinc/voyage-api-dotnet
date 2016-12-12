@@ -21,7 +21,7 @@ namespace Launchpad.Web.Middleware.Processors
                 throw new Exception($"ShouldProcess predicate failed. This processor should not read this type of response");
 
             var responseStream = response.Body as MemoryStream;
-            if(responseStream == null)
+            if (responseStream == null)
             {
                 throw new Exception($"The response.body could not be cast as MemoryStream. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
             }

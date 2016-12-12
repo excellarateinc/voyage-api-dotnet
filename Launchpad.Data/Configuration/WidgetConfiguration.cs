@@ -13,10 +13,10 @@ namespace Launchpad.Data.Configuration
         {
             ToTable("Widget", Constants.Schemas.FrameworkTables);
 
-            //Configure the entity key
+            // Configure the entity key
             HasKey(_ => _.Id);
             
-            //Configure the entity properties
+            // Configure the entity properties
             Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(_ => _.Name).HasMaxLength(60);
             Property(_ => _.Color).HasMaxLength(60);

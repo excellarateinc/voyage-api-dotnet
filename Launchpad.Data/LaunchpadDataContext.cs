@@ -22,12 +22,18 @@ namespace Launchpad.Data
         private readonly ILogger _logger;
 
         #region DbSets
+
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
+
         public IDbSet<Widget> Widgets { get; set; }
+
         public IDbSet<ApplicationLog> Logs { get; set; }
+
         public IDbSet<RoleClaim> RoleClaims { get; set; }
+
         public IDbSet<UserPhone> UserPhones { get; set; }
-        #endregion 
+
+        #endregion
 
         public LaunchpadDataContext() : base("LaunchpadDataContext")
         {
@@ -38,15 +44,15 @@ namespace Launchpad.Data
             _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
             _logger = logger.ThrowIfNull(nameof(logger));
 
-            //Configure the username factory for the auditing 
+            // Configure the username factory for the auditing 
             ConfigureUsername(() => _identityProvider.GetUserName());
         }
 
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
-            //Disable the default validation for users and roles otherwise
-            //Create a new user with a deleted user's email address will 
-            //throw an error.        
+            // Disable the default validation for users and roles otherwise
+            // Create a new user with a deleted user's email address will 
+            // throw an error.        
             if (entityEntry != null && entityEntry.State == EntityState.Added)
             {
                 var errors = new List<DbValidationError>();
@@ -61,14 +67,14 @@ namespace Launchpad.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Disable EF migrations
+            // Disable EF migrations
             Database.SetInitializer<LaunchpadDataContext>(null);
 
             #region Boilerplate configuration
-            //Migrations were not being generated corretly because the order in which the base was executing
-            //the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
-            //move it here and make it explicit
-            //https://aspnetidentity.codeplex.com/SourceControl/latest#src/Microsoft.AspNet.Identity.EntityFramework/IdentityDbContext.cs
+            // Migrations were not being generated corretly because the order in which the base was executing
+            // the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
+            // move it here and make it explicit
+            // https://aspnetidentity.codeplex.com/SourceControl/latest#src/Microsoft.AspNet.Identity.EntityFramework/IdentityDbContext.cs
             var user = modelBuilder.Entity<ApplicationUser>()
               .ToTable("User", Constants.Schemas.FrameworkTables);
             user.HasMany(u => u.Roles).WithRequired().HasForeignKey(ur => ur.UserId);
@@ -102,10 +108,10 @@ namespace Launchpad.Data
             role.HasMany(r => r.Users).WithRequired().HasForeignKey(ur => ur.RoleId);
             #endregion
 
-            //Register the other models
+            // Register the other models
             modelBuilder.Configurations.AddFromAssembly(typeof(LaunchpadDataContext).Assembly);
 
-            //Configure the namespace for the audit 
+            // Configure the namespace for the audit 
             modelBuilder.Entity<AuditLog>()
                 .ToTable("AuditLog", Constants.Schemas.FrameworkTables);
 
@@ -124,7 +130,7 @@ namespace Launchpad.Data
             }
             catch (DbEntityValidationException validationException)
             {
-                //Log errors generated from attempting to commit changes
+                // Log errors generated from attempting to commit changes
                 var errorMessages = validationException.EntityValidationErrors
                     .SelectMany(entityError => entityError.ValidationErrors)
                     .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");

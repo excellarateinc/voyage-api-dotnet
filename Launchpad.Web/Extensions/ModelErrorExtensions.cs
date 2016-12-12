@@ -11,7 +11,7 @@ namespace Launchpad.Web.Extensions
         {
             var model = new BadRequestErrorModel { Field = field };
             var codedMessage = error.ErrorMessage.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
-            if(codedMessage.Length == 2)
+            if (codedMessage.Length == 2)
             {
                 model.Code = codedMessage[0];
                 model.Description = codedMessage[1];

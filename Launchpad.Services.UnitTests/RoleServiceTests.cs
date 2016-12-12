@@ -358,8 +358,8 @@ namespace Launchpad.Services.UnitTests
         {
             var roles = new[] 
             {
-                new ApplicationRole {Name="Role1" },
-                new ApplicationRole {Name="Role2" }
+                new ApplicationRole { Name = "Role1" },
+                new ApplicationRole { Name = "Role2" }
             };
 
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>()

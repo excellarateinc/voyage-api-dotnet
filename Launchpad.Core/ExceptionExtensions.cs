@@ -19,7 +19,7 @@ namespace Launchpad.Core
 
             Exception ex = exception;
             
-            while(ex != null && depth < maxDepth)
+            while (ex != null && depth < maxDepth)
             {
                 sb.AppendLine(ex.Message);
                 ex = ex.InnerException;

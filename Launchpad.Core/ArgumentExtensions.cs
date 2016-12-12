@@ -16,7 +16,7 @@ namespace Launchpad.Core
         /// <returns>TType</returns>
         public static TType ThrowIfNull<TType>(this TType argumentInstance, string paramName = "")
         {
-            if(argumentInstance == null)
+            if (argumentInstance == null)
             {
                 throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(TType).Name : paramName);
             }

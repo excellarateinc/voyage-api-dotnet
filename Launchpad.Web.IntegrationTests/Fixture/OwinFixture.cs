@@ -53,7 +53,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         public void Dispose()
         {
-            if(_webApp != null)
+            if (_webApp != null)
             {
                 _webApp.Dispose();
                 _webApp = null;

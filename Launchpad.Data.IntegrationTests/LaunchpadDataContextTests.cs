@@ -73,9 +73,9 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void RoleClaims_Should_Query_Database()
         {
-            using(new TransactionScope())
+            using (new TransactionScope())
             {
-                using(var context = new LaunchpadDataContext())
+                using (var context = new LaunchpadDataContext())
                 {
                     var results = context.RoleClaims.Take(10).ToList();
                     results.Should().NotBeNull();
