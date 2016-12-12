@@ -16,21 +16,21 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Widgets_Should_Return_Record()
         {
-            //Create a new transaction scope
+            // Create a new transaction scope
             using (new TransactionScope())
             {
-                //Create a data context
+                // Create a data context
                 using (var context = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
 
-                    //Create a widget (in case the database is empty)
+                    // Create a widget (in case the database is empty)
                     context.AddWidget();
 
-                    //Act
+                    // Act
                     var widget = context.Widgets.First();
 
-                    //Assert
+                    // Assert
                     widget.Should().NotBeNull();
                 }
             }
@@ -39,13 +39,13 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void ActivityAudits_Should_Query_Database()
         {
-            //Create a new transaction scope
+            // Create a new transaction scope
             using (new TransactionScope())
             {
-                //Create a data context
+                // Create a data context
                 using (var context = new LaunchpadDataContext())
                 {
-                    //Just force a database query
+                    // Just force a database query
                     var results = context.ActivityAudits.Take(10);
 
                     results.Should().NotBeNull();
@@ -56,13 +56,13 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void Logs_Should_Query_Database()
         {
-            //Create a new transaction scope
+            // Create a new transaction scope
             using (new TransactionScope())
             {
-                //Create a data context
+                // Create a data context
                 using (var context = new LaunchpadDataContext())
                 {
-                    //Just force a database query
+                    // Just force a database query
                     var results = context.Logs.Take(10);
 
                     results.Should().NotBeNull();
@@ -73,9 +73,9 @@ namespace Launchpad.Data.IntegrationTests
         [Fact]
         public void RoleClaims_Should_Query_Database()
         {
-            using(new TransactionScope())
+            using (new TransactionScope())
             {
-                using(var context = new LaunchpadDataContext())
+                using (var context = new LaunchpadDataContext())
                 {
                     var results = context.RoleClaims.Take(10).ToList();
                     results.Should().NotBeNull();

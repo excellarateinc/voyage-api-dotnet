@@ -15,16 +15,16 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First();
                     user.Deleted = true;
                     ctx.SaveChanges();
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByEmailAsync(user.Email);
 
-                    //Assert
+                    // Assert
                     matched.Should().BeNull();
                 }
             }
@@ -37,16 +37,16 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First();
                     user.Deleted = true;
                     ctx.SaveChanges();
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByIdAsync(user.Id);
 
-                    //Assert
+                    // Assert
                     matched.Should().BeNull();
                 }
             }
@@ -59,21 +59,20 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First();
                     user.Deleted = true;
                     ctx.SaveChanges();
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByNameAsync(user.UserName);
 
-                    //Assert
+                    // Assert
                     matched.Should().BeNull();
                 }
             }
         }
-
 
         [Fact]
         public async void FindByEmailAsync_Should_Match_Existing_User()
@@ -82,14 +81,14 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByEmailAsync(user.Email);
 
-                    //Assert
+                    // Assert
                     matched.Should().NotBeNull();
                 }
             }
@@ -102,14 +101,14 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByIdAsync(user.Id);
 
-                    //Assert
+                    // Assert
                     matched.Should().NotBeNull();
                 }
             }
@@ -122,14 +121,14 @@ namespace Launchpad.Data.IntegrationTests.Stores
             {
                 using (var ctx = new LaunchpadDataContext())
                 {
-                    //Arrange
+                    // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
 
-                    //Act
+                    // Act
                     var userStore = new CustomUserStore(ctx);
                     var matched = await userStore.FindByNameAsync(user.UserName);
 
-                    //Assert
+                    // Assert
                     matched.Should().NotBeNull();
                 }
             }

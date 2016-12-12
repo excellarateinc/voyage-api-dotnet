@@ -24,18 +24,21 @@ namespace Launchpad.Web.UnitTests.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.widgets" };
 
-            var claimsIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim("lss.permission", "list.widgets")
-            }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
                 Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext { Principal = new ClaimsPrincipal(claimsIdentity) }
+                RequestContext =
+                    new HttpRequestContext
+                        {
+                            Principal = new ClaimsPrincipal(claimsIdentity)
+                        }
             };
 
-            var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);            
+            var actionContext = new HttpActionContext(
+                controllerContext,
+                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
             attribute.OnAuthorization(actionContext);
 
@@ -47,18 +50,23 @@ namespace Launchpad.Web.UnitTests.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
 
-            var claimsIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim("lss.permission", "list.widgets")
-            }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
 
             var controllerContext = new HttpControllerContext
-            {
-                Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext {Principal = new ClaimsPrincipal(claimsIdentity)}
-            };
+                                        {
+                                            Request = new HttpRequestMessage(),
+                                            RequestContext =
+                                                new HttpRequestContext
+                                                    {
+                                                        Principal =
+                                                            new ClaimsPrincipal(
+                                                            claimsIdentity)
+                                                    }
+                                        };
 
-            var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
+            var actionContext = new HttpActionContext(
+                controllerContext,
+                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
             attribute.OnAuthorization(actionContext);
 
@@ -79,7 +87,7 @@ namespace Launchpad.Web.UnitTests.Filters
             var controllerContext = new HttpControllerContext
             {
                 Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext {Principal = new ClaimsPrincipal(claimsIdentity)}
+                RequestContext = new HttpRequestContext { Principal = new ClaimsPrincipal(claimsIdentity) }
             };
 
             var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
@@ -95,18 +103,21 @@ namespace Launchpad.Web.UnitTests.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.widgets" };
 
-            var claimsIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim("lss.permission", "list.widgets")
-            }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
                 Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext {Principal = new ClaimsPrincipal(claimsIdentity)}
+                RequestContext =
+                    new HttpRequestContext
+                    {
+                        Principal = new ClaimsPrincipal(claimsIdentity)
+                    }
             };
 
-            var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
+            var actionContext = new HttpActionContext(
+                controllerContext,
+                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
             await attribute.OnAuthorizationAsync(actionContext, new CancellationToken());
 
@@ -118,18 +129,21 @@ namespace Launchpad.Web.UnitTests.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
 
-            var claimsIdentity = new ClaimsIdentity(new[]
-            {
-                new Claim("lss.permission", "list.widgets")
-            }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
                 Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext {Principal = new ClaimsPrincipal(claimsIdentity)}
+                RequestContext =
+                    new HttpRequestContext
+                    {
+                        Principal = new ClaimsPrincipal(claimsIdentity)
+                    }
             };
 
-            var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
+            var actionContext = new HttpActionContext(
+                controllerContext,
+                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
             attribute.OnAuthorizationAsync(actionContext, new CancellationToken());
 
@@ -140,7 +154,7 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorizeAsync_Should_Set_Response_When_User_Is_Not_Authenticated()
         {
-            var attribute = new ClaimAuthorizeAttribute {ClaimValue = "create.widgets"};
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
 
             var claimsIdentity = new ClaimsIdentity(new[]
             {
@@ -150,7 +164,7 @@ namespace Launchpad.Web.UnitTests.Filters
             var controllerContext = new HttpControllerContext
             {
                 Request = new HttpRequestMessage(),
-                RequestContext = new HttpRequestContext {Principal = new ClaimsPrincipal(claimsIdentity)}
+                RequestContext = new HttpRequestContext { Principal = new ClaimsPrincipal(claimsIdentity) }
             };
 
             var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
@@ -160,6 +174,5 @@ namespace Launchpad.Web.UnitTests.Filters
             actionContext.Response.Should().NotBeNull();
             actionContext.Response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
-
     }
 }

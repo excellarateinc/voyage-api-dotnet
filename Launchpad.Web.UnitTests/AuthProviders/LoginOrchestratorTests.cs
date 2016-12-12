@@ -16,6 +16,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
     {
         private readonly LoginOrchestrator _orchestrator;
         private readonly Mock<IOwinContext> _mockOwinContext;
+
         public LoginOrchestratorTests()
         {
             _orchestrator = new LoginOrchestrator();
@@ -31,12 +32,12 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public async void ValidateCredential_Should_ResolveUserService_And_Call_IsValidCredential()
         { 
-            //Setup the user service
+            // Setup the user service
             var mockUserService = Mock.Create<IUserService>();
             mockUserService.Setup(_ => _.IsValidCredential("userName", "password"))
                 .ReturnsAsync(true);            
 
-            //Skip mocking out autofac, just build the container to use
+            // Skip mocking out autofac, just build the container to use
             var containerBuilder = new ContainerBuilder();
             containerBuilder.Register(c => mockUserService.Object);
 
@@ -52,9 +53,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
                 "clientId", 
                 "userName", 
                 "password", 
-                new string[0]);
-
-            
+                new string[0]);            
 
             var result = await _orchestrator.ValidateCredential(ctx);
 
@@ -66,10 +65,10 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"password"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {"password"}},
-                {"foo", new[] {"bar"}}
+                { "grant_type", new[] { "password" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "password" } },
+                { "foo", new[] { "bar" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -84,8 +83,8 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"password"}},
-                {"username", new[] {"username"}}
+                { "grant_type", new[] { "password" } },
+                { "username", new[] { "username" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -100,9 +99,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"password"}},
-                {"username", new[] {"username"}},
-                {"password1", new[] {"password"}}
+                { "grant_type", new[] { "password" } },
+                { "username", new[] { "username" } },
+                { "password1", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -117,9 +116,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"password"}},
-                {"username1", new[] {"username"}},
-                {"password", new[] {"password"}}
+                { "grant_type", new[] { "password" } },
+                { "username1", new[] { "username" } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -134,9 +133,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type1", new[] {"password"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {"password"}}
+                { "grant_type1", new[] { "password" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -151,9 +150,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {""}},
-                {"username", new[] {"username"}},
-                {"password", new[] {"password"}}
+                { "grant_type", new[] { "" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -168,9 +167,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"grant_type"}},
-                {"username", new[] {""}},
-                {"password", new[] {"password"}}
+                { "grant_type", new[] { "grant_type" } },
+                { "username", new[] { "" } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -185,9 +184,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"grant_type"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {""}}
+                { "grant_type", new[] { "grant_type" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -202,9 +201,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"grant_type"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {"credential"}}
+                { "grant_type", new[] { "grant_type" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "credential" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -219,9 +218,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"grant_type"}},
-                {"username", new[] {new string('a', 51)}},
-                {"password", new[] {"password"}}
+                { "grant_type", new[] { "grant_type" } },
+                { "username", new[] { new string('a', 51) } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -236,9 +235,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"grant_type"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {new string('a', 251)}}
+                { "grant_type", new[] { "grant_type" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { new string('a', 251) } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);
@@ -253,9 +252,9 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                {"grant_type", new[] {"password"}},
-                {"username", new[] {"username"}},
-                {"password", new[] {"password"}}
+                { "grant_type", new[] { "password" } },
+                { "username", new[] { "username" } },
+                { "password", new[] { "password" } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);

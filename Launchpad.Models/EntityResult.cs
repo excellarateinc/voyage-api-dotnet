@@ -35,7 +35,7 @@ namespace Launchpad.Models
         /// </summary>
         /// <param name="code">Error code</param>
         /// <param name="message">Error message</param>
-        /// <returns></returns>
+        /// <returns>An object containing an error code message.</returns>
         public EntityResult WithErrorCodeMessage(string code, string message)
         {
             Errors.Add($"{code}::{message}");
@@ -46,7 +46,7 @@ namespace Launchpad.Models
         /// Adds an error message for the common scenario of an entity not being found
         /// </summary>
         /// <param name="id">ID of the entity</param>
-        /// <returns></returns>
+        /// <returns>An object containing a not found result.</returns>
         public EntityResult WithEntityNotFound(object id)
         {
             return WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");
@@ -75,10 +75,10 @@ namespace Launchpad.Models
         /// </summary>
         /// <param name="code">Error code</param>
         /// <param name="message">Error message</param>
-        /// <returns></returns>
+        /// <returns>An object containing an error code message.</returns>
         public new EntityResult<TModel> WithErrorCodeMessage(string code, string message)
         {
-            Errors.Add(string.Format("{0}::{1}", code, message));
+            Errors.Add($"{code}::{message}");
             return this;
         }
 
@@ -86,7 +86,7 @@ namespace Launchpad.Models
         /// Adds an error message for the common scenario of an entity not being found
         /// </summary>
         /// <param name="id">ID of the entity</param>
-        /// <returns></returns>
+        /// <returns>An object containing a not found message.</returns>
         public new EntityResult<TModel> WithEntityNotFound(object id)
         {
             return WithErrorCodeMessage(Constants.ErrorCodes.EntityNotFound, $"Could not locate entity with ID {id}");

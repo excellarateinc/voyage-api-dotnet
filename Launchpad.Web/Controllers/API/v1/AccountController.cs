@@ -39,7 +39,6 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("account/register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-
             var entityResult = await _userService.RegisterAsync(model);
             return NoContent(entityResult);
         }

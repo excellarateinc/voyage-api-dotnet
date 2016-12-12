@@ -28,8 +28,10 @@ namespace Launchpad.Web.IntegrationTests.Fixture
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, $"{BaseAddress}/api/v1/login")
             {
                 Content =
-                    new StringContent("grant_type=password&username=admin%40admin.com&password=Hello123!", Encoding.UTF8,
-                        "application/x-www-form-urlencoded")
+                    new StringContent(
+                    "grant_type=password&username=admin%40admin.com&password=Hello123!",
+                    Encoding.UTF8,
+                    "application/x-www-form-urlencoded")
             };
 
             var response = await DefaultClient.SendAsync(httpRequestMessage);
@@ -53,7 +55,7 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         public void Dispose()
         {
-            if(_webApp != null)
+            if (_webApp != null)
             {
                 _webApp.Dispose();
                 _webApp = null;

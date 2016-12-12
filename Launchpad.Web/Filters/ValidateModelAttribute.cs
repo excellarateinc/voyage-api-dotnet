@@ -17,7 +17,8 @@ namespace Launchpad.Web.Filters
             {
                 actionContext.Response = actionContext
                     .Request
-                    .CreateResponse(HttpStatusCode.BadRequest,
+                    .CreateResponse(
+                        HttpStatusCode.BadRequest,
                         actionContext.ModelState.ConvertToResponseModel());
             }
         }

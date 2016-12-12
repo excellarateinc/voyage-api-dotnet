@@ -78,7 +78,6 @@ namespace Launchpad.Services.UnitTests
             entityResult.Model.Id.Should().Be(repoClaim.Id);
             entityResult.Model.ClaimType.Should().Be(repoClaim.ClaimType);
             entityResult.Model.ClaimValue.Should().Be(repoClaim.ClaimValue);
-
         }
 
         [Fact]
@@ -87,9 +86,8 @@ namespace Launchpad.Services.UnitTests
             string roleId = Fixture.Create<string>();
             int id = 1;
 
-
             _mockRepository.Setup(_ => _.Get(id))
-                .Returns(((RoleClaim)null));
+                .Returns((RoleClaim)null);
 
             var entityResult = _roleService.GetClaimById(roleId, id);
 
@@ -113,7 +111,7 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(role);
 
-            //act
+            // act
             var entityResult = _roleService.GetRoleById(id);
 
             entityResult.Should().NotBeNull();
@@ -122,16 +120,16 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void GetRoleById_Should_Return_Failed_Result_When_Role_Not_Found()
         {
-            //arrange
+            // arrange
             var id = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
                .ReturnsAsync(null);
 
-            //act
+            // act
             var entityResult = _roleService.GetRoleById(id);
 
-            //assert
+            // assert
             entityResult.IsEntityNotFound.Should().BeTrue();
             entityResult.Succeeded.Should().BeFalse();
         }
@@ -150,7 +148,7 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
                 .ReturnsAsync(role);
 
-            //act
+            // act
             var result = _roleService.GetRoleByName(name);
 
             result.Should().NotBeNull();
@@ -175,7 +173,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public async void RemoveRole_Calls_Role_Manager()
         {
-            //Arrange
+            // Arrange
             var roleId = Fixture.Create<string>();
 
             var appRole = new ApplicationRole
@@ -188,17 +186,12 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.DeleteAsync(appRole))
                 .Returns(Task.Delay(0));
 
-
-
-
-            //Act
+            // Act
             var result = await _roleService.RemoveRoleAsync(roleId);
 
-
-            //Assert
+            // Assert
             Mock.VerifyAll();
             result.Succeeded.Should().BeTrue();
-
         }
 
         [Fact]
@@ -209,13 +202,11 @@ namespace Launchpad.Services.UnitTests
 
             _mockRepository.Setup(_ => _.Delete(claimId));
 
-
-            //act
+            // act
             _roleService.RemoveClaim(roleId, claimId);
 
             Mock.VerifyAll();
         }
-
 
         [Fact]
         public async void RemoveRole_Calls_Role_Manager_And_Returns_Failed_Result_When_Role_Does_Not_Exist()
@@ -225,14 +216,12 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(roleId))
                 .ReturnsAsync(null);
 
-
             var result = await _roleService.RemoveRoleAsync(roleId);
 
             Mock.VerifyAll();
             result.Succeeded.Should().BeFalse();
             result.IsEntityNotFound.Should().BeTrue();
         }
-
 
         [Fact]
         public void GetRoleClaims_Should_Call_Repository()
@@ -265,8 +254,7 @@ namespace Launchpad.Services.UnitTests
             _mockRepository.Setup(_ => _.Add(It.Is<RoleClaim>(
                 value => value.RoleId == appRole.Id &&
                   value.ClaimType == claim.ClaimType &&
-                  value.ClaimValue == claim.ClaimValue
-            )))
+                  value.ClaimValue == claim.ClaimValue)))
             .Returns(new RoleClaim());
 
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
@@ -358,8 +346,8 @@ namespace Launchpad.Services.UnitTests
         {
             var roles = new[] 
             {
-                new ApplicationRole {Name="Role1" },
-                new ApplicationRole {Name="Role2" }
+                new ApplicationRole { Name = "Role1" },
+                new ApplicationRole { Name = "Role2" }
             };
 
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>()

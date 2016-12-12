@@ -8,7 +8,7 @@ namespace Launchpad.Models.Map
         {
             var instance = MappingConfig.ConfigureMapper();
 
-            //The mapper can be shared for the lifetime of the application, register it as a singleton 
+            // The mapper can be shared for the lifetime of the application, register it as a singleton 
             builder.RegisterInstance(instance)
                 .SingleInstance();
         }        

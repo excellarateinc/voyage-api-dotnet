@@ -6,6 +6,7 @@ namespace Launchpad.Services.Interfaces
     public interface IAuditService
     {
         void Record(ActivityAuditModel model);
+
         Task RecordAsync(ActivityAuditModel model);
     }
 }

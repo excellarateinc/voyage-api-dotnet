@@ -46,10 +46,11 @@ namespace Launchpad.Services.UnitTests
                 return Success(model);
             }
 
-            public void InvokeMergeCollection<TSource, TDest>(ICollection<TSource> source,
-                    ICollection<TDest> destination,
-                    Func<TSource, TDest, bool> predicate,
-                    Action<TDest> deleteAction)
+            public void InvokeMergeCollection<TSource, TDest>(
+                ICollection<TSource> source,
+                ICollection<TDest> destination,
+                Func<TSource, TDest, bool> predicate,
+                Action<TDest> deleteAction)
             {
                 MergeCollection(source, destination, predicate, deleteAction);
             }
@@ -78,12 +79,11 @@ namespace Launchpad.Services.UnitTests
                 user
             };
 
-
-            _testPassThrough
-                .InvokeMergeCollection(source, destination,
-                    (s, d) => s.Id == d.Id,
+            _testPassThrough.InvokeMergeCollection(
+                source,
+                destination,
+                (s, d) => s.Id == d.Id,
                     phone => ++deleteCount);
-
 
             destination
                 .Should()
@@ -122,7 +122,8 @@ namespace Launchpad.Services.UnitTests
 
             destination
                 .First()
-                .ShouldBeEquivalentTo(userPhoneModel,
+                .ShouldBeEquivalentTo(
+                    userPhoneModel,
                     options => options.Excluding(_ => _.User));
         }
 
@@ -148,7 +149,8 @@ namespace Launchpad.Services.UnitTests
 
             destination
                 .First()
-                .ShouldBeEquivalentTo(userPhoneModel,
+                .ShouldBeEquivalentTo(
+                    userPhoneModel,
                     options => options.Excluding(_ => _.User));
         }
 
@@ -186,14 +188,11 @@ namespace Launchpad.Services.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
-
         }
-
 
         [Fact]
         public void NotFoundTModel_Should_Returnn_Result()
         {
-
             var id = Fixture.Create<string>();
             var result = _testPassThrough
                 .InvokeNotFound<object>(id);
@@ -205,7 +204,6 @@ namespace Launchpad.Services.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
-
         }
     }
 }

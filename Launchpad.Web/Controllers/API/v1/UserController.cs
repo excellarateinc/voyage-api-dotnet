@@ -380,7 +380,6 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var entityResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             return NoContent(entityResult);
-
         }
     }
 }

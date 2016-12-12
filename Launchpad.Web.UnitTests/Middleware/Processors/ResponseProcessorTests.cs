@@ -13,7 +13,7 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
 {
     public class ResponseProcessorTests : BaseUnitTest
     {
-        //Test class for testing the base methods
+        // Test class for testing the base methods
         internal class TestProcessor : ResponseProcessor
         {
             public bool Valid { get; set; }
@@ -82,7 +82,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
         {
             _testProcessor.Valid = false;
             var memoryStream = new MemoryStream();
-
 
             _mockResponse.Setup(_ => _.Body)
                 .Returns(memoryStream);

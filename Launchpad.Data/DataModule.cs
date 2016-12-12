@@ -50,13 +50,12 @@ namespace Launchpad.Data
 
         protected override void Load(ContainerBuilder builder)
         {
-
-            //Configure the auditing for the context
+            // Configure the auditing for the context
             ConfigureAuditing();
 
-            //Register a data context with an instance per request
-            //Dependency Type: ILaunchpadDataContext
-            //Concrete Type: LaunchpadDataContext
+            // Register a data context with an instance per request
+            // Dependency Type: ILaunchpadDataContext
+            // Concrete Type: LaunchpadDataContext
             builder.RegisterType<LaunchpadDataContext>()
                 .WithParameter("connectionString", _connectionString)
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(IIdentityProvider), (pi, ctx) => ctx.Resolve<IIdentityProvider>()))
@@ -64,13 +63,13 @@ namespace Launchpad.Data
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            //Shortcut to register all repositories using a marker interface
+            // Shortcut to register all repositories using a marker interface
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .AssignableTo<IRepository>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            //Register the user store (wrapper around the identity tables)
+            // Register the user store (wrapper around the identity tables)
             builder.RegisterType<CustomUserStore>()
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
                 .As<IUserStore<ApplicationUser, string>>()

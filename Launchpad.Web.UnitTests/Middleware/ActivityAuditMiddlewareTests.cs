@@ -40,11 +40,12 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", id } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), 
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware), 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -52,12 +53,11 @@ namespace Launchpad.Web.UnitTests.Middleware
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
-
             }))
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }
@@ -75,11 +75,9 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             var id = Guid.NewGuid().ToString();
 
-
             _mockAuditService.Setup(_ =>
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == null)))
                 .Returns(Task.FromResult(0));
-
 
             _mockAuditService.Setup(_ =>
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == error)))
@@ -87,11 +85,12 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", id } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware),
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -99,12 +98,11 @@ namespace Launchpad.Web.UnitTests.Middleware
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
-
             }))
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }
@@ -112,7 +110,6 @@ namespace Launchpad.Web.UnitTests.Middleware
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService_And_Overwrite_Empty_RequestId()
         {
-    
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                .Returns(false);
 
@@ -123,24 +120,24 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             using (var server = TestServer.Create(app =>
             {
-                //Use the test environment middleware to setup an context.Environment variables
+                // Use the test environment middleware to setup an context.Environment variables
                 app.Use<TestEnvironmentMiddleware>(new Dictionary<string, object> { { "owin.RequestId", Guid.Empty } });
 
-                //Middleware under test
-                app.Use(typeof(ActivityAuditMiddleware), 
+                // Middleware under test
+                app.Use(
+                    typeof(ActivityAuditMiddleware), 
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
                 app.Run(context =>
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
-                });
-
+                });            
             }))
             {
                 await server.HttpClient.GetAsync("/");
 
-                //Verify the audit and logger was called
+                // Verify the audit and logger was called
                 Mock.VerifyAll();
             }
         }

@@ -6,11 +6,11 @@ namespace Launchpad.Services.IdentityManagers
 {
     public class ApplicationUserManager : UserManager<ApplicationUser, string>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser,string> store) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser, string> store) : base(store)
         {
         }
 
-        public ApplicationUserManager(IUserStore<ApplicationUser,string> store, IUserTokenProvider<ApplicationUser, string> tokenProvider) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser, string> store, IUserTokenProvider<ApplicationUser, string> tokenProvider) : base(store)
         {
             UserValidator = new UserValidator<ApplicationUser>(this)
             {

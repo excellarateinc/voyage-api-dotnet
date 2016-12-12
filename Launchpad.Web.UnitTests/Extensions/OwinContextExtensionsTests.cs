@@ -44,7 +44,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             _mockOwinRequest = Mock.Create<IOwinRequest>();
             _mockOwinResponse = Mock.Create<IOwinResponse>();
             _mockAuthManager = Mock.Create<IAuthenticationManager>();
-            _env = new Dictionary<string, object> {{ "owin.RequestId", Guid.NewGuid().ToString() }};
+            _env = new Dictionary<string, object> { { "owin.RequestId", Guid.NewGuid().ToString() } };
 
             _ipAddress = Fixture.Create<string>();
            
@@ -60,25 +60,25 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Uses_OverrideId_When_RequestId_Empty()
         {
-            //Arrange
+            // Arrange
             SetupAuditModelMocks();
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
             _env["owin.RequestId"] = Guid.Empty.ToString();
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
-            //Assert
+            // Assert
             result.RequestId.Should().Be(_overrideId);
         }
 
         [Fact]
         public void GetIdentityName_Should_Return_NoIdentity_When_Authentication_Null()
         {
-            //Arrange
+            // Arrange
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.GetIdentityName();
 
             result.Should().Be("No Identity");
@@ -87,11 +87,11 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void GetIdentityName_Should_Return_NoIdentity_When_User_Null()
         {
-            //Arrange
+            // Arrange
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)null);
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.GetIdentityName();
 
             result.Should().Be("No Identity");
@@ -100,39 +100,37 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void GetIdentityName_Should_Return_NoIdentity_When_Identity_Null()
         {
-            //Arrange
+            // Arrange
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal());
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.GetIdentityName();
 
             result.Should().Be("No Identity");
         }
-
 
         [Fact]
         public void GetIdentityName_Should_Return_NoIdentity_When_Name_Null()
         {
-            //Arrange
+            // Arrange
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity(string.Empty)));
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.GetIdentityName();
 
             result.Should().Be("No Identity");
         }
 
-
         [Fact]
         public void GetIdentityName_Should_Return_Name_When_Populated()
         {
-            //Arrange
+            // Arrange
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal(new GenericIdentity("admin@admin.com")));
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.GetIdentityName();
 
             result.Should().Be("admin@admin.com");
@@ -141,37 +139,36 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity()
         {
-            //Arrange
+            // Arrange
             SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns((IAuthenticationManager)null);
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
-            //Assert
+            // Assert
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
             result.Path.Should().Be(_path);
             result.RequestId.Should().Be(_env["owin.RequestId"].ToString());
             result.StatusCode.Should().Be(_statusCode);
-            result.UserName.Should().Be("No Identity");
-          
+            result.UserName.Should().Be("No Identity");       
         }
 
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity_Null_Principal()
         {
-            //Arrange
+            // Arrange
             SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns((ClaimsPrincipal)null);
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
-            //Assert
+            // Assert
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
             result.Path.Should().Be(_path);
@@ -183,39 +180,38 @@ namespace Launchpad.Web.UnitTests.Extensions
         [Fact]
         public void ToAuditModel_Returns_Model_NoIdentity_Null_Identity()
         {
-            //Arrange
+            // Arrange
             SetupAuditModelMocks();
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(new ClaimsPrincipal());
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
-            //Assert
+            // Assert
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
             result.Path.Should().Be(_path);
             result.RequestId.Should().Be(_env["owin.RequestId"].ToString());
             result.StatusCode.Should().Be(_statusCode);
             result.UserName.Should().Be("No Identity");
-
         }
 
         [Fact]
         public void ToAuditModel_Returns_Model_UserName()
         {
-            //Arrange
+            // Arrange
             SetupAuditModelMocks();
-            var principal = new ClaimsPrincipal((new GenericIdentity("admin@admin.com")));
+            var principal = new ClaimsPrincipal(new GenericIdentity("admin@admin.com"));
 
             _mockOwinContext.Setup(_ => _.Authentication).Returns(_mockAuthManager.Object);
             _mockAuthManager.Setup(_ => _.User).Returns(principal);
 
-            //Act
+            // Act
             var result = _mockOwinContext.Object.ToAuditModel(_overrideId);
 
-            //Assert
+            // Assert
             result.IpAddress.Should().Be(_ipAddress);
             result.Method.Should().Be(_method);
             result.Path.Should().Be(_path);

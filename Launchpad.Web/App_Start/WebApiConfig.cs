@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+
 namespace Launchpad.Web
 {
     public static class WebApiConfig
@@ -13,9 +14,9 @@ namespace Launchpad.Web
             config.SuppressDefaultHostAuthentication();
 
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            config.Filters.Add(new ValidateModelAttribute()); //Globally configure model validation
+            config.Filters.Add(new ValidateModelAttribute()); // Globally configure model validation
 
-            //Set camelcasing on for JSON
+            // Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
 
@@ -25,8 +26,7 @@ namespace Launchpad.Web
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+                defaults: new { id = RouteParameter.Optional });
         }
     }
 }

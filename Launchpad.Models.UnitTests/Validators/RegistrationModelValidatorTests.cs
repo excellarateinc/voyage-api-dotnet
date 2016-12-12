@@ -36,27 +36,31 @@ namespace Launchpad.Models.UnitTests.Validators
         [Fact]
         public void Should_Have_Error_When_ConfirmPassword_Does_Not_Match_Password()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.ConfirmPassword, new RegistrationModel
-            {
-                FirstName = "first",
-                LastName = "last",
-                Email = "first.last@firstlast.com",
-                Password = "password!!!",
-                ConfirmPassword = "notpassword!!"
-            });
+            _validator.ShouldHaveValidationErrorFor(
+                model => model.ConfirmPassword,
+                new RegistrationModel
+                {
+                    FirstName = "first",
+                    LastName = "last",
+                    Email = "first.last@firstlast.com",
+                    Password = "password!!!",
+                    ConfirmPassword = "notpassword!!"
+                });
         }
 
         [Fact]
         public void Should_Not_Have_Error_When_ConfirmPassword_Matches_Password()
         {
-            _validator.ShouldNotHaveValidationErrorFor(model => model.ConfirmPassword, new RegistrationModel
-            {
-                FirstName = "first",
-                LastName = "last",
-                Email = "first.last@firstlast.com",
-                Password = "password!!!",
-                ConfirmPassword = "password!!!"
-            });
+            _validator.ShouldNotHaveValidationErrorFor(
+                model => model.ConfirmPassword,
+                new RegistrationModel
+                {
+                    FirstName = "first",
+                    LastName = "last",
+                    Email = "first.last@firstlast.com",
+                    Password = "password!!!",
+                    ConfirmPassword = "password!!!"
+                });
         }
 
         [Fact]
@@ -70,7 +74,6 @@ namespace Launchpad.Models.UnitTests.Validators
         {
             _validator.ShouldHaveValidationErrorFor(model => model.LastName, null as string);
         }
-
 
         [Fact]
         public void Should_Have_Error_When_Email_Is_Null()

@@ -19,13 +19,13 @@ namespace Launchpad.Web.IntegrationTests
         [Fact(Skip = "Skip until container overrides are in place")]
         public async void GetWidgets_Should_Return_Models()
         {
-            //ARRANGE
+            // ARRANGE
             var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
 
-            //ACT
+            // ACT
             var response = await OwinFixture.DefaultClient.SendAsync(httpRequestMessage);
 
-            //ASSERT
+            // ASSERT
             WidgetModel[] models = await response.ShouldHaveStatusAndPayload<WidgetModel[]>(HttpStatusCode.OK);
             models.Should().NotBeNullOrEmpty();
         }

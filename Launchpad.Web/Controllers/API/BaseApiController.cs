@@ -12,9 +12,6 @@ namespace Launchpad.Web.Controllers.API
         /// <summary>
         /// Creates (201) a Created response 
         /// </summary>
-        /// <param name="routeValue"></param>
-        /// <param name="entityResult">Result</param>
-        /// <param name="routeName"></param>
         /// <returns>Created response if there is not an error, otherwise BadRequest or NotFound</returns>
         protected IHttpActionResult CreatedEntityAt<TModel>(string routeName, Func<object> routeValue, EntityResult<TModel> entityResult)
             where TModel : class
@@ -32,7 +29,7 @@ namespace Launchpad.Web.Controllers.API
         {
             if (!entityResult.Succeeded)
             {
-                //If there are any errors, add them 
+                // If there are any errors, add them 
                 if (entityResult.Errors.Any())
                 {
                     foreach (var error in entityResult.Errors)
@@ -45,8 +42,10 @@ namespace Launchpad.Web.Controllers.API
                 {
                     return Content(HttpStatusCode.NotFound, ModelState.ConvertToResponseModel());
                 }
+
                 return Content(HttpStatusCode.BadRequest, ModelState.ConvertToResponseModel());
             }
+
             return null;
         }
 

@@ -28,9 +28,9 @@ namespace Launchpad.Web.Filters
             {
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            //Check if the user has the correct claim
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
+                // Check if the user has the correct claim
                 Log.Logger
                       .ForContext<ClaimAuthorizeAttribute>()
                       .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
@@ -42,19 +42,20 @@ namespace Launchpad.Web.Filters
         {
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
 
-            //User has not authenticated / signed in
+            // User has not authenticated / signed in
             if (identity != null && !identity.IsAuthenticated)
             {            
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-            }
-            //Check if the user has the correct claim
+            }            
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue)) 
             {
+                // Check if the user has the correct claim
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
                     .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
+
             return Task.FromResult<object>(null);
         }
     }

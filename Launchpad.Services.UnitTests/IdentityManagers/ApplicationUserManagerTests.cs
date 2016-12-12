@@ -41,7 +41,6 @@ namespace Launchpad.Services.UnitTests.IdentityManagers
 
             validator.AllowOnlyAlphanumericUserNames.Should().BeFalse();
             validator.RequireUniqueEmail.Should().BeTrue();
-
         }
 
         [Fact]

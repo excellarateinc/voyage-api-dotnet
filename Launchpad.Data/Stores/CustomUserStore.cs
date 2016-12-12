@@ -13,13 +13,11 @@ namespace Launchpad.Data.Stores
 
         public override Task<ApplicationUser> FindByEmailAsync(string email)
         {
-
             return GetUserAggregateAsync(u => u.Email.ToUpper() == email.ToUpper() && !u.Deleted);
         }
 
         public override Task<ApplicationUser> FindByIdAsync(string userId)
         {
-
             return GetUserAggregateAsync(u => u.Id.Equals(userId) && !u.Deleted);
         }
 

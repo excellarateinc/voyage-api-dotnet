@@ -50,7 +50,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertClaim(_ => _.CreateUser(new UserModel()), LssClaims.CreateUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
         }
 
         [Fact]
@@ -72,7 +71,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void CreateUser_Should_Call_UserService_And_Return_Created_On_Success()
         {
-            //ARRANGE
+            // ARRANGE
             var inputModel = Fixture.Create<UserModel>();
             var entityResult = new EntityResult<UserModel>(Fixture.Create<UserModel>(), true, false);
 
@@ -81,7 +80,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             const string url = "http://testlink.com";
 
-            //Matcher for determining if route params match
+            // Matcher for determining if route params match
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
             {
                 routeDictionary.ContainsKey("UserId").Should().BeTrue();
@@ -92,33 +91,32 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockUrlHelper.Setup(_ => _.Link("GetUserAsync", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
                 .Returns(url);
 
-            //ACT
+            // ACT
             var result = await _userController.CreateUser(inputModel);
 
-            //ASSERT
+            // ASSERT
             var message = await result.ExecuteAsync(CreateCancelToken());
             message.StatusCode.Should().Be(HttpStatusCode.Created);
             message.Headers.Location.Should().Be(url);
             UserModel messageModel;
             message.TryGetContentValue(out messageModel).Should().BeTrue();
             messageModel.ShouldBeEquivalentTo(entityResult.Model);
-
         }
 
         [Fact]
         public async void CreateUser_Should_Call_UserService_And_Return_BadRequest_On_Failure()
         {
-            //ARRANGE
+            // ARRANGE
             var inputModel = Fixture.Create<UserModel>();
             var serviceResult = new EntityResult<UserModel>(Fixture.Create<UserModel>(), false, false, "err1");
 
             _mockUserService.Setup(_ => _.CreateUserAsync(inputModel))
                 .ReturnsAsync(serviceResult);
 
-            //ACT
+            // ACT
             var result = await _userController.CreateUser(inputModel);
 
-            //ASSERT
+            // ASSERT
             var message = await result.ExecuteAsync(CreateCancelToken());
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
@@ -176,7 +174,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var message = await result.ExecuteAsync(CreateCancelToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
         }
 
         [Fact]
@@ -274,9 +271,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
         {
-            _userController.AssertClaim(_ => _.GetUsers(),
+            _userController.AssertClaim(
+                _ => _.GetUsers(),
                 LssClaims.ListUsers);
-
         }
 
         [Fact]
@@ -293,7 +290,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertClaim(_ => _.AssignRole("userId", new RoleModel()), LssClaims.AssignRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
         }
 
         [Fact]
@@ -321,7 +317,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void GetUsers_Should_Call_UserService()
         {
-            //Arrange 
+            // Arrange 
             var users = Fixture.CreateMany<UserModel>();
             var entityResult = new EntityResult<IEnumerable<UserModel>>(users, true, false);
 
@@ -345,7 +341,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void Assign_Should_Call_User_Service_And_Return_Created_When_Successful()
         {
-            //arrange
+            // arrange
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
             var serviceModel = Fixture.Create<RoleModel>();
@@ -355,7 +351,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             const string url = "http://testlink.com";
 
-            //Matcher for determining if route params match
+            // Matcher for determining if route params match
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
             {
                 routeDictionary.ContainsKey("UserId").Should().BeTrue();
@@ -368,10 +364,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockUrlHelper.Setup(_ => _.Link("GetUserRoleById", It.Is<Dictionary<string, object>>(arg => routeDictionaryMatcher(arg))))
                 .Returns(url);
 
-            //act
+            // act
             var result = await _userController.AssignRole(userId, model);
 
-            //assert
+            // assert
             var message = await result.ExecuteAsync(new CancellationToken());
             message.Headers.Location.Should().Be(url);
             message.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -381,17 +377,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void Assign_Should_Call_User_Service_And_Return_BadRequest_When_Role_Assignment_Fails()
         {
-            //arrange
+            // arrange
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
             var identityResult = new EntityResult<RoleModel>(null, false, false);
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model))
                 .ReturnsAsync(identityResult);
 
-            //act
+            // act
             var result = await _userController.AssignRole(userId, model);
 
-            //assert
+            // assert
             Mock.VerifyAll();
 
             var message = await result.ExecuteAsync(new CancellationToken());
@@ -423,7 +419,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/roles");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
-
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
@@ -495,6 +490,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.AssertClaim(_ => _.RemoveRole("userId", "roleId"), LssClaims.RevokeRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
+
         [Fact]
         public async void RemoveRole_Should_Call_UserService()
         {
@@ -540,17 +536,17 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async void GetUser_Should_Call_User_Service()
         {
-            //ARRANGE
+            // ARRANGE
             var id = Fixture.Create<string>();
             var user = Fixture.Create<UserModel>();
             var entityResult = new EntityResult<UserModel>(user, true, false);
             _mockUserService.Setup(_ => _.GetUserAsync(id))
                 .ReturnsAsync(entityResult);
 
-            //ACT
+            // ACT
             var result = await _userController.GetUser(id);
 
-            //ASSERT
+            // ASSERT
             var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);

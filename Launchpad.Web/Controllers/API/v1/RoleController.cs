@@ -4,10 +4,9 @@ using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+
 namespace Launchpad.Web.Controllers.API.V1
 {
-
-
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class RoleController : BaseApiController
@@ -198,11 +197,14 @@ namespace Launchpad.Web.Controllers.API.V1
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
             var entityResult = await _roleService.AddClaimAsync(roleId, claim);
-            var actionResult = CreatedEntityAt("GetClaimById", () => new
-            {
-                RoleId = roleId,
-                ClaimId = entityResult.Model.Id
-            }, entityResult);
+            var actionResult = CreatedEntityAt(
+                "GetClaimById",
+                () => new
+                    {
+                        RoleId = roleId,
+                        ClaimId = entityResult.Model.Id
+                    },
+                entityResult);
             return actionResult;
         }
 

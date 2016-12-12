@@ -31,9 +31,9 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         }
 
         [Fact]
-        public async Task Register_Should_Call_UserManager() {
-
-            //ARRANGE
+        public async Task Register_Should_Call_UserManager()
+        {
+            // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
@@ -44,10 +44,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockUserService.Setup(_ => _.RegisterAsync(model))
                 .ReturnsAsync(entityResult);
 
-            //ACT
+            // ACT
             var result = await _accountController.Register(model);
 
-            //ASSERT
+            // ASSERT
             Mock.VerifyAll();
 
             var message = await result.ExecuteAsync(new CancellationToken());
@@ -58,7 +58,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         [Fact]
         public async Task Register_Should_Return_BadRequest_When_Model_Is_Invalid()
         {
-            //ARRANGE
+            // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "testtestcom")
                 .With(_ => _.Password, "cool1Password!!")
@@ -69,10 +69,10 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _mockUserService.Setup(_ => _.RegisterAsync(model))
                 .ReturnsAsync(entityResult);
 
-            //ACT
+            // ACT
             var result = await _accountController.Register(model);
 
-            //ASSERT
+            // ASSERT
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(new CancellationToken());
 
@@ -106,8 +106,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
-              
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));             
         }
 
         [Fact]
