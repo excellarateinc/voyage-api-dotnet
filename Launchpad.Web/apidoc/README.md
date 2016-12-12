@@ -1,7 +1,25 @@
 ## apiDoc
-[apiDoc](http://apidocjs.com) is a NodeJS app that scans files for documentation relating to a web services API. apiDoc is used within this app to generate human readable JSON web services API documentation in HTML/CSS. 
+
+#### Overview
+[apiDoc](http://apidocjs.com) is a NodeJS app that scans files for documentation relating to a web services API. apiDoc is used within this app to generate human readable JSON web services API documentation in HTML/CSS. To generate the documentation, apiDoc will scan select source files (defined in package.json > scripts > 'apidoc' task) for apiDoc specific documentation syntax. Embedding the API documentation within the source files keeps the code and documentation together for easier maintenance. 
+
+There are a number of other tools available for generating API documentation, but apiDoc has a much lower learning curve and is very intuitive. 
 
 For complete information on how to use and deploy API Doc for this application, see the [Deploy documentation](../../readme_docs/DEPLOY.md). 
+
+#### Configuration
+The apidoc configuration is defined within the apidoc.json file. Documenation on each configuration setting can be found on the [apiDoc website](http://apidocjs.com). 
+
+#### Common Definitions
+A set of common definitions are documented within this folder. The naming convention for common definition files is to prefix the filename with "apidoc-" and end the filename with ".js". 
+
+```
+apidoc-errors.js
+apidoc-header.js
+apidoc-users.js
+```
+
+The command to generate the documentation will scan all .cs and .js files throughout the codebase, which will include the common definition files in this folder. For more information on the command that executes apidoc, see the package.json file in this folder. 
 
 ## Quick Start
 ### 1. Install NodeJS 
