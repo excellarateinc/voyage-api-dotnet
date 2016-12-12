@@ -100,40 +100,41 @@ namespace Launchpad.Services
         /// <param name="destination">Destination</param>
         /// <param name="predicate">Predicate for matching items between collections</param>
         /// <param name="deleteAction">Action for deleting items</param>
-        protected void MergeCollection<TSource, TDest>(ICollection<TSource> source,
+        protected void MergeCollection<TSource, TDest>(
+            ICollection<TSource> source,
             ICollection<TDest> destination,
             Func<TSource, TDest, bool> predicate,
             Action<TDest> deleteAction)
         {
             foreach (var model in source)
             {
-                //Attempt to find match in destination
+                // Attempt to find match in destination
                 var entity = destination.FirstOrDefault(_ => predicate(model, _));
 
                 if (entity != null)
                 {
-                    //Update item in destination
+                    // Update item in destination
                     Mapper.Map<TSource, TDest>(model, entity);
                 }
                 else
                 {
-                    //Add new item in destination
+                    // Add new item in destination
                     entity = Mapper.Map<TSource, TDest>(model);
                     destination.Add(entity);
                 }
             }
 
-            //Remove items that exist in destination but not in the source
+            // Remove items that exist in destination but not in the source
             List<TDest> removed = destination
                 .Where(_ => !source.Any(s => predicate(s, _)))
                 .ToList();
 
             removed.ForEach(_ =>
             {
-                //This will unwire the relationship in the context
+                // This will unwire the relationship in the context
                 destination.Remove(_);
 
-                //This will actually delete the object 
+                // This will actually delete the object 
                 deleteAction(_);
             });
         }
