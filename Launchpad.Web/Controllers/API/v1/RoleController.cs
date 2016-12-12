@@ -53,6 +53,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   ]
         *   
         * @apiUse UnauthorizedError  
+        * @apiUse NotFoundError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
         [HttpGet]
@@ -200,10 +201,10 @@ namespace Launchpad.Web.Controllers.API.V1
             var actionResult = CreatedEntityAt(
                 "GetClaimById",
                 () => new
-                    {
-                        RoleId = roleId,
-                        ClaimId = entityResult.Model.Id
-                    },
+                {
+                    RoleId = roleId,
+                    ClaimId = entityResult.Model.Id
+                },
                 entityResult);
             return actionResult;
         }

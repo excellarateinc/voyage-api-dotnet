@@ -136,6 +136,7 @@
     <Compile Include="Assertions\HttpResponseMessageAssertions.cs" />
     <Compile Include="RoleTests.cs" />
     <Compile Include="StatusTests.cs" />
+    <Compile Include="UnauthorizedResponseTests.cs" />
     <Compile Include="WidgetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -26,6 +26,17 @@ namespace Launchpad.Web.IntegrationTests
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
+        public AndConstraint<HttpResponseMessageAssertions> HaveHeaderValue(string expectedHeader, string expectedValue, string because = "", params object[] becauseArgs)
+        {
+            Execute
+                .Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.Headers.Contains(expectedHeader))
+                .ForCondition(Subject.Headers.Location.AbsoluteUri == expectedValue)
+                .FailWith("Expected {context: response} to header {0} to be {1} {reason}, but found {2}.", expectedHeader, expectedValue, Subject.Headers.Location);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
         public AndConstraint<HttpResponseMessageAssertions> HaveStatusCode(HttpStatusCode expectedStatusCode, string because = "", params object[] becauseArgs)
         {
             Execute

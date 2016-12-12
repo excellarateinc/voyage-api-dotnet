@@ -18,6 +18,34 @@ namespace Launchpad.Web.IntegrationTests
         }
 
         [Fact]
+        public async void CreateRole_Should_Return_201_And_Location_Header()
+        {
+            using (var instance = OwinFixture.Start())
+            {
+                await OwinFixture.Init();
+
+                var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
+
+                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
+                    .WithJson(roleModel);
+
+                var httpResponseMessage = await OwinFixture.Client.SendAsync(httpRequestMessage);
+
+                httpResponseMessage.Should()
+                    .HaveStatusCode(HttpStatusCode.Created)
+                    .And
+                    .HaveHeader("Location");
+
+
+                var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+                responseModel.Name.Should().Be(roleModel.Name);
+
+                httpResponseMessage.Should()
+                    .HaveHeaderValue("Location", $"{OwinFixture.BaseAddress}/api/v1/roles/{responseModel.Id}");
+            }
+        }
+
+        [Fact]
         public async void GetRoleById_Should_Return_404_When_Id_Not_Found()
         {
             using (var instance = OwinFixture.Start())
