@@ -49,7 +49,7 @@ namespace Launchpad.Web.IntegrationTests
 
                 // ASSERT
                 response.Should()
-                    .HaveStatusCode(HttpStatusCode.NotFound);
+                    .HaveStatusCode(HttpStatusCode.OK);
 
                 RoleModel model = await response.ReadBody<RoleModel>();
                 model.Should().NotBeNull();
