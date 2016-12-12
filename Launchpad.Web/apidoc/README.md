@@ -28,9 +28,9 @@ c:\ > cd c:\your-workspace-here\launchpad-dotnet-api\apidoc
 npm run apidoc
 ```
 
-> NOTE: If any of the apidoc syntax is incorrect, then you will see the errors printed out in the command prompt window with detailed explainations of what is broken. Once you have resolved these sytanx issues, then re-run this command to generate the docs. 
-
 * Validate that the HTML documentation was generated in the ./docs folder
+
+> NOTE: If any of the apidoc syntax is incorrect, then you will see the errors printed out in the command prompt window with detailed explainations of what is broken. Once you have resolved these sytanx issues, then re-run this command to generate the docs. 
 
 
 ### 4. Open the docs in a browser
@@ -38,5 +38,8 @@ This assumes that you are wanting to view the apidoc generated HTML locally on y
 
 * Open your favorite web browser
 * File > Open...
-* Navigate to the apidocs "docs" folder: c:\your-workspace\launchpad-dotnet-api\apidoc\docs
+* Navigate to the apidocs "docs" folder
+```
+c:\your-workspace\launchpad-dotnet-api\apidoc\docs
+```
 * Select the "index.html" and click "Open" or "Ok"
