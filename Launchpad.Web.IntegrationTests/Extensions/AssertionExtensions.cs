@@ -7,7 +7,6 @@ namespace Launchpad.Web.IntegrationTests.Extensions
     /// </summary>
     public static class AssertionExtensions
     {
-
         public static HttpResponseMessageAssertions Should(this HttpResponseMessage actualValue)
         {
             return new HttpResponseMessageAssertions(actualValue);

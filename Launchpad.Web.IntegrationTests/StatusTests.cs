@@ -24,7 +24,7 @@ namespace Launchpad.Web.IntegrationTests
                                     .Client
                                     .GetAsync(OwinFixture.GetEndpoint("/api/v1/statuses"));
 
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.OK);
 

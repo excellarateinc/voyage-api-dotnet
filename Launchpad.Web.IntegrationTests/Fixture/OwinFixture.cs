@@ -15,10 +15,9 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         public string DefaultToken { get; set; }
 
-        Lazy<HttpClient> _lazyClient = new Lazy<HttpClient>(() => new HttpClient());
+        private Lazy<HttpClient> _lazyClient = new Lazy<HttpClient>(() => new HttpClient());
 
         public HttpClient Client => _lazyClient.Value;
-
 
         /// <summary>
         /// Requests a new authorization token from the server
@@ -35,7 +34,6 @@ namespace Launchpad.Web.IntegrationTests.Fixture
                     "application/x-www-form-urlencoded")
             };
 
-           
             var response = await Client.SendAsync(httpRequestMessage);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -54,7 +52,6 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         public IDisposable Start()
         {
-
             var webAppInstance = WebApp.Start<Startup>(url: BaseAddress);
             return webAppInstance;
         }
@@ -66,12 +63,10 @@ namespace Launchpad.Web.IntegrationTests.Fixture
 
         public void Dispose()
         {
-
             if (Client != null)
             {
                 Client.Dispose();
             }
-
         }
     }
 }

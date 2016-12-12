@@ -11,13 +11,12 @@ namespace Launchpad.Services
     {
         private readonly IFileReaderService _fileReaderService;
         private readonly string _fileName;
+
         public ApplicationInfoService(IFileReaderService fileReaderService, string fileName)
         {
-
             _fileReaderService = fileReaderService.ThrowIfNull(nameof(fileReaderService));
             _fileName = fileName.ThrowIfNullOrEmpty(nameof(fileName));
         }
-
 
         public ApplicationInfoModel GetApplicationInfo()
         {

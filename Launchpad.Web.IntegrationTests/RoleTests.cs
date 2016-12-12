@@ -25,14 +25,12 @@ namespace Launchpad.Web.IntegrationTests
                 await OwinFixture.Init();
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}");
 
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.NotFound);
-
             }
-
         }
 
         [Fact]
@@ -42,25 +40,22 @@ namespace Launchpad.Web.IntegrationTests
             {
                 await OwinFixture.Init();
 
-                //Arrange               
+                // Arrange               
                 var roleId = await OwinFixture.GetRoleId();
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{roleId}");
 
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.OK);
-
 
                 RoleModel model = await response.ReadBody<RoleModel>();
                 model.Should().NotBeNull();
                 model.Id.Should().Be(roleId);
-
             }
         }
-
 
         [Fact]
         public async void GetRoles_Should_Return_Models()
@@ -69,13 +64,13 @@ namespace Launchpad.Web.IntegrationTests
             {
                 await OwinFixture.Init();
 
-                //ARRANGE
+                // ARRANGE
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
 
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.OK);
                 RoleModel[] models = await response.ReadBody<RoleModel[]>();

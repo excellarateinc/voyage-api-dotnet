@@ -8,11 +8,11 @@ using System.Net.Http;
 using Xunit;
 
 namespace Launchpad.Web.IntegrationTests
-{  
+{
     [Trait("Category", "Self-Hosted")]
     [Collection(OwinCollectionFixture.Name)]
     public class WidgetTests : BaseEndpointTest
-    {     
+    {
         public WidgetTests(OwinFixture owin) : base(owin)
         {
         }
@@ -23,25 +23,23 @@ namespace Launchpad.Web.IntegrationTests
             using (var instance = OwinFixture.Start())
             {
                 await OwinFixture.Init();
-                //ARRANGE
+                // ARRANGE
                 var model = new WidgetModel();
 
                 var httpRequestMessage = OwinFixture
                                             .CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets")
                                             .WithJson(model);
 
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
-
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.BadRequest);
 
                 var errors = await response.ReadBody<BadRequestErrorModel[]>();
                 errors.Should().NotBeNullOrEmpty();
                 errors.Any(error => error.Code == Models.Constants.ErrorCodes.MissingField && error.Field == "widget.Name").Should().BeTrue();
-
             }
         }
 
@@ -50,17 +48,15 @@ namespace Launchpad.Web.IntegrationTests
         {
             using (var instance = OwinFixture.Start())
             {
-                //ARRANGE
+                // ARRANGE
                 await OwinFixture.Init();
                 var model = new WidgetModel { Name = "Some test model", Color = "Very green" };
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets").WithJson(model);
 
-
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
-
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.Created)
                     .And
@@ -71,26 +67,26 @@ namespace Launchpad.Web.IntegrationTests
             }
         }
 
-        [Fact()]
+        [Fact]
         public async void GetWidgets_Should_Return_Models()
         {
             using (var instance = OwinFixture.Start())
             {
                 await OwinFixture.Init();
-                //ARRANGE
+
+                // ARRANGE
                 var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
 
-                //ACT
+                // ACT
                 var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
 
-                //ASSERT
+                // ASSERT
                 response.Should()
                     .HaveStatusCode(HttpStatusCode.OK);
 
                 WidgetModel[] models = await response.ReadBody<WidgetModel[]>();
                 models.Should().NotBeNullOrEmpty();
             }
-
         }
     }
 }

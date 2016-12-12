@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace Launchpad.Web.IntegrationTests.Extensions
 {
-
     /// <summary>
     /// Helper methods for response messages
     /// </summary>
@@ -18,7 +17,6 @@ namespace Launchpad.Web.IntegrationTests.Extensions
         /// <returns>Deserialized body</returns>
         public static async Task<TType> ReadBody<TType>(this HttpResponseMessage message)
         {
-
             var rawContent = await message.Content.ReadAsStringAsync();
             TType models = JsonConvert.DeserializeObject<TType>(rawContent);
             return models;

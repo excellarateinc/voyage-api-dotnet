@@ -6,7 +6,6 @@ using System.Net.Http;
 
 namespace Launchpad.Web.IntegrationTests
 {
-
     /// <summary>
     /// Custom assertions for HttpResponseMessage
     /// </summary>

@@ -26,7 +26,6 @@ namespace Launchpad.Web.IntegrationTests.Extensions
             var httpRequestMessage = fixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
             var response = await fixture.Client.SendAsync(httpRequestMessage);
 
-
             response.Should().HaveStatusCode(HttpStatusCode.OK);
 
             RoleModel[] models = await response.ReadBody<RoleModel[]>();
