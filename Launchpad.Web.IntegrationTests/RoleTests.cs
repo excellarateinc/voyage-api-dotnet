@@ -18,6 +18,30 @@ namespace Launchpad.Web.IntegrationTests
         }
 
         [Fact]
+        public async void DeleteRole_Should_Return_204()
+        {
+            using (var instance = OwinFixture.Start())
+            {
+                await OwinFixture.Init();
+
+                // Arrange - Create Role to Delete
+                var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
+
+                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
+                    .WithJson(roleModel);
+                var httpResponseMessage = await OwinFixture.Client.SendAsync(httpRequestMessage);
+                var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+
+                // Act
+                var deleteRequest = OwinFixture.CreateSecureRequest(HttpMethod.Delete, $"/api/v1/roles/{responseModel.Id}");
+                var deleteResponse = await OwinFixture.Client.SendAsync(deleteRequest);
+
+                // Assert
+                deleteResponse.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            }
+        }
+
+        [Fact]
         public async void CreateRole_Should_Return_201_And_Location_Header()
         {
             using (var instance = OwinFixture.Start())
