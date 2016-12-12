@@ -20,6 +20,7 @@ namespace Launchpad.Web.Extensions
             {
                 model.Description = error.ErrorMessage;
             }
+
             return model;
         }
 
@@ -35,6 +36,7 @@ namespace Launchpad.Web.Extensions
                     errorList.Add(converted);
                 }
             }
+
             return errorList;
         }
     }

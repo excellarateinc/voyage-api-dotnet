@@ -74,7 +74,6 @@ namespace Launchpad.Data.IntegrationTests.Stores
             }
         }
 
-
         [Fact]
         public async void FindByEmailAsync_Should_Match_Existing_User()
         {

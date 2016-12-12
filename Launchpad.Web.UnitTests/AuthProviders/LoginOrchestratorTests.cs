@@ -16,6 +16,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
     {
         private readonly LoginOrchestrator _orchestrator;
         private readonly Mock<IOwinContext> _mockOwinContext;
+
         public LoginOrchestratorTests()
         {
             _orchestrator = new LoginOrchestrator();
@@ -52,9 +53,7 @@ namespace Launchpad.Web.UnitTests.AuthProviders
                 "clientId", 
                 "userName", 
                 "password", 
-                new string[0]);
-
-            
+                new string[0]);            
 
             var result = await _orchestrator.ValidateCredential(ctx);
 

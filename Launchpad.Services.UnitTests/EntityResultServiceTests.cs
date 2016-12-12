@@ -85,7 +85,6 @@ namespace Launchpad.Services.UnitTests
                 (s, d) => s.Id == d.Id,
                     phone => ++deleteCount);
 
-
             destination
                 .Should()
                 .BeEmpty();
@@ -189,14 +188,11 @@ namespace Launchpad.Services.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
-
         }
-
 
         [Fact]
         public void NotFoundTModel_Should_Returnn_Result()
         {
-
             var id = Fixture.Create<string>();
             var result = _testPassThrough
                 .InvokeNotFound<object>(id);
@@ -208,7 +204,6 @@ namespace Launchpad.Services.UnitTests
                 .HaveCount(1)
                 .And
                 .HaveElementAt(0, "notfound.entity::Could not locate entity with ID " + id);
-
         }
     }
 }

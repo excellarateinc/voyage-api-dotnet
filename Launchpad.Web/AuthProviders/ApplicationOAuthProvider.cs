@@ -33,7 +33,6 @@ namespace Launchpad.Web.AuthProviders
 
             loginOrchestrators.ThrowIfNull(nameof(loginOrchestrators));
             _loginOrchestrators = loginOrchestrators.ToDictionary(_ => _.TokenPath);
-
         }
 
         /// <summary>
@@ -69,6 +68,7 @@ namespace Launchpad.Web.AuthProviders
             {
                 context.SetError("error", "invalid_request");
             }
+
             return Task.FromResult<object>(null);
         }
 

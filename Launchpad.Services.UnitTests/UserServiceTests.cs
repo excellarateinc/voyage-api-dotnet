@@ -161,7 +161,6 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
                 .ReturnsAsync(appUser);
 
-
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
 
@@ -208,7 +207,6 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.FindByNameAsync(userModel.Username))
                 .ReturnsAsync(appUser);
-
 
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
@@ -804,7 +802,6 @@ namespace Launchpad.Services.UnitTests
 
             Mock.VerifyAll();
             entityResult.Model.Should().BeEmpty();
-
         }
 
         [Fact]

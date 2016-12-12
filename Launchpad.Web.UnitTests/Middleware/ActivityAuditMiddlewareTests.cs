@@ -53,7 +53,6 @@ namespace Launchpad.Web.UnitTests.Middleware
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
-
             }))
             {
                 await server.HttpClient.GetAsync("/");
@@ -76,11 +75,9 @@ namespace Launchpad.Web.UnitTests.Middleware
 
             var id = Guid.NewGuid().ToString();
 
-
             _mockAuditService.Setup(_ =>
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == null)))
                 .Returns(Task.FromResult(0));
-
 
             _mockAuditService.Setup(_ =>
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == error)))
@@ -101,7 +98,6 @@ namespace Launchpad.Web.UnitTests.Middleware
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
-
             }))
             {
                 await server.HttpClient.GetAsync("/");
@@ -114,7 +110,6 @@ namespace Launchpad.Web.UnitTests.Middleware
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService_And_Overwrite_Empty_RequestId()
         {
-    
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                .Returns(false);
 
@@ -137,8 +132,7 @@ namespace Launchpad.Web.UnitTests.Middleware
                 app.Run(context =>
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
-                });
-
+                });            
             }))
             {
                 await server.HttpClient.GetAsync("/");

@@ -66,6 +66,7 @@ namespace Launchpad.Services
             {
                 return _roleService.GetRoleByName(roleModel.Name);
             }
+
             return FromIdentityResult<RoleModel>(identityResult, null);
         }
 
@@ -148,7 +149,6 @@ namespace Launchpad.Services
 
         public async Task<EntityResult<IEnumerable<RoleModel>>> GetUserRolesAsync(string userId)
         {
-
             var roles = await _userManager.GetRolesAsync(userId);
 
             // TODO: Refactor this to pass in the role list (IQueryable)
@@ -166,10 +166,12 @@ namespace Launchpad.Services
             {
                 return entityResult;
             }
+
             if (!_userManager.IsInRole(userId, entityResult.Model.Name))
             {
                 return NotFound<RoleModel>(roleId);
             }
+
             return entityResult;
         }
 

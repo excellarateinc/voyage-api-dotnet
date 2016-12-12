@@ -110,7 +110,6 @@ namespace Launchpad.Web.UnitTests.Extensions
             result.Should().Be("No Identity");
         }
 
-
         [Fact]
         public void GetIdentityName_Should_Return_NoIdentity_When_Name_Null()
         {
@@ -123,7 +122,6 @@ namespace Launchpad.Web.UnitTests.Extensions
 
             result.Should().Be("No Identity");
         }
-
 
         [Fact]
         public void GetIdentityName_Should_Return_Name_When_Populated()
@@ -155,8 +153,7 @@ namespace Launchpad.Web.UnitTests.Extensions
             result.Path.Should().Be(_path);
             result.RequestId.Should().Be(_env["owin.RequestId"].ToString());
             result.StatusCode.Should().Be(_statusCode);
-            result.UserName.Should().Be("No Identity");
-          
+            result.UserName.Should().Be("No Identity");       
         }
 
         [Fact]
@@ -199,7 +196,6 @@ namespace Launchpad.Web.UnitTests.Extensions
             result.RequestId.Should().Be(_env["owin.RequestId"].ToString());
             result.StatusCode.Should().Be(_statusCode);
             result.UserName.Should().Be("No Identity");
-
         }
 
         [Fact]

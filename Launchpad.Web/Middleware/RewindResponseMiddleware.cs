@@ -30,7 +30,6 @@ namespace Launchpad.Web.Middleware
                 pipelineStream.Seek(0, SeekOrigin.Begin);
                 await pipelineStream.CopyToAsync(remoteStream);
                 context.Response.Body = remoteStream;
-
             }
         }
     }

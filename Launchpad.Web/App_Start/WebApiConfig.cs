@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+
 namespace Launchpad.Web
 {
     public static class WebApiConfig

@@ -58,7 +58,6 @@ namespace Launchpad.Data.IntegrationTests
                     user.Phones.Add(phone);
                     context.SaveChanges();
 
-
                     // Act
                     var repository = new UserPhoneRepository(context);
                     repository.Delete(phone.Id);

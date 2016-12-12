@@ -36,7 +36,7 @@ namespace Launchpad.Services
         /// </summary>
         /// <typeparam name="TModel">Type of the model</typeparam>
         /// <param name="id">Entity ID</param>
-        /// <returns>EntityResult<TModel></returns>
+        /// <returns><![CDATA[EntityResult<TModel>]]></returns>
         protected EntityResult<TModel> NotFound<TModel>(object id)
             where TModel : class
         {
@@ -49,7 +49,7 @@ namespace Launchpad.Services
         /// </summary>
         /// <typeparam name="TModel">Model type</typeparam>
         /// <param name="model">Model</param>
-        /// <returns>EntityResult<TModel></returns>
+        /// <returns><![CDATA[EntityResult<TModel>]]></returns>
         protected EntityResult<TModel> Success<TModel>(TModel model)
             where TModel : class
         {
@@ -71,7 +71,7 @@ namespace Launchpad.Services
         /// <typeparam name="TModel">Model type</typeparam>
         /// <param name="result">IdentityResult</param>
         /// <param name="model">Model</param>
-        /// <returns>EntityResult<TModel></returns>
+        /// <returns><![CDATA[EntityResult<TModel>]]></returns>
         protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)
              where TModel : class
         {
@@ -81,8 +81,8 @@ namespace Launchpad.Services
         /// <summary>
         /// Converts IdentityResult to an EntityResult
         /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
+        /// <param name="result">The result to convert.</param>
+        /// <returns>The converted EntityResult.</returns>
         protected EntityResult FromIdentityResult(IdentityResult result)
         {
             return new EntityResult(result.Succeeded, false, result.Errors.ToArray());

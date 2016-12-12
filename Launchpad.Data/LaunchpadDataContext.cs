@@ -62,8 +62,8 @@ namespace Launchpad.Data
                 {
                     return new DbEntityValidationResult(entityEntry, errors);
                 }
-
             }
+
             return base.ValidateEntity(entityEntry, items);
         }
 

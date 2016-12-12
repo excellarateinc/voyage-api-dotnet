@@ -33,8 +33,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
                 Configuration = new HttpConfiguration()
             };
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _roleController.Url = _mockUrlHelper.Object;
-
+            _roleController.Url = _mockUrlHelper.Object;        
         }
 
         [Fact]

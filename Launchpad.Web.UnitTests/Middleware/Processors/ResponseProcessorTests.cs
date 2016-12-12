@@ -83,7 +83,6 @@ namespace Launchpad.Web.UnitTests.Middleware.Processors
             _testProcessor.Valid = false;
             var memoryStream = new MemoryStream();
 
-
             _mockResponse.Setup(_ => _.Body)
                 .Returns(memoryStream);
 

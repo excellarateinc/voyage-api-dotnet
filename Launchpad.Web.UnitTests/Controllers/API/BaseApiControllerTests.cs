@@ -95,7 +95,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API
             // Act
             var result = _testPassThrough.InvokeNoContent(entityResult);
 
-
             // Assert
             var message = await result.ExecuteAsync(CancellationToken.None);
 

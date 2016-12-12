@@ -74,5 +74,4 @@ namespace Launchpad.Data.IntegrationTests
             }
         }
     }
-
 }

@@ -55,6 +55,7 @@ namespace Launchpad.Web.Filters
                     .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
+
             return Task.FromResult<object>(null);
         }
     }

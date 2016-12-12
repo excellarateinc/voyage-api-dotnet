@@ -196,7 +196,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V2
             var message = await result.ExecuteAsync(CancellationToken.None);
             Mock.VerifyAll();
 
-
             WidgetModel widget;
             message.TryGetContentValue(out widget).Should().BeTrue(); // Deserialize response content
             widget.ShouldBeEquivalentTo(fakeWidget);

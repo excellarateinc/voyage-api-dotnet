@@ -59,7 +59,6 @@ namespace Launchpad.Web.UnitTests.AuthProviders
         [Fact]
         public async void MatchEndPoint_Should_Not_Call_MatchesTokenEndpoint_When_LoginOrchestrator_DoesNotMatch()
         {
-            
             // Setup the request
             var mockRequest = Mock.Create<IOwinRequest>();
 
@@ -169,7 +168,6 @@ namespace Launchpad.Web.UnitTests.AuthProviders
                 .Should()
                 .Be("loginOrchestrators");
         }
-
 
         [Fact]
         public async void GrantResourceOwnerCredentials_Should_SetError_When_Invalid_User()

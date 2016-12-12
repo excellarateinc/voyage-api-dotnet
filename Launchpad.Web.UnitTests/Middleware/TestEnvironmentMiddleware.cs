@@ -23,6 +23,7 @@ namespace Launchpad.Web.UnitTests.Middleware
             {
                 context.Environment.Add(pair.Key, pair.Value);
             }
+
             await Next.Invoke(context);
         }
     }

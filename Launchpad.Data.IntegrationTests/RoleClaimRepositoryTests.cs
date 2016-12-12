@@ -159,4 +159,3 @@ namespace Launchpad.Data.IntegrationTests
         }
     }
 }
-

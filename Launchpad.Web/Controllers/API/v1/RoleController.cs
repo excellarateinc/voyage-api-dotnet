@@ -4,10 +4,9 @@ using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+
 namespace Launchpad.Web.Controllers.API.V1
 {
-
-
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class RoleController : BaseApiController

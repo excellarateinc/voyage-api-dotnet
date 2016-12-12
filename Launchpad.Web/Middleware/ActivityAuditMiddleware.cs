@@ -39,6 +39,7 @@ namespace Launchpad.Web.Middleware
             {
                 responseAudit.Error = await _processor.GetResponseStringAsync(context.Response);
             }
+
             await _auditService.RecordAsync(responseAudit);
         }
     }

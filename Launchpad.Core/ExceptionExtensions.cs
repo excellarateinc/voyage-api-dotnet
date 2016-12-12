@@ -5,11 +5,6 @@ namespace Launchpad.Core
 {
     public static class ExceptionExtensions
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="exception"></param>
-        /// <returns></returns>
         public static string FlattenMessages(this AggregateException exception)
         {
             const int maxDepth = 5;

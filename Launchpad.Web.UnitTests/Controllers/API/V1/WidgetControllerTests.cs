@@ -79,7 +79,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _widgetController.AssertClaim(_ => _.AddWidget(new WidgetModel()), LssClaims.CreateWidget);
         }
 
-
         [Fact]
         public void DeleteWidget_Should_Have_ClaimAuthorizeAttribute()
         {
@@ -91,7 +90,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
         {
             _widgetController.AssertClaim(_ => _.UpdateWidget(1, new WidgetModel()), LssClaims.UpdateWidget);
         }
-
 
         [Fact]
         public async void AddWidget_Should_Call_WidgetService_And_Return_OK_When_Successful()

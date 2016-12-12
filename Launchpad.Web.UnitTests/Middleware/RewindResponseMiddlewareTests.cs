@@ -25,7 +25,6 @@ namespace Launchpad.Web.UnitTests.Middleware
                     context.Response.Body.Should().BeOfType<MemoryStream>();
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
                 });
-
             }))
             {
                 HttpResponseMessage response = await server.HttpClient.GetAsync("/");

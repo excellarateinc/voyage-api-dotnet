@@ -59,6 +59,7 @@ namespace Launchpad.Services
             {
                 entityResult = NotFound<ClaimModel>(roleId);
             }
+
             return entityResult;
         }
 
@@ -75,6 +76,7 @@ namespace Launchpad.Services
             {
                 result = NotFound(roleId);
             }
+
             return result;
         }
 

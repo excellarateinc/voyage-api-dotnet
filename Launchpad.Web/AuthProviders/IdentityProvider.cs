@@ -12,10 +12,10 @@ namespace Launchpad.Web.AuthProviders
         {
             _context = context.ThrowIfNull(nameof(context));
         }
+
         public string GetUserName()
         {
             return _context.GetIdentityName();
         }
     }
 }
-   

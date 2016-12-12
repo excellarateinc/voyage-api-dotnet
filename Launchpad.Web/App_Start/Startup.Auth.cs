@@ -15,6 +15,7 @@ namespace Launchpad.Web
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
         public static string PublicClientId => "self"; // Configure the application for OAuth based flow
 
         public static void Configure(IAppBuilder app)

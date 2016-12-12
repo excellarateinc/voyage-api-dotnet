@@ -74,5 +74,4 @@ namespace Launchpad.Services.UnitTests
                 .Be("mapper");
         }
     }
-}
- 
+} 

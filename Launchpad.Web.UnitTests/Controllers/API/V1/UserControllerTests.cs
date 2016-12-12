@@ -50,7 +50,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertClaim(_ => _.CreateUser(new UserModel()), LssClaims.CreateUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
         }
 
         [Fact]
@@ -102,7 +101,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             UserModel messageModel;
             message.TryGetContentValue(out messageModel).Should().BeTrue();
             messageModel.ShouldBeEquivalentTo(entityResult.Model);
-
         }
 
         [Fact]
@@ -176,7 +174,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             var message = await result.ExecuteAsync(CreateCancelToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
         }
 
         [Fact]
@@ -277,7 +274,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.AssertClaim(
                 _ => _.GetUsers(),
                 LssClaims.ListUsers);
-
         }
 
         [Fact]
@@ -294,7 +290,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             _userController.AssertClaim(_ => _.AssignRole("userId", new RoleModel()), LssClaims.AssignRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
         }
 
         [Fact]
@@ -425,7 +420,6 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
-
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
@@ -496,6 +490,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
             _userController.AssertClaim(_ => _.RemoveRole("userId", "roleId"), LssClaims.RevokeRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
+
         [Fact]
         public async void RemoveRole_Should_Call_UserService()
         {

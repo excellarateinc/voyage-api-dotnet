@@ -20,6 +20,7 @@ namespace Launchpad.Core
             {
                 throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(TType).Name : paramName);
             }
+
             return argumentInstance;
         }
 
@@ -35,6 +36,7 @@ namespace Launchpad.Core
             {
                 throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(string).Name : paramName);
             }
+
             return argumentInstance;
         }
     }

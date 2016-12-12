@@ -103,6 +103,7 @@ namespace Launchpad.Web
                 {
                     tokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
                 }
+
                 return tokenProvider;
             });
 

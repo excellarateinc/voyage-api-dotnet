@@ -78,7 +78,6 @@ namespace Launchpad.Services.UnitTests
             entityResult.Model.Id.Should().Be(repoClaim.Id);
             entityResult.Model.ClaimType.Should().Be(repoClaim.ClaimType);
             entityResult.Model.ClaimValue.Should().Be(repoClaim.ClaimValue);
-
         }
 
         [Fact]
@@ -86,7 +85,6 @@ namespace Launchpad.Services.UnitTests
         {
             string roleId = Fixture.Create<string>();
             int id = 1;
-
 
             _mockRepository.Setup(_ => _.Get(id))
                 .Returns((RoleClaim)null);
@@ -188,17 +186,12 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.DeleteAsync(appRole))
                 .Returns(Task.Delay(0));
 
-
-
-
             // Act
             var result = await _roleService.RemoveRoleAsync(roleId);
-
 
             // Assert
             Mock.VerifyAll();
             result.Succeeded.Should().BeTrue();
-
         }
 
         [Fact]
@@ -209,13 +202,11 @@ namespace Launchpad.Services.UnitTests
 
             _mockRepository.Setup(_ => _.Delete(claimId));
 
-
             // act
             _roleService.RemoveClaim(roleId, claimId);
 
             Mock.VerifyAll();
         }
-
 
         [Fact]
         public async void RemoveRole_Calls_Role_Manager_And_Returns_Failed_Result_When_Role_Does_Not_Exist()
@@ -225,14 +216,12 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(roleId))
                 .ReturnsAsync(null);
 
-
             var result = await _roleService.RemoveRoleAsync(roleId);
 
             Mock.VerifyAll();
             result.Succeeded.Should().BeFalse();
             result.IsEntityNotFound.Should().BeTrue();
         }
-
 
         [Fact]
         public void GetRoleClaims_Should_Call_Repository()
