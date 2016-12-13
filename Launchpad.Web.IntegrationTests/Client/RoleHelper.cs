@@ -9,7 +9,7 @@ namespace Launchpad.Web.IntegrationTests.Client
 {
     public class RoleHelper : DataHelper<RoleModel>
     {
-        private RoleModel[] _entities;
+        private List<RoleModel> _entities = Enumerable.Empty<RoleModel>().ToList();
 
         public override IEnumerable<RoleModel> GetAllEntities()
         {
@@ -25,7 +25,7 @@ namespace Launchpad.Web.IntegrationTests.Client
         {
             var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
             var response = await Client.SendAsync(httpRequestMessage);
-            _entities = await response.ReadBody<RoleModel[]>();
+            _entities = (await response.ReadBody<RoleModel[]>()).ToList();
         }
     }
 }
