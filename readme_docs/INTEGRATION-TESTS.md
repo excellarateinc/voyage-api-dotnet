@@ -32,6 +32,26 @@ In order to meet the goals of the integration testing approach, the tests will u
 
 ### Creating Tests
 
+#### Initializing LocalDb
+There are two options for initializing the LocalDb instance for the developer environment:
+
+*Post Build Event*
+
+Use the post build event on Launchpad.Web.IntegrationTests to automatically call the configure-test-db.bat Note: This will cause the build of the project be slower since it will need to deploy the .dacpac
+```
+CALL "$(SolutionDir)\configure-test-db.bat" "$(SolutionDir)\Launchpad.Database\bin\$(ConfigurationName)\Launchpad.Database.dacpac"
+```
+*Manually Invoke .bat*
+
+Manually call the configure-test.db.bat Note: This will not recreate the database on every run - be wary of depending on test data that was created in previous runs. Best practice: Always recreate the database and run the tests before committing.
+
+```
+configure-test-db.bat
+LocalDB instance "Integration-Test-Instance" stopped.
+LocalDB instance "Integration-Test-Instance" deleted.
+<Remainder omitted for brevity>
+```
+
 #### OwinFixture
 This is a shared test fixture which ensures tests do not run concurrently as this could cause issues with spinning up and tearing down the hosted services. 
  
