@@ -33,7 +33,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.RoleClaims
 
         [Theory]
         [MemberData("InvalidClaimModels")]
-        public async void CreateClaim_Should_Return_Status_400_When_Model_Invalid(ClaimModel model, string expectedFailureField, string expectedFailureCode)
+        public async void CreateClaim_Should_Return_Status_400_When_Bad_Request(ClaimModel model, string expectedFailureField, string expectedFailureCode)
         {
             await _roleHelper.Refresh();
 

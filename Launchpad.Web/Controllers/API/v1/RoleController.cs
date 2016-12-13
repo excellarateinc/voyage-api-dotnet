@@ -228,15 +228,14 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {String} claim.claimValue Value
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 Created
+        *   HTTP/1.1 200 OK
         *   {
-        *       "claimType": "lss.permission",
+        *       "claimType": "app.permission",
         *       "claimValue": "list.widgets",
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
-        * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewClaim)]
         [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]

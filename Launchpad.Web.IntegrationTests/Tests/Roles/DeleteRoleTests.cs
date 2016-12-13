@@ -39,7 +39,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
         public async Task DeleteRole_Should_Return_Status_204()
         {
             // Arrange - Create Role to Delete
-            var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
+            var roleModel = new RoleModel { Name = Guid.NewGuid().ToString() };
 
             var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
                 .WithJson(roleModel);

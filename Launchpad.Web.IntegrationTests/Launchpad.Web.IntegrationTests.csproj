@@ -130,6 +130,7 @@
     <Compile Include="Assertions\BadRequestCollectionAssertions.cs" />
     <Compile Include="Client\TokenProvider.cs" />
     <Compile Include="Tests\RoleClaims\CreateClaimTests.cs" />
+    <Compile Include="Tests\RoleClaims\GetClaimByIdTests.cs" />
     <Compile Include="Tests\Roles\CreateRoleTests.cs" />
     <Compile Include="Tests\Roles\DeleteRoleTests.cs" />
     <Compile Include="Extensions\AssertionExtensions.cs" />
