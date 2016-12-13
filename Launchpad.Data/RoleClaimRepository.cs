@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Launchpad.Data.Interfaces;
+﻿using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
+using System.Linq;
 
 namespace Launchpad.Data
 {
@@ -20,8 +20,11 @@ namespace Launchpad.Data
         public override void Delete(object id)
         {
             var entity = Get(id);
-            Context.RoleClaims.Remove(entity);
-            Context.SaveChanges();
+            if (entity != null)
+            {
+                Context.RoleClaims.Remove(entity);
+                Context.SaveChanges();
+            }
         }
 
         public override RoleClaim Get(object id)
