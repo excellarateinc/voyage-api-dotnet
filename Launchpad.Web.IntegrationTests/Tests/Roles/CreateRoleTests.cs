@@ -9,6 +9,8 @@ using Xunit;
 
 namespace Launchpad.Web.IntegrationTests.Tests.Roles
 {
+    [Trait("Category", "Self-Hosted")]
+    [Collection(HostCollectionFixture.Name)]
     public class CreateRoleTests : ApiTest
     {
         public CreateRoleTests(HostFixture hostFixture) : base(hostFixture)

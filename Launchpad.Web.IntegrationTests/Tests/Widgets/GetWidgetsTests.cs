@@ -8,6 +8,8 @@ using Xunit;
 
 namespace Launchpad.Web.IntegrationTests.Tests.Widgets
 {
+    [Trait("Category", "Self-Hosted")]
+    [Collection(HostCollectionFixture.Name)]
     public class GetWidgetsTests : ApiTest
     {
         public override HttpMethod Method => HttpMethod.Get;

@@ -10,6 +10,8 @@ using Xunit;
 
 namespace Launchpad.Web.IntegrationTests.Tests.RoleClaims
 {
+    [Trait("Category", "Self-Hosted")]
+    [Collection(HostCollectionFixture.Name)]
     public class CreateClaimTests : ApiTest
     {
         private readonly RoleHelper _roleHelper;
