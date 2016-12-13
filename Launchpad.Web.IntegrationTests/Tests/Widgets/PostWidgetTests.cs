@@ -10,13 +10,13 @@ namespace Launchpad.Web.IntegrationTests
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]
-    public class CreateWidgetTests : ApiTest
+    public class PostWidgetTests : ApiTest
     {
         public override HttpMethod Method => HttpMethod.Post;
 
         public override string PathUnderTest => "/api/v1/widgets";
 
-        public CreateWidgetTests(HostFixture hostFixture) : base(hostFixture)
+        public PostWidgetTests(HostFixture hostFixture) : base(hostFixture)
         {
         }
 

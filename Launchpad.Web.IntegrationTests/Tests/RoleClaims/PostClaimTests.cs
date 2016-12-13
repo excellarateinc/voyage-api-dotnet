@@ -12,11 +12,11 @@ namespace Launchpad.Web.IntegrationTests.Tests.RoleClaims
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]
-    public class CreateClaimTests : ApiTest
+    public class PostClaimTests : ApiTest
     {
         private readonly RoleHelper _roleHelper;
 
-        public CreateClaimTests(HostFixture hostFixture) : base(hostFixture)
+        public PostClaimTests(HostFixture hostFixture) : base(hostFixture)
         {
             _roleHelper = new RoleHelper();
         }

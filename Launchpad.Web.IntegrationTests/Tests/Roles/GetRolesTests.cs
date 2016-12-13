@@ -24,7 +24,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
         public async void GetRoles_Should_Return_Status_200()
         {
             // ARRANGE
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
+            var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest);
 
             // ACT
             var response = await Client.SendAsync(httpRequestMessage);

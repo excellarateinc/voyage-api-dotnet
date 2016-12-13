@@ -129,9 +129,10 @@
     <Compile Include="ApiTest.cs" />
     <Compile Include="Assertions\BadRequestCollectionAssertions.cs" />
     <Compile Include="Client\TokenProvider.cs" />
-    <Compile Include="Tests\RoleClaims\CreateClaimTests.cs" />
+    <Compile Include="Tests\RoleClaims\PostClaimTests.cs" />
     <Compile Include="Tests\RoleClaims\GetClaimByIdTests.cs" />
-    <Compile Include="Tests\Roles\CreateRoleTests.cs" />
+    <Compile Include="Tests\RoleClaims\GetClaimsTests.cs" />
+    <Compile Include="Tests\Roles\PostRoleTests.cs" />
     <Compile Include="Tests\Roles\DeleteRoleTests.cs" />
     <Compile Include="Extensions\AssertionExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Tests\Roles\GetRolesTests.cs" />
     <Compile Include="Tests\Widgets\GetWidgetsTests.cs" />
     <Compile Include="Tests\UnauthorizedResponseTests.cs" />
-    <Compile Include="Tests\Widgets\CreateWidgetTests.cs" />
+    <Compile Include="Tests\Widgets\PostWidgetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
