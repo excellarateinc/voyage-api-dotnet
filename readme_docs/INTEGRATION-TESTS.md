@@ -119,6 +119,46 @@ Custom assertions have been added to help create better BDD-style tests. The cur
 #### Test Coverage
 The integration tests should try to exercise the most critical portions of the application. Given that the application is a set of services consumed by clients, the publically documented API is critical. Developers can use the documentation as a guide for creating good test coverage. For example, if the documentation lists the success response as 200 and the possible error responses as 401 and 404 good test coverage would have a test for each of the responses. 
 
+#### Unauthorized Tests
+The cross-cutting concern of authorization is handled by the Owin OAuth Middleware. This crosscutting concern executes prior the request being passed to the controller. As a result, the tests for 401 can be handled via a single data driven test. The test code is shown below.
+
+```
+[Theory]
+[MemberData("UnauthorizedUrls")]
+public async void Endpoint_Should_Respond_With_401_When_Unauthorized(HttpMethod method, string path)
+{
+ using (var instance = OwinFixture.Start())
+ {
+      // Arrange  
+      await OwinFixture.Init();
+
+      var request = OwinFixture.CreateUnauthorizedRequest(method, path);
+     
+      // Act
+      var response = await OwinFixture.Client.SendAsync(request);
+
+      // Assert
+      response.Should().HaveStatusCode(HttpStatusCode.Unauthorized, "{0} {1} is secure", method, path);
+ }
+}
+ ```
+
+The test has two arguments - the HTTP method and the path to the API endpoint. These arguments are provided to the test using the MemberData attribute. This attribute takes the name of a static member which will provide the input of each distinct test value via an object array. In this case, the property is an array of object arrays and each item represents a set of test arguments. For each set of test arguments, the test code will be invoked.
+
+To add an additional 401 endpoint test, simply add the arguments to the array:
+
+```
+ public static object[] UnauthorizedUrls =>
+           new object[]
+           {
+               // Role endpoints
+               new object[] { HttpMethod.Get, "/api/v1/roles" },
+               new object[] { HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}" },
+               new object[] { HttpMethod.Delete, $"/api/v1/roles/{Guid.Empty}" },
+               new object[] { HttpMethod.Post, "/api/v1/roles" },
+           }
+```
+
 ### LocalDb
 For local development, everything that is needed to create the LocalDb instance is installed with Visual Studio. There is a .bat file called configure-test-db.bat which automates the deployment of the integration test database. At a high level, the .bat file performs the following steps using out of box utilities:
 
