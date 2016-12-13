@@ -150,7 +150,10 @@
     <Compile Include="Tests\Statuses\GetStatusesTests.cs" />
     <Compile Include="Tests\Roles\GetRolesTests.cs" />
     <Compile Include="Tests\UserClaims\GetClaimsTests.cs" />
+    <Compile Include="Tests\UserRoles\DeleteUserRoleTests.cs" />
+    <Compile Include="Tests\UserRoles\GetUserRoleByIdTests.cs" />
     <Compile Include="Tests\UserRoles\GetUserRolesTests.cs" />
+    <Compile Include="Tests\UserRoles\PostUserRoleTests.cs" />
     <Compile Include="Tests\Users\GetUserById.cs" />
     <Compile Include="Tests\Users\GetUsersTests.cs" />
     <Compile Include="Tests\Widgets\GetWidgetsTests.cs" />

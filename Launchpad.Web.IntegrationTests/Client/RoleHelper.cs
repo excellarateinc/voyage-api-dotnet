@@ -1,5 +1,6 @@
 ﻿using Launchpad.Models;
 using Launchpad.Web.IntegrationTests.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -19,6 +20,17 @@ namespace Launchpad.Web.IntegrationTests.Client
         public override RoleModel GetSingleEntity()
         {
             return _entities.First();
+        }
+
+        public async Task<RoleModel> CreateRoleAsync()
+        {
+            var roleModel = new RoleModel { Name = Guid.NewGuid().ToString() };
+
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
+                .WithJson(roleModel);
+            var httpResponseMessage = await Client.SendAsync(httpRequestMessage);
+            var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+            return responseModel;
         }
 
         public async override Task Refresh()

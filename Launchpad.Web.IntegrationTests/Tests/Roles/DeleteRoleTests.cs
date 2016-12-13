@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Launchpad.Models;
+using Launchpad.Web.IntegrationTests.Client;
 using Launchpad.Web.IntegrationTests.Extensions;
 using Launchpad.Web.IntegrationTests.Hosting;
 using System;
@@ -14,8 +14,11 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
     [Collection(HostCollectionFixture.Name)]
     public class DeleteRoleTests : ApiTest
     {
+        private RoleHelper _roleHelper;
+
         public DeleteRoleTests(HostFixture hostFixture) : base(hostFixture)
         {
+            _roleHelper = new RoleHelper();
         }
 
         public override HttpMethod Method => HttpMethod.Delete;
@@ -39,13 +42,8 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
         public async Task DeleteRole_Should_Return_Status_204()
         {
             // Arrange - Create Role to Delete
-            var roleModel = new RoleModel { Name = Guid.NewGuid().ToString() };
 
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
-                .WithJson(roleModel);
-            var httpResponseMessage = await Client.SendAsync(httpRequestMessage);
-            httpResponseMessage.Should().HaveStatusCode(HttpStatusCode.Created);
-            var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+            var responseModel = await _roleHelper.CreateRoleAsync();
 
             // Act
             var deleteRequest = CreateSecureRequest(Method, PathUnderTest, responseModel.Id);
