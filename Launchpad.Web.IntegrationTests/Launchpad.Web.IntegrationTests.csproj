@@ -126,14 +126,18 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="BaseEndpointTest.cs" />
+    <Compile Include="ApiTest.cs" />
+    <Compile Include="Client\TokenProvider.cs" />
     <Compile Include="Extensions\AssertionExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
-    <Compile Include="Extensions\OwinFixtureExtensions.cs" />
-    <Compile Include="Fixture\OwinCollectionFixture.cs" />
-    <Compile Include="Fixture\OwinFixture.cs" />
+    <Compile Include="Client\DataHelper.cs" />
+    <Compile Include="Hosting\HostingOptions.cs" />
+    <Compile Include="Client\ApiConsumer.cs" />
+    <Compile Include="Hosting\HostCollectionFixture.cs" />
+    <Compile Include="Hosting\HostFixture.cs" />
     <Compile Include="Assertions\HttpResponseMessageAssertions.cs" />
+    <Compile Include="Client\RoleHelper.cs" />
     <Compile Include="RoleTests.cs" />
     <Compile Include="StatusTests.cs" />
     <Compile Include="UnauthorizedResponseTests.cs" />
@@ -171,6 +175,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

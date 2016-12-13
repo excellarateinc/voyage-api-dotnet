@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using Launchpad.Models;
+using Launchpad.Web.IntegrationTests.Client;
 using Launchpad.Web.IntegrationTests.Extensions;
-using Launchpad.Web.IntegrationTests.Fixture;
+using Launchpad.Web.IntegrationTests.Hosting;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -10,123 +11,131 @@ using Xunit;
 namespace Launchpad.Web.IntegrationTests
 {
     [Trait("Category", "Self-Hosted")]
-    [Collection(OwinCollectionFixture.Name)]
-    public class RoleTests : BaseEndpointTest
+    [Collection(HostCollectionFixture.Name)]
+    public class RoleTests : ApiTest
     {
-        public RoleTests(OwinFixture owin) : base(owin)
+        private readonly RoleHelper _roleHelper;
+
+        public RoleTests(HostFixture hostFixture) : base(hostFixture)
         {
+            _roleHelper = new RoleHelper();
         }
 
         [Fact]
-        public async void DeleteRole_Should_Return_204()
+        public async void DeleteRole_Should_Return_Status_204()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
+            // Arrange - Create Role to Delete
+            var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
 
-                // Arrange - Create Role to Delete
-                var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
+                .WithJson(roleModel);
+            var httpResponseMessage = await Client.SendAsync(httpRequestMessage);
+            var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
 
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
-                    .WithJson(roleModel);
-                var httpResponseMessage = await OwinFixture.Client.SendAsync(httpRequestMessage);
-                var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+            // Act
+            var deleteRequest = CreateSecureRequest(HttpMethod.Delete, $"/api/v1/roles/{responseModel.Id}");
+            var deleteResponse = await Client.SendAsync(deleteRequest);
 
-                // Act
-                var deleteRequest = OwinFixture.CreateSecureRequest(HttpMethod.Delete, $"/api/v1/roles/{responseModel.Id}");
-                var deleteResponse = await OwinFixture.Client.SendAsync(deleteRequest);
-
-                // Assert
-                deleteResponse.Should().HaveStatusCode(HttpStatusCode.NoContent);
-            }
+            // Assert
+            deleteResponse.Should().HaveStatusCode(HttpStatusCode.NoContent);
         }
 
         [Fact]
-        public async void CreateRole_Should_Return_201_And_Location_Header()
+        public async void CreateClaim_Should_Return_Status_201_And_Location_Header()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
+            await _roleHelper.Refresh();
 
-                var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
+            var claimModel = new ClaimModel { ClaimValue = DateTime.Now.ToString("s"), ClaimType = DateTime.Now.ToString("s") };
+            var roleId = _roleHelper.GetSingleEntity().Id;
 
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
-                    .WithJson(roleModel);
+            var request = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles/{roleId}/claims").WithJson(claimModel);
 
-                var httpResponseMessage = await OwinFixture.Client.SendAsync(httpRequestMessage);
+            // Act
+            var response = await Client.SendAsync(request);
 
-                httpResponseMessage.Should()
-                    .HaveStatusCode(HttpStatusCode.Created)
-                    .And
-                    .HaveHeader("Location");
+            // Assert
+            response.Should().HaveStatusCode(HttpStatusCode.Created)
+                .And
+                .HaveHeader("Location");
 
-                var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
-                responseModel.Name.Should().Be(roleModel.Name);
+            var responseModel = await response.ReadBody<ClaimModel>();
+            responseModel.Should().NotBeNull();
+            responseModel.ClaimType.Should().Be(claimModel.ClaimType);
+            responseModel.ClaimType.Should().Be(claimModel.ClaimValue);
 
-                httpResponseMessage.Should()
-                    .HaveHeaderValue("Location", $"{OwinFixture.BaseAddress}/api/v1/roles/{responseModel.Id}");
-            }
+            var expectedLocationValue = GetUrl($"/api/v1/roles/{roleId}/claims/{responseModel.Id}");
+            response.Should().HaveHeaderValue("Location", expectedLocationValue);
         }
 
         [Fact]
-        public async void GetRoleById_Should_Return_404_When_Id_Not_Found()
+        public async void CreateRole_Should_Return_Status_201_And_Location_Header()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}");
+            var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
 
-                // ACT
-                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
+                .WithJson(roleModel);
 
-                response.Should()
-                    .HaveStatusCode(HttpStatusCode.NotFound);
-            }
+            var httpResponseMessage = await Client.SendAsync(httpRequestMessage);
+
+            httpResponseMessage.Should()
+                .HaveStatusCode(HttpStatusCode.Created)
+                .And
+                .HaveHeader("Location");
+
+            var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
+            responseModel.Name.Should().Be(roleModel.Name);
+
+            httpResponseMessage.Should()
+                .HaveHeaderValue("Location", GetUrl($"/api/v1/roles/{responseModel.Id}"));
+        }
+
+        [Fact]
+        public async void GetRoleById_Should_Return_Status_404_When_Id_Not_Found()
+        {
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}");
+
+            // ACT
+            var response = await Client.SendAsync(httpRequestMessage);
+
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.NotFound);
         }
 
         [Fact]
         public async void GetRoleById_Should_Return_Status_200()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
+            await _roleHelper.Refresh();
 
-                // Arrange               
-                var roleId = await OwinFixture.GetRoleId();
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{roleId}");
+            // Arrange               
+            var roleId = _roleHelper.GetSingleEntity().Id;
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, $"/api/v1/roles/{roleId}");
 
-                // ACT
-                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
+            // ACT
+            var response = await Client.SendAsync(httpRequestMessage);
 
-                // ASSERT
-                response.Should()
-                    .HaveStatusCode(HttpStatusCode.OK);
+            // ASSERT
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.OK);
 
-                RoleModel model = await response.ReadBody<RoleModel>();
-                model.Should().NotBeNull();
-                model.Id.Should().Be(roleId);
-            }
+            RoleModel model = await response.ReadBody<RoleModel>();
+            model.Should().NotBeNull();
+            model.Id.Should().Be(roleId);
         }
 
         [Fact]
-        public async void GetRoles_Should_Return_Models()
+        public async void GetRoles_Should_Return_Status_200()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
+            // ARRANGE
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
 
-                // ARRANGE
-                var httpRequestMessage = OwinFixture.CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
+            // ACT
+            var response = await Client.SendAsync(httpRequestMessage);
 
-                // ACT
-                var response = await OwinFixture.Client.SendAsync(httpRequestMessage);
-
-                // ASSERT
-                response.Should()
-                    .HaveStatusCode(HttpStatusCode.OK);
-                RoleModel[] models = await response.ReadBody<RoleModel[]>();
-                models.Should().NotBeNullOrEmpty();
-            }
+            // ASSERT
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.OK);
+            RoleModel[] models = await response.ReadBody<RoleModel[]>();
+            models.Should().NotBeNullOrEmpty();
         }
     }
 }

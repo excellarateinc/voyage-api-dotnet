@@ -1,5 +1,5 @@
 ﻿using Launchpad.Web.IntegrationTests.Extensions;
-using Launchpad.Web.IntegrationTests.Fixture;
+using Launchpad.Web.IntegrationTests.Hosting;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -13,9 +13,13 @@ namespace Launchpad.Web.IntegrationTests
     /// invalid then the response should be 401: Unauthorized
     /// </summary>
     [Trait("Category", "Self-Hosted")]
-    [Collection(OwinCollectionFixture.Name)]
-    public class UnauthorizedResponseTests : BaseEndpointTest
+    [Collection(HostCollectionFixture.Name)]
+    public class UnauthorizedResponseTests : ApiTest
     {
+        public UnauthorizedResponseTests(HostFixture hostFixture) : base(hostFixture)
+        {
+        }
+
         /// <summary>
         /// An array of arrays containing the input method and URL for the test 
         /// </summary>
@@ -54,24 +58,17 @@ namespace Launchpad.Web.IntegrationTests
                new object[] { HttpMethod.Put, "/api/v1/widgets/1" }
            };
 
-        public UnauthorizedResponseTests(OwinFixture owin) : base(owin)
-        {
-        }
-
         [Theory]
         [MemberData("UnauthorizedUrls")]
         public async void Endpoint_Should_Respond_With_401_When_Unauthorized(HttpMethod method, string path)
         {
-            using (var instance = OwinFixture.Start())
-            {
-                await OwinFixture.Init();
+            var request = CreateUnauthorizedRequest(method, path);
 
-                var request = OwinFixture.CreateUnauthorizedRequest(method, path);
+            // Act
+            var response = await Client.SendAsync(request);
 
-                var response = await OwinFixture.Client.SendAsync(request);
-
-                response.Should().HaveStatusCode(HttpStatusCode.Unauthorized, "{0} {1} is secure", method, path);
-            }
+            // Assert
+            response.Should().HaveStatusCode(HttpStatusCode.Unauthorized, "{0} {1} is secure", method, path);
         }
     }
 }

@@ -1,36 +1,31 @@
 ﻿using FluentAssertions;
 using Launchpad.Models;
 using Launchpad.Web.IntegrationTests.Extensions;
-using Launchpad.Web.IntegrationTests.Fixture;
+using Launchpad.Web.IntegrationTests.Hosting;
 using System.Net;
 using Xunit;
 
 namespace Launchpad.Web.IntegrationTests
 {
     [Trait("Category", "Self-Hosted")]
-    [Collection(OwinCollectionFixture.Name)]
-    public class StatusTests : BaseEndpointTest
+    [Collection(HostCollectionFixture.Name)]
+    public class StatusTests : ApiTest
     {
-        public StatusTests(OwinFixture owin) : base(owin)
+        public StatusTests(HostFixture hostFixture) : base(hostFixture)
         {
         }
 
         [Fact]
-        public async void GetRoles_Should_Return_Models()
+        public async void GetStatuses_Should_Return_Models()
         {
-            using (var instance = OwinFixture.Start())
-            {
-                var response = await OwinFixture
-                                    .Client
-                                    .GetAsync(OwinFixture.GetEndpoint("/api/v1/statuses"));
+            var response = await Client.GetAsync(GetUrl("/api/v1/statuses"));
 
-                // ASSERT
-                response.Should()
-                    .HaveStatusCode(HttpStatusCode.OK);
+            // ASSERT
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.OK);
 
-                ApplicationInfoModel model = await response.ReadBody<ApplicationInfoModel>();
-                model.Should().NotBeNull();
-            }
+            ApplicationInfoModel model = await response.ReadBody<ApplicationInfoModel>();
+            model.Should().NotBeNull();
         }
     }
 }
