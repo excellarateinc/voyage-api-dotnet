@@ -2,7 +2,6 @@
 using Launchpad.Models;
 using Launchpad.Web.IntegrationTests.Extensions;
 using Launchpad.Web.IntegrationTests.Hosting;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using Xunit;
@@ -38,8 +37,10 @@ namespace Launchpad.Web.IntegrationTests
                 .HaveStatusCode(HttpStatusCode.BadRequest);
 
             var errors = await response.ReadBody<BadRequestErrorModel[]>();
-            errors.Should().NotBeNullOrEmpty();
-            errors.Any(error => error.Code == Models.Constants.ErrorCodes.MissingField && error.Field == "widget.Name").Should().BeTrue();
+            errors.Should()
+                .NotBeNullOrEmpty()
+                .And
+                .ContainErrorFor("widget.Name", Models.Constants.ErrorCodes.MissingField);
         }
 
         [Fact]

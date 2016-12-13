@@ -127,6 +127,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ApiTest.cs" />
+    <Compile Include="Assertions\BadRequestCollectionAssertions.cs" />
     <Compile Include="Client\TokenProvider.cs" />
     <Compile Include="Tests\RoleClaims\CreateClaimTests.cs" />
     <Compile Include="Tests\Roles\CreateRoleTests.cs" />

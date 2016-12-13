@@ -5,6 +5,7 @@ using Launchpad.Web.IntegrationTests.Hosting;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Launchpad.Web.IntegrationTests.Tests.Roles
@@ -22,7 +23,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
         public override string PathUnderTest => "/api/v1/roles/{0}";
 
         [Fact]
-        public async void DeleteRole_Should_Return_Status_404_When_Not_Found()
+        public async Task DeleteRole_Should_Return_Status_404_When_Not_Found()
         {
             // Arrange
             var deleteRequest = CreateSecureRequest(Method, PathUnderTest, Guid.Empty);
@@ -35,7 +36,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
         }
 
         [Fact]
-        public async void DeleteRole_Should_Return_Status_204()
+        public async Task DeleteRole_Should_Return_Status_204()
         {
             // Arrange - Create Role to Delete
             var roleModel = new RoleModel { Name = DateTime.Now.ToString("s") };
@@ -43,6 +44,7 @@ namespace Launchpad.Web.IntegrationTests.Tests.Roles
             var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, $"/api/v1/roles")
                 .WithJson(roleModel);
             var httpResponseMessage = await Client.SendAsync(httpRequestMessage);
+            httpResponseMessage.Should().HaveStatusCode(HttpStatusCode.Created);
             var responseModel = await httpResponseMessage.ReadBody<RoleModel>();
 
             // Act

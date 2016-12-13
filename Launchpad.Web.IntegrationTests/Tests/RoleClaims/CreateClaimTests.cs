@@ -25,6 +25,35 @@ namespace Launchpad.Web.IntegrationTests.Tests.RoleClaims
 
         public override string PathUnderTest => "/api/v1/roles/{0}/claims";
 
+        public static object[] InvalidClaimModels => new object[]
+            {
+                new object[] { new ClaimModel { ClaimType = "ClaimType" }, "claim.ClaimValue", Models.Constants.ErrorCodes.MissingField },
+                new object[] { new ClaimModel { ClaimValue = "ClaimValue" }, "claim.ClaimType", Models.Constants.ErrorCodes.MissingField }
+            };
+
+        [Theory]
+        [MemberData("InvalidClaimModels")]
+        public async void CreateClaim_Should_Return_Status_400_When_Model_Invalid(ClaimModel model, string expectedFailureField, string expectedFailureCode)
+        {
+            await _roleHelper.Refresh();
+
+            var roleId = _roleHelper.GetSingleEntity().Id;
+
+            var request = CreateSecureRequest(Method, PathUnderTest, roleId).WithJson(model);
+
+            // Act
+            var response = await Client.SendAsync(request);
+
+            // Assert
+            response.Should().HaveStatusCode(HttpStatusCode.BadRequest);
+
+            var responseModel = await response.ReadBody<BadRequestErrorModel[]>();
+            responseModel.Should()
+                .NotBeNullOrEmpty()
+                .And
+                .ContainErrorFor(expectedFailureField, expectedFailureCode);
+        }
+
         [Fact]
         public async void CreateClaim_Should_Return_Status_201_And_Location_Header()
         {
