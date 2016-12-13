@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using Xunit;
 
-namespace Launchpad.Web.IntegrationTests
+namespace Launchpad.Web.IntegrationTests.Tests
 {
     /// <summary>
     /// Contains tests for the cross-cutting concern of authorization. All 
@@ -57,6 +57,22 @@ namespace Launchpad.Web.IntegrationTests
                new object[] { HttpMethod.Post, "/api/v1/widgets" },
                new object[] { HttpMethod.Put, "/api/v1/widgets/1" }
            };
+
+        public override HttpMethod Method
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override string PathUnderTest
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         [Theory]
         [MemberData("UnauthorizedUrls")]

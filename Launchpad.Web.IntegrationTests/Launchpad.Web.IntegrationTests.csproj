@@ -128,20 +128,25 @@
   <ItemGroup>
     <Compile Include="ApiTest.cs" />
     <Compile Include="Client\TokenProvider.cs" />
+    <Compile Include="Tests\RoleClaims\CreateClaimTests.cs" />
+    <Compile Include="Tests\Roles\CreateRoleTests.cs" />
+    <Compile Include="Tests\Roles\DeleteRoleTests.cs" />
     <Compile Include="Extensions\AssertionExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Client\DataHelper.cs" />
+    <Compile Include="Tests\Roles\GetRoleByIdTests.cs" />
     <Compile Include="Hosting\HostingOptions.cs" />
     <Compile Include="Client\ApiConsumer.cs" />
     <Compile Include="Hosting\HostCollectionFixture.cs" />
     <Compile Include="Hosting\HostFixture.cs" />
     <Compile Include="Assertions\HttpResponseMessageAssertions.cs" />
     <Compile Include="Client\RoleHelper.cs" />
-    <Compile Include="RoleTests.cs" />
-    <Compile Include="StatusTests.cs" />
-    <Compile Include="UnauthorizedResponseTests.cs" />
-    <Compile Include="WidgetTests.cs" />
+    <Compile Include="Tests\Statuses\GetStatusesTests.cs" />
+    <Compile Include="Tests\Roles\GetRolesTests.cs" />
+    <Compile Include="Tests\Widgets\GetWidgetsTests.cs" />
+    <Compile Include="Tests\UnauthorizedResponseTests.cs" />
+    <Compile Include="Tests\Widgets\CreateWidgetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

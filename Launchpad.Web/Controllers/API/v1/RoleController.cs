@@ -331,7 +331,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         * 
-        * @apiUse BadRequestError  
+        * @apiUse NotFoundError  
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRole)]

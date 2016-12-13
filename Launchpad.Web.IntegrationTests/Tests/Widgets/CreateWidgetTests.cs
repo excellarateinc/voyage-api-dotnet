@@ -11,19 +11,23 @@ namespace Launchpad.Web.IntegrationTests
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]
-    public class WidgetTests : ApiTest
+    public class CreateWidgetTests : ApiTest
     {
-        public WidgetTests(HostFixture hostFixture) : base(hostFixture)
+        public override HttpMethod Method => HttpMethod.Post;
+
+        public override string PathUnderTest => "/api/v1/widgets";
+
+        public CreateWidgetTests(HostFixture hostFixture) : base(hostFixture)
         {
         }
 
         [Fact]
-        public async void CreateWidget_Should_Return_400_When_Body_Invalid()
+        public async void CreateWidget_Should_Return_Status_400_When_Body_Invalid()
         {
             // ARRANGE
             var model = new WidgetModel();
 
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets")
+            var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest)
                                         .WithJson(model);
 
             // ACT
@@ -39,10 +43,10 @@ namespace Launchpad.Web.IntegrationTests
         }
 
         [Fact]
-        public async void CreateWidget_Should_Return_201()
+        public async void CreateWidget_Should_Return_Status_201_And_Location_Header()
         {
             var model = new WidgetModel { Name = "Some test model", Color = "Very green" };
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Post, "/api/v1/widgets").WithJson(model);
+            var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest).WithJson(model);
 
             // ACT
             var response = await Client.SendAsync(httpRequestMessage);
@@ -55,23 +59,8 @@ namespace Launchpad.Web.IntegrationTests
 
             WidgetModel responseModel = await response.ReadBody<WidgetModel>();
             responseModel.Should().NotBeNull();
-        }
 
-        [Fact]
-        public async void GetWidgets_Should_Return_Models()
-        {
-            // ARRANGE
-            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/widgets");
-
-            // ACT
-            var response = await Client.SendAsync(httpRequestMessage);
-
-            // ASSERT
-            response.Should()
-                .HaveStatusCode(HttpStatusCode.OK);
-
-            WidgetModel[] models = await response.ReadBody<WidgetModel[]>();
-            models.Should().NotBeNullOrEmpty();
+            response.Should().HaveHeaderValue("Location", GetUrl($"/api/v1/widgets/{responseModel.Id}"));
         }
     }
 }

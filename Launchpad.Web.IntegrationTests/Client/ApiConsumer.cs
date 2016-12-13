@@ -18,9 +18,9 @@ namespace Launchpad.Web.IntegrationTests.Client
             return $"{HostingOptions.BaseAddress}{path}";
         }
 
-        protected HttpRequestMessage CreateSecureRequest(HttpMethod method, string path)
+        protected HttpRequestMessage CreateSecureRequest(HttpMethod method, string path, params object[] pathArgs)
         {
-            var message = new HttpRequestMessage(method, GetUrl(path));
+            var message = new HttpRequestMessage(method, GetUrl(string.Format(path, pathArgs)));
             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", TokenProvider.Instance.Token);
             return message;
         }
