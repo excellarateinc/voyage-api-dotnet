@@ -9,6 +9,8 @@ using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Ploeh.AutoFixture;
 using Xunit;
+using Moq;
+using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Services.UnitTests
 {
@@ -20,7 +22,7 @@ namespace Launchpad.Services.UnitTests
         /// </summary>
         public class TestPassThrough : EntityResultService
         {
-            public TestPassThrough(IMapper mapper) : base(mapper)
+            public TestPassThrough(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
             {
             }
 
@@ -57,10 +59,12 @@ namespace Launchpad.Services.UnitTests
         }
 
         private readonly TestPassThrough _testPassThrough;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public EntityResultServiceTests(AutoMapperFixture mapperFixture)
         {
-            _testPassThrough = new TestPassThrough(mapperFixture.MapperInstance);
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
+            _testPassThrough = new TestPassThrough(mapperFixture.MapperInstance, _mockUnitOfWork.Object);
         }
 
         [Fact]

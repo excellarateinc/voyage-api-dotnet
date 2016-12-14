@@ -13,7 +13,6 @@ namespace Launchpad.Data
         public override RoleClaim Add(RoleClaim model)
         {
             Context.RoleClaims.Add(model);
-            Context.SaveChanges();
             return model;
         }
 
@@ -51,7 +50,6 @@ namespace Launchpad.Data
 
         public override RoleClaim Update(RoleClaim model)
         {
-            Context.SaveChanges();
             return model;
         }
     }

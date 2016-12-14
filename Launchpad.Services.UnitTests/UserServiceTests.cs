@@ -28,9 +28,11 @@ namespace Launchpad.Services.UnitTests
         private readonly Mock<IRoleService> _mockRoleService;
         private readonly Mock<IUserPhoneRepository> _mockPhoneRepository;
         private readonly AutoMapperFixture _mapperFixture;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public UserServiceTests(AutoMapperFixture mapperFixture)
         {
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
             _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
             _mockStore.As<IUserPasswordStore<ApplicationUser>>();
             _mockStore.As<IQueryableUserStore<ApplicationUser>>();
@@ -43,7 +45,7 @@ namespace Launchpad.Services.UnitTests
 
             // Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
-            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, _mockPhoneRepository.Object);
+            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, _mockPhoneRepository.Object, _mockUnitOfWork.Object);
         }
 
         [Fact]
@@ -736,7 +738,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null);
+            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -749,7 +751,7 @@ namespace Launchpad.Services.UnitTests
         public void Ctor_Should_Throw_ArgumentNullException_When_UserPhoneRepository_IsNull()
         {
             Action throwAction =
-                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null);
+                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -761,7 +763,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, null, null, null);
+            Action throwAction = () => new UserService(_userManager, null, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -773,7 +775,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_RoleService_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null);
+            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

@@ -25,9 +25,11 @@ namespace Launchpad.Services.UnitTests
         private readonly Mock<IRoleClaimRepository> _mockRepository;
         private readonly Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
         private readonly AutoMapperFixture _mapperFixture;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public RoleServiceTests(AutoMapperFixture mapperFixture)
         {
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
             _mockRoleStore = Mock.Create<IRoleStore<ApplicationRole>>();
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>();
 
@@ -37,7 +39,7 @@ namespace Launchpad.Services.UnitTests
 
             _mapperFixture = mapperFixture;
 
-            _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance);
+            _roleService = new RoleService(_roleManager, _mockRepository.Object, _mapperFixture.MapperInstance, _mockUnitOfWork.Object);
         }
 
         [Fact]
@@ -314,7 +316,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleManager_Is_Null()
         {
-            Action throwAction = () => new RoleService(null, null, _mapperFixture.MapperInstance);
+            Action throwAction = () => new RoleService(null, null, _mapperFixture.MapperInstance, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -324,7 +326,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleClaimRepository_Is_Null()
         {
-            Action throwAction = () => new RoleService(_roleManager, null, _mapperFixture.MapperInstance);
+            Action throwAction = () => new RoleService(_roleManager, null, _mapperFixture.MapperInstance, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -334,7 +336,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_when_Mapper_Is_Null()
         {
-            Action throwAction = () => new RoleService(_roleManager, _mockRepository.Object, null);
+            Action throwAction = () => new RoleService(_roleManager, _mockRepository.Object, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

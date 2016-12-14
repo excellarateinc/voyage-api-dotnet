@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Launchpad.Data.Interfaces;
+﻿using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
+using System.Linq;
 
 namespace Launchpad.Data
 {
@@ -13,7 +13,6 @@ namespace Launchpad.Data
         public override Widget Add(Widget model)
         {
             var addedModel = Context.Widgets.Add(model);
-            Context.SaveChanges();
             return addedModel;
         }
 
@@ -24,7 +23,6 @@ namespace Launchpad.Data
                 return;
 
             Context.Widgets.Remove(entity);
-            Context.SaveChanges();
         }
 
         public override Widget Get(object id)
@@ -39,7 +37,6 @@ namespace Launchpad.Data
 
         public override Widget Update(Widget model)
         {
-            Context.SaveChanges();
             return model;
         }
     }

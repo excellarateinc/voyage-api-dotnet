@@ -17,11 +17,13 @@ namespace Launchpad.Services.UnitTests
     {
         private readonly AuditService _auditService;
         private readonly Mock<IActivityAuditRepository> _mockAuditRepository;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public AuditServiceTests(AutoMapperFixture mapperFixture)
         {
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
             _mockAuditRepository = Mock.Create<IActivityAuditRepository>();
-            _auditService = new AuditService(_mockAuditRepository.Object, mapperFixture.MapperInstance);
+            _auditService = new AuditService(_mockAuditRepository.Object, mapperFixture.MapperInstance, _mockUnitOfWork.Object);
         }
 
         [Fact]
@@ -53,7 +55,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Null()
         {
-            Action throwAction = () => new AuditService(null, null);
+            Action throwAction = () => new AuditService(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -65,7 +67,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_Null()
         {
-            Action throwAction = () => new AuditService(_mockAuditRepository.Object, null);
+            Action throwAction = () => new AuditService(_mockAuditRepository.Object, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

@@ -25,11 +25,6 @@ namespace Launchpad.Data
 
         public abstract TModel Get(object id);
 
-        public abstract void Delete(object id);
-
-        public int SaveChanges()
-        {
-            return Context.SaveChanges();
-        }
+        public abstract void Delete(object id);       
     }
 }

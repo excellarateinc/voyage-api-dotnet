@@ -80,6 +80,10 @@ namespace Launchpad.Data
                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
                .As<IRoleStore<ApplicationRole, string>>()
                .InstancePerRequest();
+
+            builder.RegisterType<UnitOfWork>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
         }
     }
 }

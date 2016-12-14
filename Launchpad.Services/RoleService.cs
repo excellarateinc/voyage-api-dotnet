@@ -18,7 +18,7 @@ namespace Launchpad.Services
         private readonly IRoleClaimRepository _roleClaimRepository;
         private readonly IMapper _mapper;
 
-        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper) : base(mapper)
+        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
             _roleManager = roleManager.ThrowIfNull(nameof(roleManager));
             _roleClaimRepository = roleClaimRepository.ThrowIfNull(nameof(roleClaimRepository));
@@ -46,13 +46,20 @@ namespace Launchpad.Services
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
+
                 var roleClaim = new RoleClaim
                 {
                     RoleId = roleEntity.Id,
                     ClaimValue = claim.ClaimValue,
                     ClaimType = claim.ClaimType
                 };
-                _roleClaimRepository.Add(roleClaim);
+
+                using (var scope = UnitOfWork.Begin())
+                {
+                    _roleClaimRepository.Add(roleClaim);
+                    UnitOfWork.SaveChanges();
+                    scope.Commit();
+                }
                 entityResult = Success(_mapper.Map<ClaimModel>(roleClaim));
             }
             else
@@ -69,8 +76,12 @@ namespace Launchpad.Services
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
-                var identityResult = await _roleManager.DeleteAsync(roleEntity);
-                result = FromIdentityResult(identityResult);
+                using (var scope = UnitOfWork.Begin())
+                {
+                    var identityResult = await _roleManager.DeleteAsync(roleEntity);
+                    result = FromIdentityResult(identityResult);
+                    scope.Commit();
+                }
             }
             else
             {
@@ -84,12 +95,15 @@ namespace Launchpad.Services
         {
             // Create the role
             var role = new ApplicationRole { Name = model.Name };
-            var identityResult = await _roleManager.CreateAsync(role);
+            using (var scope = UnitOfWork.Begin())
+            {
+                var identityResult = await _roleManager.CreateAsync(role);
+                scope.Commit();
+                // Get the role to return as part of the response
+                var entityResult = GetRoleByName(role.Name);
 
-            // Get the role to return as part of the response
-            var entityResult = GetRoleByName(role.Name);
-
-            return FromIdentityResult(identityResult, _mapper.Map<RoleModel>(entityResult.Model));
+                return FromIdentityResult(identityResult, _mapper.Map<RoleModel>(entityResult.Model));
+            }
         }
 
         public EntityResult<IEnumerable<RoleModel>> GetRoles()
@@ -115,11 +129,15 @@ namespace Launchpad.Services
 
         public EntityResult RemoveClaim(string roleId, int claimId)
         {
-            // With the current model, the claim id uniquely identifies the RoleClaim
-            // It is not normalized - the record contains the RoleId and the complete definition of the claim
-            // This means something like a "login" claim is repeated for each role
-            _roleClaimRepository.Delete(claimId);
-
+            using (var scope = UnitOfWork.Begin())
+            {
+                // With the current model, the claim id uniquely identifies the RoleClaim
+                // It is not normalized - the record contains the RoleId and the complete definition of the claim
+                // This means something like a "login" claim is repeated for each role
+                _roleClaimRepository.Delete(claimId);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+            }
             return Success();
         }
 
