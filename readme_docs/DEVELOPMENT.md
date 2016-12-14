@@ -88,13 +88,11 @@ Download and install the following required software for development:
      * You can right click the solution in Visual Studio and select "Restore NuGet Packages".
      * Go to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". From the console that shows up, click the "Restore" button in the upper right corner.
 3. Create the database
-   - NOTE: This app uses a SQL Database and Code First Migrations. This migration strategy will be replaced with a TBD tool.
-   - In Visual Studio, open the package manager console by going to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". 
-   - Set the Default project to Launchpad.Data in the "Default project" dropdown.
-   - Type "Update-Database" (no quotes) in the console and hit enter to create the database. This will run the Entity Framework migration scripts. If this fails with a message telling you the command is unrecognized, restart Visual Studio and try again.
-     * The connection string in Launchpad.Web web.config determines where the database will be created
-     * The default is localhost/sqlexpress with initial catalog Launchpad
-     * If you have a different instance name, change the "Data Source" portion of this to your instance. Also change this value in the app.config in Launchpad.Data.IntegrationTests.
+   - NOTE: This assumes there is a local SqlServer configured on Localhost and Windows Authentication is enabled
+   - Build the Launchpad.Database project
+   - Double click the localhost.publish.xml
+   - Once the dialog appears, click the Publish button
+   - A Data Tools Operation panel will appear and contain the results of the publish operation
 4. Install IIS
    - Open up the Control Panel.
    - Click "Programs".
