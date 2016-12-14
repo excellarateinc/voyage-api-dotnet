@@ -147,5 +147,10 @@ namespace Launchpad.Data
         {
             return new TransactionWrapper(Database.BeginTransaction());
         }
+
+        IDbSet<TEntity> ILaunchpadDataContext.Set<TEntity>()
+        {
+            return Set<TEntity>();
+        }
     }
 }

@@ -16,5 +16,7 @@ namespace Launchpad.Data.Interfaces
         IDbSet<ActivityAudit> ActivityAudits { get; set; }
 
         IDbSet<UserPhone> UserPhones { get; set; }
+
+        IDbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
 }
