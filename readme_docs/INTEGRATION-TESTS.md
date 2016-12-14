@@ -54,6 +54,14 @@ LocalDB instance "Integration-Test-Instance" deleted.
 
 #### HostFixture
 This test fixture is shared across all tests. Before any test runs, it will bootstrap the API services. This allows tests to interact with the services through the HTTP stack. Dispose will automatically be called at the end of the test run.
+
+In order for the test fixture to be injected into the test, it must be decorated with the following attribute:
+
+```
+[Trait("Category", "Self-Hosted")]
+```
+
+Additionally, there must be a constructor argument of type HostFixture.
  
  #### ApiConsumer
  This abstract class represents a class which will interact with the services. It has a number of convenience methods for creating requests:
@@ -117,28 +125,71 @@ public static async Task<TType> ReadBody<TType>(this HttpResponseMessage message
 #### Test Coverage
 The integration tests should try to exercise the most critical portions of the application. Given that the application is a set of services consumed by clients, the publically documented API is critical. Developers can use the documentation as a guide for creating good test coverage. For example, if the documentation lists the success response as 200 and the possible error responses as 401 and 404 good test coverage would have a test for each of the responses. 
 
+#### Step-By-Step 
+The following steps are a guide to creating a new test file:
+
+1. Create a class named with the following pattern {HttpVerb}{Entity}Tests.
+2. Add the required Collection attribute
+3. Inherit from ApiTest
+4. Generate the constructor
+5. Implement the abstract class
+  1. Method should be the method under test
+  2. PathUnderTest should be the endpoint location
+6. Create a new [Fact]
+  1. Use CreateSecureRequest to initialize a message (assuming a secure endpoint)
+  2. Use Client.SendAsync to retrieve the response
+  3. Verify the response using the custom assertions and by inspecting the body
+
+**Sample**
+
+```
+    [Trait("Category", "Self-Hosted")]
+    [Collection(HostCollectionFixture.Name)]
+    public class GetUsersTests : ApiTest
+    {
+        public GetUsersTests(HostFixture hostFixture) : base(hostFixture)
+        {
+        }
+
+        public override HttpMethod Method => HttpMethod.Get;
+
+        public override string PathUnderTest => "/api/v1/users";
+
+        [Fact]
+        public async void GetUsers_Should_Return_Status_200()
+        {
+            // ARRANGE
+            var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest);
+
+            // ACT
+            var response = await Client.SendAsync(httpRequestMessage);
+
+            // ASSERT
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.OK);
+            UserModel[] models = await response.ReadBody<UserModel[]>();
+            models.Should().NotBeNullOrEmpty();
+        }
+    }
+```
+
+
 #### Unauthorized Tests
 The cross-cutting concern of authorization is handled by the Owin OAuth Middleware. This crosscutting concern executes prior the request being passed to the controller. As a result, the tests for 401 can be handled via a single data driven test. The test code is shown below.
 
 ```
-[Theory]
-[MemberData("UnauthorizedUrls")]
-public async void Endpoint_Should_Respond_With_401_When_Unauthorized(HttpMethod method, string path)
-{
- using (var instance = OwinFixture.Start())
- {
-      // Arrange  
-      await OwinFixture.Init();
+        [Theory]
+        [MemberData("UnauthorizedUrls")]
+        public async void Endpoint_Should_Respond_With_401_When_Unauthorized(HttpMethod method, string path)
+        {
+            var request = CreateUnauthorizedRequest(method, path);
 
-      var request = OwinFixture.CreateUnauthorizedRequest(method, path);
-     
-      // Act
-      var response = await OwinFixture.Client.SendAsync(request);
+            // Act
+            var response = await Client.SendAsync(request);
 
-      // Assert
-      response.Should().HaveStatusCode(HttpStatusCode.Unauthorized, "{0} {1} is secure", method, path);
- }
-}
+            // Assert
+            response.Should().HaveStatusCode(HttpStatusCode.Unauthorized, "{0} {1} is secure", method, path);
+        }
  ```
 
 The test has two arguments - the HTTP method and the path to the API endpoint. These arguments are provided to the test using the MemberData attribute. This attribute takes the name of a static member which will provide the input of each distinct test value via an object array. In this case, the property is an array of object arrays and each item represents a set of test arguments. For each set of test arguments, the test code will be invoked.
