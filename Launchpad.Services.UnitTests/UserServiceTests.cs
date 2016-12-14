@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Interfaces;
+using Launchpad.Services.UnitTests.Extensions;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -63,6 +64,9 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByNameAsync("bob@bob.com"))
                 .ReturnsAsync(null);
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             var entityResult = await _userService.CreateUserAsync(userModel);
 
             entityResult.Succeeded.Should().BeTrue(string.Join("\r\n", entityResult.Errors));
@@ -75,7 +79,7 @@ namespace Launchpad.Services.UnitTests
             var id = Fixture.Create<string>();
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(null);
-
+     
             // Act
             var result = await _userService.DeleteUserAsync(id);
 
@@ -105,6 +109,9 @@ namespace Launchpad.Services.UnitTests
                 .Callback<ApplicationUser>(user => user.IsActive.Should().BeFalse())
                 .Returns(Task.Delay(0));
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             // Act
             var result = await _userService.DeleteUserAsync(id);
 
@@ -128,7 +135,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(null);
 
-            var entityResult = await _userService.UpdateUserAsync(id, userModel);
+                var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
             entityResult.Succeeded.Should().BeFalse();
             entityResult.IsEntityNotFound.Should().BeTrue();
@@ -165,6 +172,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
@@ -212,6 +222,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
@@ -262,6 +275,9 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
             entityResult.Succeeded.Should().BeTrue();
@@ -308,6 +324,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
@@ -462,7 +481,10 @@ namespace Launchpad.Services.UnitTests
             var userId = "user-id";
             var entityResult = new EntityResult<RoleModel>(null, false, true);
             _mockRoleService.Setup(_ => _.GetRoleById(roleId))
-            .Returns(entityResult);
+                .Returns(entityResult);
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var methodResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             methodResult.Should().Be(entityResult);
@@ -501,6 +523,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.UpdateAsync(appUser))
                 .Returns(Task.Delay(0));
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
 
@@ -542,6 +567,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockRoleService.Setup(_ => _.GetRoleByName(roleModel.Name))
                 .Returns(roleResult);
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             // act
             var entityResult = await _userService.AssignUserRoleAsync(userModel.Id, roleModel);
@@ -728,7 +756,7 @@ namespace Launchpad.Services.UnitTests
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
                 .Setup(_ => _.GetPasswordHashAsync(model))
                 .ReturnsAsync(hash);
-
+     
             var result = await _userService.IsValidCredential(user, password);
 
             Mock.VerifyAll();
@@ -738,7 +766,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null, null);
+            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -751,7 +779,7 @@ namespace Launchpad.Services.UnitTests
         public void Ctor_Should_Throw_ArgumentNullException_When_UserPhoneRepository_IsNull()
         {
             Action throwAction =
-                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null, null);
+                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -763,7 +791,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, null, null, null, null);
+            Action throwAction = () => new UserService(_userManager, null, null, null, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -775,7 +803,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_RoleService_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null, null);
+            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -838,7 +866,7 @@ namespace Launchpad.Services.UnitTests
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
-                .Create();            
+                .Create();
 
             var applicationUser = new ApplicationUser();
 
@@ -863,6 +891,9 @@ namespace Launchpad.Services.UnitTests
             _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(match => match.Email == model.Email && match.UserName == model.Email)))
                 .Returns(Task.Delay(0));
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             // ACT
             await _userService.RegisterAsync(model);
 
@@ -885,6 +916,9 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))
                 .ReturnsAsync(new ApplicationUser());
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             // ACT
             var result = await _userService.RegisterAsync(model);

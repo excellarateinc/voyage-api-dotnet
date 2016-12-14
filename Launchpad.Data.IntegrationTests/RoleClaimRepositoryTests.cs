@@ -151,6 +151,8 @@ namespace Launchpad.Data.IntegrationTests
                    
                     repository.Delete(claim.Id);
 
+                    ctx.SaveChanges();
+
                     var result = repository.Get(claim.Id);
 
                     result.Should().BeNull();

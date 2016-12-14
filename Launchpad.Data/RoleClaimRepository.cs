@@ -21,8 +21,7 @@ namespace Launchpad.Data
             var entity = Get(id);
             if (entity != null)
             {
-                Context.RoleClaims.Remove(entity);
-                Context.SaveChanges();
+                Context.RoleClaims.Remove(entity);               
             }
         }
 

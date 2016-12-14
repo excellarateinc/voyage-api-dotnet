@@ -46,7 +46,6 @@ namespace Launchpad.Services
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity != null)
             {
-
                 var roleClaim = new RoleClaim
                 {
                     RoleId = roleEntity.Id,
@@ -60,6 +59,7 @@ namespace Launchpad.Services
                     UnitOfWork.SaveChanges();
                     scope.Commit();
                 }
+
                 entityResult = Success(_mapper.Map<ClaimModel>(roleClaim));
             }
             else
@@ -138,6 +138,7 @@ namespace Launchpad.Services
                 UnitOfWork.SaveChanges();
                 scope.Commit();
             }
+
             return Success();
         }
 

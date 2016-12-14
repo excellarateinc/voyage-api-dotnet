@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
+using Launchpad.Services.UnitTests.Extensions;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -187,6 +188,8 @@ namespace Launchpad.Services.UnitTests
                 .ReturnsAsync(appRole);
             _mockRoleStore.Setup(_ => _.DeleteAsync(appRole))
                 .Returns(Task.Delay(0));
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupBegin(mockTransaction.Object);
 
             // Act
             var result = await _roleService.RemoveRoleAsync(roleId);
@@ -203,6 +206,8 @@ namespace Launchpad.Services.UnitTests
             var claimId = Fixture.Create<int>();
 
             _mockRepository.Setup(_ => _.Delete(claimId));
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             // act
             _roleService.RemoveClaim(roleId, claimId);
@@ -259,6 +264,9 @@ namespace Launchpad.Services.UnitTests
                   value.ClaimValue == claim.ClaimValue)))
             .Returns(new RoleClaim());
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
 
             Mock.VerifyAll();
@@ -304,6 +312,9 @@ namespace Launchpad.Services.UnitTests
             _mockRoleStore.Setup(_ => _.CreateAsync(It.Is<ApplicationRole>(value => value.Name == model.Name)))
                 .Returns(Task.FromResult(0));
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupBegin(mockTransaction.Object);
+
             var result = await _roleService.CreateRoleAsync(model);
 
             Mock.VerifyAll();
@@ -316,7 +327,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleManager_Is_Null()
         {
-            Action throwAction = () => new RoleService(null, null, _mapperFixture.MapperInstance, null);
+            Action throwAction = () => new RoleService(null, null, _mapperFixture.MapperInstance, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -326,7 +337,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_Null_Argument_Exception_When_RoleClaimRepository_Is_Null()
         {
-            Action throwAction = () => new RoleService(_roleManager, null, _mapperFixture.MapperInstance, null);
+            Action throwAction = () => new RoleService(_roleManager, null, _mapperFixture.MapperInstance, _mockUnitOfWork.Object);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -346,7 +357,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void GetRoles_Should_Return_All_Roles()
         {
-            var roles = new[] 
+            var roles = new[]
             {
                 new ApplicationRole { Name = "Role1" },
                 new ApplicationRole { Name = "Role2" }

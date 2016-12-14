@@ -1,12 +1,13 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.UnitTests.Extensions;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -31,6 +32,9 @@ namespace Launchpad.Services.UnitTests
         {
             var model = Fixture.Create<ActivityAuditModel>();
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
                 .Returns<ActivityAudit>(t => t);
 
@@ -46,6 +50,8 @@ namespace Launchpad.Services.UnitTests
 
             _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
                 .Returns<ActivityAudit>(t => t);
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             await _auditService.RecordAsync(model);
 
@@ -76,4 +82,4 @@ namespace Launchpad.Services.UnitTests
                 .Be("mapper");
         }
     }
-} 
+}

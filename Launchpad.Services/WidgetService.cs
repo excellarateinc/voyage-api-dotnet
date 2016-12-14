@@ -43,6 +43,7 @@ namespace Launchpad.Services
                 UnitOfWork.SaveChanges();
                 scope.Commit();
             }
+
             return Success(_mapper.Map<WidgetModel>(result));
         }
 

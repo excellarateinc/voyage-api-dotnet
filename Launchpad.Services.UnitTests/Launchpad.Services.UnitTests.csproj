@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="AuditServiceTests.cs" />
     <Compile Include="EntityResultServiceTests.cs" />
+    <Compile Include="Extensions\UnitOfWorkExtensions.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="Fixture\AutoMapperCollection.cs" />
     <Compile Include="Fixture\AutoMapperFixture.cs" />

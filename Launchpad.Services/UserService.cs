@@ -59,6 +59,7 @@ namespace Launchpad.Services
             {
                 return entityResult;
             }
+
             using (var scope = UnitOfWork.Begin())
             {
                 var result = await _userManager.RemoveFromRoleAsync(userId, entityResult.Model.Name);
@@ -66,7 +67,6 @@ namespace Launchpad.Services
                 scope.Commit();
                 return FromIdentityResult(result);
             }
-
         }
 
         public async Task<EntityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
@@ -75,7 +75,6 @@ namespace Launchpad.Services
 
             using (var scope = UnitOfWork.Begin())
             {
-
                 identityResult = await _userManager.AddToRoleAsync(userId, roleModel.Name);
                 UnitOfWork.SaveChanges();
                 scope.Commit();
@@ -87,7 +86,6 @@ namespace Launchpad.Services
             }
 
             return FromIdentityResult<RoleModel>(identityResult, null);
-
         }
 
         public EntityResult<IEnumerable<UserModel>> GetUsers()
