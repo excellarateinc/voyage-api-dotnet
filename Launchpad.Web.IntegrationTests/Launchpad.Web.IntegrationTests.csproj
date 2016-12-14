@@ -154,8 +154,11 @@
     <Compile Include="Tests\UserRoles\GetUserRoleByIdTests.cs" />
     <Compile Include="Tests\UserRoles\GetUserRolesTests.cs" />
     <Compile Include="Tests\UserRoles\PostUserRoleTests.cs" />
-    <Compile Include="Tests\Users\GetUserById.cs" />
+    <Compile Include="Tests\Users\DeleteUserTest.cs" />
+    <Compile Include="Tests\Users\GetUserByIdTests.cs" />
     <Compile Include="Tests\Users\GetUsersTests.cs" />
+    <Compile Include="Tests\Users\PostUserTests.cs" />
+    <Compile Include="Tests\Users\UpdateUserTests.cs" />
     <Compile Include="Tests\Widgets\GetWidgetsTests.cs" />
     <Compile Include="Tests\UnauthorizedResponseTests.cs" />
     <Compile Include="Tests\Widgets\PostWidgetTests.cs" />

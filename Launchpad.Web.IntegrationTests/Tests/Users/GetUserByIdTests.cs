@@ -12,11 +12,11 @@ namespace Launchpad.Web.IntegrationTests.Tests.Users
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]
-    public class GetUserById : ApiTest
+    public class GetUserByIdTests : ApiTest
     {
         private readonly UserHelper _userHelper;
 
-        public GetUserById(HostFixture hostFixture) : base(hostFixture)
+        public GetUserByIdTests(HostFixture hostFixture) : base(hostFixture)
         {
             _userHelper = new UserHelper();
         }
