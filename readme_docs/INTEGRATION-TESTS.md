@@ -53,6 +53,7 @@ LocalDB instance "Integration-Test-Instance" deleted.
 ```
 
 #### HostFixture
+
 This test fixture is shared across all tests. Before any test runs, it will bootstrap the API services. This allows tests to interact with the services through the HTTP stack. Dispose will automatically be called at the end of the test run.
 
 In order for the test fixture to be injected into the test, it must be decorated with the following attribute:
@@ -63,7 +64,8 @@ In order for the test fixture to be injected into the test, it must be decorated
 
 Additionally, there must be a constructor argument of type HostFixture.
  
- #### ApiConsumer
+#### ApiConsumer
+ 
  This abstract class represents a class which will interact with the services. It has a number of convenience methods for creating requests:
 
 |Member|Description|
@@ -75,6 +77,65 @@ Additionally, there must be a constructor argument of type HostFixture.
 
 #### ApiTest
 This abstract class repesents an integration test. The core concept is that any given test file will test a single API endpoint. These system under test is reprsented by the abstract properties Method and PathUnderTest. Implementors will define these values for the endpoint that is under test. For example, a testing the retrieval of all useres would set the values to HttpMethod.Get and "/api/v1/users/" respectively.
+
+#### DataHelper
+This is an abstract class that encapsulates getting test data for an entity. This is useful for tests such as getting user by id. The concrete implmentation for users, UserHelper, allows tests to share the code that determines an existing UserId.
+
+|Method|Description|
+|:----|:----|
+|Refresh|Issues the HttpRequest which loads the entities that will be used by subsequent methods to get test data|
+|GetSingleEntity|Retrieves an arbitrary existing entity|
+|GetAllEntities|Retrieves all entities that were loaded by Refresh|
+
+Additionally, concrete implementations of this class can add their own methods to handle common test data functions such as creating a new record which is useful in the setup phase of a delete test.
+
+**Sample Implementation**
+```
+    public class UserHelper : DataHelper<UserModel>
+    {
+        private List<UserModel> _entities = Enumerable.Empty<UserModel>().ToList();
+
+        public override IEnumerable<UserModel> GetAllEntities()
+        {
+            return _entities;
+        }
+
+        public override UserModel GetSingleEntity()
+        {
+            return _entities.First();
+        }
+
+        public async override Task Refresh()
+        {
+            var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/users");
+            var response = await Client.SendAsync(httpRequestMessage);
+            _entities = (await response.ReadBody<UserModel[]>()).ToList();
+        }
+    }
+```
+
+**Sample Usage**
+```
+        [Fact]
+        public async void GetUserById_Should_Return_Status_200()
+        {
+            // Arrange               
+            await _userHelper.Refresh();
+            var user = _userHelper.GetSingleEntity();
+            var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest, user.Id);
+
+            // ACT
+            var response = await Client.SendAsync(httpRequestMessage);
+
+            // ASSERT
+            response.Should()
+                .HaveStatusCode(HttpStatusCode.OK);
+
+            UserModel model = await response.ReadBody<UserModel>();
+            model.Should().NotBeNull();
+            model.ShouldBeEquivalentTo(user);
+        }
+```
 
 #### Test Files
 Test files are grouped in folders by entity. Entity is defined as the primary object that the endpoint exposes. For instance, there is a folder for Users and a folder for UserRoles because there are a distinct set of endpoints that deal with the entities. 
