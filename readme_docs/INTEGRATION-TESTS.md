@@ -168,6 +168,7 @@ Custom assertions have been added to help create better BDD-style tests. The cur
 *BadRequestCollectionAssertions*
 
 |Method|Description|
+|:----|:----|
 |ContainErrorFor|Given an enumerable of BadRequstErrorModel verifies that there is at least 1 error for the given field/code. This is useful when creating tests for 400 BAD REQUEST.|
 
 #### Response Body
