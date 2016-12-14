@@ -87,5 +87,6 @@
     <None Include="Scripts\Seed\UserRole.sql" />
     <None Include="Scripts\Seed\UserPhone.sql" />
     <None Include="Scripts\Seed\Widget.sql" />
+    <None Include="localhost.publish.xml" />
   </ItemGroup>
 </Project>
