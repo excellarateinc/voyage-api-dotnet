@@ -18,7 +18,7 @@ SET sqlLocalDb="C:\Program Files\Microsoft SQL Server\130\Tools\Binn\SqlLocalDB.
 SET sqlInstanceName="Integration-Test-Instance"
 
 ::Path to the dacpac
-SET sourcePath=".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
+SET sourcePath="%~dp0\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
 if not [%1]==[] if not [%1]==[-] set sourcePath=%1
 
 ::Connection string for the target
