@@ -53,6 +53,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   ]
         *   
         * @apiUse UnauthorizedError  
+        * @apiUse NotFoundError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
         [HttpGet]
@@ -200,10 +201,10 @@ namespace Launchpad.Web.Controllers.API.V1
             var actionResult = CreatedEntityAt(
                 "GetClaimById",
                 () => new
-                    {
-                        RoleId = roleId,
-                        ClaimId = entityResult.Model.Id
-                    },
+                {
+                    RoleId = roleId,
+                    ClaimId = entityResult.Model.Id
+                },
                 entityResult);
             return actionResult;
         }
@@ -227,15 +228,14 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiSuccess {String} claim.claimValue Value
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 Created
+        *   HTTP/1.1 200 OK
         *   {
-        *       "claimType": "lss.permission",
+        *       "claimType": "app.permission",
         *       "claimValue": "list.widgets",
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
-        * @apiUse BadRequestError  
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewClaim)]
         [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
@@ -330,7 +330,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         * 
-        * @apiUse BadRequestError  
+        * @apiUse NotFoundError  
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRole)]

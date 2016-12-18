@@ -165,6 +165,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         * @apiUse UserSuccessModel  
         * @apiUse UnauthorizedError  
+        * @apiUse NotFoundError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewUser)]
         [HttpGet]
