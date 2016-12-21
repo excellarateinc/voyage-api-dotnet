@@ -203,10 +203,13 @@ Returns only the "firstName", "lastName", "email", and "phones" data within the 
 The following codes are returned as HTTP Status Codes in the response header depending on the circumstances described below. All responses regardless of the status code, should contain a well formed JSON response object that contains meaningful information for the consumer.
 
 #### 200 OK
-Returned for an expected and acceptable web service request from a consumer. 
+Returned for an expected and acceptable web service request from a consumer. This status code is expected to have a response body for the consumer. If no response body is needed, then use the 204 No Content response status code. 
 
 #### 201 Created
 Returned after a POST request successfully creates a new resource. The location (URL) of the newly created resource should be defined within the "Location" HTTP Header attribute within the response. See [Location Header](https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30) in the HTTP spec. 
+
+#### 204 No Content
+Returned when the request completed successfully but has no response content to return. This response status code should be used in response to a DELETE request. When a DELETE is successful, there isn't anything to return other than "success", which is sufficiently communicated via the 204 No Content response status code. 
 
 #### 400 Bad Request
 Returned when the request parameters are incorrect, invalid, or incomplete. This response status code should be use to enforce the schema of the request. 
