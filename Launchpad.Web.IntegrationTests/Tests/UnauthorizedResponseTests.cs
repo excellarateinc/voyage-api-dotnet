@@ -49,13 +49,6 @@ namespace Launchpad.Web.IntegrationTests.Tests
                new object[] { HttpMethod.Get, $"/api/v1/roles/{Guid.Empty}" },
                new object[] { HttpMethod.Delete, $"/api/v1/roles/{Guid.Empty}" },
                new object[] { HttpMethod.Post, "/api/v1/roles" },
-
-               // Widget endpoints
-               new object[] { HttpMethod.Get, "/api/v1/widgets" },
-               new object[] { HttpMethod.Get, "/api/v1/widgets/1" },
-               new object[] { HttpMethod.Delete, "/api/v1/widgets/1" },
-               new object[] { HttpMethod.Post, "/api/v1/widgets" },
-               new object[] { HttpMethod.Put, "/api/v1/widgets/1" }
            };
 
         public override HttpMethod Method

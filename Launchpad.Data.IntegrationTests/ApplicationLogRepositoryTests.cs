@@ -17,9 +17,9 @@ namespace Launchpad.Data.IntegrationTests
                     var repository = new ApplicationLogRepository(context);
 
                     // Force a db query to verify the EF configuration is valid
-                    var widgets = repository.GetRecentActivity();
+                    var activity = repository.GetRecentActivity();
 
-                    widgets.Should().NotBeNull();
+                    activity.Should().NotBeNull();
                 }
             }
         }

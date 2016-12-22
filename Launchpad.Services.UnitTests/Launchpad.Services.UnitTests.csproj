@@ -117,7 +117,6 @@
     <Compile Include="RoleServiceTests.cs" />
     <Compile Include="ApplicationInfoServiceTests.cs" />
     <Compile Include="UserServiceTests.cs" />
-    <Compile Include="WidgetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

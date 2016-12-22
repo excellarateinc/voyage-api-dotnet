@@ -225,7 +225,6 @@
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
     <Compile Include="Controllers\API\v1\ApplicationInfoController.cs" />
-    <Compile Include="Controllers\API\v1\WidgetController.cs" />
     <Compile Include="Extensions\ModelErrorExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\OwinContextExtensions.cs" />

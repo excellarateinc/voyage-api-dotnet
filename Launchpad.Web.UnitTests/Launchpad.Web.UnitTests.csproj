@@ -170,7 +170,6 @@
     <Compile Include="Controllers\API\V1\AccountControllerTests.cs" />
     <Compile Include="Controllers\API\V1\RoleControllerTests.cs" />
     <Compile Include="Controllers\API\V1\ApplicationInfoControllerTests.cs" />
-    <Compile Include="Controllers\API\V1\WidgetControllerTests.cs" />
     <Compile Include="Controllers\API\V1\UserControllerTests.cs" />
     <Compile Include="Extensions\ModelErrorExtensionsTests.cs" />
     <Compile Include="Extensions\OwinContextExtensionsTests.cs" />

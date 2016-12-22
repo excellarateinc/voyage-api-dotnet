@@ -5,8 +5,6 @@ namespace Launchpad.Data.Interfaces
 {
     public interface ILaunchpadDataContext
     {
-        IDbSet<Widget> Widgets { get; set; }
-
         IDbSet<ApplicationLog> Logs { get; set; }
 
         IDbSet<RoleClaim> RoleClaims { get; set; }

@@ -14,29 +14,6 @@ namespace Launchpad.Data.IntegrationTests
     public class LaunchpadDataContextTests
     {
         [Fact]
-        public void Widgets_Should_Return_Record()
-        {
-            // Create a new transaction scope
-            using (new TransactionScope())
-            {
-                // Create a data context
-                using (var context = new LaunchpadDataContext())
-                {
-                    // Arrange
-
-                    // Create a widget (in case the database is empty)
-                    context.AddWidget();
-
-                    // Act
-                    var widget = context.Widgets.First();
-
-                    // Assert
-                    widget.Should().NotBeNull();
-                }
-            }
-        }
-
-        [Fact]
         public void ActivityAudits_Should_Query_Database()
         {
             // Create a new transaction scope

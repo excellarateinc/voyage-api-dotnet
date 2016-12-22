@@ -85,8 +85,6 @@
     <Compile Include="RoleService.cs" />
     <Compile Include="ServicesModule.cs" />
     <Compile Include="UserService.cs" />
-    <Compile Include="WidgetService.cs" />
-    <Compile Include="Interfaces\IWidgetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

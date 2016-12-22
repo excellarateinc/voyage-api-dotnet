@@ -72,7 +72,6 @@
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\UserClaim.sql" />
     <Build Include="dbo\Tables\UserLogin.sql" />
-    <Build Include="dbo\Tables\Widget.sql" />
     <Build Include="dbo\Tables\UserPhone.sql" />
     <Build Include="dbo\Tables\ActivityAudit.sql" />
     <Build Include="dbo\Tables\AuditLog.sql" />
@@ -86,7 +85,6 @@
     <None Include="Scripts\Seed\Role.sql" />
     <None Include="Scripts\Seed\UserRole.sql" />
     <None Include="Scripts\Seed\UserPhone.sql" />
-    <None Include="Scripts\Seed\Widget.sql" />
     <None Include="localhost.publish.xml" />
   </ItemGroup>
 </Project>

@@ -113,7 +113,6 @@
     <Compile Include="Map\Profiles\UserPhoneProfileTest.cs" />
     <Compile Include="Map\Profiles\RoleProfileTests.cs" />
     <Compile Include="Map\Profiles\UserProfileTests.cs" />
-    <Compile Include="Map\Profiles\WidgetProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationModelTests.cs" />
     <Compile Include="RoleModelTests.cs" />
@@ -123,8 +122,6 @@
     <Compile Include="Validators\RoleModelValidatorTests.cs" />
     <Compile Include="Validators\UserModelValidatorTests.cs" />
     <Compile Include="Validators\UserPhoneModelValidatorTests.cs" />
-    <Compile Include="Validators\WidgetModelValidatorTests.cs" />
-    <Compile Include="WidgetModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

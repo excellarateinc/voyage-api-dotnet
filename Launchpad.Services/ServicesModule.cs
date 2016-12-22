@@ -12,12 +12,6 @@ namespace Launchpad.Services
          * */
         protected override void Load(ContainerBuilder builder)
         {
-            // This will register the type WidgetService as it's implemented interfaces. In this case, dependencies on IWidgetService will resolve to a concrete
-            // instance of WidgetService
-            builder.RegisterType<WidgetService>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
             builder.RegisterType<ApplicationInfoService>()
                 .WithParameter("fileName", ConfigurationManager.AppSettings["ApplicationInfoFileName"])
                 .AsImplementedInterfaces()

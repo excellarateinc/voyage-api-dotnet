@@ -27,8 +27,6 @@ namespace Launchpad.Data
 
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
 
-        public IDbSet<Widget> Widgets { get; set; }
-
         public IDbSet<ApplicationLog> Logs { get; set; }
 
         public IDbSet<RoleClaim> RoleClaims { get; set; }

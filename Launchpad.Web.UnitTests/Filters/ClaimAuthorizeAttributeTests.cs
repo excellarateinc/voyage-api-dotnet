@@ -22,9 +22,9 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorize_Should_Not_Set_Response_When_Claim_Exists()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -48,9 +48,9 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorize_Should_Set_Response_When_Claim_Does_Not_Exist()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
                                         {
@@ -77,11 +77,11 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorize_Should_Set_Response_When_User_Is_Not_Authenticated()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
             var claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim("lss.permission", "list.widgets")
+                new Claim("lss.permission", "list.test")
             });
 
             var controllerContext = new HttpControllerContext
@@ -101,9 +101,9 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public async void OnAuthorizationAsync_Should_Not_Set_Response_When_Claim_Exists()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -127,9 +127,9 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorizeAsync_Should_Set_Response_When_Claim_Does_Not_Exist()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.widgets") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -154,11 +154,11 @@ namespace Launchpad.Web.UnitTests.Filters
         [Fact]
         public void OnAuthorizeAsync_Should_Set_Response_When_User_Is_Not_Authenticated()
         {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.widgets" };
+            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
             var claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim("lss.permission", "list.widgets")
+                new Claim("lss.permission", "list.test")
             });
 
             var controllerContext = new HttpControllerContext

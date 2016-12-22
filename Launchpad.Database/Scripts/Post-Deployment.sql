@@ -14,5 +14,4 @@ Post-Deployment Script Template
 :r .\Seed\RoleClaim.sql
 :r .\Seed\UserPhone.sql
 :r .\Seed\UserRole.sql
-:r .\Seed\Widget.sql
 

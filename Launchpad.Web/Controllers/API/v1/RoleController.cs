@@ -184,7 +184,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   HTTP/1.1 201 Created
         *   {
         *       "claimType": "lss.permission",
-        *       "claimValue": "list.widgets",
+        *       "claimValue": "list.newClaim",
         *       "id": 219
         *   }
         *
@@ -231,7 +231,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   HTTP/1.1 200 OK
         *   {
         *       "claimType": "app.permission",
-        *       "claimValue": "list.widgets",
+        *       "claimValue": "list.newClaim",
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
@@ -296,7 +296,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   [
         *       { 
         *           "claimType": "lss.permission",
-        *           "claimValue": "list.widgets",
+        *           "claimValue": "list.newClaim",
         *           "id": 17
         *       }
         *   ]

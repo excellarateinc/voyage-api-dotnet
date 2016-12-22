@@ -86,7 +86,6 @@
     <Compile Include="EntityFramework\ApplicationUser.cs" />
     <Compile Include="EntityFramework\ApplicationLog.cs" />
     <Compile Include="EntityFramework\RoleClaim.cs" />
-    <Compile Include="EntityFramework\Widget.cs" />
     <Compile Include="EntityResult.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
@@ -100,7 +99,6 @@
     <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
-    <Compile Include="Map\Profiles\WidgetProfile.cs" />
     <Compile Include="EntityFramework\UserPhone.cs" />
     <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
@@ -111,8 +109,6 @@
     <Compile Include="Validators\RoleModelValidator.cs" />
     <Compile Include="Validators\UserModelValidator.cs" />
     <Compile Include="Validators\UserPhoneModelValidator.cs" />
-    <Compile Include="Validators\WidgetModelValidator.cs" />
-    <Compile Include="WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

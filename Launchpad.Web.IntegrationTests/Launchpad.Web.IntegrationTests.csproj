@@ -130,7 +130,6 @@
     <Compile Include="Assertions\BadRequestCollectionAssertions.cs" />
     <Compile Include="Client\TokenProvider.cs" />
     <Compile Include="Client\UserHelper.cs" />
-    <Compile Include="Client\WidgetHelper.cs" />
     <Compile Include="Tests\RoleClaims\DeleteClaimTests.cs" />
     <Compile Include="Tests\RoleClaims\PostClaimTests.cs" />
     <Compile Include="Tests\RoleClaims\GetClaimByIdTests.cs" />
@@ -160,13 +159,8 @@
     <Compile Include="Tests\Users\GetUsersTests.cs" />
     <Compile Include="Tests\Users\PostUserTests.cs" />
     <Compile Include="Tests\Users\UpdateUserTests.cs" />
-    <Compile Include="Tests\Widgets\DeleteWidgetTests.cs" />
-    <Compile Include="Tests\Widgets\GetWidgetsTests.cs" />
     <Compile Include="Tests\UnauthorizedResponseTests.cs" />
-    <Compile Include="Tests\Widgets\GetWidgetByIdTests.cs" />
-    <Compile Include="Tests\Widgets\PostWidgetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\Widgets\UpdateWidgetTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

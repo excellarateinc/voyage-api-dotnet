@@ -39,7 +39,7 @@ namespace Launchpad.Web.UnitTests.Controllers.API.V1
 
             var claimIdentity = new ClaimsIdentity();
             claimIdentity.AddClaim(new Claim("fakeClaim", "fake"));
-            claimIdentity.AddClaim(new Claim(LssClaims.Type, "view.widget"));
+            claimIdentity.AddClaim(new Claim(LssClaims.Type, "view.test"));
             _userController.User = new ClaimsPrincipal(claimIdentity);
             _userController.Url = _mockUrlHelper.Object;
         }

@@ -118,7 +118,6 @@
     <Compile Include="ActivityAuditRepositoryTests.cs" />
     <Compile Include="ApplicationLogRepositoryTests.cs" />
     <Compile Include="UserPhoneRepositoryTests.cs" />
-    <Compile Include="WidgetRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
