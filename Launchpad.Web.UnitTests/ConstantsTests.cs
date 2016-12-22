@@ -21,11 +21,5 @@ namespace Launchpad.Web.UnitTests
         {
             Constants.RoutePrefixes.V1.Should().Be("api/v1");
         }
-
-        [Fact]
-        public void V2_Should_Return_Known_Value()
-        {
-            Constants.RoutePrefixes.V2.Should().Be("api/v2");
-        }
     }
 }
