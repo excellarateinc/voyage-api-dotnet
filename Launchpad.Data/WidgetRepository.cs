@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Launchpad.Data.Interfaces;
+﻿using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data
@@ -8,39 +7,6 @@ namespace Launchpad.Data
     {
         public WidgetRepository(ILaunchpadDataContext context) : base(context)
         {
-        }
-
-        public override Widget Add(Widget model)
-        {
-            var addedModel = Context.Widgets.Add(model);
-            Context.SaveChanges();
-            return addedModel;
-        }
-
-        public override void Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity == null)
-                return;
-
-            Context.Widgets.Remove(entity);
-            Context.SaveChanges();
-        }
-
-        public override Widget Get(object id)
-        {
-            return Context.Widgets.Find(id);
-        }
-
-        public override IQueryable<Widget> GetAll()
-        {
-            return Context.Widgets;
-        }
-
-        public override Widget Update(Widget model)
-        {
-            Context.SaveChanges();
-            return model;
-        }
+        }      
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Launchpad.Data.Interfaces;
+﻿using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
+using System;
+using System.Linq;
 
 namespace Launchpad.Data
 {
@@ -14,7 +14,6 @@ namespace Launchpad.Data
         public override ActivityAudit Add(ActivityAudit model)
         {
             Context.ActivityAudits.Add(model);
-            Context.SaveChanges();
             return model;
         }
 

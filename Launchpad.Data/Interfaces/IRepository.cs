@@ -6,8 +6,7 @@ namespace Launchpad.Data.Interfaces
     /// Basic repository
     /// </summary>
     public interface IRepository
-    {
-        int SaveChanges();
+    {      
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Launchpad.Core;
+using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Microsoft.AspNet.Identity;
 using System;
@@ -14,10 +15,12 @@ namespace Launchpad.Services
     public abstract class EntityResultService
     {
         protected readonly IMapper Mapper;
+        protected readonly IUnitOfWork UnitOfWork;
 
-        public EntityResultService(IMapper mapper)
+        public EntityResultService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             Mapper = mapper.ThrowIfNull(nameof(mapper));
+            UnitOfWork = unitOfWork.ThrowIfNull(nameof(unitOfWork));
         }
 
         /// <summary>

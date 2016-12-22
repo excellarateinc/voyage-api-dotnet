@@ -1,13 +1,14 @@
-﻿using System;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.UnitTests.Extensions;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -18,12 +19,14 @@ namespace Launchpad.Services.UnitTests
         private readonly WidgetService _widgetService;
         private readonly Mock<IWidgetRepository> _mockWidgetRepository;
         private readonly AutoMapperFixture _mappingFixture;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public WidgetServiceTests(AutoMapperFixture mappingFixture)
         {
             _mappingFixture = mappingFixture;
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
             _mockWidgetRepository = Mock.Create<IWidgetRepository>();
-            _widgetService = new WidgetService(_mockWidgetRepository.Object, _mappingFixture.MapperInstance);
+            _widgetService = new WidgetService(_mockWidgetRepository.Object, _mappingFixture.MapperInstance, _mockUnitOfWork.Object);
         }
 
         [Fact]
@@ -89,14 +92,14 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Is_Null()
         {
-            Action throwAction = () => new WidgetService(null, _mappingFixture.MapperInstance);
+            Action throwAction = () => new WidgetService(null, _mappingFixture.MapperInstance, _mockUnitOfWork.Object);
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("widgetRepository");
         }
 
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_Is_Null()
         {
-            Action throwAction = () => new WidgetService(_mockWidgetRepository.Object, null);
+            Action throwAction = () => new WidgetService(_mockWidgetRepository.Object, null, null);
             throwAction.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("mapper");
         }
 
@@ -107,6 +110,9 @@ namespace Launchpad.Services.UnitTests
             var addResult = Fixture.Create<Widget>();
 
             _mockWidgetRepository.Setup(_ => _.Add(It.IsAny<Widget>())).Returns(addResult);
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             var entityResult = _widgetService.AddWidget(model);
 
@@ -137,6 +143,9 @@ namespace Launchpad.Services.UnitTests
             _mockWidgetRepository.Setup(_ => _.Get(model.Id)).Returns(getResult);
             _mockWidgetRepository.Setup(_ => _.Update(getResult)).Returns(getResult);
 
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
+
             var entityResult = _widgetService.UpdateWidget(model.Id, model);
 
             Mock.VerifyAll();
@@ -150,6 +159,8 @@ namespace Launchpad.Services.UnitTests
         {
             const int id = 33;
             _mockWidgetRepository.Setup(_ => _.Delete(id));
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             _widgetService.DeleteWidget(id);
 

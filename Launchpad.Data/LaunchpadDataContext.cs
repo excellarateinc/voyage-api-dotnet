@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Launchpad.Core;
+using Launchpad.Data.Interfaces;
+using Launchpad.Models.EntityFramework;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Serilog;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -6,19 +11,12 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
-using Launchpad.Core;
-using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Serilog;
 using TrackerEnabledDbContext.Common.Models;
 using TrackerEnabledDbContext.Identity;
 
 namespace Launchpad.Data
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
+    public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext, IPersistanceComponent
     {
         private readonly IIdentityProvider _identityProvider;
         private readonly ILogger _logger;
@@ -143,6 +141,16 @@ namespace Launchpad.Data
 
                 throw;
             }
+        }
+
+        public ITransaction BeginTransaction()
+        {
+            return new TransactionWrapper(Database.BeginTransaction());
+        }
+
+        IDbSet<TEntity> ILaunchpadDataContext.Set<TEntity>()
+        {
+            return Set<TEntity>();
         }
     }
 }

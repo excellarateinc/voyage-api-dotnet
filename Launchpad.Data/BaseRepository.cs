@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Launchpad.Core;
+﻿using Launchpad.Core;
 using Launchpad.Data.Interfaces;
+using System.Linq;
 
 namespace Launchpad.Data
 {
@@ -8,7 +8,7 @@ namespace Launchpad.Data
     /// Abstract implementation of the repository interface
     /// </summary>
     /// <typeparam name="TModel">Generic TModel which the repository will work with</typeparam>
-    public abstract class BaseRepository<TModel> : IRepository<TModel>
+    public abstract class BaseRepository<TModel> : IRepository<TModel> where TModel : class
     {
         protected ILaunchpadDataContext Context;
 
@@ -17,19 +17,34 @@ namespace Launchpad.Data
             Context = context.ThrowIfNull(nameof(context));
         }
 
-        public abstract TModel Add(TModel model);
-
-        public abstract TModel Update(TModel model);
-
-        public abstract IQueryable<TModel> GetAll();
-
-        public abstract TModel Get(object id);
-
-        public abstract void Delete(object id);
-
-        public int SaveChanges()
+        public virtual TModel Add(TModel model)
         {
-            return Context.SaveChanges();
+            Context.Set<TModel>().Add(model);
+            return model;
+        }
+
+        public virtual TModel Update(TModel model)
+        {
+            // TODO: Handle administrative columns
+            return model;
+        }
+
+        public virtual IQueryable<TModel> GetAll()
+        {
+            return Context.Set<TModel>();
+        }
+
+        public virtual TModel Get(object id)
+        {
+            return Context.Set<TModel>().Find(id);
+        }
+
+        public virtual void Delete(object id)
+        {
+            var entity = Get(id);
+            if (entity == null)
+                return;
+            Context.Set<TModel>().Remove(entity);
         }
     }
 }

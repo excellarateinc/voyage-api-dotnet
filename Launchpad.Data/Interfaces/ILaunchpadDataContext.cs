@@ -1,5 +1,5 @@
-﻿using System.Data.Entity;
-using Launchpad.Models.EntityFramework;
+﻿using Launchpad.Models.EntityFramework;
+using System.Data.Entity;
 
 namespace Launchpad.Data.Interfaces
 {
@@ -17,6 +17,6 @@ namespace Launchpad.Data.Interfaces
 
         IDbSet<UserPhone> UserPhones { get; set; }
 
-        int SaveChanges();       
+        IDbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
 }

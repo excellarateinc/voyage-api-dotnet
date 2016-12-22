@@ -10,33 +10,6 @@ namespace Launchpad.Data
         {
         }
 
-        public override RoleClaim Add(RoleClaim model)
-        {
-            Context.RoleClaims.Add(model);
-            Context.SaveChanges();
-            return model;
-        }
-
-        public override void Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity != null)
-            {
-                Context.RoleClaims.Remove(entity);
-                Context.SaveChanges();
-            }
-        }
-
-        public override RoleClaim Get(object id)
-        {
-            return Context.RoleClaims.Find(id);
-        }
-
-        public override IQueryable<RoleClaim> GetAll()
-        {
-            return Context.RoleClaims;
-        }
-
         public RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue)
         {
             return Context.RoleClaims
@@ -47,12 +20,6 @@ namespace Launchpad.Data
         {
             return Context.RoleClaims
                      .Where(_ => _.Role.Name == roleName);
-        }
-
-        public override RoleClaim Update(RoleClaim model)
-        {
-            Context.SaveChanges();
-            return model;
         }
     }
 }

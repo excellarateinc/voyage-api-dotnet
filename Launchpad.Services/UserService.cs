@@ -21,7 +21,7 @@ namespace Launchpad.Services
         private readonly ApplicationUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService, IUserPhoneRepository phoneRepository) : base(mapper)
+        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService, IUserPhoneRepository phoneRepository, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
@@ -43,8 +43,13 @@ namespace Launchpad.Services
                 predicate: (s, d) => s.Id == d.Id,
                 deleteAction: entity => _phoneRepository.Delete(entity.Id));
 
-            var identityResult = await _userManager.UpdateAsync(appUser);
-            return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
+            using (var scope = UnitOfWork.Begin())
+            {
+                var identityResult = await _userManager.UpdateAsync(appUser);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return FromIdentityResult(identityResult, _mapper.Map<UserModel>(appUser));
+            }
         }
 
         public async Task<EntityResult> RemoveUserFromRoleAsync(string userId, string roleId)
@@ -55,13 +60,26 @@ namespace Launchpad.Services
                 return entityResult;
             }
 
-            var result = await _userManager.RemoveFromRoleAsync(userId, entityResult.Model.Name);
-            return FromIdentityResult(result);
+            using (var scope = UnitOfWork.Begin())
+            {
+                var result = await _userManager.RemoveFromRoleAsync(userId, entityResult.Model.Name);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return FromIdentityResult(result);
+            }
         }
 
         public async Task<EntityResult<RoleModel>> AssignUserRoleAsync(string userId, RoleModel roleModel)
         {
-            var identityResult = await _userManager.AddToRoleAsync(userId, roleModel.Name);
+            IdentityResult identityResult;
+
+            using (var scope = UnitOfWork.Begin())
+            {
+                identityResult = await _userManager.AddToRoleAsync(userId, roleModel.Name);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+            }
+
             if (identityResult.Succeeded)
             {
                 return _roleService.GetRoleByName(roleModel.Name);
@@ -89,8 +107,13 @@ namespace Launchpad.Services
         {
             var appUser = new ApplicationUser();
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
-            var result = await _userManager.CreateAsync(appUser, "Hello123!");
-            return FromIdentityResult(result, _mapper.Map<UserModel>(appUser));
+            using (var scope = UnitOfWork.Begin())
+            {
+                var result = await _userManager.CreateAsync(appUser, "Hello123!");
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return FromIdentityResult(result, _mapper.Map<UserModel>(appUser));
+            }
         }
 
         public async Task<EntityResult> RegisterAsync(RegistrationModel model)
@@ -103,15 +126,19 @@ namespace Launchpad.Services
                 LastName = model.LastName,
                 IsActive = true
             };
-
-            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
-
-            if (identityResult.Succeeded)
+            using (var scope = UnitOfWork.Begin())
             {
-                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
-            }
+                IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
 
-            return FromIdentityResult(identityResult, user);
+                if (identityResult.Succeeded)
+                {
+                    identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
+                }
+
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return FromIdentityResult(identityResult, user);
+            }
         }
 
         public async Task<EntityResult<IEnumerable<ClaimModel>>> GetUserClaimsAsync(string userId)
@@ -191,8 +218,13 @@ namespace Launchpad.Services
                 return NotFound(userId);
             }
 
-            var identityResult = await _userManager.DeleteAsync(appUser);
-            return FromIdentityResult(identityResult);
+            using (var scope = UnitOfWork.Begin())
+            {
+                var identityResult = await _userManager.DeleteAsync(appUser);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return FromIdentityResult(identityResult);
+            }
         }
     }
 }

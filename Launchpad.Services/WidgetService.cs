@@ -13,7 +13,7 @@ namespace Launchpad.Services
         private readonly IWidgetRepository _widgetRepository;
         private readonly IMapper _mapper;
 
-        public WidgetService(IWidgetRepository widgetRepository, IMapper mapper) : base(mapper)
+        public WidgetService(IWidgetRepository widgetRepository, IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
             _widgetRepository = widgetRepository.ThrowIfNull(nameof(widgetRepository));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
@@ -36,27 +36,44 @@ namespace Launchpad.Services
         public EntityResult<WidgetModel> AddWidget(WidgetModel widget)
         {
             var target = _mapper.Map<Widget>(widget);
-            var result = _widgetRepository.Add(target);
+            Widget result;
+            using (var scope = UnitOfWork.Begin())
+            {
+                result = _widgetRepository.Add(target);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+            }
+
             return Success(_mapper.Map<WidgetModel>(result));
         }
 
         public EntityResult<WidgetModel> UpdateWidget(int id, WidgetModel widget)
-        {            
-            var target = _widgetRepository.Get(id); 
+        {
+            var target = _widgetRepository.Get(id);
             if (target == null)
                 return NotFound<WidgetModel>(id);
 
             _mapper.Map<WidgetModel, Widget>(widget, target, opts => { });
-            _widgetRepository.Update(target);
-            var model = _mapper.Map<WidgetModel>(target);
+            using (var scope = UnitOfWork.Begin())
+            {
+                _widgetRepository.Update(target);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+            }
 
+            var model = _mapper.Map<WidgetModel>(target);
             return Success(model);
         }
 
         public EntityResult DeleteWidget(int id)
         {
-            _widgetRepository.Delete(id);
-            return Success();
+            using (var scope = UnitOfWork.Begin())
+            {
+                _widgetRepository.Delete(id);
+                UnitOfWork.SaveChanges();
+                scope.Commit();
+                return Success();
+            }
         }
     }
 }

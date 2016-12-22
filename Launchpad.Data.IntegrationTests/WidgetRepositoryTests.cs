@@ -74,6 +74,7 @@ namespace Launchpad.Data.IntegrationTests
                     var newWidget = new Widget { Name = "Super Widget" };
 
                     var widget = repository.Add(newWidget);
+                    context.SaveChanges();
 
                     widget.Should().NotBeNull();
                     widget.Id.Should().BeGreaterThan(0);
@@ -81,7 +82,7 @@ namespace Launchpad.Data.IntegrationTests
                     var retrievedWidget = repository.Get(newWidget.Id);
                     retrievedWidget.Should().NotBeNull();
                     retrievedWidget.Name.Should().Be(widget.Name);
-                    retrievedWidget.Id.Should().Be(widget.Id);                    
+                    retrievedWidget.Id.Should().Be(widget.Id);
                 }
             }
         }
@@ -117,6 +118,7 @@ namespace Launchpad.Data.IntegrationTests
                     var widget = context.AddWidget();
 
                     repository.Delete(widget.Id);
+                    context.SaveChanges();
 
                     var retrievedWidget = repository.Get(widget.Id);
                     retrievedWidget.Should().BeNull();

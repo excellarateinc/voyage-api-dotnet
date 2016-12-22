@@ -1,12 +1,13 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
+using Launchpad.Services.UnitTests.Extensions;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Moq;
 using Ploeh.AutoFixture;
+using System;
 using Xunit;
 
 namespace Launchpad.Services.UnitTests
@@ -17,17 +18,22 @@ namespace Launchpad.Services.UnitTests
     {
         private readonly AuditService _auditService;
         private readonly Mock<IActivityAuditRepository> _mockAuditRepository;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
 
         public AuditServiceTests(AutoMapperFixture mapperFixture)
         {
+            _mockUnitOfWork = Mock.Create<IUnitOfWork>();
             _mockAuditRepository = Mock.Create<IActivityAuditRepository>();
-            _auditService = new AuditService(_mockAuditRepository.Object, mapperFixture.MapperInstance);
+            _auditService = new AuditService(_mockAuditRepository.Object, mapperFixture.MapperInstance, _mockUnitOfWork.Object);
         }
 
         [Fact]
         public void Record_Should_Call_Repository()
         {
             var model = Fixture.Create<ActivityAuditModel>();
+
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
                 .Returns<ActivityAudit>(t => t);
@@ -44,6 +50,8 @@ namespace Launchpad.Services.UnitTests
 
             _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
                 .Returns<ActivityAudit>(t => t);
+            var mockTransaction = Mock.MockTransaction();
+            _mockUnitOfWork.SetupTransaction(mockTransaction.Object);
 
             await _auditService.RecordAsync(model);
 
@@ -53,7 +61,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Repository_Null()
         {
-            Action throwAction = () => new AuditService(null, null);
+            Action throwAction = () => new AuditService(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -65,7 +73,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_Null()
         {
-            Action throwAction = () => new AuditService(_mockAuditRepository.Object, null);
+            Action throwAction = () => new AuditService(_mockAuditRepository.Object, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -74,4 +82,4 @@ namespace Launchpad.Services.UnitTests
                 .Be("mapper");
         }
     }
-} 
+}
