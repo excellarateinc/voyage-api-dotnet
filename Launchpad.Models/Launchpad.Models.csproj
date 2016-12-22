@@ -90,7 +90,6 @@
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
-    <Compile Include="IdentityResult.cs" />
     <Compile Include="ISoftDeleteable.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
