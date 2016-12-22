@@ -1,5 +1,4 @@
 ﻿using Launchpad.Services.Interfaces;
-// ReSharper disable once StyleCop.SA1208
 using System.Threading.Tasks;
 using Launchpad.Models;
 using Launchpad.Data.Interfaces;
