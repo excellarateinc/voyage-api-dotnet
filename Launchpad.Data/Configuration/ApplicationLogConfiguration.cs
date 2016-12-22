@@ -8,7 +8,7 @@ namespace Launchpad.Data.Configuration
     {
         public ApplicationLogConfiguration()
         {
-            ToTable("ApplicationLog", Constants.Schemas.FrameworkTables);
+            ToTable("ApplicationLog");
             HasKey(_ => _.Id);
             Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(_ => _.Message);

@@ -7,7 +7,7 @@ namespace Launchpad.Data.Configuration
     {
         public ApplicationUserConfiguration()
         {
-            ToTable("User", Constants.Schemas.FrameworkTables);
+            ToTable("User");
             HasKey(_ => _.Id);
             Property(_ => _.FirstName).HasMaxLength(128).IsRequired();
             Property(_ => _.LastName).HasMaxLength(128).IsRequired();

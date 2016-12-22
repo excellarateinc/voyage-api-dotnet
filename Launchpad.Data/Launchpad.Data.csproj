@@ -94,7 +94,6 @@
     <Compile Include="Configuration\ApplicationLogConfiguration.cs" />
     <Compile Include="Configuration\UserPhoneConfiguration.cs" />
     <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Auditing\IAuditConfiguration.cs" />
     <Compile Include="Interfaces\IActivityAuditRepository.cs" />

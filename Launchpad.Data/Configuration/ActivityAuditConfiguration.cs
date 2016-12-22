@@ -8,7 +8,7 @@ namespace Launchpad.Data.Configuration
     {
         public ActivityAuditConfiguration()
         {                          
-            ToTable("ActivityAudit", Constants.Schemas.FrameworkTables);
+            ToTable("ActivityAudit");
             HasKey(_ => _.Id);
             Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(_ => _.RequestId).HasMaxLength(64);

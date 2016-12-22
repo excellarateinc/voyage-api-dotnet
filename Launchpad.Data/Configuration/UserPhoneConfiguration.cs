@@ -8,7 +8,7 @@ namespace Launchpad.Data.Configuration
     {
         public UserPhoneConfiguration()
         {
-            ToTable("UserPhone", Constants.Schemas.FrameworkTables);
+            ToTable("UserPhone");
             HasKey(_ => _.Id);
 
             Property(_ => _.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
