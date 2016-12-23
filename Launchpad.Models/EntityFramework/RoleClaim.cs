@@ -1,9 +1,17 @@
-﻿namespace Launchpad.Models.EntityFramework
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Launchpad.Models.EntityFramework
 {
+    [Table("RoleClaim")]
     public class RoleClaim
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
+        [ForeignKey("Role")]
         public string RoleId { get; set; }
         
         public virtual ApplicationRole Role { get; set; }

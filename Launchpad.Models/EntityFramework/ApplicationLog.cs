@@ -1,15 +1,21 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Launchpad.Models.EntityFramework
 {
+    [Table("ApplicationLog")]
     public class ApplicationLog
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Message { get; set; }
 
         public string MessageTemplate { get; set; }
 
+        [MaxLength(128)]
         public string Level { get; set; }
 
         public DateTime TimeStamp { get; set; }
@@ -18,6 +24,7 @@ namespace Launchpad.Models.EntityFramework
 
         public string LogEvent { get; set; }
 
+        [Column(TypeName = "xml")]
         public string Properties { get; set; }               
     }
 }

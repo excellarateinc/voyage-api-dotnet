@@ -80,20 +80,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityAuditRepository.cs" />
-    <Compile Include="Auditing\ApplicationRoleAuditConfiguration.cs" />
-    <Compile Include="Auditing\ApplicationUserAuditConfiguration.cs" />
     <Compile Include="Auditing\BaseAuditConfiguration.cs" />
-    <Compile Include="Auditing\IdentityUserClaimAuditConfiguration.cs" />
-    <Compile Include="Auditing\IdentityUserLoginAuditConfiguration.cs" />
-    <Compile Include="Auditing\IdentityUserRoleAuditConfiguration.cs" />
-    <Compile Include="Auditing\RoleClaimAuditConfiguration.cs" />
-    <Compile Include="Auditing\UserPhoneAuditConfiguration.cs" />
     <Compile Include="BaseRepository.cs" />
-    <Compile Include="Configuration\ActivityAuditConfiguration.cs" />
-    <Compile Include="Configuration\ApplicationUserConfiguration.cs" />
-    <Compile Include="Configuration\ApplicationLogConfiguration.cs" />
-    <Compile Include="Configuration\UserPhoneConfiguration.cs" />
-    <Compile Include="Configuration\RoleClaimsConfiguration.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Auditing\IAuditConfiguration.cs" />
     <Compile Include="Interfaces\IActivityAuditRepository.cs" />
