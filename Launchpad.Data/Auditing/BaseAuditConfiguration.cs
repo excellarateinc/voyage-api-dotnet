@@ -4,9 +4,9 @@ using TrackerEnabledDbContext.Common.Configuration;
 
 namespace Launchpad.Data.Auditing
 {
-    public abstract class BaseAuditConfiguration : IAuditConfiguration
+    public static class BaseAuditConfiguration
     {
-        public virtual void Configure()
+        public static void Configure()
         {
             EntityTracker.TrackAllProperties<ApplicationRole>();
 

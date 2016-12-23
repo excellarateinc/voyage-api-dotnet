@@ -36,16 +36,7 @@ namespace Launchpad.Data
             GlobalTrackingConfig
                 .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
 
-            var auditing = typeof(IAuditConfiguration)
-                .Assembly
-                .GetTypes()
-                .Where(_ => _.IsAssignableTo<IAuditConfiguration>() && !_.IsAbstract)
-                .Select(_ => Activator.CreateInstance(_) as IAuditConfiguration);
-
-            foreach (var config in auditing)
-            {
-                config.Configure();
-            }
+            BaseAuditConfiguration.Configure();
         }
 
         protected override void Load(ContainerBuilder builder)

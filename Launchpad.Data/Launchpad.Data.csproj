@@ -83,7 +83,6 @@
     <Compile Include="Auditing\BaseAuditConfiguration.cs" />
     <Compile Include="BaseRepository.cs" />
     <Compile Include="DataModule.cs" />
-    <Compile Include="Auditing\IAuditConfiguration.cs" />
     <Compile Include="Interfaces\IActivityAuditRepository.cs" />
     <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
     <Compile Include="Interfaces\IApplicationLogRepository.cs" />
