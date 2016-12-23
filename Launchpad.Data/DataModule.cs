@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Data.Entity;
 using Autofac;
 using Autofac.Core;
 using Launchpad.Core;
@@ -28,21 +26,11 @@ namespace Launchpad.Data
             _connectionString = connectionString;
         }
 
-        /// <summary>
-        /// Scan the assembly for the audit configuration and call configure
-        /// </summary>
-        protected void ConfigureAuditing()
-        {
-            GlobalTrackingConfig
-                .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
-
-            BaseAuditConfiguration.Configure();
-        }
-
         protected override void Load(ContainerBuilder builder)
         {
             // Configure the auditing for the context
-            ConfigureAuditing();
+            GlobalTrackingConfig.SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
+            BaseAuditConfiguration.Configure();
 
             // Register a data context with an instance per request
             // Dependency Type: ILaunchpadDataContext
