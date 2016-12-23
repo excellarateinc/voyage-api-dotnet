@@ -4,16 +4,14 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using FluentAssertions;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;
 using Xunit;
+using Launchpad.Services.ApplicationInfo;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
-{
-    using Launchpad.Services.ApplicationInfo;
-
+{    
     public class ApplicationInfoControllerTests : BaseUnitTest
     {
         private readonly ApplicationInfoController _controller;
