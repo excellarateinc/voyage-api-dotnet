@@ -12,6 +12,8 @@ using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API.V1
 {
+    using Launchpad.Services.ApplicationInfo;
+
     public class ApplicationInfoControllerTests : BaseUnitTest
     {
         private readonly ApplicationInfoController _controller;

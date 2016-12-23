@@ -1,13 +1,12 @@
-﻿using Launchpad.Services.Interfaces;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Launchpad.Models;
 using Launchpad.Data.Interfaces;
 using Launchpad.Core;
 using AutoMapper;
 using Launchpad.Models.EntityFramework;
 
-namespace Launchpad.Services
-{
+namespace Launchpad.Services.Audit
+{    
     public class AuditService : IAuditService
     {
         private readonly IActivityAuditRepository _activityRepository;

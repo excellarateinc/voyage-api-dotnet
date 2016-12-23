@@ -1,11 +1,11 @@
-﻿using Launchpad.Core;
+﻿using System;
+using System.IO;
+using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Services.Interfaces;
 using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
 
-namespace Launchpad.Services
+namespace Launchpad.Services.ApplicationInfo
 {
     public class ApplicationInfoService : IApplicationInfoService
     {

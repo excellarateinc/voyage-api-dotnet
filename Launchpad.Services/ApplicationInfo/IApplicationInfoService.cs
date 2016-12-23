@@ -1,7 +1,7 @@
 ﻿using Launchpad.Models;
 
-namespace Launchpad.Services.Interfaces
-{
+namespace Launchpad.Services.ApplicationInfo
+{    
     public interface IApplicationInfoService
     {
         ApplicationInfoModel GetApplicationInfo();

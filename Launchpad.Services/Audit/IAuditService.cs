@@ -1,7 +1,7 @@
-﻿using Launchpad.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Launchpad.Models;
 
-namespace Launchpad.Services.Interfaces
+namespace Launchpad.Services.Audit
 {
     public interface IAuditService
     {

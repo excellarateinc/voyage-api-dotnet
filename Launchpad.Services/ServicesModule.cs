@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Launchpad.Services.IdentityManagers;
 using System.Configuration;
+using Launchpad.Services.ApplicationInfo;
+using Launchpad.Services.Audit;
 
 namespace Launchpad.Services
-{
+{    
     public class ServicesModule : Module
     {
         /* Note: If this module is shared with an application that does not have a request lifecycle, these registrations

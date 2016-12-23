@@ -2,12 +2,12 @@
 using Microsoft.Owin;
 using System.Threading.Tasks;
 using Launchpad.Web.Extensions;
-using Launchpad.Services.Interfaces;
 using System;
 using Launchpad.Web.Middleware.Processors;
+using Launchpad.Services.Audit;
 
 namespace Launchpad.Web.Middleware
-{
+{    
     public class ActivityAuditMiddleware : OwinMiddleware
     {      
         private readonly IAuditService _auditService;

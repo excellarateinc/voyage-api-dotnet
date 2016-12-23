@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Middleware;
 using Launchpad.Web.Middleware.Processors;
@@ -11,9 +10,10 @@ using Microsoft.Owin.Testing;
 using Moq;
 using Owin;
 using Xunit;
+using Launchpad.Services.Audit;
 
 namespace Launchpad.Web.UnitTests.Middleware
-{
+{    
     [Trait("Category", "CustomMiddleware")]
     public class ActivityAuditMiddlewareTests : BaseUnitTest
     {
