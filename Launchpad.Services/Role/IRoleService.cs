@@ -1,8 +1,8 @@
-﻿using Launchpad.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Launchpad.Models;
 
-namespace Launchpad.Services.Interfaces
+namespace Launchpad.Services.Role
 {
     public interface IRoleService
     {

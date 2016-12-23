@@ -9,7 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.User;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;

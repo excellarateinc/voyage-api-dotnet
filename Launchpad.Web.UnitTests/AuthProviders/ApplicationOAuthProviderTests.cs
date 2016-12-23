@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Autofac;
 using FluentAssertions;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.User;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.AuthProviders;
 using Microsoft.Owin;

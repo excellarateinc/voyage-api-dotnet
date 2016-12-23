@@ -1,16 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Launchpad.Core;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Interfaces;
 using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Launchpad.Services
+namespace Launchpad.Services.Role
 {
     public class RoleService : EntityResultService, IRoleService
     {

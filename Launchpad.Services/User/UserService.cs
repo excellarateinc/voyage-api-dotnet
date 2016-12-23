@@ -1,18 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using AutoMapper;
 using Launchpad.Core;
 using Launchpad.Data.Interfaces;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.Role;
 using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace Launchpad.Services
+namespace Launchpad.Services.User
 {
     public class UserService : EntityResultService, IUserService
     {

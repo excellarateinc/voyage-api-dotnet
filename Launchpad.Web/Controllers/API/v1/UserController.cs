@@ -1,9 +1,10 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+
+using Launchpad.Services.User;
 
 namespace Launchpad.Web.Controllers.API.V1
 {

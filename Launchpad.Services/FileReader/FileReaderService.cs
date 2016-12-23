@@ -1,7 +1,6 @@
-﻿using Launchpad.Services.Interfaces;
-using System.IO;
+﻿using System.IO;
 
-namespace Launchpad.Services
+namespace Launchpad.Services.FileReader
 {
     public class FileReaderService : IFileReaderService
     {

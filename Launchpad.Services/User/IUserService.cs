@@ -1,9 +1,9 @@
-﻿using Launchpad.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Launchpad.Models;
 
-namespace Launchpad.Services.Interfaces
+namespace Launchpad.Services.User
 {
     public interface IUserService
     {

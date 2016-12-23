@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using FluentAssertions;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.User;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
 using Moq;

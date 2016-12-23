@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Services.Interfaces
+﻿namespace Launchpad.Services.FileReader
 {
     public interface IFileReaderService
     {

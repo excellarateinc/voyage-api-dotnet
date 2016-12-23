@@ -2,7 +2,7 @@
 using System.IO;
 using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.FileReader;
 using Newtonsoft.Json.Linq;
 
 namespace Launchpad.Services.ApplicationInfo
