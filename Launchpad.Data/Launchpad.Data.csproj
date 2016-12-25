@@ -79,22 +79,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivityAuditRepository.cs" />
-    <Compile Include="Auditing\BaseAuditConfiguration.cs" />
-    <Compile Include="BaseRepository.cs" />
+    <Compile Include="Repositories\ActivityAudit\ActivityAuditRepository.cs" />
+    <Compile Include="BaseAuditConfiguration.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="DataModule.cs" />
-    <Compile Include="Interfaces\IActivityAuditRepository.cs" />
-    <Compile Include="Interfaces\ILaunchpadDataContext.cs" />
-    <Compile Include="Interfaces\IApplicationLogRepository.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IRoleClaimRepository.cs" />
-    <Compile Include="Interfaces\IUserPhoneRepository.cs" />
+    <Compile Include="Repositories\ActivityAudit\IActivityAuditRepository.cs" />
+    <Compile Include="ILaunchpadDataContext.cs" />
+    <Compile Include="Repositories\ApplicationLog\IApplicationLogRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\RoleClaim\IRoleClaimRepository.cs" />
+    <Compile Include="Repositories\UserPhone\IUserPhoneRepository.cs" />
     <Compile Include="LaunchpadDataContext.cs" />
-    <Compile Include="ApplicationLogRepository.cs" />
+    <Compile Include="Repositories\ApplicationLog\ApplicationLogRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleClaimRepository.cs" />
+    <Compile Include="Repositories\RoleClaim\RoleClaimRepository.cs" />
     <Compile Include="Stores\CustomUserStore.cs" />
-    <Compile Include="UserPhoneRepository.cs" />
+    <Compile Include="Repositories\UserPhone\UserPhoneRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

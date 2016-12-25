@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Linq;
 using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
 
-namespace Launchpad.Data
+namespace Launchpad.Data.Repositories.ApplicationLog
 {
     /// <summary>
     /// Following our repository pattern - this is readonly (The logger will write the messages)
     /// </summary>
-    public class ApplicationLogRepository : BaseRepository<ApplicationLog>, IApplicationLogRepository
+    public class ApplicationLogRepository : BaseRepository<Models.EntityFramework.ApplicationLog>, IApplicationLogRepository
     {
         public ApplicationLogRepository(ILaunchpadDataContext context) : base(context)
         {
         }
 
-        public override ApplicationLog Add(ApplicationLog model)
+        public override Models.EntityFramework.ApplicationLog Add(Models.EntityFramework.ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }
@@ -24,22 +23,22 @@ namespace Launchpad.Data
             throw new NotImplementedException("Log messages managed by logging interface");
         }
 
-        public override ApplicationLog Get(object id)
+        public override Models.EntityFramework.ApplicationLog Get(object id)
         {
             throw new NotImplementedException("No current use case for retrieving a message by id");
         }
 
-        public override IQueryable<ApplicationLog> GetAll()
+        public override IQueryable<Models.EntityFramework.ApplicationLog> GetAll()
         {
             throw new NotImplementedException("No current user case of retrieving all messages");
         }
 
-        public IQueryable<ApplicationLog> GetRecentActivity(int maxEvents = 10)
+        public IQueryable<Models.EntityFramework.ApplicationLog> GetRecentActivity(int maxEvents = 10)
         {
             return Context.Logs.Take(maxEvents);
         }
 
-        public override ApplicationLog Update(ApplicationLog model)
+        public override Models.EntityFramework.ApplicationLog Update(Models.EntityFramework.ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }

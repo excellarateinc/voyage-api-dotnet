@@ -1,9 +1,8 @@
-﻿using Launchpad.Models.EntityFramework;
-using System.Transactions;
+﻿using System.Transactions;
 using Xunit;
 using FluentAssertions;
-using Launchpad.Data.IntegrationTests.Extensions;
 using System.Linq;
+using Launchpad.Data.Repositories.ActivityAudit;
 
 namespace Launchpad.Data.IntegrationTests
 {

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System.Transactions;
+using Launchpad.Data.Repositories.ApplicationLog;
 using Xunit;
 
 namespace Launchpad.Data.IntegrationTests

@@ -3,6 +3,7 @@ using Xunit;
 using FluentAssertions;
 using Launchpad.UnitTests.Common;
 using Launchpad.Data.Interfaces;
+using Launchpad.Data.Repositories.ApplicationLog;
 using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Data.UnitTests

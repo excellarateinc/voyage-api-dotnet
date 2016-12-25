@@ -3,6 +3,7 @@ using Launchpad.Models.EntityFramework;
 using System.Transactions;
 using Xunit;
 using FluentAssertions;
+using Launchpad.Data.Repositories.RoleClaim;
 
 namespace Launchpad.Data.IntegrationTests
 {

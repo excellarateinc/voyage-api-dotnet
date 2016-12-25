@@ -2,6 +2,7 @@
 using Launchpad.UnitTests.Common;
 using System;
 using FluentAssertions;
+using Launchpad.Data.Repositories.ActivityAudit;
 using Xunit;
 
 namespace Launchpad.Data.UnitTests

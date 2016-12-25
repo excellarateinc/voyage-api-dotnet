@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using Launchpad.Data.Interfaces;
+using Launchpad.Data.Repositories.ActivityAudit;
 using Launchpad.Models;
 using Launchpad.Models.EntityFramework;
 using Launchpad.Services.Audit;

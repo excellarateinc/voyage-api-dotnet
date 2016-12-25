@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Launchpad.Models;
-using Launchpad.Data.Interfaces;
 using Launchpad.Core;
 using AutoMapper;
+using Launchpad.Data.Repositories.ActivityAudit;
 using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Services.Audit

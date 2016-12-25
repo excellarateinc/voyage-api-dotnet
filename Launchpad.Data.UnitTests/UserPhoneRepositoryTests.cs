@@ -3,6 +3,7 @@ using Launchpad.Data.Interfaces;
 using Launchpad.Models.EntityFramework;
 using Launchpad.UnitTests.Common;
 using System;
+using Launchpad.Data.Repositories.UserPhone;
 using Xunit;
 
 namespace Launchpad.Data.UnitTests

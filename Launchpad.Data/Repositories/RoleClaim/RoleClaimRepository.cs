@@ -1,16 +1,15 @@
-﻿using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
-using System.Linq;
+﻿using System.Linq;
+using Launchpad.Data.Interfaces;
 
-namespace Launchpad.Data
+namespace Launchpad.Data.Repositories.RoleClaim
 {
-    public class RoleClaimRepository : BaseRepository<RoleClaim>, IRoleClaimRepository
+    public class RoleClaimRepository : BaseRepository<Models.EntityFramework.RoleClaim>, IRoleClaimRepository
     {
         public RoleClaimRepository(ILaunchpadDataContext context) : base(context)
         {
         }
 
-        public override RoleClaim Add(RoleClaim model)
+        public override Models.EntityFramework.RoleClaim Add(Models.EntityFramework.RoleClaim model)
         {
             Context.RoleClaims.Add(model);
             Context.SaveChanges();
@@ -27,29 +26,29 @@ namespace Launchpad.Data
             }
         }
 
-        public override RoleClaim Get(object id)
+        public override Models.EntityFramework.RoleClaim Get(object id)
         {
             return Context.RoleClaims.Find(id);
         }
 
-        public override IQueryable<RoleClaim> GetAll()
+        public override IQueryable<Models.EntityFramework.RoleClaim> GetAll()
         {
             return Context.RoleClaims;
         }
 
-        public RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue)
+        public Models.EntityFramework.RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue)
         {
             return Context.RoleClaims
                      .FirstOrDefault(_ => _.Role.Name == roleName && _.ClaimType == claimType && _.ClaimValue == claimValue);
         }
 
-        public IQueryable<RoleClaim> GetClaimsByRole(string roleName)
+        public IQueryable<Models.EntityFramework.RoleClaim> GetClaimsByRole(string roleName)
         {
             return Context.RoleClaims
                      .Where(_ => _.Role.Name == roleName);
         }
 
-        public override RoleClaim Update(RoleClaim model)
+        public override Models.EntityFramework.RoleClaim Update(Models.EntityFramework.RoleClaim model)
         {
             Context.SaveChanges();
             return model;
