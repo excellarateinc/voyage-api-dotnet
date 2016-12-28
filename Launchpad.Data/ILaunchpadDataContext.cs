@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 
-namespace Launchpad.Data.Interfaces
+namespace Launchpad.Data
 {
     public interface ILaunchpadDataContext
     {

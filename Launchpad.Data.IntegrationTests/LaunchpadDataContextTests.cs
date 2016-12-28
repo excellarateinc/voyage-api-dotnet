@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Transactions;
 using Xunit;
-using Launchpad.Data.IntegrationTests.Extensions;
 
 namespace Launchpad.Data.IntegrationTests
 {

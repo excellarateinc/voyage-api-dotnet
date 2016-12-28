@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data.Repositories.ActivityAudit
 {
-    public class ActivityAuditRepository : BaseRepository<Models.EntityFramework.ActivityAudit>, IActivityAuditRepository
+    public class ActivityAuditRepository : BaseRepository<Models.Entities.ActivityAudit>, IActivityAuditRepository
     {
         public ActivityAuditRepository(ILaunchpadDataContext context) : base(context)
         {
         }
 
-        public override Models.EntityFramework.ActivityAudit Add(Models.EntityFramework.ActivityAudit model)
+        public override Models.Entities.ActivityAudit Add(Models.Entities.ActivityAudit model)
         {
             Context.ActivityAudits.Add(model);
             Context.SaveChanges();
@@ -22,17 +21,17 @@ namespace Launchpad.Data.Repositories.ActivityAudit
             throw new NotImplementedException("No requirement for deleting an activity audit record");
         }
 
-        public override Models.EntityFramework.ActivityAudit Get(object id)
+        public override Models.Entities.ActivityAudit Get(object id)
         {
             return Context.ActivityAudits.Find(id);
         }
 
-        public override IQueryable<Models.EntityFramework.ActivityAudit> GetAll()
+        public override IQueryable<Models.Entities.ActivityAudit> GetAll()
         {
             return Context.ActivityAudits;
         }
 
-        public override Models.EntityFramework.ActivityAudit Update(Models.EntityFramework.ActivityAudit model)
+        public override Models.Entities.ActivityAudit Update(Models.Entities.ActivityAudit model)
         {
             throw new NotImplementedException("No requirement for updating an activity audit record");
         }

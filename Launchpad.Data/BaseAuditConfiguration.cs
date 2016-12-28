@@ -1,8 +1,8 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TrackerEnabledDbContext.Common.Configuration;
 
-namespace Launchpad.Data.Auditing
+namespace Launchpad.Data
 {
     public static class BaseAuditConfiguration
     {

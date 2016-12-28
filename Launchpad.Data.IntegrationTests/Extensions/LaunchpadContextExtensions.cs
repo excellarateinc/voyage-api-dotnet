@@ -1,4 +1,4 @@
-﻿using Launchpad.Models.EntityFramework;
+﻿using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Data.IntegrationTests.Extensions

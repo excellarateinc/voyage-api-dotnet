@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Launchpad.Web.IntegrationTests.Client;
+﻿using Launchpad.Web.IntegrationTests.Client;
 using Launchpad.Web.IntegrationTests.Extensions;
 using Launchpad.Web.IntegrationTests.Hosting;
 using System.Net;

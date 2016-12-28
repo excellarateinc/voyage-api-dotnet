@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Launchpad.Data.Repositories.RoleClaim;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Services.Role;
 using Launchpad.Services.UnitTests.Fixture;

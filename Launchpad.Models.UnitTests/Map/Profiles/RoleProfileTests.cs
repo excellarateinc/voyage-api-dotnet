@@ -2,7 +2,7 @@
 using Launchpad.UnitTests.Common;
 using Xunit;
 using FluentAssertions;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
 {

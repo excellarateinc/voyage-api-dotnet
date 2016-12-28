@@ -4,7 +4,7 @@ using System.Linq;
 using AutoMapper;
 using FluentAssertions;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Ploeh.AutoFixture;

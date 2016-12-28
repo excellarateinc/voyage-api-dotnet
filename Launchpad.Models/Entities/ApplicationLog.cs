@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Launchpad.Models.EntityFramework
+namespace Launchpad.Models.Entities
 {
     [Table("ApplicationLog")]
     public class ApplicationLog

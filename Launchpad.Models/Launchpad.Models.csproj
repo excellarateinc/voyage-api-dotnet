@@ -81,11 +81,11 @@
     <Compile Include="BadRequestErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="EntityFramework\ActivityAudit.cs" />
-    <Compile Include="EntityFramework\ApplicationRole.cs" />
-    <Compile Include="EntityFramework\ApplicationUser.cs" />
-    <Compile Include="EntityFramework\ApplicationLog.cs" />
-    <Compile Include="EntityFramework\RoleClaim.cs" />
+    <Compile Include="Entities\ActivityAudit.cs" />
+    <Compile Include="Entities\ApplicationRole.cs" />
+    <Compile Include="Entities\ApplicationUser.cs" />
+    <Compile Include="Entities\ApplicationLog.cs" />
+    <Compile Include="Entities\RoleClaim.cs" />
     <Compile Include="EntityResult.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
-    <Compile Include="EntityFramework\UserPhone.cs" />
+    <Compile Include="Entities\UserPhone.cs" />
     <Compile Include="UserPhoneModel.cs" />
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />

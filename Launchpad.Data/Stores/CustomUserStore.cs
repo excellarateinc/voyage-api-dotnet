@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Threading.Tasks;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Launchpad.Data.Stores

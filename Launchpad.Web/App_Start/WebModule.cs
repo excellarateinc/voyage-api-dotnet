@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
 using Launchpad.Core;
-using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
@@ -15,6 +14,8 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+
+using Launchpad.Models.Entities;
 
 namespace Launchpad.Web
 {

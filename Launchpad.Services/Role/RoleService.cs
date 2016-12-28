@@ -5,7 +5,7 @@ using AutoMapper;
 using Launchpad.Core;
 using Launchpad.Data.Repositories.RoleClaim;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 

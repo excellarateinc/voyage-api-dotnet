@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data.Repositories.UserPhone
 {
-    public class UserPhoneRepository : BaseRepository<Models.EntityFramework.UserPhone>, IUserPhoneRepository
+    public class UserPhoneRepository : BaseRepository<Models.Entities.UserPhone>, IUserPhoneRepository
     {
         public UserPhoneRepository(ILaunchpadDataContext context) : base(context)
         {
         }
 
-        public override Models.EntityFramework.UserPhone Add(Models.EntityFramework.UserPhone model)
+        public override Models.Entities.UserPhone Add(Models.Entities.UserPhone model)
         {
             throw new NotImplementedException("Phone numbers are added via user object");
         }
@@ -30,17 +29,17 @@ namespace Launchpad.Data.Repositories.UserPhone
         /// </summary>
         /// <param name="id">Phone number ID</param>
         /// <returns>Phone Number</returns>
-        public override Models.EntityFramework.UserPhone Get(object id)
+        public override Models.Entities.UserPhone Get(object id)
         {
             return Context.UserPhones.Find(id);
         }
 
-        public override IQueryable<Models.EntityFramework.UserPhone> GetAll()
+        public override IQueryable<Models.Entities.UserPhone> GetAll()
         {
             throw new NotImplementedException("Phone numbers are loaded via the user object");
         }
 
-        public override Models.EntityFramework.UserPhone Update(Models.EntityFramework.UserPhone model)
+        public override Models.Entities.UserPhone Update(Models.Entities.UserPhone model)
         {
             throw new NotImplementedException("Updates are handled via the user object");
         }

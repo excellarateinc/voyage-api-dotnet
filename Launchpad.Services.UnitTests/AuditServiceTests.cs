@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Launchpad.Data.Repositories.ActivityAudit;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.Audit;
 using Launchpad.Services.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;

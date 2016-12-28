@@ -3,7 +3,7 @@ using Launchpad.Models;
 using Launchpad.Core;
 using AutoMapper;
 using Launchpad.Data.Repositories.ActivityAudit;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 
 namespace Launchpad.Services.Audit
 {    

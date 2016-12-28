@@ -7,8 +7,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Launchpad.Core;
-using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Serilog;
 using TrackerEnabledDbContext.Common.Models;
@@ -69,7 +68,7 @@ namespace Launchpad.Data
             Database.SetInitializer<LaunchpadDataContext>(null);
 
             #region Boilerplate configuration
-            // Migrations were not being generated corretly because the order in which the base was executing
+            // Migrations were not being generated correctly because the order in which the base was executing
             // the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
             // move it here and make it explicit
             // https://aspnetidentity.codeplex.com/SourceControl/latest#src/Microsoft.AspNet.Identity.EntityFramework/IdentityDbContext.cs

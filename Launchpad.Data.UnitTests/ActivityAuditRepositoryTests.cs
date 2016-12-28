@@ -1,5 +1,4 @@
-﻿using Launchpad.Data.Interfaces;
-using Launchpad.UnitTests.Common;
+﻿using Launchpad.UnitTests.Common;
 using System;
 using FluentAssertions;
 using Launchpad.Data.Repositories.ActivityAudit;
@@ -28,7 +27,7 @@ namespace Launchpad.Data.UnitTests
         [Fact]
         public void Update_Should_Throw_NotImpelementedException()
         {
-            Action throwAction = () => _repository.Update(new Models.EntityFramework.ActivityAudit());
+            Action throwAction = () => _repository.Update(new Models.Entities.ActivityAudit());
             throwAction.ShouldThrow<NotImplementedException>();
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 
 namespace Launchpad.Models.Map.Profiles
 {  

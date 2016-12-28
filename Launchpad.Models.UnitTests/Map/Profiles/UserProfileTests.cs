@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using Launchpad.Models.EntityFramework;
 using Launchpad.Models.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using System;
+using Launchpad.Models.Entities;
 using Xunit;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles

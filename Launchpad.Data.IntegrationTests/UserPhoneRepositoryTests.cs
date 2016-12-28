@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
-using Launchpad.Models.EntityFramework;
 using System.Linq;
 using System.Transactions;
 using Launchpad.Data.Repositories.UserPhone;
+using Launchpad.Models.Entities;
 using Xunit;
 
 namespace Launchpad.Data.IntegrationTests

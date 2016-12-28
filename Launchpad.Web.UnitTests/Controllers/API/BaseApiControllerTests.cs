@@ -11,7 +11,7 @@ using Launchpad.Models;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API;
 using Moq;
-using Ploeh.AutoFixture;
+
 using Xunit;
 
 namespace Launchpad.Web.UnitTests.Controllers.API

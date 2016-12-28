@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Launchpad.Models.Enum;
 
-namespace Launchpad.Models.EntityFramework
+namespace Launchpad.Models.Entities
 {
     [Table("UserPhone")]
     public class UserPhone

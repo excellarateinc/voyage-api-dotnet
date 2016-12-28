@@ -2,11 +2,10 @@
 using Autofac;
 using Autofac.Core;
 using Launchpad.Core;
-using Launchpad.Data.Auditing;
 using Launchpad.Data.Interfaces;
 using Launchpad.Data.Stores;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TrackerEnabledDbContext.Common.Configuration;
