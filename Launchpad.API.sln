@@ -13,23 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models", "Launchp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Data.IntegrationTests", "Launchpad.Data.IntegrationTests\Launchpad.Data.IntegrationTests.csproj", "{A3C937F4-726C-4893-A9FC-E328DCEF513C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Services.UnitTests", "Launchpad.Services.UnitTests\Launchpad.Services.UnitTests.csproj", "{112C4590-05F4-4168-9A09-54A72790316D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.UnitTests.Common", "Launchpad.UnitTests.Common\Launchpad.UnitTests.Common.csproj", "{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Web.UnitTests", "Launchpad.Web.UnitTests\Launchpad.Web.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.UnitTests", "Launchpad.Web.UnitTests\Launchpad.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Core", "Launchpad.Core\Launchpad.Core.csproj", "{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Core.UnitTests", "Launchpad.Core.UnitTests\Launchpad.Core.UnitTests.csproj", "{42CC1B0F-C972-4FF6-AE39-52888748616E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Data.UnitTests", "Launchpad.Data.UnitTests\Launchpad.Data.UnitTests.csproj", "{68803044-F38B-4F9E-886C-78C244D373C7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models.UnitTests", "Launchpad.Models.UnitTests\Launchpad.Models.UnitTests.csproj", "{42218F10-4745-4F8B-9CF0-68855BE9CE99}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Web.IntegrationTests", "Launchpad.Web.IntegrationTests\Launchpad.Web.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.IntegrationTests", "Launchpad.Web.IntegrationTests\Launchpad.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F68702B-28CF-4E1F-9D58-1092785C3106} = {5F68702B-28CF-4E1F-9D58-1092785C3106}
 	EndProjectSection
@@ -58,18 +46,6 @@ Global
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2013160-5E92-4EB0-8A10-3B89C44E8572}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3C937F4-726C-4893-A9FC-E328DCEF513C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{112C4590-05F4-4168-9A09-54A72790316D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{112C4590-05F4-4168-9A09-54A72790316D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{112C4590-05F4-4168-9A09-54A72790316D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{112C4590-05F4-4168-9A09-54A72790316D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA489C7A-9733-4F0F-82C6-A820F5498B40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA489C7A-9733-4F0F-82C6-A820F5498B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA489C7A-9733-4F0F-82C6-A820F5498B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,18 +54,6 @@ Global
 		{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42CC1B0F-C972-4FF6-AE39-52888748616E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42CC1B0F-C972-4FF6-AE39-52888748616E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42CC1B0F-C972-4FF6-AE39-52888748616E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42CC1B0F-C972-4FF6-AE39-52888748616E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68803044-F38B-4F9E-886C-78C244D373C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68803044-F38B-4F9E-886C-78C244D373C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68803044-F38B-4F9E-886C-78C244D373C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68803044-F38B-4F9E-886C-78C244D373C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42218F10-4745-4F8B-9CF0-68855BE9CE99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42218F10-4745-4F8B-9CF0-68855BE9CE99}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42218F10-4745-4F8B-9CF0-68855BE9CE99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42218F10-4745-4F8B-9CF0-68855BE9CE99}.Release|Any CPU.Build.0 = Release|Any CPU
 		{420A6E90-E022-47D2-9B67-1BC11EBEB88B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{420A6E90-E022-47D2-9B67-1BC11EBEB88B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{420A6E90-E022-47D2-9B67-1BC11EBEB88B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -105,13 +69,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{A3C937F4-726C-4893-A9FC-E328DCEF513C} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
-		{112C4590-05F4-4168-9A09-54A72790316D} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
-		{05CBFEFB-3EF5-4DCC-AB0B-73FCED410D2F} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
 		{CA489C7A-9733-4F0F-82C6-A820F5498B40} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
-		{42CC1B0F-C972-4FF6-AE39-52888748616E} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
-		{68803044-F38B-4F9E-886C-78C244D373C7} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
-		{42218F10-4745-4F8B-9CF0-68855BE9CE99} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
 		{420A6E90-E022-47D2-9B67-1BC11EBEB88B} = {BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}
 	EndGlobalSection
 EndGlobal
