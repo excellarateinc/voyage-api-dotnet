@@ -1,4 +1,6 @@
-﻿using Launchpad.Data;
+﻿using System.IO;
+
+using Launchpad.Data;
 using Launchpad.Models.Entities;
 
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -9,7 +11,7 @@ namespace Launchpad.IntegrationTests.Data.Extensions
     {
         public static ApplicationRole AddRole(this LaunchpadDataContext context)
         {
-            var role = new ApplicationRole { Name = "MyRoleName" };
+            var role = new ApplicationRole { Name = Path.GetRandomFileName() };
             var roleStore = new RoleStore<ApplicationRole>(context);
             roleStore.CreateAsync(role).Wait();
             return role;

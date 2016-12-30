@@ -1,12 +1,8 @@
-﻿using System.Transactions;
-
-using FluentAssertions;
-
+﻿using FluentAssertions;
 using Launchpad.Data;
 using Launchpad.Data.Repositories.RoleClaim;
 using Launchpad.IntegrationTests.Data.Extensions;
 using Launchpad.Models.Entities;
-
 using Xunit;
 
 namespace Launchpad.IntegrationTests.Data
@@ -16,151 +12,130 @@ namespace Launchpad.IntegrationTests.Data
     {
         [Fact]
         public void GetAll_Should_Return_RoleClaims()
-        {
-            using (new TransactionScope())
+        {  
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
-                    ctx.AddRoleClaim(role);
+                var role = ctx.AddRole();
+                ctx.AddRoleClaim(role);
 
-                    var results = repository.GetAll();
+                var results = repository.GetAll();
 
-                    results.Should().NotBeNullOrEmpty();
-                }
-            }
+                results.Should().NotBeNullOrEmpty();
+            }            
         }
 
         [Fact]
         public void GetByRoleAndClaim_Should_Return_Claim()
-        {
-            using (new TransactionScope())
+        {           
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
-                    var claim = ctx.AddRoleClaim(role);
+                var role = ctx.AddRole();
+                var claim = ctx.AddRoleClaim(role);
 
-                    var fetchedClaim = repository.GetByRoleAndClaim(role.Name, claim.ClaimType, claim.ClaimValue);
+                var fetchedClaim = repository.GetByRoleAndClaim(role.Name, claim.ClaimType, claim.ClaimValue);
 
-                    fetchedClaim.Should().NotBeNull();
-                }
-            }
+                fetchedClaim.Should().NotBeNull();
+            }            
         }
 
         [Fact]
         public void GetClaimsByRole_Should_Return_Claims()
-        {
-            using (new TransactionScope())
+        {            
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
-                    ctx.AddRoleClaim(role);
+                var role = ctx.AddRole();
+                ctx.AddRoleClaim(role);
 
-                    var claims = repository.GetClaimsByRole(role.Name);
-                    claims.Should().NotBeNullOrEmpty();
-                }
-            }
+                var claims = repository.GetClaimsByRole(role.Name);
+                claims.Should().NotBeNullOrEmpty();
+            }            
         }
 
         [Fact]
         public void Get_Should_Return_RoleClaim()
         {
-            using (new TransactionScope())
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
-                    var claim = ctx.AddRoleClaim(role);
+                var role = ctx.AddRole();
+                var claim = ctx.AddRoleClaim(role);
 
-                    var result = repository.Get(claim.Id);
+                var result = repository.Get(claim.Id);
 
-                    result.Should().NotBeNull();
-                }
-            }
+                result.Should().NotBeNull();
+            }            
         }
 
         [Fact]
         public void Add_Should_Create_Claim()
-        {
-            using (new TransactionScope())
+        {            
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
+                var repository = new RoleClaimRepository(ctx);
+
+                var role = ctx.AddRole();
+
+                var claim = new RoleClaim
                 {
-                    var repository = new RoleClaimRepository(ctx);
+                    RoleId = role.Id,
+                    ClaimType = "CustomType1",
+                    ClaimValue = "CustomValue1"
+                };
 
-                    var role = ctx.AddRole();
-
-                    var claim = new RoleClaim
-                    {
-                        RoleId = role.Id,
-                        ClaimType = "CustomType1",
-                        ClaimValue = "CustomValue1"
-                    };
-
-                    repository.Add(claim);
+                repository.Add(claim);
                     
-                    var result = repository.Get(claim.Id);
+                var result = repository.Get(claim.Id);
 
-                    result.Should().NotBeNull();
-                }
-            }
+                result.Should().NotBeNull();
+            }            
         }
 
         [Fact]
         public void Update_Should_Modify_Claim()
-        {
-            using (new TransactionScope())
+        {           
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
+                var role = ctx.AddRole();
 
-                    var claim = ctx.AddRoleClaim(role);
+                var claim = ctx.AddRoleClaim(role);
 
-                    claim.ClaimValue = "Friday";
+                claim.ClaimValue = "Friday";
 
-                    repository.Update(claim);
+                repository.Update(claim);
 
-                    var result = repository.Get(claim.Id);
+                var result = repository.Get(claim.Id);
 
-                    result.Should().NotBeNull();
-                    result.ClaimValue.Should().Be("Friday");
-                }
-            }
+                result.Should().NotBeNull();
+                result.ClaimValue.Should().Be("Friday");
+            }            
         }
 
         [Fact]
         public void Delete_Should_Remove_Claim()
-        {
-            using (new TransactionScope())
+        {            
+            using (var ctx = new LaunchpadDataContext())
             {
-                using (var ctx = new LaunchpadDataContext())
-                {
-                    var repository = new RoleClaimRepository(ctx);
+                var repository = new RoleClaimRepository(ctx);
 
-                    var role = ctx.AddRole();
+                var role = ctx.AddRole();
 
-                    var claim = ctx.AddRoleClaim(role);
+                var claim = ctx.AddRoleClaim(role);
                    
-                    repository.Delete(claim.Id);
+                repository.Delete(claim.Id);
 
-                    var result = repository.Get(claim.Id);
+                var result = repository.Get(claim.Id);
 
-                    result.Should().BeNull();
-                }
-            }
+                result.Should().BeNull();
+            }            
         }
     }
 }
