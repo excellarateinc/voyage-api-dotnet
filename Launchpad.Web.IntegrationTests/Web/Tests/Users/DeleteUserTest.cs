@@ -26,7 +26,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
         public override string PathUnderTest => "/api/v1/users/{0}";
 
         [Fact]
-        public async Task DeleteUser_Should_Return_Status_204()
+        public async Task DeleteUser_Should_Return_Status_200()
         {
             // Arrange
             var user = await _userHelper.CreateUserAsync();
@@ -36,7 +36,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
             var response = await Client.SendAsync(request);
 
             // Assert
-            response.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            response.Should().HaveStatusCode(HttpStatusCode.OK);
         }
     }
 }

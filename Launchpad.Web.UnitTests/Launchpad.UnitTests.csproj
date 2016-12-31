@@ -178,7 +178,6 @@
     <Compile Include="Data\UserPhoneRepositoryTests.cs" />
     <Compile Include="Models\AutoMapperValidationTests.cs" />
     <Compile Include="Models\ClaimModelTests.cs" />
-    <Compile Include="Models\EntityResultTests.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperCollection.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperFixture.cs" />
     <Compile Include="Models\Map\Profiles\ActivityAuditProfileTests.cs" />
@@ -196,7 +195,6 @@
     <Compile Include="Models\Validators\UserPhoneModelValidatorTests.cs" />
     <Compile Include="Services\ApplicationInfoServiceTests.cs" />
     <Compile Include="Services\AuditServiceTests.cs" />
-    <Compile Include="Services\EntityResultServiceTests.cs" />
     <Compile Include="Services\IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="Services\RoleServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
@@ -205,7 +203,6 @@
     <Compile Include="Web\AuthProviders\LoginOrchestratorTests.cs" />
     <Compile Include="Web\ConstantsTests.cs" />
     <Compile Include="Web\ControllerExtensions.cs" />
-    <Compile Include="Web\Controllers\API\BaseApiControllerTests.cs" />
     <Compile Include="Web\Controllers\API\V1\AccountControllerTests.cs" />
     <Compile Include="Web\Controllers\API\V1\RoleControllerTests.cs" />
     <Compile Include="Web\Controllers\API\V1\ApplicationInfoControllerTests.cs" />

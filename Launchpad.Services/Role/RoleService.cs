@@ -3,21 +3,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Launchpad.Core;
+using Launchpad.Core.Exceptions;
 using Launchpad.Data.Repositories.RoleClaim;
 using Launchpad.Models;
 using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 
+using Newtonsoft.Json;
+
 namespace Launchpad.Services.Role
 {
-    public class RoleService : EntityResultService, IRoleService
+    public class RoleService : IRoleService
     {
         private readonly ApplicationRoleManager _roleManager;
         private readonly IRoleClaimRepository _roleClaimRepository;
         private readonly IMapper _mapper;
 
-        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper) : base(mapper)
+        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper)
         {
             _roleManager = roleManager.ThrowIfNull(nameof(roleManager));
             _roleClaimRepository = roleClaimRepository.ThrowIfNull(nameof(roleClaimRepository));
@@ -29,110 +32,101 @@ namespace Launchpad.Services.Role
         /// </summary>
         /// <param name="id">Role ID</param>
         /// <returns>EnttiyResult</returns>
-        public EntityResult<RoleModel> GetRoleById(string id)
-        {
-            // Attempt to find the role by id
+        public RoleModel GetRoleById(string id)
+        {            
             var role = _roleManager.FindById(id);
 
-            return role == null ?
-                NotFound<RoleModel>(id) :
-                Success(_mapper.Map<RoleModel>(role));
+            if (role == null)
+                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {id}");
+
+            return _mapper.Map<RoleModel>(role);
         }
 
-        public async Task<EntityResult<ClaimModel>> AddClaimAsync(string roleId, ClaimModel claim)
+        public async Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim)
         {
-            EntityResult<ClaimModel> entityResult;
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
-            if (roleEntity != null)
-            {
-                var roleClaim = new RoleClaim
-                {
-                    RoleId = roleEntity.Id,
-                    ClaimValue = claim.ClaimValue,
-                    ClaimType = claim.ClaimType
-                };
-                _roleClaimRepository.Add(roleClaim);
-                entityResult = Success(_mapper.Map<ClaimModel>(roleClaim));
-            }
-            else
-            {
-                entityResult = NotFound<ClaimModel>(roleId);
-            }
+            if (roleEntity == null)
+                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
 
-            return entityResult;
+            var roleClaim = new RoleClaim
+            {
+                RoleId = roleEntity.Id,
+                ClaimValue = claim.ClaimValue,
+                ClaimType = claim.ClaimType
+            };
+            _roleClaimRepository.Add(roleClaim);
+            return _mapper.Map<ClaimModel>(roleClaim);
         }
 
-        public async Task<EntityResult> RemoveRoleAsync(string roleId)
-        {
-            EntityResult result;
+        public async Task<IdentityResult> RemoveRoleAsync(string roleId)
+        {            
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
-            if (roleEntity != null)
-            {
-                var identityResult = await _roleManager.DeleteAsync(roleEntity);
-                result = FromIdentityResult(identityResult);
-            }
-            else
-            {
-                result = NotFound(roleId);
-            }
+            if (roleEntity == null)
+                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
 
-            return result;
+            var identityResult = await _roleManager.DeleteAsync(roleEntity);
+            return identityResult;
         }
 
-        public async Task<EntityResult<RoleModel>> CreateRoleAsync(RoleModel model)
+        public async Task<RoleModel> CreateRoleAsync(RoleModel model)
         {
             // Create the role
             var role = new ApplicationRole { Name = model.Name };
-            var identityResult = await _roleManager.CreateAsync(role);
+            IdentityResult result = await _roleManager.CreateAsync(role);
+            if (!result.Succeeded)
+            {
+                throw new BadRequestException();
+            }
 
             // Get the role to return as part of the response
-            var entityResult = GetRoleByName(role.Name);
-
-            return FromIdentityResult(identityResult, _mapper.Map<RoleModel>(entityResult.Model));
+            var roleModel = GetRoleByName(role.Name);
+            return roleModel;
         }
 
-        public EntityResult<IEnumerable<RoleModel>> GetRoles()
+        public IEnumerable<RoleModel> GetRoles()
         {
             var roles = _roleManager.Roles.ToList();
-            return Success(_mapper.Map<IEnumerable<RoleModel>>(roles));
+            return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
 
-        public EntityResult<IEnumerable<ClaimModel>> GetRoleClaims(string name)
+        public IEnumerable<ClaimModel> GetRoleClaims(string name)
         {
             var claims = _roleClaimRepository.GetClaimsByRole(name);
-            return Success(_mapper.Map<IEnumerable<ClaimModel>>(claims));
+            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public EntityResult<IEnumerable<ClaimModel>> GetRoleClaimsByRoleId(string id)
-        {
-            // Take advantage of queryable
+        public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
+        {            
             var claims = _roleClaimRepository.GetAll()
                 .Where(_ => _.RoleId == id)
                 .ToList();
-            return Success(_mapper.Map<IEnumerable<ClaimModel>>(claims));
+            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public EntityResult RemoveClaim(string roleId, int claimId)
+        public void RemoveClaim(string roleId, int claimId)
         {
             // With the current model, the claim id uniquely identifies the RoleClaim
             // It is not normalized - the record contains the RoleId and the complete definition of the claim
             // This means something like a "login" claim is repeated for each role
             _roleClaimRepository.Delete(claimId);
-
-            return Success();
         }
 
-        public EntityResult<ClaimModel> GetClaimById(string roleId, int claimId)
+        public ClaimModel GetClaimById(string roleId, int claimId)
         {
             var claim = _roleClaimRepository.Get(claimId);
+            if (claim == null)
+                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
 
-            return claim == null ? NotFound<ClaimModel>(claimId) : Success(_mapper.Map<ClaimModel>(claim));
+            return _mapper.Map<ClaimModel>(claim);
         }
 
-        public EntityResult<RoleModel> GetRoleByName(string name)
+        public RoleModel GetRoleByName(string name)
         {
             var role = _roleManager.FindByName(name);
-            return role == null ? NotFound<RoleModel>(name) : Success(_mapper.Map<RoleModel>(role));
+            if (role == null)
+                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {name}");
+
+            return _mapper.Map<RoleModel>(role);
         }
     }
 }

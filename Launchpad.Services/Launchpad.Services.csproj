@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="ApplicationInfo\ApplicationInfoService.cs" />
     <Compile Include="Audit\AuditService.cs" />
-    <Compile Include="EntityResultService.cs" />
     <Compile Include="IdentityManagers\ApplicationRoleManager.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="ApplicationInfo\IApplicationInfoService.cs" />

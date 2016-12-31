@@ -8,10 +8,13 @@ using System.Web.Http.Routing;
 
 using FluentAssertions;
 
+using Launchpad.Core.Exceptions;
 using Launchpad.Models;
 using Launchpad.Services.Role;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
+
+using Microsoft.AspNet.Identity;
 
 using Moq;
 
@@ -65,10 +68,9 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         {
             var id = Fixture.Create<string>();
             var claims = Fixture.CreateMany<ClaimModel>();
-            var entityResult = new EntityResult<IEnumerable<ClaimModel>>(claims, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleId(id))
-                .Returns(entityResult);
+                .Returns(claims);
 
             var result = _roleController.GetClaims(id);
 
@@ -152,10 +154,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 Name = "Great Role",
                 Id = Guid.NewGuid().ToString()
             };
-
-            // Crete fake serivce result
-            var entityResult = new EntityResult<RoleModel>(model, true, false);
-
+            
             // Matcher for determining if route params match
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
             {
@@ -167,7 +166,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 .Returns(url);
 
             _mockRoleService.Setup(_ => _.CreateRoleAsync(model))
-                .ReturnsAsync(entityResult);
+                .ReturnsAsync(model);
 
             // ACT
             var result = await _roleController.CreateRole(model);
@@ -193,10 +192,9 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         {
             var id = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
-            var entityModel = new EntityResult<RoleModel>(model, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoleById(id))
-                .Returns(entityModel);
+                .Returns(model);
 
             var result = _roleController.GetRoleById(id);
 
@@ -211,24 +209,17 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         }
 
         [Fact]
-        public async void CreateRole_Should_Call_RoleService_And_Return_BadRequest_On_Failure()
+        public void CreateRole_Should_Call_RoleService_And_Return_BadRequest_On_Failure()
         {
             var model = new RoleModel
             {
                 Name = "Great Role"
             };
 
-            var entityResult = new EntityResult<RoleModel>(null, false, false, "Error1");
+            _mockRoleService.Setup(_ => _.CreateRoleAsync(model)).Throws<BadRequestException>();
 
-            _mockRoleService.Setup(_ => _.CreateRoleAsync(model))
-                .ReturnsAsync(entityResult);
-
-            // ACT
-            var result = await _roleController.CreateRole(model);
-
-            var message = await result.ExecuteAsync(new CancellationToken());
-
-            message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            // ASSERT            
+            Assert.ThrowsAsync<BadRequestException>(async () => await _roleController.CreateRole(model));
         }
 
         [Fact]
@@ -341,11 +332,10 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
             var claim = Fixture.Create<ClaimModel>();
-            var entityResult = new EntityResult<ClaimModel>(claim, true, false);
 
             _mockRoleService
                 .Setup(_ => _.GetClaimById(roleId, claimId))
-                .Returns(entityResult);
+                .Returns(claim);
 
             // ACT
             var result = _roleController.GetClaimById(roleId, claimId);
@@ -366,10 +356,9 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         public async void GetRoles_Should_Call_RoleService()
         {
             var roles = Fixture.CreateMany<RoleModel>();
-            var entityResult = new EntityResult<IEnumerable<RoleModel>>(roles, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoles())
-                .Returns(entityResult);
+                .Returns(roles);
 
             var result = _roleController.GetRoles();
 
@@ -391,9 +380,8 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             var role = Fixture.Create<RoleModel>();
             var claim = Fixture.Create<ClaimModel>();
             var serviceResult = Fixture.Create<ClaimModel>();
-            var entityResult = new EntityResult<ClaimModel>(serviceResult, true, false);
             _mockRoleService.Setup(_ => _.AddClaimAsync(role.Id, claim))
-                .ReturnsAsync(entityResult);
+                .ReturnsAsync(serviceResult);
 
             const string link = "http://fakelink.com";
 
@@ -454,15 +442,14 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId))
-                .Returns(new EntityResult(true, false));
+            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId));
 
             // Act
             var result = _roleController.RemoveClaim(roleId, claimId);
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
             Mock.VerifyAll();
         }
 
@@ -473,14 +460,14 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             var roleId = Fixture.Create<string>();
 
             _mockRoleService.Setup(_ => _.RemoveRoleAsync(roleId))
-                .ReturnsAsync(new EntityResult(true, false));
+                .ReturnsAsync(new IdentityResult());
 
             // Act
             var result = await _roleController.RemoveRole(roleId);
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
             Mock.VerifyAll();
         }
     }

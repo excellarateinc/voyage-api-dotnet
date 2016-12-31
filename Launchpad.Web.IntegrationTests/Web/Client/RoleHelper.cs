@@ -34,7 +34,7 @@ namespace Launchpad.IntegrationTests.Web.Client
             return responseModel;
         }
 
-        public async override Task Refresh()
+        public override async Task Refresh()
         {
             var httpRequestMessage = CreateSecureRequest(HttpMethod.Get, "/api/v1/roles");
             var response = await Client.SendAsync(httpRequestMessage);

@@ -220,7 +220,6 @@
     <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
     <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
@@ -228,6 +227,7 @@
     <Compile Include="Extensions\ModelErrorExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\OwinContextExtensions.cs" />
+    <Compile Include="Filters\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Middleware\ActivityAuditMiddleware.cs" />

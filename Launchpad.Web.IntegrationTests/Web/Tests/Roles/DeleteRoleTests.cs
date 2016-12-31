@@ -40,7 +40,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
         }
 
         [Fact]
-        public async Task DeleteRole_Should_Return_Status_204()
+        public async Task DeleteRole_Should_Return_Status_200()
         {
             // Arrange - Create Role to Delete
 
@@ -51,7 +51,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
             var deleteResponse = await Client.SendAsync(deleteRequest);
 
             // Assert
-            deleteResponse.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            deleteResponse.Should().HaveStatusCode(HttpStatusCode.OK);
         }
     }
 }

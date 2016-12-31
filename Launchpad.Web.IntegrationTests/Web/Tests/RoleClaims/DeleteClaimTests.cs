@@ -28,7 +28,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
         public override string PathUnderTest => "/api/v1/roles/{0}/claims/{1}";
 
         [Fact]
-        public async Task DeleteClaim_Should_Return_Status_204()
+        public async Task DeleteClaim_Should_Return_Status_200()
         {
             // Arrange
             await _roleHelper.Refresh();
@@ -44,11 +44,11 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
             var response = await Client.SendAsync(request);
 
             // Assert
-            response.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            response.Should().HaveStatusCode(HttpStatusCode.OK);
         }
 
         [Fact]
-        public async Task DeleteClaim_Should_Return_Status_204_When_Claim_Not_Found()
+        public async Task DeleteClaim_Should_Return_Status_200_When_Claim_Not_Found()
         {
             // Arrange
             await _roleHelper.Refresh();
@@ -59,7 +59,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
             var response = await Client.SendAsync(request);
 
             // Assert
-            response.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            response.Should().HaveStatusCode(HttpStatusCode.OK);
         }
     }
 }

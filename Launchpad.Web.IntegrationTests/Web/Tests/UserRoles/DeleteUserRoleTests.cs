@@ -28,7 +28,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserRoles
         public override string PathUnderTest => "/api/v1/users/{0}/roles/{1}";
 
         [Fact]
-        public async Task RemoveRole_Should_Return_Status_204()
+        public async Task RemoveRole_Should_Return_Status_200()
         {
             await _userHelper.Refresh();
             var role = await _roleHelper.CreateRoleAsync();
@@ -41,7 +41,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserRoles
             var request = CreateSecureRequest(Method, PathUnderTest, user.Id, role.Id);
             var response = await Client.SendAsync(request);
 
-            response.Should().HaveStatusCode(HttpStatusCode.NoContent);
+            response.Should().HaveStatusCode(HttpStatusCode.OK);
         }
     }
 }

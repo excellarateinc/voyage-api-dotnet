@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -11,6 +12,8 @@ using Launchpad.Models;
 using Launchpad.Services.User;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
+
+using Microsoft.AspNet.Identity;
 
 using Moq;
 
@@ -46,10 +49,8 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var entityResult = new EntityResult(true, false);
-        
             _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(entityResult);
+                .ReturnsAsync(IdentityResult.Success);
 
             // ACT
             var result = await _accountController.Register(model);
@@ -71,10 +72,8 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            var entityResult = new EntityResult(false, false, "My error");
-
             _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(entityResult);
+                .ReturnsAsync(new IdentityResult());
 
             // ACT
             var result = await _accountController.Register(model);

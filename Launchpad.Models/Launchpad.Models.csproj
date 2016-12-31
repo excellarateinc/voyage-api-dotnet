@@ -86,7 +86,6 @@
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\ApplicationLog.cs" />
     <Compile Include="Entities\RoleClaim.cs" />
-    <Compile Include="EntityResult.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
