@@ -18,7 +18,7 @@ namespace Launchpad.Core
         {
             if (argumentInstance == null)
             {
-                throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(TType).Name : paramName);
+                throw new ArgumentNullException(string.IsNullOrEmpty(paramName) ? typeof(TType).Name : paramName);
             }
 
             return argumentInstance;
@@ -34,7 +34,7 @@ namespace Launchpad.Core
         {
             if (string.IsNullOrEmpty(argumentInstance))
             {
-                throw new ArgumentNullException(String.IsNullOrEmpty(paramName) ? typeof(string).Name : paramName);
+                throw new ArgumentNullException(string.IsNullOrEmpty(paramName) ? typeof(string).Name : paramName);
             }
 
             return argumentInstance;
