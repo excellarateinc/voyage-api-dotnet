@@ -2,7 +2,7 @@
 using Autofac;
 using Autofac.Core;
 using Launchpad.Core;
-using Launchpad.Data.Interfaces;
+using Launchpad.Data.Repositories;
 using Launchpad.Data.Stores;
 using Launchpad.Models;
 using Launchpad.Models.Entities;

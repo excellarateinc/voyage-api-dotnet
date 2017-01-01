@@ -94,7 +94,7 @@ namespace Launchpad.Services.User
 
         public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
         {
-            var user = new ApplicationUser()
+            var user = new ApplicationUser
             {
                 UserName = model.Email,
                 Email = model.Email,

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Launchpad.Data.Interfaces;
 
 namespace Launchpad.Data.Repositories.RoleClaim
 {

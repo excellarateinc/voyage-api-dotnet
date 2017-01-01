@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using Launchpad.Core;
-using Launchpad.Data.Interfaces;
 
-namespace Launchpad.Data
+namespace Launchpad.Data.Repositories
 {
     /// <summary>
     /// Abstract implementation of the repository interface

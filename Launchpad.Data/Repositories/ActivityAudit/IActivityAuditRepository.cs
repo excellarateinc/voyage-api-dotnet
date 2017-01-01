@@ -1,6 +1,4 @@
-﻿using Launchpad.Data.Interfaces;
-
-namespace Launchpad.Data.Repositories.ActivityAudit
+﻿namespace Launchpad.Data.Repositories.ActivityAudit
 {
     public interface IActivityAuditRepository : IRepository<Models.Entities.ActivityAudit>
     {

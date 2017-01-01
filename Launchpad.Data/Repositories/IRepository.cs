@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Launchpad.Data.Interfaces
+namespace Launchpad.Data.Repositories
 {
     /// <summary>
     /// Basic repository

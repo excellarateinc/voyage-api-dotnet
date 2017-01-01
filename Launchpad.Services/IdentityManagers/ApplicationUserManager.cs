@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-
 using Launchpad.Models.Entities;
-
 using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Services.IdentityManagers

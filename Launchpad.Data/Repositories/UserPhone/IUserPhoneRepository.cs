@@ -1,6 +1,4 @@
-﻿using Launchpad.Data.Interfaces;
-
-namespace Launchpad.Data.Repositories.UserPhone
+﻿namespace Launchpad.Data.Repositories.UserPhone
 {
     public interface IUserPhoneRepository : IRepository<Models.Entities.UserPhone>
     {

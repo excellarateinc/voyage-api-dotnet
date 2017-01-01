@@ -3,10 +3,7 @@ using Launchpad.Core;
 using Launchpad.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-
-using Launchpad.Core.Exceptions;
 using Launchpad.Services.User;
-
 using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Web.Controllers.API.V1

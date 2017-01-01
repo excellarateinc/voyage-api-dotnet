@@ -10,8 +10,6 @@ using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 
-using Newtonsoft.Json;
-
 namespace Launchpad.Services.Role
 {
     public class RoleService : IRoleService

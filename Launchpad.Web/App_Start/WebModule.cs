@@ -14,7 +14,6 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-
 using Launchpad.Models.Entities;
 
 namespace Launchpad.Web
