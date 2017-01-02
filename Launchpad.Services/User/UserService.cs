@@ -33,7 +33,7 @@ namespace Launchpad.Services.User
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             if (appUser == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {userId}");
+                throw new NotFoundException($"Could not locate entity with Id {userId}");
 
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
 
@@ -117,7 +117,7 @@ namespace Launchpad.Services.User
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {userId}");
+                throw new NotFoundException($"Could not locate entity with Id {userId}");
 
             var identity = await CreateClaimsIdentityAsync(user.UserName, "OAuth");
             return _mapper.Map<IEnumerable<ClaimModel>>(identity.Claims);
@@ -127,7 +127,7 @@ namespace Launchpad.Services.User
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {userName}");
+                throw new NotFoundException($"Could not locate entity with Id {userName}");
 
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await _userManager.CreateIdentityAsync(user, authenticationType);
@@ -155,11 +155,12 @@ namespace Launchpad.Services.User
         {
             var roleModel = _roleService.GetRoleById(roleId);
             if (roleModel == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
+                throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             if (!_userManager.IsInRole(userId, roleModel.Name))
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleModel.Name}");
-            
+                throw new BadRequestException($"User was not in role with Id {roleId}");
+
+
             return roleModel;
         }
 
@@ -167,7 +168,7 @@ namespace Launchpad.Services.User
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             if (appUser == null || appUser.Deleted)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {userId}");
+                throw new NotFoundException($"Could not locate entity with ID {userId}");
 
             return _mapper.Map<UserModel>(appUser);
         }
@@ -176,7 +177,7 @@ namespace Launchpad.Services.User
         {
             var appUser = await _userManager.FindByIdAsync(userId);
             if (appUser == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {userId}");
+                throw new NotFoundException($"Could not locate entity with ID {userId}");
 
             var identityResult = await _userManager.DeleteAsync(appUser);
             return identityResult;

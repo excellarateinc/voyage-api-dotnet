@@ -35,7 +35,7 @@ namespace Launchpad.Services.Role
             var role = _roleManager.FindById(id);
 
             if (role == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {id}");
+                throw new NotFoundException($"Could not locate entity with Id {id}");
 
             return _mapper.Map<RoleModel>(role);
         }
@@ -44,7 +44,7 @@ namespace Launchpad.Services.Role
         {
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
+                throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             var roleClaim = new RoleClaim
             {
@@ -60,7 +60,7 @@ namespace Launchpad.Services.Role
         {            
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
+                throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             var identityResult = await _roleManager.DeleteAsync(roleEntity);
             return identityResult;
@@ -113,7 +113,7 @@ namespace Launchpad.Services.Role
         {
             var claim = _roleClaimRepository.Get(claimId);
             if (claim == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {roleId}");
+                throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             return _mapper.Map<ClaimModel>(claim);
         }
@@ -122,7 +122,7 @@ namespace Launchpad.Services.Role
         {
             var role = _roleManager.FindByName(name);
             if (role == null)
-                throw new NotFoundException($"{Models.Constants.ErrorCodes.EntityNotFound}::Could not locate entity with ID {name}");
+                throw new NotFoundException($"Could not locate entity with Id {name}");
 
             return _mapper.Map<RoleModel>(role);
         }

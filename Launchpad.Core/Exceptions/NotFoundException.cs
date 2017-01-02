@@ -6,7 +6,7 @@ namespace Launchpad.Core.Exceptions
     {
         public NotFoundException() : base(HttpStatusCode.NotFound)
         {
-        }
+        }        
 
         public NotFoundException(string message) : base(HttpStatusCode.NotFound, message)
         {
