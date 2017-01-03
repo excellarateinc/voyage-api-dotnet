@@ -341,7 +341,7 @@ Sample Method
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Creating a Service
-Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as depenendencies in ApiControllers as well as other services. A pattern has been established for the return value of services. The goal is to standardize the expected shape of the result of a method call on a service. This will help form a consistent model of how the service layer as a whole operates regardless of underlying business logic. 
+Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as dependencies in ApiControllers as well as other services. A pattern has been established for the return value of services. The goal is to standardize the expected shape of the result of a method call on a service. This will help form a consistent model of how the service layer as a whole operates regardless of underlying business logic. 
 
 ### EntityResult and EntityResult`<TModel>`
 When a service acts upon an entity within the database, it should use an EntityResult as the method return type. This class encapsulates both the resulting model as well as whether or not the method was successful. This allows common logic to be written to consume any EntityResult - or in otherwords this allows the controller to make a service call and then call common logic to map the result into a response.
