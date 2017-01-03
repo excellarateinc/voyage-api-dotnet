@@ -88,17 +88,17 @@ Wherever possible these best practices are enforced with the default Resharper s
 **[⬆ back to top](#table-of-contents)**
 
 #### Begin comment text with an uppercase letter
-> Why? TBD
+> Why? Proper grammar is easier to read and keeps consistency. It also has the effect of making the developer look more professional and intelligent.
 
 **[⬆ back to top](#table-of-contents)**
 
 #### End comment text with a period
-> Why? TBD
+> Why? Proper punctuation makes comments easier to read and keeps consistency. It also has the effect of making the developer look more professional and intelligent.
 
 **[⬆ back to top](#table-of-contents)**
 
 #### Insert one space between the comment delimiter (//) and the comment text
-> Why? TBD
+> Why? Makes comments more consistent, also easier to read when comment is separated from the slashes that start the comment block.
 
      ```
      // This is a comment.
@@ -107,7 +107,7 @@ Wherever possible these best practices are enforced with the default Resharper s
 **[⬆ back to top](#table-of-contents)**     
      
 #### Do not create formatted blocks of asterisks around comments
-> Why? TBD
+> Why? This is generally considered an antiquated practice, also adds a lot of noise just to document code.
 
      ```
      // Avoid
@@ -121,7 +121,7 @@ Wherever possible these best practices are enforced with the default Resharper s
 ## Strings
 
 #### Use the + operator to concatenate short strings
-> Why? TBD
+> Why? Although strings are immutable in C#, the overhead is small when there are only a few strings. The benefit of less code to achieve the result is greater than the performance overhead.
 
 ```
 string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
@@ -159,7 +159,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 **[⬆ back to top](#table-of-contents)**
 
 #### Do not use 'var' when the type is not apparent from the right side of the assignment
-> Why? TBD
+> Why? It's always desireable to be able to understand the code as much as possible from reading it alone. 'var' makes it hard to determine the actual type, when it's not explicit.
 
        ```
        // When the type of a variable is not clear from the context, use an
@@ -188,7 +188,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 
 ## Arrays
 #### Use the concise syntax when you initialize arrays on the declaration line
-> Why? TBD
+> Why? It makes it easy to determine the type of the array.
 
        ```
        // Preferred syntax. Note that you cannot use var here instead of string[].
@@ -208,7 +208,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 ## Exceptions
 
 #### Use a try-catch statement for most exception handling
-> Why? TBD
+> Why? It allows the code to gracefully handle the exception before execution continues.
 
        ```
        static string GetValueFromArray(string[] array, int index)
@@ -251,7 +251,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 ## New Operator
 
 #### Use the concise form of object instantiation, with implicit typing
-> Why? TBD
+> Why? We can infer the type from the explicit instantiation, so we don't need to be verbose when declaring the variable.
 
        ```
        var instance1 = new ExampleClass();
@@ -260,7 +260,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 **[⬆ back to top](#table-of-contents)**
 
 #### Use object initializers to simplify object creation
-> Why? TBD
+> Why? It's less verbose and cleaner to read than separate instantiation and property assignment.
 
        ```
        // Avoid
@@ -292,7 +292,7 @@ string displayName = nameList[n].LastName + ", " + nameList[n].FirstName;
 ## LINQ Queries
 
 #### Use meaningful names for query variables
-> Why? TBD
+> Why? This makes it much easier to understand what the query is returning and what potential downstream queries may be using it for.
 
 The following example uses seattleCustomers for customers who are located in Seattle.
      
@@ -313,7 +313,7 @@ The following example uses seattleCustomers for customers who are located in Sea
 **[⬆ back to top](#table-of-contents)**
 
 #### Rename properties when the property names in the result would be ambiguous
-> Why? TBD
+> Why? This makes it much easier to determine what the query returned downstream.
 
 For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
      
@@ -327,9 +327,9 @@ For example, if your query returns a customer name and a distributor ID, instead
 **[⬆ back to top](#table-of-contents)**
 
 #### Use 'where' clauses before other 'query' clauses to avoid low-performing queries
-> Why? 
+> Why? Bundling multiple queries together without proper where clauses can create large datasets that perform very poorly. 
 
-Ensure that 'where' clauses are added before any later query clauses so that the initial query is reduced and the subsequent queries are acting on a filtered set of data. Bundling multiple queries together without proper where clauses can create large datasets that perform very poorly. 
+Ensure that 'where' clauses are added before any later query clauses so that the initial query is reduced and the subsequent queries are acting on a filtered set of data. 
      
        ```
        var seattleCustomers2 = from cust in customers
@@ -340,20 +340,6 @@ Ensure that 'where' clauses are added before any later query clauses so that the
 
 **[⬆ back to top](#table-of-contents)**
 
-#### Use multiple 'from' clauses instead of a 'join' clause to access inner collections
-> Why? TBD
-
-For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
-     
-       ```
-       // Use a compound from to access the inner sequence within each element.
-       var scoreQuery = from student in students
-                        from score in student.Scores
-                        where score > 90
-                        select new { Last = student.LastName, score };       
-       ```
-
-**[⬆ back to top](#table-of-contents)**
 
 ## Code Style
 
