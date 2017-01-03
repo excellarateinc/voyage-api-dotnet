@@ -35,7 +35,6 @@ These are the core standards that our development team agrees to follow. All of 
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Code Standards
-> __FINISH THIS SECTION__
 
 The following coding standards are agreed upon by the development team and are expected to be followed. Where possible, these rules will be enforced by the IDE. The goals of these standards are the following:
 
@@ -56,7 +55,6 @@ __Best Practices__
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Workstation Setup
-> __FINISH THIS SECTION__
 
 ### Required Software
 Download and install the following required software for development:
@@ -68,7 +66,6 @@ Download and install the following required software for development:
 * [Node](https://nodejs.org/en/)
 
 ### Instructions
-> __EXPLAIN the process start-to-finish with no assumptions__
 
 1. Download source via Visual Studio GitHub extension
    - Open Visual Studio with administrator privileges. 
@@ -146,7 +143,6 @@ Password: Hello123!
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Run App Locally
-> __FINISH THIS SECTION__
 
 1. Run the application
    - Open Visual Studio with administrator privileges.
