@@ -80,12 +80,12 @@ All reusable blocks should be placed in  ***Launchpad.Web\\_apidoc.js***
 ### Generating documentation
 To generate the api docs after a change:
 
-1. In ***Launchpad.Web*** execute npm run doc
+1. In ***Launchpad.Web/apidoc*** execute npm run apidoc
    - This is an npm script that is defined in package.json
    - Script: apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\"
    - This will scan the Controllers folder for endpoints and place the output in \docs
 
-To view the documentation either run the application and navigate to /docs/ or open the static index.html file.
+To view the documentation either run the application and navigate to /apidoc/docs/ or open the static index.html file.
 
 :arrow_up: [Back to Top](#table-of-contents)
 
