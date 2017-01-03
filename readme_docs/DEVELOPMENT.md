@@ -49,8 +49,8 @@ __Best Practices__
 * [Authorization](STANDARDS-AUTHORIZATION.md)
 * [Database](STANDARDS-DATABASE.md)
 * [Web Services](STANDARDS-WEB-SERVICES.md)
-* ?? [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
-* ?? [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
+* [Logging](DEVELOPMENT-BEST-PRACTICES.md#logging)
+* [Dependency Injection](DEVELOPMENT-BEST-PRACTICES.md#dependency-injection)
 
 :arrow_up: [Back to Top](#table-of-contents)
 
