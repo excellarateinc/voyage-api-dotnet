@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentExtensions.cs" />
+    <Compile Include="CollectionHelpers.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="EventCodes.cs" />
+    <Compile Include="Exceptions\BadRequestException.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="IIdentityProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

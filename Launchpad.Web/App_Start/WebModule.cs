@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
 using Launchpad.Core;
-using Launchpad.Models.EntityFramework;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
@@ -15,6 +14,7 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Launchpad.Models.Entities;
 
 namespace Launchpad.Web
 {
@@ -119,7 +119,7 @@ namespace Launchpad.Web
         {
             // Server=... or the name of a connection string in your .config file
             var connectionString = _connectionString;                
-            var tableName = $"{Data.Constants.Schemas.FrameworkTables}.ApplicationLog";
+            const string tableName = "dbo.ApplicationLog";
 
             var columnOptions = new ColumnOptions();  // optional
             columnOptions.Store.Add(StandardColumn.LogEvent); // Store the JSON too 

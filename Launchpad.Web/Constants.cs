@@ -6,8 +6,7 @@
 
         public static class RoutePrefixes
         {
-            public const string V1 = "api/v1";
-            public const string V2 = "api/v2";           
+            public const string V1 = "api/v1";          
         }
 
         public static class LssClaims
@@ -31,13 +30,7 @@
             public const string DeleteRoleClaim = "delete.role-claim";
             public const string CreateClaim = "create.claim";
             public const string ViewClaim = "view.claim";
-            public const string ListRoleClaims = "list.role-claims";
-
-            public const string ListWidgets = "list.widgets";
-            public const string ViewWidget = "view.widget";
-            public const string CreateWidget = "create.widget";
-            public const string DeleteWidget = "delete.widget";
-            public const string UpdateWidget = "update.widget";           
+            public const string ListRoleClaims = "list.role-claims";         
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
 using Launchpad.Core;
-using Launchpad.Services.Interfaces;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Launchpad.Services.User;
 
 namespace Launchpad.Web.AuthProviders
 {

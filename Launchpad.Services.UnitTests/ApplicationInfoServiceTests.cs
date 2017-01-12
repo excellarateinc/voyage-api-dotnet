@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
-using Launchpad.Services.Interfaces;
 using Launchpad.UnitTests.Common;
 using Moq;
 using Xunit;
+using Launchpad.Services.ApplicationInfo;
+using Launchpad.Services.FileReader;
 
 namespace Launchpad.Services.UnitTests
-{
+{    
     public class ApplicationInfoServiceTests : BaseUnitTest
     {
         private readonly ApplicationInfoService _applicationInfoService;

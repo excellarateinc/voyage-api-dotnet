@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Launchpad.Data.Interfaces;
+using Launchpad.Data.Repositories.UserPhone;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Interfaces;
+using Launchpad.Services.Role;
 using Launchpad.Services.UnitTests.Fixture;
+using Launchpad.Services.User;
 using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;
 using Moq;
@@ -630,7 +631,7 @@ namespace Launchpad.Services.UnitTests
         [Fact]
         public async void CreateClaimsIdentity_Should_Return_Identity()
         {
-            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.widget" } };
+            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.test" } };
             var entityResult = new EntityResult<IEnumerable<ClaimModel>>(roleClaims, true, false);
 
             _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
@@ -648,7 +649,7 @@ namespace Launchpad.Services.UnitTests
 
             _mockStore.As<IUserClaimStore<ApplicationUser>>()
                 .Setup(_ => _.GetClaimsAsync(model))
-                .ReturnsAsync(new[] { new Claim("permission", "view.widget") });
+                .ReturnsAsync(new[] { new Claim("permission", "view.test") });
 
             _mockStore.Setup(_ => _.FindByNameAsync(user))
                .ReturnsAsync(model);
@@ -656,8 +657,8 @@ namespace Launchpad.Services.UnitTests
             var result = await _userService.CreateClaimsIdentityAsync(user, "OAuth");
 
             result.Should().NotBeNull();
-            result.HasClaim("permission", "view.widget");
-            result.HasClaim("permission", "delete.widget");
+            result.HasClaim("permission", "view.test");
+            result.HasClaim("permission", "delete.test");
             result.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin");
             result.HasClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name", user).Should().BeTrue();
 

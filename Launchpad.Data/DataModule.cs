@@ -1,14 +1,11 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Data.Entity;
 using Autofac;
 using Autofac.Core;
 using Launchpad.Core;
-using Launchpad.Data.Auditing;
-using Launchpad.Data.Interfaces;
+using Launchpad.Data.Repositories;
 using Launchpad.Data.Stores;
 using Launchpad.Models;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TrackerEnabledDbContext.Common.Configuration;
@@ -28,30 +25,11 @@ namespace Launchpad.Data
             _connectionString = connectionString;
         }
 
-        /// <summary>
-        /// Scan the assembly for the audit configuration and call configure
-        /// </summary>
-        protected void ConfigureAuditing()
-        {
-            GlobalTrackingConfig
-                .SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
-
-            var auditing = typeof(IAuditConfiguration)
-                .Assembly
-                .GetTypes()
-                .Where(_ => _.IsAssignableTo<IAuditConfiguration>() && !_.IsAbstract)
-                .Select(_ => Activator.CreateInstance(_) as IAuditConfiguration);
-
-            foreach (var config in auditing)
-            {
-                config.Configure();
-            }
-        }
-
         protected override void Load(ContainerBuilder builder)
         {
             // Configure the auditing for the context
-            ConfigureAuditing();
+            GlobalTrackingConfig.SetSoftDeletableCriteria<ISoftDeleteable>(_ => _.Deleted);
+            BaseAuditConfiguration.Configure();
 
             // Register a data context with an instance per request
             // Dependency Type: ILaunchpadDataContext

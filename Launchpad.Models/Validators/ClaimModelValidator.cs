@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Launchpad.Models.Extensions;
 
 namespace Launchpad.Models.Validators
 {

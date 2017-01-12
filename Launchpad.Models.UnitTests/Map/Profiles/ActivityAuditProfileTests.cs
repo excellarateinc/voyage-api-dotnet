@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
+using Launchpad.Models.Entities;
 using Ploeh.AutoFixture;
 using Xunit;
 using Launchpad.UnitTests.Common;
 using Launchpad.Models.UnitTests.Fixture;
-using Launchpad.Models.EntityFramework;
 
 namespace Launchpad.Models.UnitTests.Map.Profiles
 {

@@ -15,6 +15,7 @@ namespace Launchpad.Web
 
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             config.Filters.Add(new ValidateModelAttribute()); // Globally configure model validation
+            config.Filters.Add(new ApiExceptionFilterAttribute());
 
             // Set camelcasing on for JSON
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

@@ -1,15 +1,15 @@
 ﻿using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Launchpad.Services.User;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
     [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class UserController : BaseApiController
+    public class UserController : ApiController
     {
         private readonly IUserService _userService;
 
@@ -64,8 +64,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
-            var entityResult = _userService.GetUsers();
-            return CreateModelResult(entityResult);
+            var users = _userService.GetUsers();
+            return Ok(users);
         }
 
         /**
@@ -87,8 +87,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
-            var entityResult = await _userService.UpdateUserAsync(userId, userModel);
-            return CreateModelResult(entityResult);
+            var result = await _userService.UpdateUserAsync(userId, userModel);
+            return Ok(result);
         }
 
         /**
@@ -105,7 +105,7 @@ namespace Launchpad.Web.Controllers.API.V1
         *   
         *            
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 204 NO CONTENT  
+        *   HTTP/1.1 200 OK
         *   
         *   
         * @apiUse UnauthorizedError
@@ -116,8 +116,11 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
         {
-            var entityResult = await _userService.DeleteUserAsync(userId);
-            return NoContent(entityResult);
+            var result = await _userService.DeleteUserAsync(userId);
+            if (!result.Succeeded)
+                return BadRequest();      
+             
+            return Ok(result);
         }
 
         /**
@@ -146,8 +149,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
         {
-            var entityResult = await _userService.CreateUserAsync(user);
-            return CreatedEntityAt("GetUserAsync", () => new { UserId = entityResult.Model.Id }, entityResult);
+            var result = await _userService.CreateUserAsync(user);
+            return CreatedAtRoute("GetUserAsync", new { UserId = result.Id }, result);
         }
 
         /**
@@ -172,8 +175,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
-            var entityResult = await _userService.GetUserAsync(userId);
-            return CreateModelResult(entityResult);
+            var result = await _userService.GetUserAsync(userId);
+            return Ok(result);
         }
 
         /**
@@ -220,8 +223,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
         {
-            var entityResult = await _userService.GetUserRolesAsync(userId);
-            return CreateModelResult(entityResult);
+            var result = await _userService.GetUserRolesAsync(userId);
+            return Ok(result);
         }
 
         /**
@@ -260,8 +263,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/claims")]
         public async Task<IHttpActionResult> GetClaims(string userId)
         {
-            var entityResult = await _userService.GetUserClaimsAsync(userId);
-            return CreateModelResult(entityResult);
+            var result = await _userService.GetUserClaimsAsync(userId);
+            return Ok(result);
         }
 
         /**
@@ -302,8 +305,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
-            var entityResult = await _userService.AssignUserRoleAsync(userId, roleModel);
-            return CreatedEntityAt("GetUserRoleById", () => new { UserId = userId, RoleId = entityResult.Model.Id }, entityResult);
+            var result = await _userService.AssignUserRoleAsync(userId, roleModel);
+            return CreatedAtRoute("GetUserRoleById", new { UserId = userId, RoleId = result.Id }, result);
         }
 
         /**
@@ -350,8 +353,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
         {
-            var entityResult = _userService.GetUserRoleById(userId, roleId);
-            return CreateModelResult(entityResult);
+            var result = _userService.GetUserRoleById(userId, roleId);
+            return Ok(result);
         }
 
         /**
@@ -368,7 +371,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiParam {String} userId User ID
         * 
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 204 No Content
+        *   HTTP/1.1 200 OK
         *
         * @apiUse UnauthorizedError
         * 
@@ -379,8 +382,8 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
-            var entityResult = await _userService.RemoveUserFromRoleAsync(userId, roleId);
-            return NoContent(entityResult);
+            var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
+            return Ok(result);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Services.IdentityManagers;
 using Launchpad.UnitTests.Common;
 using Microsoft.AspNet.Identity;

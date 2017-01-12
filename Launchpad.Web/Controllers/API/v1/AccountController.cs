@@ -1,13 +1,15 @@
-﻿using Launchpad.Core;
+﻿using System.Net;
+using Launchpad.Core;
 using Launchpad.Models;
-using Launchpad.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Launchpad.Services.User;
+using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class AccountController : BaseApiController
+    public class AccountController : ApiController
     {
         private readonly IUserService _userService;
 
@@ -39,8 +41,11 @@ namespace Launchpad.Web.Controllers.API.V1
         [Route("account/register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            var entityResult = await _userService.RegisterAsync(model);
-            return NoContent(entityResult);
+            IdentityResult result = await _userService.RegisterAsync(model);
+            if (!result.Succeeded)
+                return BadRequest();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

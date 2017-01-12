@@ -7,8 +7,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using Launchpad.Core;
-using Launchpad.Data.Interfaces;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Serilog;
 using TrackerEnabledDbContext.Common.Models;
@@ -16,8 +15,6 @@ using TrackerEnabledDbContext.Identity;
 
 namespace Launchpad.Data
 {
-    using System.Diagnostics.CodeAnalysis;
-
     public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
     {
         private readonly IIdentityProvider _identityProvider;
@@ -26,8 +23,6 @@ namespace Launchpad.Data
         #region DbSets
 
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
-
-        public IDbSet<Widget> Widgets { get; set; }
 
         public IDbSet<ApplicationLog> Logs { get; set; }
 
@@ -73,12 +68,12 @@ namespace Launchpad.Data
             Database.SetInitializer<LaunchpadDataContext>(null);
 
             #region Boilerplate configuration
-            // Migrations were not being generated corretly because the order in which the base was executing
+            // Migrations were not being generated correctly because the order in which the base was executing
             // the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
             // move it here and make it explicit
             // https://aspnetidentity.codeplex.com/SourceControl/latest#src/Microsoft.AspNet.Identity.EntityFramework/IdentityDbContext.cs
             var user = modelBuilder.Entity<ApplicationUser>()
-              .ToTable("User", Constants.Schemas.FrameworkTables);
+              .ToTable("User");
             user.HasMany(u => u.Roles).WithRequired().HasForeignKey(ur => ur.UserId);
             user.HasMany(u => u.Claims).WithRequired().HasForeignKey(uc => uc.UserId);
             user.HasMany(u => u.Logins).WithRequired().HasForeignKey(ul => ul.UserId);
@@ -91,17 +86,17 @@ namespace Launchpad.Data
 
             modelBuilder.Entity<IdentityUserRole>()
                 .HasKey(r => new { r.UserId, r.RoleId })
-                .ToTable("UserRole", Constants.Schemas.FrameworkTables);
+                .ToTable("UserRole");
 
             modelBuilder.Entity<IdentityUserLogin>()
                 .HasKey(l => new { l.LoginProvider, l.ProviderKey, l.UserId })
-                .ToTable("UserLogin", Constants.Schemas.FrameworkTables);
+                .ToTable("UserLogin");
 
             modelBuilder.Entity<IdentityUserClaim>()
-                .ToTable("UserClaim", Constants.Schemas.FrameworkTables);
+                .ToTable("UserClaim");
 
             var role = modelBuilder.Entity<ApplicationRole>()
-                .ToTable("Role", Constants.Schemas.FrameworkTables);
+                .ToTable("Role");
 
             role.Property(r => r.Name)
                 .IsRequired()
@@ -115,13 +110,13 @@ namespace Launchpad.Data
 
             // Configure the namespace for the audit 
             modelBuilder.Entity<AuditLog>()
-                .ToTable("AuditLog", Constants.Schemas.FrameworkTables);
+                .ToTable("AuditLog");
 
             modelBuilder.Entity<AuditLogDetail>()
-                .ToTable("AuditLogDetail", Constants.Schemas.FrameworkTables);
+                .ToTable("AuditLogDetail");
 
             modelBuilder.Entity<LogMetadata>()
-                .ToTable("LogMetadata", Constants.Schemas.FrameworkTables);
+                .ToTable("LogMetadata");
         }
 
         public override async Task<int> SaveChangesAsync()

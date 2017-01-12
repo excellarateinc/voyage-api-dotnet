@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Launchpad.Models.EntityFramework;
+using Launchpad.Models.Entities;
 using Launchpad.Models.UnitTests.Fixture;
 using Launchpad.UnitTests.Common;
 using Xunit;

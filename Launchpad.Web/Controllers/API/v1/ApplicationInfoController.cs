@@ -1,9 +1,9 @@
 ﻿using Launchpad.Core;
-using Launchpad.Services.Interfaces;
 using System.Web.Http;
+using Launchpad.Services.ApplicationInfo;
 
 namespace Launchpad.Web.Controllers.API.V1
-{
+{    
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]
     public class ApplicationInfoController : ApiController
