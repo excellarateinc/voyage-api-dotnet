@@ -42,7 +42,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
             httpResponseMessage.Should()
                 .HaveStatusCode(HttpStatusCode.BadRequest);
 
-            var responseModel = await httpResponseMessage.ReadBody<BadRequestErrorModel[]>();
+            var responseModel = await httpResponseMessage.ReadBody<RequestErrorModel[]>();
             responseModel.Should()
                 .NotBeNullOrEmpty()
                 .And

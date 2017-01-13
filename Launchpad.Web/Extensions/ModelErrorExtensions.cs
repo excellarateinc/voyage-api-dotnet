@@ -7,26 +7,26 @@ namespace Launchpad.Web.Extensions
 {
     public static class ModelErrorExtensions
     {
-        public static BadRequestErrorModel ToModel(this ModelError error, string field)
+        public static RequestErrorModel ToModel(this ModelError error, string field)
         {
-            var model = new BadRequestErrorModel { Field = field };
+            var model = new RequestErrorModel { Field = field };
             var codedMessage = error.ErrorMessage.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
             if (codedMessage.Length == 2)
             {
-                model.Code = codedMessage[0];
-                model.Description = codedMessage[1];
+                model.Error = codedMessage[0];
+                model.ErrorDescription = codedMessage[1];
             }
             else
             {
-                model.Description = error.ErrorMessage;
+                model.ErrorDescription = error.ErrorMessage;
             }
 
             return model;
         }
 
-        public static IEnumerable<BadRequestErrorModel> ConvertToResponseModel(this ModelStateDictionary modelState)
+        public static IEnumerable<RequestErrorModel> ConvertToResponseModel(this ModelStateDictionary modelState)
         {
-            var errorList = new List<BadRequestErrorModel>();
+            var errorList = new List<RequestErrorModel>();
 
             foreach (var state in modelState)
             {

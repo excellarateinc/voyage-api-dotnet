@@ -9,6 +9,7 @@
             public const string InvalidLength = "invalid.length";
             public const string InvalidDependentRule = "invalid.dependent.rule";
             public const string EntityNotFound = "notfound.entity";
+            public const string Unauthorized = "error.unauthorized";
         }
     }
 }

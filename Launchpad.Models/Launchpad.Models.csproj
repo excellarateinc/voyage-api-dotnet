@@ -78,7 +78,7 @@
   <ItemGroup>
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
-    <Compile Include="BadRequestErrorModel.cs" />
+    <Compile Include="RequestErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\ActivityAudit.cs" />

@@ -1,11 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Http.ModelBinding;
-
 using FluentAssertions;
-
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Extensions;
-
 using Xunit;
 
 namespace Launchpad.UnitTests.Web.Extensions
@@ -21,9 +18,9 @@ namespace Launchpad.UnitTests.Web.Extensions
 
             var responseModel = errorModel.ToModel(field);
 
-            responseModel.Code.Should().BeNull();
+            responseModel.Error.Should().BeNull();
             responseModel.Field.Should().Be(field);
-            responseModel.Description.Should().Be(error);
+            responseModel.ErrorDescription.Should().Be(error);
         }
 
         [Fact]
@@ -35,9 +32,9 @@ namespace Launchpad.UnitTests.Web.Extensions
 
             var responseModel = errorModel.ToModel(field);
 
-            responseModel.Code.Should().BeNull();
+            responseModel.Error.Should().BeNull();
             responseModel.Field.Should().Be(field);
-            responseModel.Description.Should().Be(error);
+            responseModel.ErrorDescription.Should().Be(error);
         }
 
         [Fact]
@@ -49,9 +46,9 @@ namespace Launchpad.UnitTests.Web.Extensions
 
             var responseModel = errorModel.ToModel(field);
 
-            responseModel.Code.Should().Be("missing.field");
+            responseModel.Error.Should().Be("missing.field");
             responseModel.Field.Should().Be(field);
-            responseModel.Description.Should().Be("This is an error");
+            responseModel.ErrorDescription.Should().Be("This is an error");
         }
 
         [Fact]
@@ -68,7 +65,7 @@ namespace Launchpad.UnitTests.Web.Extensions
 
             var error = result.First();
             error.Field.Should().Be("field1");
-            error.Description.Should().Be("Required field is missing");
+            error.ErrorDescription.Should().Be("Required field is missing");
         }
     }
 }
