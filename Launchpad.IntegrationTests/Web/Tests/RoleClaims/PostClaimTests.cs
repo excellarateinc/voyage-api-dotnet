@@ -48,7 +48,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
             // Assert
             response.Should().HaveStatusCode(HttpStatusCode.BadRequest);
 
-            var responseModel = await response.ReadBody<RequestErrorModel[]>();
+            var responseModel = await response.ReadBody<ResponseErrorModel[]>();
             responseModel.Should()
                 .NotBeNullOrEmpty()
                 .And

@@ -8,13 +8,13 @@ using Launchpad.Models;
 namespace Launchpad.IntegrationTests.Web.Assertions
 {
     public class BadRequestCollectionAssertions :
-       SelfReferencingCollectionAssertions<RequestErrorModel, BadRequestCollectionAssertions>
+       SelfReferencingCollectionAssertions<ResponseErrorModel, BadRequestCollectionAssertions>
     {
-        public BadRequestCollectionAssertions(IEnumerable<RequestErrorModel> actualValue) : base(actualValue)
+        public BadRequestCollectionAssertions(IEnumerable<ResponseErrorModel> actualValue) : base(actualValue)
         {
         }
 
-        protected override string Context => "RequestErrorModel";
+        protected override string Context => "ResponseErrorModel";
 
         public AndConstraint<BadRequestCollectionAssertions> ContainErrorFor(string expectedDescription, string expectedCode, string because = "", params object[] becauseArgs)
         {

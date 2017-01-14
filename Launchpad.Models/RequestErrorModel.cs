@@ -2,7 +2,7 @@
 
 namespace Launchpad.Models
 {
-    public class RequestErrorModel
+    public class ResponseErrorModel
     {
         public string Error { get; set; }
 

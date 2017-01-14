@@ -7,9 +7,9 @@ namespace Launchpad.Web.Extensions
 {
     public static class ModelErrorExtensions
     {
-        public static RequestErrorModel ToModel(this ModelError error, string field)
+        public static ResponseErrorModel ToModel(this ModelError error, string field)
         {
-            var model = new RequestErrorModel { Field = field };
+            var model = new ResponseErrorModel { Field = field };
             var codedMessage = error.ErrorMessage.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
             if (codedMessage.Length == 2)
             {
@@ -24,9 +24,9 @@ namespace Launchpad.Web.Extensions
             return model;
         }
 
-        public static IEnumerable<RequestErrorModel> ConvertToResponseModel(this ModelStateDictionary modelState)
+        public static IEnumerable<ResponseErrorModel> ConvertToResponseModel(this ModelStateDictionary modelState)
         {
-            var errorList = new List<RequestErrorModel>();
+            var errorList = new List<ResponseErrorModel>();
 
             foreach (var state in modelState)
             {
@@ -40,9 +40,9 @@ namespace Launchpad.Web.Extensions
             return errorList;
         }
 
-        public static List<RequestErrorModel> ToRequestErrorModel(this string message)
+        public static List<ResponseErrorModel> ToRequestErrorModel(this string message)
         {
-            var model = new RequestErrorModel();
+            var model = new ResponseErrorModel();
             var codedMessage = message.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
             if (codedMessage.Length == 2)
             {
@@ -54,7 +54,7 @@ namespace Launchpad.Web.Extensions
                 model.ErrorDescription = message;
             }
 
-            return new List<RequestErrorModel> { model };
+            return new List<ResponseErrorModel> { model };
         }
     }
 }

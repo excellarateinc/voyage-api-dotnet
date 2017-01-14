@@ -16,7 +16,7 @@ namespace Launchpad.IntegrationTests.Web.Extensions
             return new HttpResponseMessageAssertions(actualValue);
         }
 
-        public static BadRequestCollectionAssertions Should(this IEnumerable<RequestErrorModel> actualValue)
+        public static BadRequestCollectionAssertions Should(this IEnumerable<ResponseErrorModel> actualValue)
         {
             return new BadRequestCollectionAssertions(actualValue);
         }
