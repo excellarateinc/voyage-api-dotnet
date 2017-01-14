@@ -1,4 +1,5 @@
-﻿using Launchpad.Core;
+﻿using System.Collections.Generic;
+using Launchpad.Core;
 using Serilog;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using Launchpad.Models;
 
 namespace Launchpad.Web.Filters
 {
@@ -26,7 +28,12 @@ namespace Launchpad.Web.Filters
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
             if (identity != null && !identity.IsAuthenticated)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                var requestErrorModel = new ResponseErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Unauthorized,
+                    ErrorDescription = "not authorized for request"
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
@@ -44,8 +51,13 @@ namespace Launchpad.Web.Filters
 
             // User has not authenticated / signed in
             if (identity != null && !identity.IsAuthenticated)
-            {            
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+            {
+                var requestErrorModel = new ResponseErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Unauthorized,
+                    ErrorDescription = "not authorized for request"
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }            
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue)) 
             {

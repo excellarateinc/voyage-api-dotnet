@@ -8,7 +8,7 @@ namespace Launchpad.Core.Exceptions
         {
         }        
 
-        public NotFoundException(string message) : base(HttpStatusCode.NotFound, message)
+        public NotFoundException(string message) : base(HttpStatusCode.NotFound, Constants.ErrorCodes.EntityNotFound, message)
         {
         }
     }

@@ -13,11 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Models", "Launchp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.UnitTests", "Launchpad.Web.UnitTests\Launchpad.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.UnitTests", "Launchpad.UnitTests\Launchpad.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.Core", "Launchpad.Core\Launchpad.Core.csproj", "{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.IntegrationTests", "Launchpad.Web.IntegrationTests\Launchpad.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launchpad.IntegrationTests", "Launchpad.IntegrationTests\Launchpad.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F68702B-28CF-4E1F-9D58-1092785C3106} = {5F68702B-28CF-4E1F-9D58-1092785C3106}
 	EndProjectSection
