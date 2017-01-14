@@ -35,7 +35,7 @@ namespace Launchpad.Services.Role
             var role = _roleManager.FindById(id);
 
             if (role == null)
-                throw new NotFoundException($"Could not locate entity with Id {id}");
+                throw new NotFoundException($"Could not locate entity with Id {id}");                
 
             return _mapper.Map<RoleModel>(role);
         }

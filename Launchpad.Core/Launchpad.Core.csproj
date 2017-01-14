@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ArgumentExtensions.cs" />
     <Compile Include="CollectionHelpers.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="EventCodes.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />

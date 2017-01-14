@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Models
+﻿namespace Launchpad.Core
 {
     public static class Constants
     {

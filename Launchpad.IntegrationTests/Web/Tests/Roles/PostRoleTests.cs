@@ -2,14 +2,12 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 using FluentAssertions;
-
+using Launchpad.Core;
 using Launchpad.IntegrationTests.Web.Client;
 using Launchpad.IntegrationTests.Web.Extensions;
 using Launchpad.IntegrationTests.Web.Hosting;
 using Launchpad.Models;
-
 using Xunit;
 
 namespace Launchpad.IntegrationTests.Web.Tests.Roles
@@ -46,7 +44,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
             responseModel.Should()
                 .NotBeNullOrEmpty()
                 .And
-                .ContainErrorFor("Name is a required field", Models.Constants.ErrorCodes.MissingField);
+                .ContainErrorFor("Name is a required field", Constants.ErrorCodes.MissingField);
         }
 
         [Fact]

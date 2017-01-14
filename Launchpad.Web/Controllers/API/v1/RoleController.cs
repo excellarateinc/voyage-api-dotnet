@@ -7,7 +7,6 @@ using Launchpad.Services.Role;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-    [Authorize]
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class RoleController : ApiController
     {

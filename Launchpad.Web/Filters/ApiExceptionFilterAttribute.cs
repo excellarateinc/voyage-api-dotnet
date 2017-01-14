@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Web.Http.Filters;
 using Launchpad.Core.Exceptions;
+using Launchpad.Web.Extensions;
 
 namespace Launchpad.Web.Filters
 {
@@ -11,7 +12,7 @@ namespace Launchpad.Web.Filters
             var exception = context.Exception as ApiException;
             if (exception != null)
             {
-                context.Response = context.Request.CreateErrorResponse(exception.StatusCode, exception.Message);
+                context.Response = context.Request.CreateResponse(exception.StatusCode, exception.Message.ToRequestErrorModel());                
             }
         }
     }

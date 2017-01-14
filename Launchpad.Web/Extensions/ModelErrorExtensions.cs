@@ -39,5 +39,22 @@ namespace Launchpad.Web.Extensions
 
             return errorList;
         }
+
+        public static List<RequestErrorModel> ToRequestErrorModel(this string message)
+        {
+            var model = new RequestErrorModel();
+            var codedMessage = message.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+            if (codedMessage.Length == 2)
+            {
+                model.Error = codedMessage[0];
+                model.ErrorDescription = codedMessage[1];
+            }
+            else
+            {
+                model.ErrorDescription = message;
+            }
+
+            return new List<RequestErrorModel> { model };
+        }
     }
 }

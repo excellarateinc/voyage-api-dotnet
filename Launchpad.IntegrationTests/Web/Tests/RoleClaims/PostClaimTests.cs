@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using FluentAssertions;
+using Launchpad.Core;
 using Launchpad.IntegrationTests.Web.Client;
 using Launchpad.IntegrationTests.Web.Extensions;
 using Launchpad.IntegrationTests.Web.Hosting;
@@ -27,8 +28,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
 
         public static object[] InvalidClaimModels => new object[]
             {
-                new object[] { new ClaimModel { ClaimType = "ClaimType" }, "Claim value is a required field", Models.Constants.ErrorCodes.MissingField },
-                new object[] { new ClaimModel { ClaimValue = "ClaimValue" }, "Claim type is a required field", Models.Constants.ErrorCodes.MissingField }
+                new object[] { new ClaimModel { ClaimType = "ClaimType" }, "Claim value is a required field", Constants.ErrorCodes.MissingField },
+                new object[] { new ClaimModel { ClaimValue = "ClaimValue" }, "Claim type is a required field", Constants.ErrorCodes.MissingField }
             };
 
         [Theory]

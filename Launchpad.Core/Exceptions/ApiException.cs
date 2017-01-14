@@ -17,6 +17,12 @@ namespace Launchpad.Core.Exceptions
             StatusCode = statusCode;
         }
 
+        public ApiException(HttpStatusCode statusCode, string errorCode, string errorDescription)
+            : base($"{errorCode}::{errorDescription}")
+        {
+            StatusCode = statusCode;
+        }
+
         public ApiException(HttpStatusCode statusCode)
         {
             StatusCode = statusCode;

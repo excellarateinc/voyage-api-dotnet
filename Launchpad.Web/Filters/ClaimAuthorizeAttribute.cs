@@ -28,7 +28,12 @@ namespace Launchpad.Web.Filters
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
             if (identity != null && !identity.IsAuthenticated)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                var requestErrorModel = new RequestErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Unauthorized,
+                    ErrorDescription = "not authorized for request"
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<RequestErrorModel> { requestErrorModel });
             }
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
@@ -49,7 +54,7 @@ namespace Launchpad.Web.Filters
             {
                 var requestErrorModel = new RequestErrorModel
                 {
-                    Error = Models.Constants.ErrorCodes.Unauthorized,
+                    Error = Core.Constants.ErrorCodes.Unauthorized,
                     ErrorDescription = "not authorized for request"
                 };
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<RequestErrorModel> { requestErrorModel });

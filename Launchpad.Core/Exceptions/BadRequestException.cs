@@ -11,5 +11,10 @@ namespace Launchpad.Core.Exceptions
         public BadRequestException(string message) : base(HttpStatusCode.BadRequest, message)
         {
         }
+
+        public BadRequestException(string errorCode, string errorDescription) 
+            : base(HttpStatusCode.BadRequest, errorCode, errorDescription)
+        {
+        }
     }
 }
