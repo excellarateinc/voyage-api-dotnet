@@ -235,14 +235,6 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         }
 
         [Fact]
-        public void Class_Should_Have_Authorize_Attribute()
-        {
-            typeof(RoleController)
-                .Should()
-                .BeDecoratedWith<AuthorizeAttribute>();
-        }
-
-        [Fact]
         public void Class_Should_Have_RoutePrefix_Attribute()
         {
             typeof(RoleController)

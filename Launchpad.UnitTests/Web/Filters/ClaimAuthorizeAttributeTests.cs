@@ -97,6 +97,8 @@ namespace Launchpad.UnitTests.Web.Filters
                 RequestContext = new HttpRequestContext { Principal = new ClaimsPrincipal(claimsIdentity) }
             };
 
+            controllerContext.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
             var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
             attribute.OnAuthorization(actionContext);
