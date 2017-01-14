@@ -5,23 +5,16 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Routing;
-
 using FluentAssertions;
-
 using Launchpad.Core.Exceptions;
 using Launchpad.Models;
 using Launchpad.Services.Role;
 using Launchpad.UnitTests.Common;
 using Launchpad.Web.Controllers.API.V1;
-
 using Microsoft.AspNet.Identity;
-
 using Moq;
-
 using Ploeh.AutoFixture;
-
 using Xunit;
-
 using Constants = Launchpad.Web.Constants;
 
 namespace Launchpad.UnitTests.Web.Controllers.API.V1
