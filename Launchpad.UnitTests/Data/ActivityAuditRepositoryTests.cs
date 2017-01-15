@@ -1,11 +1,8 @@
 ﻿using System;
-
 using FluentAssertions;
-
 using Launchpad.Data;
 using Launchpad.Data.Repositories.ActivityAudit;
 using Launchpad.UnitTests.Common;
-
 using Xunit;
 
 namespace Launchpad.UnitTests.Data
