@@ -563,7 +563,7 @@ namespace Launchpad.UnitTests.Services
         }
 
         [Fact]
-        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager_And_Return_Bad_Request()
+        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager_And_Return_Unauthorized()
         {
             var userId = Fixture.Create<string>();
             var roleId = Fixture.Create<string>();
@@ -584,7 +584,7 @@ namespace Launchpad.UnitTests.Services
                 .Setup(_ => _.IsInRoleAsync(appUser, model.Name))
                 .ReturnsAsync(false);            
 
-            Assert.Throws<BadRequestException>(() => { _userService.GetUserRoleById(userId, roleId); });
+            Assert.Throws<UnauthorizedException>(() => { _userService.GetUserRoleById(userId, roleId); });
         }
 
         [Fact]
