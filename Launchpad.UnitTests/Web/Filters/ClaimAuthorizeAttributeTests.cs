@@ -15,7 +15,7 @@ using Xunit;
 namespace Launchpad.UnitTests.Web.Filters
 {
     public class ClaimAuthorizeAttributeTests : BaseUnitTest
-    {     
+    {
         [Fact]
         public void ClaimType_Should_Default_To_Constant_Value()
         {

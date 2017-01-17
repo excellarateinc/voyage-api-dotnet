@@ -22,20 +22,20 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName GetRoleById
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->view.role
-        * 
+        *
         * @apiUse AuthHeader
-        * 
+        *
         * @apiParam {String} roleId Role ID
-        *  
-        * @apiSuccess {Object} role  
+        *
+        * @apiSuccess {Object} role
         * @apiSuccess {String} role.id Role ID
         * @apiSuccess {String} role.name Name of the role
         * @apiSuccess {Object[]} role.claims Claims associated to the role
         * @apiSuccess {String} role.claims.claimType Type of the claim
         * @apiSuccess {String} role.claims.claimValue Value of the claim
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
@@ -50,8 +50,8 @@ namespace Launchpad.Web.Controllers.API.V1
         *           ]
         *       }
         *   ]
-        *   
-        * @apiUse UnauthorizedError  
+        *
+        * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
@@ -68,18 +68,18 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName GetRoles
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->list.roles
-        * 
+        *
         * @apiUse AuthHeader
-        *   
-        * @apiSuccess {Object[]} roles List of roles 
+        *
+        * @apiSuccess {Object[]} roles List of roles
         * @apiSuccess {String} roles.id Role ID
         * @apiSuccess {String} roles.name Name of the role
         * @apiSuccess {Object[]} roles.claims Claims associated to the role
         * @apiSuccess {String} roles.claims.claimType Type of the claim
         * @apiSuccess {String} roles.claims.claimValue Value of the claim
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
@@ -98,8 +98,8 @@ namespace Launchpad.Web.Controllers.API.V1
                     ]
                   }
         *   ]
-        *   
-        * @apiUse UnauthorizedError  
+        *
+        * @apiUse UnauthorizedError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoles)]
         [HttpGet]
@@ -111,26 +111,26 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {post} /v1/roles Create a role 
+        * @api {post} /v1/roles Create a role
         * @apiVersion 0.1.0
         * @apiName CreateRole
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->create.role
-        * 
+        *
         * @apiUse AuthHeader
-        * 
+        *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
-        *   
+        *
         * @apiHeaderExample {json} Location-Example
-        *   { 
+        *   {
         *       "Location": "http://localhost:52431/api/v1/roles/34d87057-fafa-4e5d-822b-cddb1700b507"
         *   }
-        *   
+        *
         * @apiParam {Object} role Role
         * @apiParam {String} role.id Role ID
         * @apiParam {String} role.name Name of the role
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
         *   {
@@ -138,10 +138,10 @@ namespace Launchpad.Web.Controllers.API.V1
         *       "name": "New Role 2",
         *       "claims": []
         *   }
-        *   
+        *
         * @apiUse UnauthorizedError
-        * 
-        * @apiUse BadRequestError  
+        *
+        * @apiUse BadRequestError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateRole)]
         [HttpPost]
@@ -153,32 +153,32 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {post} /v1/roles/:roleId/claims Create a role claim 
+        * @api {post} /v1/roles/:roleId/claims Create a role claim
         * @apiVersion 0.1.0
         * @apiName AddRoleClaim
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->create.claim
-        * 
+        *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
-        *   
+        *
         * @apiHeaderExample {json} Location-Example
-        *   { 
+        *   {
         *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/claims/219"
         *   }
-        * 
+        *
         * @apiUse AuthHeader
-        *   
-        * @apiParam {string} roleId Role ID 
-        * @apiParam {Object} claim Claim 
-        * @apiParam {String} claim.claimType Type of the claim 
+        *
+        * @apiParam {string} roleId Role ID
+        * @apiParam {Object} claim Claim
+        * @apiParam {String} claim.claimType Type of the claim
         * @apiParam {String} claim.claimValue Value of the claim
-        * 
+        *
         * @apiSuccess {Object} claim Claim
         * @apiSuccess {Integer} claim.id Claim ID
         * @apiSuccess {String} claim.claimType Type
         * @apiSuccess {String} claim.claimValue Value
-        * 
+        *
         *  @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 Created
         *   {
@@ -188,8 +188,8 @@ namespace Launchpad.Web.Controllers.API.V1
         *   }
         *
         * @apiUse UnauthorizedError
-        * 
-        * @apiUse BadRequestError  
+        *
+        * @apiUse BadRequestError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateClaim)]
         [Route("roles/{roleId}/claims")]
@@ -213,19 +213,19 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName GetClaimById
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->view.claim
         *
         * @apiUse AuthHeader
-        *   
-        * @apiParam {String} roleId Role ID 
+        *
+        * @apiParam {String} roleId Role ID
         * @apiParam {String} claimId Claim ID
-        * 
+        *
         * @apiSuccess {Object} claim Claim
         * @apiSuccess {Integer} claim.id Claim ID
         * @apiSuccess {String} claim.claimType Type
         * @apiSuccess {String} claim.claimValue Value
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   {
@@ -246,23 +246,23 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim 
+        * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim
         * @apiVersion 0.1.0
         * @apiName RemoveRoleClaim
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->delete.role-claim
-        * 
+        *
         * @apiUse AuthHeader
-        *   
+        *
         * @apiParam {String} roleId Role ID
         * @apiParam {Integer} claimId Claim ID
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *
         * @apiUse UnauthorizedError
-        * 
+        *
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRoleClaim)]
         [HttpDelete]
@@ -278,28 +278,28 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName GetRoleClaims
         * @apiGroup Role
-        * 
+        *
         * @apiPermission lss.permission->list.role-claims
-        * 
+        *
         * @apiParam {String} roleId Role ID
-        * 
+        *
         * @apiUse AuthHeader
-        *   
+        *
         * @apiSuccess {Object[]} claims Claims associated to the role
         * @apiSuccess {String} claims.claimType Type of the claim
         * @apiSuccess {String} claims.claimValue Value of the claim
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
-        *       { 
+        *       {
         *           "claimType": "lss.permission",
         *           "claimValue": "list.newClaim",
         *           "id": 17
         *       }
         *   ]
-        *   
-        * @apiUse UnauthorizedError  
+        *
+        * @apiUse UnauthorizedError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoleClaims)]
         [HttpGet]
@@ -311,24 +311,24 @@ namespace Launchpad.Web.Controllers.API.V1
         }
 
         /**
-        * @api {delete} /v1/roles/:roleId Delete a role 
+        * @api {delete} /v1/roles/:roleId Delete a role
         * @apiVersion 0.1.0
         * @apiName RemoveRole
         * @apiGroup Role
-        * 
-        * 
+        *
+        *
         * @apiPermission lss.permission->delete.role
-        * 
+        *
         * @apiUse AuthHeader
-        *   
+        *
         * @apiParam {String} roleId Role ID
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *
         * @apiUse UnauthorizedError
-        * 
-        * @apiUse NotFoundError  
+        *
+        * @apiUse NotFoundError
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRole)]

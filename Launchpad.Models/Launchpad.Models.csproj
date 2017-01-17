@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\Launchpad.Core\Voyage.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,7 +79,7 @@
   <ItemGroup>
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
-    <Compile Include="RequestErrorModel.cs" />
+    <Compile Include="ResponseErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
     <Compile Include="Entities\ActivityAudit.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
@@ -117,6 +118,11 @@
       <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
       <Name>Launchpad.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

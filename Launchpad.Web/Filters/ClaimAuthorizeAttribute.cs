@@ -58,8 +58,8 @@ namespace Launchpad.Web.Filters
                     ErrorDescription = "not authorized for request"
                 };
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
-            }            
-            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue)) 
+            }
+            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
                 // Check if the user has the correct claim
                 Log.Logger

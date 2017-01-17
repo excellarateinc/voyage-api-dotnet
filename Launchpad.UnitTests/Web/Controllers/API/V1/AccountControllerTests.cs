@@ -112,7 +112,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));             
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
         }
 
         [Fact]

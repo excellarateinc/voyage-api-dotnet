@@ -8,7 +8,7 @@ using Microsoft.Owin.Hosting;
 namespace Launchpad.IntegrationTests.Web.Hosting
 {
     /// <summary>
-    /// Test fixture responsible for bootstrapping and opening the self hosted services 
+    /// Test fixture responsible for bootstrapping and opening the self hosted services
     /// </summary>
     public class HostFixture : IDisposable
     {

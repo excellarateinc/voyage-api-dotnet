@@ -21,7 +21,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserRoles
         private readonly UserHelper _userHelper;
         private readonly RoleHelper _roleHelper;
 
-        public GetUserRoleByIdTests(HostFixture hostFixture) : base(hostFixture)
+        public GetUserRoleByIdTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
             _roleHelper = new RoleHelper();
@@ -34,7 +35,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserRoles
         [Fact]
         public async Task GetUserRoleById_Should_Return_Status_200()
         {
-            // Arrange               
+            // Arrange
             await _userHelper.Refresh();
             await _roleHelper.Refresh();
 

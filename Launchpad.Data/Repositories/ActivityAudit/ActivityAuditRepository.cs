@@ -5,7 +5,8 @@ namespace Launchpad.Data.Repositories.ActivityAudit
 {
     public class ActivityAuditRepository : BaseRepository<Models.Entities.ActivityAudit>, IActivityAuditRepository
     {
-        public ActivityAuditRepository(ILaunchpadDataContext context) : base(context)
+        public ActivityAuditRepository(ILaunchpadDataContext context)
+            : base(context)
         {
         }
 

@@ -10,7 +10,7 @@ namespace Launchpad.Models.Entities
     /// </summary>
     [Table("User")]
     public class ApplicationUser : IdentityUser, ISoftDeleteable
-    {        
+    {
         [MaxLength(128)]
         [Required]
         public string FirstName { get; set; }

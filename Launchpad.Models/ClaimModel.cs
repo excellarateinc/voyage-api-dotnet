@@ -10,6 +10,6 @@ namespace Launchpad.Models
 
         public string ClaimValue { get; set; }
 
-        public int Id { get; set; }       
+        public int Id { get; set; }
     }
 }

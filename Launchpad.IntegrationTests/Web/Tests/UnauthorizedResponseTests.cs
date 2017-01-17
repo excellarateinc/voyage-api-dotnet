@@ -10,20 +10,21 @@ using Xunit;
 namespace Launchpad.IntegrationTests.Web.Tests
 {
     /// <summary>
-    /// Contains tests for the cross-cutting concern of authorization. All 
-    /// secure services will require a valid user token. If the token is 
+    /// Contains tests for the cross-cutting concern of authorization. All
+    /// secure services will require a valid user token. If the token is
     /// invalid then the response should be 401: Unauthorized
     /// </summary>
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]
     public class UnauthorizedResponseTests : ApiTest
     {
-        public UnauthorizedResponseTests(HostFixture hostFixture) : base(hostFixture)
+        public UnauthorizedResponseTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
         }
 
         /// <summary>
-        /// An array of arrays containing the input method and URL for the test 
+        /// An array of arrays containing the input method and URL for the test
         /// </summary>
         public static object[] UnauthorizedUrls =>
            new object[]

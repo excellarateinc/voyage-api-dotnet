@@ -19,7 +19,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
 
         public override string PathUnderTest => "/api/v1/roles";
 
-        public GetRolesTests(HostFixture hostFixture) : base(hostFixture)
+        public GetRolesTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
         }
 

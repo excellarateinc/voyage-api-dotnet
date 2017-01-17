@@ -18,7 +18,7 @@ using Owin;
 using Xunit;
 
 namespace Launchpad.UnitTests.Web.Middleware
-{    
+{
     [Trait("Category", "CustomMiddleware")]
     public class ActivityAuditMiddlewareTests : BaseUnitTest
     {
@@ -30,7 +30,7 @@ namespace Launchpad.UnitTests.Web.Middleware
             _mockAuditService = Mock.Create<IAuditService>();
             _mockProcessor = Mock.Create<ErrorResponseProcessor>();
         }
-    
+
         [Fact]
         public async void Invoke_Should_Call_Logger_And_AuditService()
         {
@@ -39,7 +39,7 @@ namespace Launchpad.UnitTests.Web.Middleware
 
             var id = Guid.NewGuid().ToString();
 
-            _mockAuditService.Setup(_ => 
+            _mockAuditService.Setup(_ =>
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id)))
                 .Returns(Task.FromResult(0));
 
@@ -50,7 +50,7 @@ namespace Launchpad.UnitTests.Web.Middleware
 
                 // Middleware under test
                 app.Use(
-                    typeof(ActivityAuditMiddleware), 
+                    typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
@@ -71,7 +71,7 @@ namespace Launchpad.UnitTests.Web.Middleware
         public async void Invoke_Should_Set_ErrorMessage_When_Available()
         {
             const string error = "error!";
- 
+
             _mockProcessor.Setup(_ => _.ShouldProcess(It.IsAny<IOwinResponse>()))
                 .Returns(true);
 
@@ -130,14 +130,14 @@ namespace Launchpad.UnitTests.Web.Middleware
 
                 // Middleware under test
                 app.Use(
-                    typeof(ActivityAuditMiddleware), 
+                    typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
                     _mockProcessor.Object);
 
                 app.Run(context =>
                 {
                     return context.Response.WriteAsync("Hello world using OWIN TestServer");
-                });            
+                });
             }))
             {
                 await server.HttpClient.GetAsync("/");

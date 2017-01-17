@@ -25,7 +25,7 @@ namespace Launchpad.Web.Extensions
             var model = new ActivityAuditModel();
 
             var owinRequestId = context.Environment[OwinRequestId].ToString();
-            model.RequestId = EmptyId.Equals(owinRequestId, StringComparison.InvariantCultureIgnoreCase) ? requestIdOverride : owinRequestId;           
+            model.RequestId = EmptyId.Equals(owinRequestId, StringComparison.InvariantCultureIgnoreCase) ? requestIdOverride : owinRequestId;
             model.IpAddress = context.Request.RemoteIpAddress;
             model.Method = context.Request.Method;
             model.Date = DateTime.Now;

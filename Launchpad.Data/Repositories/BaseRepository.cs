@@ -9,7 +9,11 @@ namespace Launchpad.Data.Repositories
     /// <typeparam name="TModel">Generic TModel which the repository will work with</typeparam>
     public abstract class BaseRepository<TModel> : IRepository<TModel>
     {
+#pragma warning disable SA1401 // Fields must be private
+#pragma warning disable SA1306 // Field names must begin with lower-case letter
         protected ILaunchpadDataContext Context;
+#pragma warning restore SA1306 // Field names must begin with lower-case letter
+#pragma warning restore SA1401 // Fields must be private
 
         protected BaseRepository(ILaunchpadDataContext context)
         {

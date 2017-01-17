@@ -13,14 +13,14 @@ namespace Launchpad.Core
             var sb = new StringBuilder();
 
             Exception ex = exception;
-            
+
             while (ex != null && depth < maxDepth)
             {
                 sb.AppendLine(ex.Message);
                 ex = ex.InnerException;
                 ++depth;
             }
-            
+
             return sb.ToString();
         }
     }

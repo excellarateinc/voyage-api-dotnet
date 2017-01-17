@@ -12,7 +12,7 @@ namespace Launchpad.Web.Filters
             var exception = context.Exception as ApiException;
             if (exception != null)
             {
-                context.Response = context.Request.CreateResponse(exception.StatusCode, exception.Message.ToRequestErrorModel());                
+                context.Response = context.Request.CreateResponse(exception.StatusCode, exception.Message.ToRequestErrorModel());
             }
         }
     }

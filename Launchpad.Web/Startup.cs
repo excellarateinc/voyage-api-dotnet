@@ -9,7 +9,7 @@ namespace Launchpad.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            Configure(app);   
+            Configure(app);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 Configuration = new HttpConfiguration()
             };
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _roleController.Url = _mockUrlHelper.Object;        
+            _roleController.Url = _mockUrlHelper.Object;
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
                 Name = "Great Role",
                 Id = Guid.NewGuid().ToString()
             };
-            
+
             // Matcher for determining if route params match
             Func<Dictionary<string, object>, bool> routeDictionaryMatcher = routeDictionary =>
             {
@@ -170,7 +170,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             // should have the location header
             message.Headers.Location.Should().Be(url);
 
-            // should have created status code     
+            // should have created status code
             message.StatusCode.Should().Be(HttpStatusCode.Created);
 
             // should have model returned
@@ -211,7 +211,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
 
             _mockRoleService.Setup(_ => _.CreateRoleAsync(model)).Throws<BadRequestException>();
 
-            // ASSERT            
+            // ASSERT
             Assert.ThrowsAsync<BadRequestException>(async () => await _roleController.CreateRole(model));
         }
 

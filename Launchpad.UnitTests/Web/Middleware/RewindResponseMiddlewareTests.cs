@@ -34,8 +34,9 @@ namespace Launchpad.UnitTests.Web.Middleware
             {
                 HttpResponseMessage response = await server.HttpClient.GetAsync("/");
                 var payload = await response.Content.ReadAsStringAsync();
-                
+
                 payload.Should().Be("Hello world using OWIN TestServer");
+
                 // Verify the audit and logger was called
                 Mock.VerifyAll();
             }

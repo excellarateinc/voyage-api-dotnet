@@ -19,7 +19,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
     {
         private readonly UserHelper _userHelper;
 
-        public GetUserByIdTests(HostFixture hostFixture) : base(hostFixture)
+        public GetUserByIdTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
         }
@@ -31,7 +32,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
         [Fact]
         public async void GetUserById_Should_Return_Status_404_When_Not_Found()
         {
-            // Arrange               
+            // Arrange
             var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest, Guid.Empty);
 
             // ACT
@@ -45,7 +46,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
         [Fact]
         public async void GetUserById_Should_Return_Status_200()
         {
-            // Arrange               
+            // Arrange
             await _userHelper.Refresh();
             var user = _userHelper.GetSingleEntity();
             var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest, user.Id);

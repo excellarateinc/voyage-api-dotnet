@@ -7,7 +7,8 @@ namespace Launchpad.Data.Stores
 {
     public class CustomUserStore : UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {
-        public CustomUserStore(DbContext context) : base(context)
+        public CustomUserStore(DbContext context)
+            : base(context)
         {
         }
 

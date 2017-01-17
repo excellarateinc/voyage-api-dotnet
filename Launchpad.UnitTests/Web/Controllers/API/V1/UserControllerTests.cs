@@ -309,7 +309,7 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
         [Fact]
         public async void GetUsers_Should_Call_UserService()
         {
-            // Arrange 
+            // Arrange
             var users = Fixture.CreateMany<UserModel>();
 
             _mockUserService.Setup(_ => _.GetUsers())
@@ -371,8 +371,8 @@ namespace Launchpad.UnitTests.Web.Controllers.API.V1
             var userId = Fixture.Create<string>();
             var model = Fixture.Create<RoleModel>();
             _mockUserService.Setup(_ => _.AssignUserRoleAsync(userId, model)).Throws<BadRequestException>();
-           
-            // assert            
+
+            // assert
             Assert.ThrowsAsync<BadRequestException>(async () => { await _userController.AssignRole(userId, model); });
         }
 

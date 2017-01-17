@@ -20,7 +20,20 @@ namespace Launchpad.Data
         private readonly IIdentityProvider _identityProvider;
         private readonly ILogger _logger;
 
-        #region DbSets
+        public LaunchpadDataContext()
+            : base("LaunchpadDataContext")
+        {
+        }
+
+        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger)
+            : base(connectionString)
+        {
+            _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
+            _logger = logger.ThrowIfNull(nameof(logger));
+
+            // Configure the username factory for the auditing
+            ConfigureUsername(() => _identityProvider.GetUserName());
+        }
 
         public IDbSet<ActivityAudit> ActivityAudits { get; set; }
 
@@ -30,26 +43,32 @@ namespace Launchpad.Data
 
         public IDbSet<UserPhone> UserPhones { get; set; }
 
-        #endregion
-
-        public LaunchpadDataContext() : base("LaunchpadDataContext")
+        public override async Task<int> SaveChangesAsync()
         {
-        }
+            try
+            {
+                return await base.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException validationException)
+            {
+                // Log errors generated from attempting to commit changes
+                var errorMessages = validationException.EntityValidationErrors
+                    .SelectMany(entityError => entityError.ValidationErrors)
+                    .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");
 
-        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger) : base(connectionString)
-        {
-            _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
-            _logger = logger.ThrowIfNull(nameof(logger));
+                _logger
+                    .ForContext<LaunchpadDataContext>()
+                    .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
 
-            // Configure the username factory for the auditing 
-            ConfigureUsername(() => _identityProvider.GetUserName());
+                throw;
+            }
         }
 
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
             // Disable the default validation for users and roles otherwise
-            // Create a new user with a deleted user's email address will 
-            // throw an error.        
+            // Create a new user with a deleted user's email address will
+            // throw an error.
             if (entityEntry != null && entityEntry.State == EntityState.Added)
             {
                 var errors = new List<DbValidationError>();
@@ -67,7 +86,6 @@ namespace Launchpad.Data
             // Disable EF migrations
             Database.SetInitializer<LaunchpadDataContext>(null);
 
-            #region Boilerplate configuration
             // Migrations were not being generated correctly because the order in which the base was executing
             // the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
             // move it here and make it explicit
@@ -103,12 +121,11 @@ namespace Launchpad.Data
                 .HasMaxLength(256)
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("RoleNameIndex") { IsUnique = true }));
             role.HasMany(r => r.Users).WithRequired().HasForeignKey(ur => ur.RoleId);
-            #endregion
 
-            // Register the other models
+            // Register the other models.
             modelBuilder.Configurations.AddFromAssembly(typeof(LaunchpadDataContext).Assembly);
 
-            // Configure the namespace for the audit 
+            // Configure the namespace for the audit.
             modelBuilder.Entity<AuditLog>()
                 .ToTable("AuditLog");
 
@@ -117,27 +134,6 @@ namespace Launchpad.Data
 
             modelBuilder.Entity<LogMetadata>()
                 .ToTable("LogMetadata");
-        }
-
-        public override async Task<int> SaveChangesAsync()
-        {
-            try
-            {
-                return await base.SaveChangesAsync();
-            }
-            catch (DbEntityValidationException validationException)
-            {
-                // Log errors generated from attempting to commit changes
-                var errorMessages = validationException.EntityValidationErrors
-                    .SelectMany(entityError => entityError.ValidationErrors)
-                    .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");
-
-                _logger
-                    .ForContext<LaunchpadDataContext>()
-                    .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
-
-                throw;
-            }
         }
     }
 }

@@ -31,11 +31,11 @@ namespace Launchpad.Services.Role
         /// <param name="id">Role ID</param>
         /// <returns>EnttiyResult</returns>
         public RoleModel GetRoleById(string id)
-        {            
+        {
             var role = _roleManager.FindById(id);
 
             if (role == null)
-                throw new NotFoundException($"Could not locate entity with Id {id}");                
+                throw new NotFoundException($"Could not locate entity with Id {id}");
 
             return _mapper.Map<RoleModel>(role);
         }
@@ -57,7 +57,7 @@ namespace Launchpad.Services.Role
         }
 
         public async Task<IdentityResult> RemoveRoleAsync(string roleId)
-        {            
+        {
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity == null)
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
@@ -94,7 +94,7 @@ namespace Launchpad.Services.Role
         }
 
         public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
-        {            
+        {
             var claims = _roleClaimRepository.GetAll()
                 .Where(_ => _.RoleId == id)
                 .ToList();

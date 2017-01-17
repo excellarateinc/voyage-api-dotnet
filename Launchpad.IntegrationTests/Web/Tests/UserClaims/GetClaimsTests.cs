@@ -19,7 +19,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserClaims
     {
         private readonly UserHelper _userHelper;
 
-        public GetClaimsTests(HostFixture hostFixture) : base(hostFixture)
+        public GetClaimsTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
         }
@@ -31,7 +32,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserClaims
         [Fact]
         public async void GetUserClaims_Should_Return_Status_200()
         {
-            // Arrange               
+            // Arrange
             await _userHelper.Refresh();
             var user = _userHelper.GetAllEntities().First(item => "admin@admin.com".Equals(item.Username));
             var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest, user.Id);

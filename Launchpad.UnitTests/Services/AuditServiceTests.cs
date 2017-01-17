@@ -80,4 +80,4 @@ namespace Launchpad.UnitTests.Services
                 .Be("mapper");
         }
     }
-} 
+}

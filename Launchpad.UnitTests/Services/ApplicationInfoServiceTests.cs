@@ -9,21 +9,21 @@ using Moq;
 using Xunit;
 
 namespace Launchpad.UnitTests.Services
-{    
+{
     public class ApplicationInfoServiceTests : BaseUnitTest
     {
         private readonly ApplicationInfoService _applicationInfoService;
-        
+
         public ApplicationInfoServiceTests()
         {
             const string fileName = "MyFile";
-            var _fileReaderService = new Mock<IFileReaderService>();
+            var fileReaderService = new Mock<IFileReaderService>();
 
-            _fileReaderService.Setup(_ =>
+            fileReaderService.Setup(_ =>
                 _.ReadAllText(It.IsAny<string>()))
                 .Returns("{ 'build': { 'buildNumber': 'some_number'}}");
 
-            _applicationInfoService = new ApplicationInfoService(_fileReaderService.Object, fileName);
+            _applicationInfoService = new ApplicationInfoService(fileReaderService.Object, fileName);
         }
 
         [Fact]

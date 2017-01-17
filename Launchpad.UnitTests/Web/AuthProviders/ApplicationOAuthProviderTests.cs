@@ -43,7 +43,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(PathString);
             _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
         }
-        
+
         [Fact]
         public async void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
         {
@@ -57,7 +57,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
               .Returns(mockRequest.Object);
 
             OAuthMatchEndpointContext ctx = new OAuthMatchEndpointContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions());
-                
+
             await _provider.MatchEndpoint(ctx);
 
             ctx.IsTokenEndpoint.Should().BeTrue();
@@ -182,7 +182,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             var user = "bob@bob.com";
             var password = "giraffe";
             OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
-           
+
             // Setup the request
             var mockRequest = Mock.Create<IOwinRequest>();
 
@@ -195,7 +195,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             // Setup the login orchestrator
             _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
                 .ReturnsAsync(false);
-                         
+
             // ACT
             await _provider.GrantResourceOwnerCredentials(oAuthContext);
 
@@ -212,7 +212,6 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
 
             // Identity fake
-
             var identity = new ClaimsIdentity();
 
             // Setup login
@@ -221,9 +220,8 @@ namespace Launchpad.UnitTests.Web.AuthProviders
                 .ReturnsAsync(true);
 
             // Setup the user service
-
             var mockUserService = Mock.Create<IUserService>();
-         
+
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, OAuthDefaults.AuthenticationType))
                 .ReturnsAsync(identity);
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, CookieAuthenticationDefaults.AuthenticationType))
@@ -243,15 +241,15 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             var mockOwinRequest = Mock.Create<IOwinRequest>();
             mockOwinRequest.Setup(_ => _.Path)
                 .Returns(new PathString(PathString));
-          
+
             mockOwinRequest.Setup(_ => _.Context).Returns(_mockOwinContext.Object);
-            _mockOwinContext.Setup(_ => _.Request).Returns(mockOwinRequest.Object);    
+            _mockOwinContext.Setup(_ => _.Request).Returns(mockOwinRequest.Object);
             _mockOwinContext.Setup(_ => _.Get<ILifetimeScope>(It.IsAny<string>()))
                 .Returns(container);
 
             // ACT
-            await _provider.GrantResourceOwnerCredentials(oAuthContext);        
-          
+            await _provider.GrantResourceOwnerCredentials(oAuthContext);
+
             // ASSERT
             Mock.VerifyAll();
         }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 namespace Launchpad.Web.Middleware.Processors
 {
     /// <summary>
-    /// Basic response processor 
+    /// Basic response processor
     /// </summary>
     public abstract class ResponseProcessor
     {
         public abstract bool ShouldProcess(IOwinResponse response);
 
         public virtual async Task<string> GetResponseStringAsync(IOwinResponse response)
-        {            
+        {
             if (!response.Body.CanSeek)
                 throw new Exception($"The body does not support seek. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
 
@@ -29,7 +29,7 @@ namespace Launchpad.Web.Middleware.Processors
             responseStream.Seek(0, SeekOrigin.Begin);
             var reader = new StreamReader(responseStream);
             string body = await reader.ReadToEndAsync();
-            return body;            
+            return body;
         }
     }
 }

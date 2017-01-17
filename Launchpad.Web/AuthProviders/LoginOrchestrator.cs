@@ -12,30 +12,30 @@ namespace Launchpad.Web.AuthProviders
         /**
         * @api {post} /v1/login Login a user
         * @apiVersion 0.1.0
-        * @apiName Login 
+        * @apiName Login
         * @apiGroup Account
-        * 
+        *
         * @apiParam {String} grant_type=password Authentication method
         * @apiParam {String} password User's password
         * @apiParam {String} username User's login name
-        * 
-        * @apiHeader {String} Content-Type=application/x-www-form-urlencoded Expected content type of the params 
-        * 
-        * 
+        *
+        * @apiHeader {String} Content-Type=application/x-www-form-urlencoded Expected content type of the params
+        *
+        *
         * @apiHeaderExample Header-Example:
         *     {
         *       "Content-Type": "application/x-www-form-urlencoded"
         *     }
-        * 
+        *
         * @apiPermission none
-        * 
+        *
         * @apiSuccess {String} access_token Authentication token for secure web service requests
         * @apiSuccess {String} token_type Type of the authentication token
         * @apiSuccess {Number} expires_in Time to live for the token
         * @apiSuccess {String} userName Name of the authenticated user
         * @apiSuccess {Date} .issued Date the token was issued
-        * @apiSuccess {Date} .expires Date the token expires 
-        * 
+        * @apiSuccess {Date} .expires Date the token expires
+        *
         * @apiSuccessExample Success-Response:
         *      HTTP/1.1 200 OK
         *      {
@@ -46,8 +46,8 @@ namespace Launchpad.Web.AuthProviders
         *           ".issued": "Thu, 03 Nov 2016 14:38:29 GMT",
         *           ".expires": "Thu, 17 Nov 2016 14:38:29 GMT"
         *      }
-        * 
-        * @apiUse BadRequestError  
+        *
+        * @apiUse BadRequestError
         */
         public virtual string TokenPath => "/api/v1/login";
 
@@ -61,7 +61,7 @@ namespace Launchpad.Web.AuthProviders
                     !string.IsNullOrEmpty(parameters[grantType]) && // Grant type exists
                     !string.IsNullOrEmpty(parameters[username]) && // username exists
                    !string.IsNullOrEmpty(parameters[password]) && // password exissts
-                    parameters[password].Length <= 250 &&  // password length is not too long
+                    parameters[password].Length <= 250 && // password length is not too long
                     parameters[username].Length <= 50 && // username length is not too long
                     "password".Equals(parameters[grantType]);
         }

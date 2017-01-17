@@ -19,7 +19,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Statuses
 
         public override string PathUnderTest => "/api/v1/statuses";
 
-        public GetStatusesTests(HostFixture hostFixture) : base(hostFixture)
+        public GetStatusesTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
         }
 

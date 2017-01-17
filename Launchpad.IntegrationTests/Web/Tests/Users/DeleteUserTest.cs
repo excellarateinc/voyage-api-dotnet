@@ -16,7 +16,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
     {
         private readonly UserHelper _userHelper;
 
-        public DeleteUserTest(HostFixture hostFixture) : base(hostFixture)
+        public DeleteUserTest(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
         }

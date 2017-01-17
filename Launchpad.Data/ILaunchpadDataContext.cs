@@ -15,6 +15,6 @@ namespace Launchpad.Data
 
         IDbSet<UserPhone> UserPhones { get; set; }
 
-        int SaveChanges();       
+        int SaveChanges();
     }
 }
