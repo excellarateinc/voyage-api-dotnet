@@ -110,17 +110,15 @@ Data auditing is implemented using the [Tracker Enabled DbContext](https://githu
 nuget package. This package includes a custom DbContext called TrackerIdentityContext. The LaunchpadDataContext inherits from this class. 
 When save changes is called on the context, the ChangeTracker is used to create audit records. 
 
-Each entity must be configured for auditing. In the application, this is done by creating an IAuditConfiguration. There should be a 
-configuration per entity that should be audited. There is a base class called BaseAuditConfiguration which by default will track
-all properties on the entity. Overriding Configure allows a user to ignore certain properties on the entity. The configurations will be invoked from the DataModule at application start.
+Each entity must be configured for auditing. In the application, this is done by adding a row to the BaseAuditConfiguration.cs file. There should be a 
+row per entity that should be audited. The configurations will be invoked from the DataModule at application start.
 
 ```
-public class ApplicationUserAuditConfiguration : BaseAuditConfiguration<ApplicationUser>
+public static class BaseAuditConfiguration
 {
         public override void Configure()
         {
-            EntityTracker
-                .TrackAllProperties<ApplicationUser>()
+            EntityTracker.TrackAllProperties<ApplicationUser>()
                 .Except(_ => _.PasswordHash);
         }
 }
@@ -297,45 +295,21 @@ A pattern has been defined to standardize the response of services. Services whi
 
 To cutdown on repeated logic, a base class has been created to handle the selection of the HttpStatusCode for common scenarios. The implementor is free to bypass these base methods as needed.
 
-### BaseApiController
-The BaseApiController is an abstract class that provides several helper methods for determining which IHttpActionResult should be returned to the client based on an EntityResult. By inheriting the class, the derived class will have access to the following methods:
-
-| Method | Description |
-|:----|:----|
-|protected IHttpActionResult CreatedEntityAt`<TModel`>(string routeName, Func`<object`> routeValue, EntityResult`<TModel`> entityResult)|Creates a 201 Response with the entityResult.Model as the body and the location header set to the supplied route. |
-|protected IHttpActionResult CheckErrorResult(EntityResult entityResult)|Check if the EntityResult contains an error. If there is an error, it will create a response with a 404 if the IsEntityNotFound flag is set. Otherwise, it will return a 400. In both cases, any entityResult.Errors will be added to the ModelState|
-| protected IHttpActionResult CreateModelResult<TModel>(EntityResult<TModel> entityResult)| Creates a 200 response with the entityResult.Model as the body|
-|protected IHttpActionResult NoContent(EntityResult entityResult)| Creates a 204 response|
-
-Note: If the EntityResult contains an error, the appropriate error code will be returned instead.
-
-Generally speaking, the following HttpMethods map to the following base methods.
-
-| HttpMethod | Base Method | Description |
-|:----|:----|:----|
-|HttpGet|CreateModelResult|GETs should return a payload. When the GET specifies an ID and it is not found, the result will have the IsEntityNotFound flag set. The base method will then generate the 404.|
-|HttpPut|CreateModelResult|Puts will operate on a specific instance of an entity and return a model|
-|HttpPost|CreatedEntityAt|Posts include a Location header indicating the URL of the newly created resource|
-|HttpDelete| NoContent| A delete does not have a response body|
-
-Providing a common base impelementation allows the application to standardize the interpretation of EntityResults as well as standardize the responses that are returned to the client.
-
 ### Implementation
-The following steps provide guidance around adding a new service
+The following steps provide guidance around adding a new controller.
 
 1. Add a new class file to Launchpad.Web in the correct version folder
    1. The class should end in the suffix Controller
-2. Inherit from BaseApiController
-3. Add class and method attributes
-4. Add dependencies on services
-5. Invoke the service and pass the result to the appropriate base method to generate the correct IHttpActionResult
+2. Add class and method attributes
+3. Add dependencies on services
+4. Invoke the service and pass the result to the appropriate Api Controller method.
 
 Sample Method
 ```
         public IHttpActionResult GetRoleById(string roleId)
         {
-            var entityResult = _roleService.GetRoleById(roleId);
-            return CreateModelResult(entityResult);
+            var result = _roleService.GetRoleById(roleId);
+            return Ok(result);
         }
 ```
 :arrow_up: [Back to Top](#table-of-contents)
@@ -343,61 +317,27 @@ Sample Method
 ## Creating a Service
 Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as dependencies in ApiControllers as well as other services. A pattern has been established for the return value of services. The goal is to standardize the expected shape of the result of a method call on a service. This will help form a consistent model of how the service layer as a whole operates regardless of underlying business logic. 
 
-### EntityResult and EntityResult`<TModel>`
-When a service acts upon an entity within the database, it should use an EntityResult as the method return type. This class encapsulates both the resulting model as well as whether or not the method was successful. This allows common logic to be written to consume any EntityResult - or in otherwords this allows the controller to make a service call and then call common logic to map the result into a response.
-
-The class draws upon the IdentityResult that is found in the ASP.Net Identity framework. The properties of the class are explained below.
-
-| Property  | Description |
-|:----|:----|
-|TModel|The result of the operation. Note: This is only in the generic version.|
-|Errors|List of errors that occured during the operation. These errors should be added using the WithErrorCodeMessage to ensure correct response formatting|
-|Succeeded|Boolean indicating if the operation was a success|
-|IsEntityNotFound|Boolean indicating if the operation failed due an entity not being found|
-
-The class has the following methods:
-
-| Method | Description |
-|:----|:----|
-|public EntityResult WithErrorCodeMessage(string code, string message)|Helper method for adding error messages. These errors will be structured to ensure correct response formatting.|
-| public EntityResult WithEntityNotFound(object id)|Helper method for adding an error message for not found entity. This method help ensures a standard format for any not found entities|
-
-Note: The WithErrorCodeMessage has a similar signature to the extension used for adding error messages for validation rules. 
-
-### EntityResultService
-The EntityResultService is an abstract class that services can inherit to provide access to several methods that help ensure consistent creation of EntityResults. 
-
-| Method | Description |
-|:----|:----|
-|protected EntityResult NotFound(object id)| Generates a result that represents a not found entity |
-|protected EntityResult`<TModel`> NotFound`<TModel`>(object id)| Generates a result that represents a not found entity|
-|protected EntityResult`<TModel`> Success`<TModel`>(TModel model)| Genereates a result that represents a succssful operation with a model output|
-|protected EntityResult<TModel> FromIdentityResult<TModel>(IdentityResult result, TModel model)| Converts an IdentityResult to a EntityResult|
-|protected EntityResult FromIdentityResult(IdentityResult result)| Converts an IdentityResult to an EntityResult|
-
 ### Implementation
 The following steps provide guidance around adding a new service
 
 1. Add a new class to Launchpad.Services
   1. This file should end in the suffix Service to indicate it is a service
-2. If the service handles operations on an entity (User, Role, ect.) inherit from EntityResultService
-3. Add a new interface to Launchpad.Services
+2. Add a new interface to Launchpad.Services
   1. This interface will be the contract that the aformentioned class implements. 
-  2. Define the methods for the service. If the method operates on an entity, it should have a result type of EntityResult
-4. Implement in interface in the class
-5. Utilize the base methods to create the EntityResult 
+  2. Define the methods for the service.
+3. Implement in interface in the class
+4. If an exceptional case happens (item isn't found, user passes bad values into the method, etc) throw the appropriate API Exception.
 
 Sample Method
 ```
-       public EntityResult<RoleModel> GetRoleById(string id)
-       {
-            //Attempt to find the role by id
+       public RoleModel GetRoleById(string id)
+       {            
             var role = _roleManager.FindById(id);
 
-            return role == null ?
-                NotFound<RoleModel>(id) :
-                Success(_mapper.Map<RoleModel>(role));
+            if (role == null)
+                throw new NotFoundException($"Could not locate entity with Id {id}");
 
+            return _mapper.Map<RoleModel>(role);
         }
 ```
 In the above example, the method will return an EntityResult containing the model if the role is found. Otherwise, it will generate a failure result indicating that the requested role was not found.
