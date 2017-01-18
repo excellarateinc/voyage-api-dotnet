@@ -10,6 +10,7 @@ Instructional recipies for how to do something within the codebase.
 * [Consuming API Services](#consuming-api-services)
 * [Creating a Controller](#creating-a-controller)
 * [Creating a Service](#creating-a-service)
+* [API Exceptions](#api-exceptions)
 * [HTTP Request - Validate Request Data](#http-request---validate-request-data)
 
 
@@ -335,10 +336,64 @@ Sample Method
             return _mapper.Map<RoleModel>(role);
         }
 ```
-In the above example, the method will return an EntityResult containing the model if the role is found. Otherwise, it will generate a failure result indicating that the requested role was not found.
+In the above example, the method will return the model if the role is found. Otherwise, it will throw a NotFoundException, which will generate a failure result indicating that the requested role was not found.
 
 :arrow_up: [Back to Top](#table-of-contents)
 
+## API Exceptions
+In order to maintain consistency around error messaging in the API, there are a set of exception classes that make generating a standard response object to send to the client simple. This approach has multiple benefits including:
+
+1. Consistent, standardized error messaging for the client to consume.
+2. Error cases that happen deep in the service layer are easy to handle and bubble up to the top of the stack.
+3. The business layer does not know about web concerns (ex: http status codes).
+
+These exceptions extend the ApiException class. There is an exception filter in the .NET pipeline that intercepts any exception thrown with this base type and creates an http response with the correct error code and message.
+
+### How to Use
+The following steps provide guidance around using the API Exceptions.
+
+1. Create a service method to perform some action.
+2. When the exceptional case occurs, check for it (example: role comes back null)
+3. Throw the appropriate exception. In this case, NotFoundException makes sense.
+
+Sample Method
+```
+       public RoleModel GetRoleById(string id)
+       {            
+            var role = _roleManager.FindById(id);
+            
+            // Role wasn't found, throw exception to let the client know.
+            if (role == null)
+                throw new NotFoundException($"Could not locate entity with Id {id}");            
+        }
+```
+
+### Creating New API Exceptions
+The most common exceptions live in the "Exceptions" folder in Voyage.Core. In the case you need to create a new one to suit your needs, do the following.
+
+1. Create a new class in the "Exceptions" folder with the name ending in "Exception".
+2. Extend the ApiException class.
+3. Extend the appropriate ApiException constructors.
+
+This exception will now be able to be thrown anywhere in the application.
+
+Sample Exception
+```
+       public class UnauthorizedException : ApiException
+       {
+           public UnauthorizedException()
+               : base(HttpStatusCode.Unauthorized)
+           {
+           }
+
+           public UnauthorizedException(string message)
+               : base(HttpStatusCode.Unauthorized, Constants.ErrorCodes.Unauthorized, message)
+           {
+           }
+       }
+```
+
+:arrow_up: [Back to Top](#table-of-contents)
 
 ## HTTP Request - Validate Request Data
 [FluentValidation](https://github.com/JeremySkinner/FluentValidation) is used to perform HTTP Request input validations.
