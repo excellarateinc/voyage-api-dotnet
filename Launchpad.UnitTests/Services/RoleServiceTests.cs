@@ -95,7 +95,7 @@ namespace Launchpad.UnitTests.Services
             int id = 1;
 
             _mockRepository.Setup(_ => _.Get(id))
-                .Returns((RoleClaim)null);                        
+                .Returns((RoleClaim)null);
 
             Assert.Throws<NotFoundException>(() => { _roleService.GetClaimById(roleId, id); });
             Mock.VerifyAll();
@@ -128,7 +128,7 @@ namespace Launchpad.UnitTests.Services
             var id = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(id))
-               .ReturnsAsync(null);            
+               .ReturnsAsync(null);
 
             // assert
             Assert.Throws<NotFoundException>(() => { _roleService.GetRoleById(id); });
@@ -163,7 +163,7 @@ namespace Launchpad.UnitTests.Services
 
             _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
                .ReturnsAsync(null);
-            
+
             Assert.Throws<NotFoundException>(() => { _roleService.GetRoleByName(name); });
         }
 
@@ -211,7 +211,7 @@ namespace Launchpad.UnitTests.Services
             var roleId = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(roleId))
-                .ReturnsAsync(null);             
+                .ReturnsAsync(null);
 
             Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.RemoveRoleAsync(roleId); });
             Mock.VerifyAll();
@@ -266,10 +266,10 @@ namespace Launchpad.UnitTests.Services
             var claim = Fixture.Create<ClaimModel>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
-              .ReturnsAsync(null);            
+              .ReturnsAsync(null);
 
             Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.AddClaimAsync(model.Id, claim); });
-            Mock.VerifyAll();                
+            Mock.VerifyAll();
         }
 
         [Fact]
@@ -334,7 +334,7 @@ namespace Launchpad.UnitTests.Services
         [Fact]
         public void GetRoles_Should_Return_All_Roles()
         {
-            var roles = new[] 
+            var roles = new[]
             {
                 new ApplicationRole { Name = "Role1" },
                 new ApplicationRole { Name = "Role2" }

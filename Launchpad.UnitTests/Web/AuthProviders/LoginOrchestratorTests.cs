@@ -37,11 +37,11 @@ namespace Launchpad.UnitTests.Web.AuthProviders
 
         [Fact]
         public async void ValidateCredential_Should_ResolveUserService_And_Call_IsValidCredential()
-        { 
+        {
             // Setup the user service
             var mockUserService = Mock.Create<IUserService>();
             mockUserService.Setup(_ => _.IsValidCredential("userName", "password"))
-                .ReturnsAsync(true);            
+                .ReturnsAsync(true);
 
             // Skip mocking out autofac, just build the container to use
             var containerBuilder = new ContainerBuilder();
@@ -49,17 +49,17 @@ namespace Launchpad.UnitTests.Web.AuthProviders
 
             var container = containerBuilder.Build();
 
-            _mockOwinContext.Setup(_ => 
+            _mockOwinContext.Setup(_ =>
                 _.Get<ILifetimeScope>(It.IsAny<string>()))
                .Returns(container);
 
             var ctx = new OAuthGrantResourceOwnerCredentialsContext(
-                _mockOwinContext.Object, 
-                new OAuthAuthorizationServerOptions(), 
-                "clientId", 
-                "userName", 
-                "password", 
-                new string[0]);            
+                _mockOwinContext.Object,
+                new OAuthAuthorizationServerOptions(),
+                "clientId",
+                "userName",
+                "password",
+                new string[0]);
 
             var result = await _orchestrator.ValidateCredential(ctx);
 
@@ -156,7 +156,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
         {
             var pairs = new Dictionary<string, string[]>
             {
-                { "grant_type", new[] { "" } },
+                { "grant_type", new[] { string.Empty } },
                 { "username", new[] { "username" } },
                 { "password", new[] { "password" } }
             };
@@ -174,7 +174,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             var pairs = new Dictionary<string, string[]>
             {
                 { "grant_type", new[] { "grant_type" } },
-                { "username", new[] { "" } },
+                { "username", new[] { string.Empty } },
                 { "password", new[] { "password" } }
             };
 
@@ -192,7 +192,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
             {
                 { "grant_type", new[] { "grant_type" } },
                 { "username", new[] { "username" } },
-                { "password", new[] { "" } }
+                { "password", new[] { string.Empty } }
             };
 
             var readableCollection = new ReadableStringCollection(pairs);

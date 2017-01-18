@@ -13,7 +13,7 @@ namespace Launchpad.Models.Entities
         [Required]
         [ForeignKey("Role")]
         public string RoleId { get; set; }
-        
+
         public virtual ApplicationRole Role { get; set; }
 
         public string ClaimType { get; set; }

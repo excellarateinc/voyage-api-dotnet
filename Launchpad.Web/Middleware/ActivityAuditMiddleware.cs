@@ -7,13 +7,14 @@ using Launchpad.Web.Middleware.Processors;
 using Launchpad.Services.Audit;
 
 namespace Launchpad.Web.Middleware
-{    
+{
     public class ActivityAuditMiddleware : OwinMiddleware
-    {      
+    {
         private readonly IAuditService _auditService;
         private readonly ErrorResponseProcessor _processor;
 
-        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor) : base(next)
+        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor)
+            : base(next)
         {
             _processor = processor.ThrowIfNull(nameof(processor));
             _auditService = auditService.ThrowIfNull(nameof(auditService));
@@ -21,7 +22,7 @@ namespace Launchpad.Web.Middleware
 
         public override async Task Invoke(IOwinContext context)
         {
-            // Create a request id - depending on deployment, the 
+            // Create a request id - depending on deployment, the
             // owin variable may or may not be initialized
             var requestId = Guid.NewGuid().ToString();
 
@@ -34,6 +35,7 @@ namespace Launchpad.Web.Middleware
 
             // Record the response
             var responseAudit = context.ToAuditModel(requestId);
+
             // Check if the response is an error that should be processed
             if (_processor.ShouldProcess(context.Response))
             {

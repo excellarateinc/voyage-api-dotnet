@@ -158,7 +158,7 @@ namespace Launchpad.Services.User
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             if (!_userManager.IsInRole(userId, roleModel.Name))
-                throw new BadRequestException(Core.Constants.ErrorCodes.Unauthorized, $"User was not in role with Id {roleId}");
+                throw new UnauthorizedException($"User not authorized for role {roleModel.Name}");
 
             return roleModel;
         }

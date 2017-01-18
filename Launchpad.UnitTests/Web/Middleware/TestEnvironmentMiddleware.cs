@@ -7,13 +7,14 @@ namespace Launchpad.UnitTests.Web.Middleware
 {
     /// <summary>
     /// Request ID is not being populated into the environment dictionary. For these tests, add this fake
-    /// middleware in to compensate. 
+    /// middleware in to compensate.
     /// </summary>
     public class TestEnvironmentMiddleware : OwinMiddleware
     {
         private readonly Dictionary<string, object> _env;
 
-        public TestEnvironmentMiddleware(OwinMiddleware next, Dictionary<string, object> env) : base(next)
+        public TestEnvironmentMiddleware(OwinMiddleware next, Dictionary<string, object> env)
+            : base(next)
         {
             _env = env;
         }

@@ -10,7 +10,8 @@ namespace Launchpad.IntegrationTests.Web.Assertions
     public class BadRequestCollectionAssertions :
        SelfReferencingCollectionAssertions<ResponseErrorModel, BadRequestCollectionAssertions>
     {
-        public BadRequestCollectionAssertions(IEnumerable<ResponseErrorModel> actualValue) : base(actualValue)
+        public BadRequestCollectionAssertions(IEnumerable<ResponseErrorModel> actualValue)
+            : base(actualValue)
         {
         }
 

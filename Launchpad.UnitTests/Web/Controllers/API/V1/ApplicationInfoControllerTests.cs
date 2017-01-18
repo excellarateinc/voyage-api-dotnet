@@ -17,7 +17,7 @@ using Xunit;
 using Constants = Launchpad.Web.Constants;
 
 namespace Launchpad.UnitTests.Web.Controllers.API.V1
-{    
+{
     public class ApplicationInfoControllerTests : BaseUnitTest
     {
         private readonly ApplicationInfoController _controller;

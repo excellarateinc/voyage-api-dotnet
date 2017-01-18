@@ -64,7 +64,7 @@ namespace Launchpad.UnitTests.Services
                 .ReturnsAsync(null);
 
             var entityResult = await _userService.CreateUserAsync(userModel);
-            
+
             entityResult.Username.Should().Be(userModel.Username);
         }
 
@@ -73,7 +73,7 @@ namespace Launchpad.UnitTests.Services
         {
             var id = Fixture.Create<string>();
             _mockStore.Setup(_ => _.FindByIdAsync(id))
-                .ReturnsAsync(null);            
+                .ReturnsAsync(null);
 
             // Assert
             Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.DeleteUserAsync(id); });
@@ -122,7 +122,7 @@ namespace Launchpad.UnitTests.Services
                 LastName = "Last1"
             };
             _mockStore.Setup(_ => _.FindByIdAsync(id))
-                .ReturnsAsync(null);            
+                .ReturnsAsync(null);
 
             Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.UpdateUserAsync(id, userModel); });
         }
@@ -303,7 +303,7 @@ namespace Launchpad.UnitTests.Services
             entityResult.Phones.First().ShouldBeEquivalentTo(phone);
         }
 
-        [Fact]        
+        [Fact]
         public void GetUser_Should_Return_Not_Found_When_User_Is_Deleted()
         {
             var id = Fixture.Create<string>();
@@ -384,7 +384,7 @@ namespace Launchpad.UnitTests.Services
             // Arrange
             var id = Fixture.Create<string>();
             _mockStore.Setup(_ => _.FindByIdAsync(id))
-                .ReturnsAsync(null);                        
+                .ReturnsAsync(null);
 
             // Assert
             Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.GetUserClaimsAsync(id); });
@@ -551,7 +551,7 @@ namespace Launchpad.UnitTests.Services
             entityResult.ShouldBeEquivalentTo(model);
         }
 
-        [Fact]        
+        [Fact]
         public void GetUserRoleById_Should_Return_Failed_Result_When_User_Not_Found()
         {
             var userId = Fixture.Create<string>();
@@ -563,7 +563,7 @@ namespace Launchpad.UnitTests.Services
         }
 
         [Fact]
-        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager_And_Return_Bad_Request()
+        public void GetUserRoleById_Should_Call_Role_Service_And_UserManager_And_Return_Unauthorized()
         {
             var userId = Fixture.Create<string>();
             var roleId = Fixture.Create<string>();
@@ -582,9 +582,9 @@ namespace Launchpad.UnitTests.Services
 
             _mockStore.As<IUserRoleStore<ApplicationUser>>()
                 .Setup(_ => _.IsInRoleAsync(appUser, model.Name))
-                .ReturnsAsync(false);            
+                .ReturnsAsync(false);
 
-            Assert.Throws<BadRequestException>(() => { _userService.GetUserRoleById(userId, roleId); });
+            Assert.Throws<UnauthorizedException>(() => { _userService.GetUserRoleById(userId, roleId); });
         }
 
         [Fact]
@@ -795,7 +795,7 @@ namespace Launchpad.UnitTests.Services
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
-                .Create();            
+                .Create();
 
             var applicationUser = new ApplicationUser();
 

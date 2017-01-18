@@ -17,7 +17,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
     [Collection(HostCollectionFixture.Name)]
     public class PostUserTests : ApiTest
     {
-        public PostUserTests(HostFixture hostFixture) : base(hostFixture)
+        public PostUserTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
         }
 

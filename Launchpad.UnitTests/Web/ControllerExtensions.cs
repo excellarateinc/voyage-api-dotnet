@@ -13,9 +13,9 @@ namespace Launchpad.UnitTests.Web
     public static class ControllerExtensions
     {
         public static void AssertClaim<TType>(
-            this TType controller, 
-            Expression<Action<TType>> expression, 
-            string claimValue, 
+            this TType controller,
+            Expression<Action<TType>> expression,
+            string claimValue,
             string claimType = Constants.LssClaims.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
@@ -35,13 +35,13 @@ namespace Launchpad.UnitTests.Web
 
         public static void AssertAttribute<TType, TAttribute>(
             this TType controller,
-            Expression<Action<TType>> expression) 
+            Expression<Action<TType>> expression)
             where TType : ApiController
             where TAttribute : Attribute
         {
             ReflectionHelper.GetMethod(expression)
                .Should()
                .BeDecoratedWith<TAttribute>();
-        }  
+        }
     }
 }

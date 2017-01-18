@@ -20,22 +20,18 @@ namespace Launchpad.Web
 
         public static void Configure(IAppBuilder app)
         {
-            #region Container and Route Configuration
             var httpConfig = new HttpConfiguration();
 
             // Build the container
             ContainerConfig.Register(httpConfig);
 
-            // Configure API 
+            // Configure API
             WebApiConfig.Register(httpConfig);
 
             // configure FluentValidation model validator provider
             FluentValidationModelValidatorProvider.Configure(httpConfig);
 
-            #endregion
-
-            #region Arrange Pipeline
-            // 1. Use the autofac scope for owin 
+            // 1. Use the autofac scope for owin
             app.UseAutofacLifetimeScopeInjector(ContainerConfig.Container);
 
             // 2. Allow cors requests
@@ -57,6 +53,7 @@ namespace Launchpad.Web
 
                 // If the config is wrong, let the application crash
                 AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"])),
+
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
             };
@@ -66,8 +63,6 @@ namespace Launchpad.Web
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);
-
-            #endregion 
         }
     }
 }

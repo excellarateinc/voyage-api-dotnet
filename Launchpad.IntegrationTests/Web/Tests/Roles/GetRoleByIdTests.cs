@@ -23,7 +23,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
 
         private readonly RoleHelper _roleHelper;
 
-        public GetRoleByIdTests(HostFixture hostFixture) : base(hostFixture)
+        public GetRoleByIdTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _roleHelper = new RoleHelper();
         }
@@ -43,7 +44,7 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
         [Fact]
         public async void GetRoleById_Should_Return_Status_200()
         {
-            // Arrange               
+            // Arrange
             await _roleHelper.Refresh();
             var roleId = _roleHelper.GetSingleEntity().Id;
             var httpRequestMessage = CreateSecureRequest(Method, PathUnderTest, roleId);

@@ -55,7 +55,7 @@ namespace Launchpad.Core
                 // This will unwire the relationship in the context
                 destination.Remove(_);
 
-                // This will actually delete the object 
+                // This will actually delete the object
                 deleteAction(_);
             });
         }

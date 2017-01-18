@@ -12,7 +12,7 @@ namespace Launchpad.IntegrationTests.Data
     {
         [Fact]
         public void GetAll_Should_Return_RoleClaims()
-        {  
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -23,12 +23,12 @@ namespace Launchpad.IntegrationTests.Data
                 var results = repository.GetAll();
 
                 results.Should().NotBeNullOrEmpty();
-            }            
+            }
         }
 
         [Fact]
         public void GetByRoleAndClaim_Should_Return_Claim()
-        {           
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -39,12 +39,12 @@ namespace Launchpad.IntegrationTests.Data
                 var fetchedClaim = repository.GetByRoleAndClaim(role.Name, claim.ClaimType, claim.ClaimValue);
 
                 fetchedClaim.Should().NotBeNull();
-            }            
+            }
         }
 
         [Fact]
         public void GetClaimsByRole_Should_Return_Claims()
-        {            
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -54,7 +54,7 @@ namespace Launchpad.IntegrationTests.Data
 
                 var claims = repository.GetClaimsByRole(role.Name);
                 claims.Should().NotBeNullOrEmpty();
-            }            
+            }
         }
 
         [Fact]
@@ -70,12 +70,12 @@ namespace Launchpad.IntegrationTests.Data
                 var result = repository.Get(claim.Id);
 
                 result.Should().NotBeNull();
-            }            
+            }
         }
 
         [Fact]
         public void Add_Should_Create_Claim()
-        {            
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -90,16 +90,16 @@ namespace Launchpad.IntegrationTests.Data
                 };
 
                 repository.Add(claim);
-                    
+
                 var result = repository.Get(claim.Id);
 
                 result.Should().NotBeNull();
-            }            
+            }
         }
 
         [Fact]
         public void Update_Should_Modify_Claim()
-        {           
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -116,12 +116,12 @@ namespace Launchpad.IntegrationTests.Data
 
                 result.Should().NotBeNull();
                 result.ClaimValue.Should().Be("Friday");
-            }            
+            }
         }
 
         [Fact]
         public void Delete_Should_Remove_Claim()
-        {            
+        {
             using (var ctx = new LaunchpadDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
@@ -129,13 +129,13 @@ namespace Launchpad.IntegrationTests.Data
                 var role = ctx.AddRole();
 
                 var claim = ctx.AddRoleClaim(role);
-                   
+
                 repository.Delete(claim.Id);
 
                 var result = repository.Get(claim.Id);
 
                 result.Should().BeNull();
-            }            
+            }
         }
     }
 }

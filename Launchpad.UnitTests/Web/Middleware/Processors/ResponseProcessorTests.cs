@@ -25,7 +25,7 @@ namespace Launchpad.UnitTests.Web.Middleware.Processors
 
             public override bool ShouldProcess(IOwinResponse response)
             {
-                return Valid;   
+                return Valid;
             }
         }
 

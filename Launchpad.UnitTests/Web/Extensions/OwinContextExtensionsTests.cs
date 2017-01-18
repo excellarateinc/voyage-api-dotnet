@@ -53,13 +53,13 @@ namespace Launchpad.UnitTests.Web.Extensions
             _env = new Dictionary<string, object> { { "owin.RequestId", Guid.NewGuid().ToString() } };
 
             _ipAddress = Fixture.Create<string>();
-           
+
             _method = Fixture.Create<string>();
-          
+
             _path = "/" + Fixture.Create<string>();
-           
+
             _statusCode = 3000;
-           
+
             _overrideId = Guid.NewGuid().ToString();
         }
 
@@ -159,7 +159,7 @@ namespace Launchpad.UnitTests.Web.Extensions
             result.Path.Should().Be(_path);
             result.RequestId.Should().Be(_env["owin.RequestId"].ToString());
             result.StatusCode.Should().Be(_statusCode);
-            result.UserName.Should().Be("No Identity");       
+            result.UserName.Should().Be("No Identity");
         }
 
         [Fact]

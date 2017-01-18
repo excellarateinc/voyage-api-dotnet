@@ -8,7 +8,8 @@ namespace Launchpad.Data.Repositories.ApplicationLog
     /// </summary>
     public class ApplicationLogRepository : BaseRepository<Models.Entities.ApplicationLog>, IApplicationLogRepository
     {
-        public ApplicationLogRepository(ILaunchpadDataContext context) : base(context)
+        public ApplicationLogRepository(ILaunchpadDataContext context)
+            : base(context)
         {
         }
 

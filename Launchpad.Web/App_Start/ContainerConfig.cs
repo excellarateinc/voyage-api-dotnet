@@ -27,7 +27,7 @@ namespace Launchpad.Web
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();
             builder.RegisterModule(new WebModule(connectionString, httpConfig));
-            
+
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
@@ -36,7 +36,7 @@ namespace Launchpad.Web
 
             // Set the dependency resolver to be Autofac.
             Container = builder.Build();
-            
+
             httpConfig.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
         }
     }

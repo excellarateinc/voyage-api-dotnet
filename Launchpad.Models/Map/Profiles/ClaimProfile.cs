@@ -3,7 +3,7 @@ using AutoMapper;
 using Launchpad.Models.Entities;
 
 namespace Launchpad.Models.Map.Profiles
-{  
+{
     public class ClaimProfile : Profile
     {
         public ClaimProfile()
@@ -14,6 +14,6 @@ namespace Launchpad.Models.Map.Profiles
                 .ForMember(_ => _.ClaimValue, opt => opt.MapFrom(src => src.Value))
                 .ForMember(_ => _.ClaimType, opt => opt.MapFrom(src => src.Type))
                 .ForMember(_ => _.Id, opt => opt.Ignore());
-        }        
+        }
     }
 }

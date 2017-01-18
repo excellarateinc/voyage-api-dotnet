@@ -14,6 +14,7 @@ namespace Launchpad.Models
         public string UserId { get; set; }
 
         public string PhoneNumber { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public PhoneType PhoneType { get; set; }
     }

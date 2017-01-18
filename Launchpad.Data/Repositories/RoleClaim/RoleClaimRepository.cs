@@ -4,7 +4,8 @@ namespace Launchpad.Data.Repositories.RoleClaim
 {
     public class RoleClaimRepository : BaseRepository<Models.Entities.RoleClaim>, IRoleClaimRepository
     {
-        public RoleClaimRepository(ILaunchpadDataContext context) : base(context)
+        public RoleClaimRepository(ILaunchpadDataContext context)
+            : base(context)
         {
         }
 

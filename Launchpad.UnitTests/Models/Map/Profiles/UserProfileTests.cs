@@ -21,7 +21,7 @@ namespace Launchpad.UnitTests.Models.Map.Profiles
         {
             _mappingFixture = mappingFixture;
         }
-      
+
         [Fact]
         public void ApplicationUser_Should_Map_To_UserModel()
         {

@@ -1,21 +1,19 @@
 ﻿using FluentAssertions;
-
 using Launchpad.Models;
 using Launchpad.Models.Entities;
 using Launchpad.UnitTests.Common;
 using Launchpad.UnitTests.Common.AutoMapperFixture;
-
 using Xunit;
 
 namespace Launchpad.UnitTests.Models.Map.Profiles
 {
     [Trait("Category", "Mapping")]
     [Collection(AutoMapperCollection.CollectionName)]
-    public class UserPhonesProfileTest : BaseUnitTest
+    public class UserPhoneProfileTest : BaseUnitTest
     {
         private readonly AutoMapperFixture _mappingFixture;
 
-        public UserPhonesProfileTest(AutoMapperFixture mappingFixture)
+        public UserPhoneProfileTest(AutoMapperFixture mappingFixture)
         {
             _mappingFixture = mappingFixture;
         }

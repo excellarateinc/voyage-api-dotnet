@@ -20,7 +20,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Users
     {
         private readonly UserHelper _userHelper;
 
-        public UpdateUserTests(HostFixture hostFixture) : base(hostFixture)
+        public UpdateUserTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
         }

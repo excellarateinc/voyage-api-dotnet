@@ -12,7 +12,8 @@ namespace Launchpad.Web.Middleware
     /// </summary>
     public class RewindResponseMiddleware : OwinMiddleware
     {
-        public RewindResponseMiddleware(OwinMiddleware next) : base(next)
+        public RewindResponseMiddleware(OwinMiddleware next)
+            : base(next)
         {
         }
 

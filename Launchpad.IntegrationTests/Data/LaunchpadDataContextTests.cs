@@ -10,7 +10,7 @@ using Xunit;
 namespace Launchpad.IntegrationTests.Data
 {
     /// <summary>
-    /// The collection attribute prevents the integration tests from running in parallel. This should be on all integration tests that 
+    /// The collection attribute prevents the integration tests from running in parallel. This should be on all integration tests that
     /// have a transaction scope.
     /// </summary>
     [Collection(Constants.CollectionName)]

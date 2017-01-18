@@ -5,7 +5,8 @@ namespace Launchpad.Data.Repositories.UserPhone
 {
     public class UserPhoneRepository : BaseRepository<Models.Entities.UserPhone>, IUserPhoneRepository
     {
-        public UserPhoneRepository(ILaunchpadDataContext context) : base(context)
+        public UserPhoneRepository(ILaunchpadDataContext context)
+            : base(context)
         {
         }
 

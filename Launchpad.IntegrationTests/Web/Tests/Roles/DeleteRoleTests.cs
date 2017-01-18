@@ -17,7 +17,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
     {
         private RoleHelper _roleHelper;
 
-        public DeleteRoleTests(HostFixture hostFixture) : base(hostFixture)
+        public DeleteRoleTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _roleHelper = new RoleHelper();
         }
@@ -43,7 +44,6 @@ namespace Launchpad.IntegrationTests.Web.Tests.Roles
         public async Task DeleteRole_Should_Return_Status_200()
         {
             // Arrange - Create Role to Delete
-
             var responseModel = await _roleHelper.CreateRoleAsync();
 
             // Act

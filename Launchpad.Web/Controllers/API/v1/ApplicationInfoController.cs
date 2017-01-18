@@ -3,7 +3,7 @@ using System.Web.Http;
 using Launchpad.Services.ApplicationInfo;
 
 namespace Launchpad.Web.Controllers.API.V1
-{    
+{
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]
     public class ApplicationInfoController : ApiController
@@ -20,13 +20,13 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName GetStatuses
         * @apiGroup Status
-        *   
+        *
         * @apiSuccess {String} version Version Number
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
-        *       {   
+        *       {
         *           "buildNumber": "some_number"
         *       }
         *   ]

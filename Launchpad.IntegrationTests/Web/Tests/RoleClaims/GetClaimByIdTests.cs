@@ -21,7 +21,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
     {
         private readonly RoleHelper _roleHelper;
 
-        public GetClaimByIdTests(HostFixture hostFixture) : base(hostFixture)
+        public GetClaimByIdTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _roleHelper = new RoleHelper();
         }

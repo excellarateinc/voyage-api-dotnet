@@ -32,7 +32,7 @@ namespace Launchpad.UnitTests.Web.Middleware.Processors
         public void ShouldProcess_Should_Return_False_When_CanSeek_False()
         {
             _mockStream.Setup(_ => _.CanSeek).Returns(false);
-           
+
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
         }
@@ -42,7 +42,7 @@ namespace Launchpad.UnitTests.Web.Middleware.Processors
         {
             _mockStream.Setup(_ => _.CanSeek).Returns(true);
             _mockStream.Setup(_ => _.CanRead).Returns(false);
-           
+
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
         }
@@ -55,7 +55,7 @@ namespace Launchpad.UnitTests.Web.Middleware.Processors
             _mockStream.Setup(_ => _.CanSeek).Returns(true);
             _mockStream.Setup(_ => _.CanRead).Returns(true);
             _mockResponse.Setup(_ => _.StatusCode).Returns(statusCode);
-            
+
             _processor.ShouldProcess(_mockResponse.Object).Should().BeFalse();
             Mock.VerifyAll();
         }
@@ -97,7 +97,7 @@ namespace Launchpad.UnitTests.Web.Middleware.Processors
             _mockResponse.Setup(_ => _.StatusCode).Returns(statusCode);
 
             _processor.ShouldProcess(_mockResponse.Object).Should().BeTrue();
-            Mock.VerifyAll();            
+            Mock.VerifyAll();
         }
 
         [Theory]

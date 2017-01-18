@@ -24,7 +24,7 @@ namespace Launchpad.UnitTests.Models.Map.Profiles
         [Fact]
         public void ActivityAuditModel_Should_Map_To_ActivityAudit()
         {
-            var model = Fixture.Create<ActivityAuditModel>();            
+            var model = Fixture.Create<ActivityAuditModel>();
 
             var result = _mappingFixture.MapperInstance.Map<ActivityAudit>(model);
 

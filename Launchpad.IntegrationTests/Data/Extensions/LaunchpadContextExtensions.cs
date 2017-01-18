@@ -16,7 +16,7 @@ namespace Launchpad.IntegrationTests.Data.Extensions
             roleStore.CreateAsync(role).Wait();
             return role;
         }
-        
+
         public static RoleClaim AddRoleClaim(this LaunchpadDataContext context, ApplicationRole role, string type = "type1", string value = "value1")
         {
             var roleClaim = new RoleClaim

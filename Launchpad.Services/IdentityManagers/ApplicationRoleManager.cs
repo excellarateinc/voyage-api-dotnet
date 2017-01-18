@@ -5,7 +5,8 @@ namespace Launchpad.Services.IdentityManagers
 {
     public class ApplicationRoleManager : RoleManager<ApplicationRole>
     {
-        public ApplicationRoleManager(IRoleStore<ApplicationRole, string> store) : base(store)
+        public ApplicationRoleManager(IRoleStore<ApplicationRole, string> store)
+            : base(store)
         {
         }
     }

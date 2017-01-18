@@ -8,7 +8,7 @@ using Xunit;
 namespace Launchpad.UnitTests.Web
 {
     /// <summary>
-    /// The route prefixes are critical to web api routing, let's test the constants so that 
+    /// The route prefixes are critical to web api routing, let's test the constants so that
     /// if they accidently change a test breaks
     /// </summary>
     public class ConstantsTests : BaseUnitTest

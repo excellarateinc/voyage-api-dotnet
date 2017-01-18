@@ -17,7 +17,8 @@ namespace Launchpad.IntegrationTests.Web.Tests.UserRoles
         private readonly UserHelper _userHelper;
         private readonly RoleHelper _roleHelper;
 
-        public DeleteUserRoleTests(HostFixture hostFixture) : base(hostFixture)
+        public DeleteUserRoleTests(HostFixture hostFixture)
+            : base(hostFixture)
         {
             _userHelper = new UserHelper();
             _roleHelper = new RoleHelper();

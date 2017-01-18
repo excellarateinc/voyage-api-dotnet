@@ -25,6 +25,6 @@ namespace Launchpad.Models.Entities
         public string LogEvent { get; set; }
 
         [Column(TypeName = "xml")]
-        public string Properties { get; set; }               
+        public string Properties { get; set; }
     }
 }

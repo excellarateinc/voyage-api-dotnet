@@ -2,11 +2,13 @@
 {
     public static class Constants
     {
+#pragma warning disable SA1401 // Fields must be private
         public static string ApplicationName = "Launchpad .Net API";
+#pragma warning restore SA1401 // Fields must be private
 
         public static class RoutePrefixes
         {
-            public const string V1 = "api/v1";          
+            public const string V1 = "api/v1";
         }
 
         public static class LssClaims
@@ -30,7 +32,7 @@
             public const string DeleteRoleClaim = "delete.role-claim";
             public const string CreateClaim = "create.claim";
             public const string ViewClaim = "view.claim";
-            public const string ListRoleClaims = "list.role-claims";         
+            public const string ListRoleClaims = "list.role-claims";
         }
     }
 }

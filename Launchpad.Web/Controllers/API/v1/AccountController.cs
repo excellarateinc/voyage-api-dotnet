@@ -23,18 +23,18 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiVersion 0.1.0
         * @apiName CreateAccount
         * @apiGroup Account
-        * 
+        *
         * @apiPermission none
-        * 
+        *
         * @apiParam {String} email User's email
         * @apiParam {String} password User's password
-        * @apiParam {String} confirmPassword User's password (x2) 
+        * @apiParam {String} confirmPassword User's password (x2)
         * @apiParam {String} firstName First name
         * @apiParam {String} lastName Last name
-        * 
+        *
         * @apiSuccessExample Success-Response:
         *      HTTP/1.1 204 NO CONTENT
-        *      
+        *
         * @apiUse BadRequestError
         */
         [AllowAnonymous]
