@@ -290,11 +290,6 @@ When adding a new controller, there are several attributes that should be used t
 |RouteAttribute|Method|The attribute is used to define the route of the API endpoint|
 |Http{Verb}Attribute|Method|The attribute is used to define the HTTP method used to invoke the method|
 
-### Consuming Services
-A pattern has been defined to standardize the response of services. Services which operate (Get, Add, Update, Delete) on an entity will return an EntityResult. The result will contain a model (if applicable) as well as properties indicating if the operating was successful. These properties can be used to determine which HttpStatusCode should be used as the result value. 
-
-To cutdown on repeated logic, a base class has been created to handle the selection of the HttpStatusCode for common scenarios. The implementor is free to bypass these base methods as needed.
-
 ### Implementation
 The following steps provide guidance around adding a new controller.
 
@@ -315,7 +310,7 @@ Sample Method
 :arrow_up: [Back to Top](#table-of-contents)
 
 ## Creating a Service
-Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as dependencies in ApiControllers as well as other services. A pattern has been established for the return value of services. The goal is to standardize the expected shape of the result of a method call on a service. This will help form a consistent model of how the service layer as a whole operates regardless of underlying business logic. 
+Services (Not Api Services) evaluate and execute the business logic in the application. They can be used as dependencies in ApiControllers as well as other services.
 
 ### Implementation
 The following steps provide guidance around adding a new service
