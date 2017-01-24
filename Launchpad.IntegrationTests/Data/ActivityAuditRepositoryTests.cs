@@ -19,7 +19,7 @@ namespace Launchpad.IntegrationTests.Data
 
                 var records = repository.GetAll().Take(10).ToList();
 
-                records.Should().NotBeNullOrEmpty();
+                records.Should().NotBeNull();
             }
         }
     }
