@@ -27,7 +27,7 @@ namespace Launchpad.UnitTests.Web.AuthProviders
     [Trait("Category", "OAuthProvider")]
     public class ApplicationOAuthProviderTests : BaseUnitTest
     {
-        private const string PathString = "/api/v1/login";
+        private const string PathString = "/api/login";
         private readonly string _clientId;
         private readonly ApplicationOAuthProvider _provider;
         private readonly Mock<IOwinContext> _mockOwinContext;

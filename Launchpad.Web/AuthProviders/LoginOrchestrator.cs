@@ -10,7 +10,7 @@ namespace Launchpad.Web.AuthProviders
     public class LoginOrchestrator : ILoginOrchestrator
     {
         /**
-        * @api {post} /v1/login Login a user
+        * @api {post} /login Login a user
         * @apiVersion 0.1.0
         * @apiName Login
         * @apiGroup Account
@@ -49,7 +49,7 @@ namespace Launchpad.Web.AuthProviders
         *
         * @apiUse BadRequestError
         */
-        public virtual string TokenPath => "/api/v1/login";
+        public virtual string TokenPath => "/api/login";
 
         public virtual bool ValidateRequest(Microsoft.Owin.IReadableStringCollection parameters)
         {

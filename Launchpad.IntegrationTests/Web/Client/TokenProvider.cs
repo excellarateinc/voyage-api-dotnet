@@ -23,7 +23,7 @@ namespace Launchpad.IntegrationTests.Web.Client
         /// <returns>Authorization Token</returns>
         public async Task Configure()
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, GetUrl("/api/v1/login"))
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, GetUrl("/api/login"))
             {
                 Content =
                     new StringContent(

@@ -16,7 +16,7 @@ namespace Launchpad.UnitTests.Web
             this TType controller,
             Expression<Action<TType>> expression,
             string claimValue,
-            string claimType = Constants.LssClaims.Type) where TType : ApiController
+            string claimType = Constants.Claims.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
                 .Should()

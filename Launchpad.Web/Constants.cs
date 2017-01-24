@@ -2,16 +2,14 @@
 {
     public static class Constants
     {
-#pragma warning disable SA1401 // Fields must be private
-        public static string ApplicationName = "Launchpad .Net API";
-#pragma warning restore SA1401 // Fields must be private
+        public static string ApplicationName = ".Net API";
 
         public static class RoutePrefixes
         {
             public const string V1 = "api/v1";
         }
 
-        public static class LssClaims
+        public static class Claims
         {
             public const string Type = "lss.permission";
 

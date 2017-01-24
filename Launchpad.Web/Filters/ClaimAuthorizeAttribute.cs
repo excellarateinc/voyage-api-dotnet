@@ -20,7 +20,7 @@ namespace Launchpad.Web.Filters
 
         public ClaimAuthorizeAttribute()
         {
-            ClaimType = Constants.LssClaims.Type;
+            ClaimType = Constants.Claims.Type;
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)

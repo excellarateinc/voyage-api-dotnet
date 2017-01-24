@@ -47,7 +47,7 @@ namespace Launchpad.Web
             var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                TokenEndpointPath = new PathString("/api/v1/login"),
+                TokenEndpointPath = new PathString("/api/login"),
                 Provider = oauthProvider,
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
 

@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
-
 using Launchpad.UnitTests.Common;
 using Launchpad.Web;
-
 using Xunit;
 
 namespace Launchpad.UnitTests.Web
@@ -16,7 +14,7 @@ namespace Launchpad.UnitTests.Web
         [Fact]
         public void ApplicationName_Should_Return_Known_Value()
         {
-            Constants.ApplicationName.Should().Be("Launchpad .Net API");
+            Constants.ApplicationName.Should().Be(".Net API");
         }
 
         [Fact]
