@@ -7,8 +7,18 @@ using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web.Http;
+using IdentityServer3.AccessTokenValidation;
+using IdentityServer3.Core.Configuration;
+using IdentityServer3.Core.Models;
+using IdentityServer3.Core.Resources;
+using IdentityServer3.Core.Services.InMemory;
 
 namespace Launchpad.Web
 {
@@ -44,25 +54,55 @@ namespace Launchpad.Web
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
             // 5. Configure oAuth
-            var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
-            OAuthOptions = new OAuthAuthorizationServerOptions
+            app.Map("/OAuth", idsrvApp =>
             {
-                TokenEndpointPath = new PathString("/api/v1/login"),
-                Provider = oauthProvider,
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                idsrvApp.UseIdentityServer(new IdentityServerOptions
+                {
+                    SiteName = "Embedded IdentityServer",
+                    RequireSsl = false,
+                    SigningCertificate = LoadCertificate(),
+                    Factory = new IdentityServerServiceFactory()
+                                .UseInMemoryUsers(IdentityServerHelpers.GetUsers())
+                                .UseInMemoryClients(IdentityServerHelpers.GetClients())
+                                .UseInMemoryScopes(IdentityServerHelpers.GetScopes())
+                });
+            });
 
-                // If the config is wrong, let the application crash
-                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"])),
-
-                // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
-            };
-
-            // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+            // Accept access tokens from IdentityServer.
+            app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
+            {
+                Authority = "http://localhost:52431/OAuth",
+                ValidationMode = ValidationMode.ValidationEndpoint
+            });
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);
+        }
+
+        private static X509Certificate2 LoadCertificate()
+        {
+            return new X509Certificate2(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"bin\idsrv3test.pfx"), "idsrv3test");
+        }
+    }
+
+#pragma warning disable SA1402 // File may only contain a single class
+    public class MiddlewareUrlRewriter : OwinMiddleware
+#pragma warning restore SA1402 // File may only contain a single class
+    {
+        public MiddlewareUrlRewriter(OwinMiddleware next)
+            : base(next)
+        {
+        }
+
+        public override async Task Invoke(IOwinContext context)
+        {
+            if (context.Request.Path.ToString().Contains("/token"))
+            {
+                context.Request.Path = new PathString(Regex.Replace(context.Request.Path.ToString(), "/token", "/connect/token"));
+            }
+
+            await Next.Invoke(context);
         }
     }
 }

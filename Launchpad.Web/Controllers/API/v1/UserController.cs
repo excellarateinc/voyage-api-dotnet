@@ -1,4 +1,5 @@
-﻿using Launchpad.Core;
+﻿using System.Security.Claims;
+using Launchpad.Core;
 using Launchpad.Models;
 using Launchpad.Web.Filters;
 using System.Threading.Tasks;
@@ -383,6 +384,33 @@ namespace Launchpad.Web.Controllers.API.V1
         {
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("users/test")]
+        [Authorize]
+        public IHttpActionResult Test()
+        {
+            var caller = User as ClaimsPrincipal;
+
+            var subjectClaim = caller.FindFirst("sub");
+            if (subjectClaim != null)
+            {
+                return Json(new
+                {
+                    message = "OK user",
+                    client = caller.FindFirst("client_id").Value,
+                    subject = subjectClaim.Value
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    message = "OK computer",
+                    client = caller.FindFirst("client_id").Value
+                });
+            }
         }
     }
 }
