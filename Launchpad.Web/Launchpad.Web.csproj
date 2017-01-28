@@ -217,6 +217,7 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="AuthProviders\IdentityProvider.cs" />
     <Compile Include="AuthProviders\IdentityServerHelpers.cs" />
+    <Compile Include="AuthProviders\IdentityServerUserService.cs" />
     <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
     <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="Constants.cs" />

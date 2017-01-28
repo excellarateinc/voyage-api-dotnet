@@ -18,6 +18,7 @@ using IdentityServer3.AccessTokenValidation;
 using IdentityServer3.Core.Configuration;
 using IdentityServer3.Core.Models;
 using IdentityServer3.Core.Resources;
+using IdentityServer3.Core.Services;
 using IdentityServer3.Core.Services.InMemory;
 
 namespace Launchpad.Web
@@ -53,6 +54,11 @@ namespace Launchpad.Web
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
+            var factory = new IdentityServerServiceFactory()
+                .UseInMemoryClients(IdentityServerHelpers.GetClients())
+                .UseInMemoryScopes(IdentityServerHelpers.GetScopes());
+            factory.UserService = new Registration<IUserService>(typeof(IdentityServerUserService));
+
             // 5. Configure oAuth
             app.Map("/OAuth", idsrvApp =>
             {
@@ -61,10 +67,7 @@ namespace Launchpad.Web
                     SiteName = "Embedded IdentityServer",
                     RequireSsl = false,
                     SigningCertificate = LoadCertificate(),
-                    Factory = new IdentityServerServiceFactory()
-                                .UseInMemoryUsers(IdentityServerHelpers.GetUsers())
-                                .UseInMemoryClients(IdentityServerHelpers.GetClients())
-                                .UseInMemoryScopes(IdentityServerHelpers.GetScopes())
+                    Factory = factory
                 });
             });
 
