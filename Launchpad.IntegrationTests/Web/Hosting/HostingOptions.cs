@@ -1,7 +1,9 @@
-﻿namespace Launchpad.IntegrationTests.Web.Hosting
+﻿using System.Configuration;
+
+namespace Launchpad.IntegrationTests.Web.Hosting
 {
     public static class HostingOptions
     {
-        public const string BaseAddress = "http://localhost:9000";
+        public static readonly string BaseAddress = ConfigurationManager.AppSettings["BaseAddress"];
     }
 }

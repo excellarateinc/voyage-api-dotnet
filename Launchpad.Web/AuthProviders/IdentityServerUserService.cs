@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using Autofac;
 using Autofac.Integration.Owin;
@@ -7,8 +6,6 @@ using IdentityServer3.Core.Extensions;
 using IdentityServer3.Core.Models;
 using IdentityServer3.Core.Services.Default;
 using Launchpad.Services.User;
-using System.Threading;
-using Microsoft.Owin;
 
 namespace Launchpad.Web.AuthProviders
 {
