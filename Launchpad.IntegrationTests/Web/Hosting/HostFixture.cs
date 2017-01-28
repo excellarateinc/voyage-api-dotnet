@@ -1,8 +1,6 @@
 ﻿using System;
-
 using Launchpad.IntegrationTests.Web.Client;
 using Launchpad.Web;
-
 using Microsoft.Owin.Hosting;
 
 namespace Launchpad.IntegrationTests.Web.Hosting
@@ -17,7 +15,6 @@ namespace Launchpad.IntegrationTests.Web.Hosting
         public HostFixture()
         {
             _webAppInstance = WebApp.Start<Startup>(url: HostingOptions.BaseAddress);
-
             TokenProvider.Instance.Configure().Wait();
         }
 

@@ -65,7 +65,7 @@ namespace Launchpad.Web.AuthProviders
                 new Client
                 {
                     ClientName = "Silicon on behalf of Carbon Client",
-                    ClientId = "carbon",
+                    ClientId = "test",
                     Enabled = true,
                     AccessTokenType = AccessTokenType.Jwt,
                     AllowAccessToAllScopes = true,
@@ -113,8 +113,8 @@ namespace Launchpad.Web.AuthProviders
             {
                 new InMemoryUser
                 {
-                    Username = "bob",
-                    Password = "secret",
+                    Username = "tester",
+                    Password = "password",
                     Subject = "1",
                     Claims = new[]
                     {

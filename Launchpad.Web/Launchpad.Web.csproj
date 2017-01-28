@@ -210,7 +210,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -218,8 +217,6 @@
     <Compile Include="AuthProviders\IdentityProvider.cs" />
     <Compile Include="AuthProviders\IdentityServerHelpers.cs" />
     <Compile Include="AuthProviders\IdentityServerUserService.cs" />
-    <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
-    <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />
     <Compile Include="Controllers\API\v1\RoleController.cs" />

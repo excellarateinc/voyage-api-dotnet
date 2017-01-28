@@ -13,22 +13,21 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using Autofac.Integration.Owin;
 using IdentityServer3.AccessTokenValidation;
 using IdentityServer3.Core.Configuration;
 using IdentityServer3.Core.Models;
 using IdentityServer3.Core.Resources;
-using IdentityServer3.Core.Services;
 using IdentityServer3.Core.Services.InMemory;
+using Launchpad.Services.User;
+using IUserService = IdentityServer3.Core.Services.IUserService;
 
 namespace Launchpad.Web
 {
     public partial class Startup
     {
-        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
-
-        public static string PublicClientId => "self"; // Configure the application for OAuth based flow
-
         public static void Configure(IAppBuilder app)
         {
             var httpConfig = new HttpConfiguration();
@@ -54,18 +53,19 @@ namespace Launchpad.Web
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
+            // 5. Configure OAuth (IdentityServer3)
             var factory = new IdentityServerServiceFactory()
                 .UseInMemoryClients(IdentityServerHelpers.GetClients())
                 .UseInMemoryScopes(IdentityServerHelpers.GetScopes());
+
             factory.UserService = new Registration<IUserService>(typeof(IdentityServerUserService));
 
-            // 5. Configure oAuth
             app.Map("/OAuth", idsrvApp =>
             {
                 idsrvApp.UseIdentityServer(new IdentityServerOptions
                 {
-                    SiteName = "Embedded IdentityServer",
-                    RequireSsl = false,
+                    SiteName = "Voyage IdentityServer",
+                    RequireSsl = !bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
                     SigningCertificate = LoadCertificate(),
                     Factory = factory
                 });
@@ -74,7 +74,7 @@ namespace Launchpad.Web
             // Accept access tokens from IdentityServer.
             app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
             {
-                Authority = "http://localhost:52431/OAuth",
+                Authority = ConfigurationManager.AppSettings["IdentityServerAuthority"],
                 ValidationMode = ValidationMode.ValidationEndpoint
             });
 
@@ -85,27 +85,7 @@ namespace Launchpad.Web
         private static X509Certificate2 LoadCertificate()
         {
             return new X509Certificate2(
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"bin\idsrv3test.pfx"), "idsrv3test");
-        }
-    }
-
-#pragma warning disable SA1402 // File may only contain a single class
-    public class MiddlewareUrlRewriter : OwinMiddleware
-#pragma warning restore SA1402 // File may only contain a single class
-    {
-        public MiddlewareUrlRewriter(OwinMiddleware next)
-            : base(next)
-        {
-        }
-
-        public override async Task Invoke(IOwinContext context)
-        {
-            if (context.Request.Path.ToString().Contains("/token"))
-            {
-                context.Request.Path = new PathString(Regex.Replace(context.Request.Path.ToString(), "/token", "/connect/token"));
-            }
-
-            await Next.Invoke(context);
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["IdentityServerCertificatePathEnding"]), "idsrv3test");
         }
     }
 }

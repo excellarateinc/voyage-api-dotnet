@@ -201,9 +201,6 @@
     <Compile Include="Services\IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="Services\RoleServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
-    <Compile Include="Web\AuthProviders\ApplicationOAuthProviderTests.cs" />
-    <Compile Include="Web\AuthProviders\IdentityProviderTests.cs" />
-    <Compile Include="Web\AuthProviders\LoginOrchestratorTests.cs" />
     <Compile Include="Web\ConstantsTests.cs" />
     <Compile Include="Web\ControllerExtensions.cs" />
     <Compile Include="Web\Controllers\API\V1\AccountControllerTests.cs" />

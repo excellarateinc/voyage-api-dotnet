@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-
+using IdentityModel.Client;
 using Newtonsoft.Json;
 
 namespace Launchpad.IntegrationTests.Web.Client
@@ -23,19 +25,14 @@ namespace Launchpad.IntegrationTests.Web.Client
         /// <returns>Authorization Token</returns>
         public async Task Configure()
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, GetUrl("/api/v1/login"))
-            {
-                Content =
-                    new StringContent(
-                    "grant_type=password&username=admin%40admin.com&password=Hello123!",
-                    Encoding.UTF8,
-                    "application/x-www-form-urlencoded")
-            };
+             var client = new TokenClient(
+                GetUrl("/oauth/connect/token"),
+                "test",
+                "F621F470-9731-4A25-80EF-67A6F7C5F4B8");
 
-            var response = await Client.SendAsync(httpRequestMessage);
-            var rawResponse = response.Content.ReadAsStringAsync().Result;
-            dynamic tokenResponse = JsonConvert.DeserializeObject(rawResponse);
-            Token = tokenResponse.access_token;
+             var response = await client.RequestResourceOwnerPasswordAsync("admin@admin.com", "Hello123!", "api");
+
+             Token = response.AccessToken;
         }
     }
 }

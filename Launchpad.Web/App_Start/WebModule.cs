@@ -14,6 +14,7 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using IdentityServer3.Core.Services;
 using Launchpad.Models.Entities;
 
 namespace Launchpad.Web
@@ -73,20 +74,7 @@ namespace Launchpad.Web
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            // Login orchestrators - these will be passed into the
-            // OAuthProvider implementation which is a single instance.
-            // As a result, these must be registered in the same scope AND
-            // any dependencies that exist at a per request scope must be resolved
-            // from the owin context
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<ILoginOrchestrator>()
-                .As<ILoginOrchestrator>()
-                .SingleInstance();
-
-            builder.RegisterType<ApplicationOAuthProvider>()
-                .WithParameter("publicClientId", Startup.PublicClientId)
-                .AsSelf()
-                .SingleInstance();
+            builder.RegisterType<IdentityServerUserService>().AsSelf().InstancePerRequest();
 
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
