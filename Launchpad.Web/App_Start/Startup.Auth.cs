@@ -1,27 +1,15 @@
-﻿using Autofac;
-using FluentValidation.WebApi;
+﻿using FluentValidation.WebApi;
 using Launchpad.Web.AuthProviders;
 using Launchpad.Web.Middleware;
-using Microsoft.Owin;
 using Microsoft.Owin.Cors;
-using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using Autofac.Integration.Owin;
 using IdentityServer3.AccessTokenValidation;
 using IdentityServer3.Core.Configuration;
-using IdentityServer3.Core.Models;
-using IdentityServer3.Core.Resources;
-using IdentityServer3.Core.Services.InMemory;
-using Launchpad.Services.User;
 using IUserService = IdentityServer3.Core.Services.IUserService;
 
 namespace Launchpad.Web
