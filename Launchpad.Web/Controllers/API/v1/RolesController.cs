@@ -7,12 +7,11 @@ using Launchpad.Services.Role;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class RoleController : ApiController
+    public class RolesController : ApiController
     {
         private readonly IRoleService _roleService;
 
-        public RoleController(IRoleService roleService)
+        public RolesController(IRoleService roleService)
         {
             _roleService = roleService.ThrowIfNull(nameof(roleService));
         }
@@ -56,7 +55,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
         [HttpGet]
-        [Route("roles/{roleId}", Name = "GetRoleById")]
+        [Route("{roleId}", Name = "GetRoleById")]
         public IHttpActionResult GetRoleById(string roleId)
         {
             var result = _roleService.GetRoleById(roleId);
@@ -103,7 +102,6 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoles)]
         [HttpGet]
-        [Route("roles")]
         public IHttpActionResult GetRoles()
         {
             var result = _roleService.GetRoles();
@@ -145,7 +143,6 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateRole)]
         [HttpPost]
-        [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
         {
             var result = await _roleService.CreateRoleAsync(model);
@@ -192,7 +189,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse BadRequestError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateClaim)]
-        [Route("roles/{roleId}/claims")]
+        [Route("{roleId}/claims")]
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
         {
@@ -237,7 +234,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse NotFoundError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewClaim)]
-        [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
+        [Route("{roleId}/claims/{claimId}", Name = "GetClaimById")]
         [HttpGet]
         public IHttpActionResult GetClaimById(string roleId, int claimId)
         {
@@ -266,7 +263,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRoleClaim)]
         [HttpDelete]
-        [Route("roles/{roleId}/claims/{claimId}")]
+        [Route("{roleId}/claims/{claimId}")]
         public IHttpActionResult RemoveClaim(string roleId, int claimId)
         {
             _roleService.RemoveClaim(roleId, claimId);
@@ -303,7 +300,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoleClaims)]
         [HttpGet]
-        [Route("roles/{roleId}/claims")]
+        [Route("{roleId}/claims")]
         public IHttpActionResult GetClaims(string roleId)
         {
             var result = _roleService.GetRoleClaimsByRoleId(roleId);
@@ -332,7 +329,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRole)]
-        [Route("roles/{roleId}")]
+        [Route("{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
             var result = await _roleService.RemoveRoleAsync(roleId);

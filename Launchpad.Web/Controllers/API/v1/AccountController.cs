@@ -8,7 +8,6 @@ using Microsoft.AspNet.Identity;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
@@ -38,7 +37,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse BadRequestError
         */
         [AllowAnonymous]
-        [Route("account/register")]
+        [Route("register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
             IdentityResult result = await _userService.RegisterAsync(model);

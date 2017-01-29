@@ -2,6 +2,8 @@
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using Launchpad.Web.Middleware;
 
 namespace Launchpad.Web
 {
@@ -21,12 +23,15 @@ namespace Launchpad.Web
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.UseDataContractJsonSerializer = false;
 
+            // Versioning setup. Replace default controller selector with our custom namespace selector.
+            config.Services.Replace(typeof(IHttpControllerSelector), new NamespaceHttpControllerSelector(config));
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{namespace}/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
         }
     }

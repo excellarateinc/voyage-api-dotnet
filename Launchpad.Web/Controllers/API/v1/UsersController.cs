@@ -7,12 +7,11 @@ using Launchpad.Services.User;
 
 namespace Launchpad.Web.Controllers.API.V1
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class UserController : ApiController
+    public class UsersController : ApiController
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
         }
@@ -60,7 +59,6 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
         [HttpGet]
-        [Route("users")]
         public IHttpActionResult GetUsers()
         {
             var users = _userService.GetUsers();
@@ -83,7 +81,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.UpdateUser)]
         [HttpPut]
-        [Route("users/{userId}")]
+        [Route("{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
             var result = await _userService.UpdateUserAsync(userId, userModel);
@@ -112,7 +110,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteUser)]
         [HttpDelete]
-        [Route("users/{userId}")]
+        [Route("{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
         {
             var result = await _userService.DeleteUserAsync(userId);
@@ -145,7 +143,6 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateUser)]
         [HttpPost]
-        [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
         {
             var result = await _userService.CreateUserAsync(user);
@@ -171,7 +168,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewUser)]
         [HttpGet]
-        [Route("users/{userId}", Name = "GetUserAsync")]
+        [Route("{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
             var result = await _userService.GetUserAsync(userId);
@@ -218,7 +215,7 @@ namespace Launchpad.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
-        [Route("users/{userId}/roles")]
+        [Route("{userId}/roles")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
         {
@@ -259,7 +256,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUserClaims)]
         [HttpGet]
-        [Route("users/{userId}/claims")]
+        [Route("{userId}/claims")]
         public async Task<IHttpActionResult> GetClaims(string userId)
         {
             var result = await _userService.GetUserClaimsAsync(userId);
@@ -301,7 +298,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.AssignRole)]
         [HttpPost]
-        [Route("users/{userId}/roles")]
+        [Route("{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
             var result = await _userService.AssignUserRoleAsync(userId, roleModel);
@@ -349,7 +346,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
         [HttpGet]
-        [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
+        [Route("{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
         {
             var result = _userService.GetUserRoleById(userId, roleId);
@@ -378,7 +375,7 @@ namespace Launchpad.Web.Controllers.API.V1
         **/
         [ClaimAuthorize(ClaimValue = Constants.LssClaims.RevokeRole)]
         [HttpDelete]
-        [Route("users/{userId}/roles/{roleId}")]
+        [Route("{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
