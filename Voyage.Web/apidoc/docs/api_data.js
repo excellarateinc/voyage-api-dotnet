@@ -85,7 +85,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/login",
+    "url": "/v1/login",
     "title": "Login a user",
     "version": "0.1.0",
     "name": "Login",
@@ -220,34 +220,6 @@ define({ "api": [
         }
       ]
     }
-  },
-  {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "../apidoc/docs/main.js",
-    "group": "C__Source_launchpad_dotnet_api_Launchpad_Web_apidoc_docs_main_js",
-    "groupTitle": "C__Source_launchpad_dotnet_api_Launchpad_Web_apidoc_docs_main_js",
-    "name": ""
   },
   {
     "type": "post",
@@ -2537,5 +2509,33 @@ define({ "api": [
         }
       ]
     }
+  },
+  {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "../apidoc/docs/main.js",
+    "group": "c__Source_launchpad_dotnet_api_Voyage_Web_apidoc_docs_main_js",
+    "groupTitle": "c__Source_launchpad_dotnet_api_Voyage_Web_apidoc_docs_main_js",
+    "name": ""
   }
 ] });
