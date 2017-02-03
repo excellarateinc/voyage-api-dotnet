@@ -54,7 +54,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewRole)]
         [HttpGet]
         [Route("roles/{roleId}", Name = "GetRoleById")]
         public IHttpActionResult GetRoleById(string roleId)
@@ -101,7 +101,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoles)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoles)]
         [HttpGet]
         [Route("roles")]
         public IHttpActionResult GetRoles()
@@ -143,7 +143,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateRole)]
         [HttpPost]
         [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
@@ -191,7 +191,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateClaim)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateClaim)]
         [Route("roles/{roleId}/claims")]
         [HttpPost]
         public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
@@ -236,7 +236,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewClaim)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewClaim)]
         [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
         [HttpGet]
         public IHttpActionResult GetClaimById(string roleId, int claimId)
@@ -264,7 +264,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         *
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRoleClaim)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRoleClaim)]
         [HttpDelete]
         [Route("roles/{roleId}/claims/{claimId}")]
         public IHttpActionResult RemoveClaim(string roleId, int claimId)
@@ -301,7 +301,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListRoleClaims)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoleClaims)]
         [HttpGet]
         [Route("roles/{roleId}/claims")]
         public IHttpActionResult GetClaims(string roleId)
@@ -331,7 +331,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse NotFoundError
         **/
         [HttpDelete]
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRole)]
         [Route("roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {

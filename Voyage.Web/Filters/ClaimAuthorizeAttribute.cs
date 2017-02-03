@@ -20,7 +20,7 @@ namespace Voyage.Web.Filters
 
         public ClaimAuthorizeAttribute()
         {
-            ClaimType = Constants.LssClaims.Type;
+            ClaimType = Constants.AppClaims.Type;
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)

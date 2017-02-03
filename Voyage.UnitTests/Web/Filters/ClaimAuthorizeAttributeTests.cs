@@ -19,7 +19,7 @@ namespace Voyage.UnitTests.Web.Filters
         [Fact]
         public void ClaimType_Should_Default_To_Constant_Value()
         {
-            new ClaimAuthorizeAttribute().ClaimType.Should().Be(Constants.LssClaims.Type);
+            new ClaimAuthorizeAttribute().ClaimType.Should().Be(Constants.AppClaims.Type);
         }
 
         [Fact]

@@ -11,7 +11,7 @@
             public const string V1 = "api/v1";
         }
 
-        public static class LssClaims
+        public static class AppClaims
         {
             public const string Type = "app.permission";
 

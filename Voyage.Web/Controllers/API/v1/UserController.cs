@@ -58,7 +58,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUsers)]
         [HttpGet]
         [Route("users")]
         public IHttpActionResult GetUsers()
@@ -81,7 +81,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UserSuccessModel
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.UpdateUser)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
@@ -110,7 +110,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.DeleteUser)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteUser)]
         [HttpDelete]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
@@ -143,7 +143,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UserSuccessModel
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.CreateUser)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateUser)]
         [HttpPost]
         [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
@@ -169,7 +169,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewUser)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewUser)]
         [HttpGet]
         [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
@@ -217,7 +217,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUsers)]
         [Route("users/{userId}/roles")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
@@ -257,7 +257,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ListUserClaims)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUserClaims)]
         [HttpGet]
         [Route("users/{userId}/claims")]
         public async Task<IHttpActionResult> GetClaims(string userId)
@@ -299,7 +299,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.AssignRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.AssignRole)]
         [HttpPost]
         [Route("users/{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
@@ -347,7 +347,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
@@ -376,7 +376,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.LssClaims.RevokeRole)]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.RevokeRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)

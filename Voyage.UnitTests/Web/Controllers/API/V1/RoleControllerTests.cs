@@ -53,7 +53,7 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         [Fact]
         public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetClaims("id"), Constants.LssClaims.ListRoleClaims);
+            _roleController.AssertClaim(_ => _.GetClaims("id"), Constants.AppClaims.ListRoleClaims);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         [Fact]
         public void RemoveClaim_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.RemoveClaim("a", 1), Constants.LssClaims.DeleteRoleClaim);
+            _roleController.AssertClaim(_ => _.RemoveClaim("a", 1), Constants.AppClaims.DeleteRoleClaim);
         }
 
         [Fact]
@@ -109,21 +109,21 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         public void RemoveRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.RemoveRole("id"), Constants.LssClaims.DeleteRole);
+            _roleController.AssertClaim(_ => _.RemoveRole("id"), Constants.AppClaims.DeleteRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
         public void GetRoles_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetRoles(), Constants.LssClaims.ListRoles);
+            _roleController.AssertClaim(_ => _.GetRoles(), Constants.AppClaims.ListRoles);
         }
 
         [Fact]
         public void CreateRole_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.CreateRole(new RoleModel()), Constants.LssClaims.CreateRole);
+            _roleController.AssertClaim(_ => _.CreateRole(new RoleModel()), Constants.AppClaims.CreateRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -131,7 +131,7 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         public void AddClaim_Should_Have_ClaimAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.AddClaim("id", new ClaimModel()), Constants.LssClaims.CreateClaim);
+            _roleController.AssertClaim(_ => _.AddClaim("id", new ClaimModel()), Constants.AppClaims.CreateClaim);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -261,7 +261,7 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         [Fact]
         public void GetRoleById_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetRoleById("id"), Constants.LssClaims.ViewRole);
+            _roleController.AssertClaim(_ => _.GetRoleById("id"), Constants.AppClaims.ViewRole);
         }
 
         [Fact]
@@ -307,7 +307,7 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
         [Fact]
         public void GetClaimById_Should_Have_ClaimAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetClaimById("roleId", 0), Constants.LssClaims.ViewClaim);
+            _roleController.AssertClaim(_ => _.GetClaimById("roleId", 0), Constants.AppClaims.ViewClaim);
         }
 
         [Fact]
