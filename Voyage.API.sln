@@ -3,26 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Web", "Launchpad.Web\Voyage.Web.csproj", "{6EC214FC-93EA-40B0-B74D-B147BA640DD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Web", "Voyage.Web\Voyage.Web.csproj", "{6EC214FC-93EA-40B0-B74D-B147BA640DD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Services", "Launchpad.Services\Voyage.Services.csproj", "{550DBB13-A473-4348-B530-64A6A5177AB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Services", "Voyage.Services\Voyage.Services.csproj", "{550DBB13-A473-4348-B530-64A6A5177AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Data", "Launchpad.Data\Voyage.Data.csproj", "{7ACF3840-25CC-4A96-824A-8AB6B28781FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Data", "Voyage.Data\Voyage.Data.csproj", "{7ACF3840-25CC-4A96-824A-8AB6B28781FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Models", "Launchpad.Models\Voyage.Models.csproj", "{D2013160-5E92-4EB0-8A10-3B89C44E8572}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Models", "Voyage.Models\Voyage.Models.csproj", "{D2013160-5E92-4EB0-8A10-3B89C44E8572}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BDB493DB-DA45-4BA3-9EB1-D2E1CD4AE495}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.UnitTests", "Launchpad.UnitTests\Voyage.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.UnitTests", "Voyage.UnitTests\Voyage.UnitTests.csproj", "{CA489C7A-9733-4F0F-82C6-A820F5498B40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Core", "Launchpad.Core\Voyage.Core.csproj", "{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Core", "Voyage.Core\Voyage.Core.csproj", "{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.IntegrationTests", "Launchpad.IntegrationTests\Voyage.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.IntegrationTests", "Voyage.IntegrationTests\Voyage.IntegrationTests.csproj", "{420A6E90-E022-47D2-9B67-1BC11EBEB88B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F68702B-28CF-4E1F-9D58-1092785C3106} = {5F68702B-28CF-4E1F-9D58-1092785C3106}
 	EndProjectSection
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Voyage.Database", "Launchpad.Database\Voyage.Database.sqlproj", "{5F68702B-28CF-4E1F-9D58-1092785C3106}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Voyage.Database", "Voyage.Database\Voyage.Database.sqlproj", "{5F68702B-28CF-4E1F-9D58-1092785C3106}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
