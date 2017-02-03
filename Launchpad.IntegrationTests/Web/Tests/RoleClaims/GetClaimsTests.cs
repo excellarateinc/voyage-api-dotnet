@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Launchpad.IntegrationTests.Web.Client;
-using Launchpad.IntegrationTests.Web.Extensions;
-using Launchpad.IntegrationTests.Web.Hosting;
-using Launchpad.Models;
+using Voyage.IntegrationTests.Web.Client;
+using Voyage.IntegrationTests.Web.Extensions;
+using Voyage.IntegrationTests.Web.Hosting;
+using Voyage.Models;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Web.Tests.RoleClaims
+namespace Voyage.IntegrationTests.Web.Tests.RoleClaims
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]

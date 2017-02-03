@@ -1,12 +1,12 @@
-﻿using Launchpad.Core;
+﻿using Voyage.Core;
 using Microsoft.Owin;
 using System.Threading.Tasks;
-using Launchpad.Web.Extensions;
+using Voyage.Web.Extensions;
 using System;
-using Launchpad.Web.Middleware.Processors;
-using Launchpad.Services.Audit;
+using Voyage.Web.Middleware.Processors;
+using Voyage.Services.Audit;
 
-namespace Launchpad.Web.Middleware
+namespace Voyage.Web.Middleware
 {
     public class ActivityAuditMiddleware : OwinMiddleware
     {

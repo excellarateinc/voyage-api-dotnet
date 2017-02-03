@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Launchpad.IntegrationTests.Web.Client
+namespace Voyage.IntegrationTests.Web.Client
 {
     public abstract class DataHelper<TModel> : ApiConsumer
     {

@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Launchpad.Web.Middleware.Processors
+namespace Voyage.Web.Middleware.Processors
 {
     /// <summary>
     /// Basic response processor

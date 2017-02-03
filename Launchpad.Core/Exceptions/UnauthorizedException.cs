@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Launchpad.Core.Exceptions
+namespace Voyage.Core.Exceptions
 {
     public class UnauthorizedException : ApiException
     {

@@ -1,10 +1,10 @@
-﻿using Launchpad.Web.Extensions;
+﻿using Voyage.Web.Extensions;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace Launchpad.Web.Filters
+namespace Voyage.Web.Filters
 {
     /// <summary>
     /// Returns a BadRequest response if the model is invalid

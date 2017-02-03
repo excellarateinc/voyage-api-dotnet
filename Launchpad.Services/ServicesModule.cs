@@ -1,13 +1,13 @@
 ﻿using System.Configuration;
 using Autofac;
-using Launchpad.Services.ApplicationInfo;
-using Launchpad.Services.Audit;
-using Launchpad.Services.FileReader;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Role;
-using Launchpad.Services.User;
+using Voyage.Services.ApplicationInfo;
+using Voyage.Services.Audit;
+using Voyage.Services.FileReader;
+using Voyage.Services.IdentityManagers;
+using Voyage.Services.Role;
+using Voyage.Services.User;
 
-namespace Launchpad.Services
+namespace Voyage.Services
 {
     public class ServicesModule : Module
     {

@@ -6,26 +6,26 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
-using Launchpad.Core;
-using Launchpad.Models.Entities;
+using Voyage.Core;
+using Voyage.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Serilog;
 using TrackerEnabledDbContext.Common.Models;
 using TrackerEnabledDbContext.Identity;
 
-namespace Launchpad.Data
+namespace Voyage.Data
 {
-    public sealed class LaunchpadDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, ILaunchpadDataContext
+    public sealed class VoyageDataContext : TrackerIdentityContext<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>, IVoyageDataContext
     {
         private readonly IIdentityProvider _identityProvider;
         private readonly ILogger _logger;
 
-        public LaunchpadDataContext()
-            : base("LaunchpadDataContext")
+        public VoyageDataContext()
+            : base("VoyageDataContext")
         {
         }
 
-        public LaunchpadDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger)
+        public VoyageDataContext(string connectionString, IIdentityProvider identityProvider, ILogger logger)
             : base(connectionString)
         {
             _identityProvider = identityProvider.ThrowIfNull(nameof(identityProvider));
@@ -57,7 +57,7 @@ namespace Launchpad.Data
                     .Select(validationError => $"'{validationError.PropertyName}' has error '{validationError.ErrorMessage}'");
 
                 _logger
-                    .ForContext<LaunchpadDataContext>()
+                    .ForContext<VoyageDataContext>()
                     .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
 
                 throw;
@@ -84,7 +84,7 @@ namespace Launchpad.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // Disable EF migrations
-            Database.SetInitializer<LaunchpadDataContext>(null);
+            Database.SetInitializer<VoyageDataContext>(null);
 
             // Migrations were not being generated correctly because the order in which the base was executing
             // the model configurations and then the attempt to rename the tables. As a result, easiest solution was to take the base code
@@ -123,7 +123,7 @@ namespace Launchpad.Data
             role.HasMany(r => r.Users).WithRequired().HasForeignKey(ur => ur.RoleId);
 
             // Register the other models.
-            modelBuilder.Configurations.AddFromAssembly(typeof(LaunchpadDataContext).Assembly);
+            modelBuilder.Configurations.AddFromAssembly(typeof(VoyageDataContext).Assembly);
 
             // Configure the namespace for the audit.
             modelBuilder.Entity<AuditLog>()

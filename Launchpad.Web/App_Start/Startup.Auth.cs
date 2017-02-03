@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using FluentValidation.WebApi;
-using Launchpad.Web.AuthProviders;
-using Launchpad.Web.Middleware;
+using Voyage.Web.AuthProviders;
+using Voyage.Web.Middleware;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.OAuth;
@@ -10,7 +10,7 @@ using System;
 using System.Configuration;
 using System.Web.Http;
 
-namespace Launchpad.Web
+namespace Voyage.Web
 {
     public partial class Startup
     {

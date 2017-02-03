@@ -4,11 +4,11 @@ using System.Web.Http;
 
 using FluentAssertions;
 
-using Launchpad.UnitTests.Common;
-using Launchpad.Web;
-using Launchpad.Web.Filters;
+using Voyage.UnitTests.Common;
+using Voyage.Web;
+using Voyage.Web.Filters;
 
-namespace Launchpad.UnitTests.Web
+namespace Voyage.UnitTests.Web
 {
     public static class ControllerExtensions
     {

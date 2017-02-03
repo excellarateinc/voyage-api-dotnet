@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 
-using Launchpad.IntegrationTests.Web.Assertions;
-using Launchpad.Models;
+using Voyage.IntegrationTests.Web.Assertions;
+using Voyage.Models;
 
-namespace Launchpad.IntegrationTests.Web.Extensions
+namespace Voyage.IntegrationTests.Web.Extensions
 {
     /// <summary>
     /// Extension method that provides the Should() syntax for custom assertions

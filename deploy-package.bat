@@ -17,7 +17,7 @@ SET toolPath="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Ex
 SET sourcePath=".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
 
 ::Connection string for the target
-SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Launchpad"
+SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Voyage"
 
 :: process command line
 if not [%1]==[] if not [%1]==[-] set toolPath=%1

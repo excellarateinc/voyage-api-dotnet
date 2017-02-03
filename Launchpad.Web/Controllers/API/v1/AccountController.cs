@@ -1,12 +1,12 @@
 ﻿using System.Net;
-using Launchpad.Core;
-using Launchpad.Models;
+using Voyage.Core;
+using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Launchpad.Services.User;
+using Voyage.Services.User;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Web.Controllers.API.V1
+namespace Voyage.Web.Controllers.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AccountController : ApiController

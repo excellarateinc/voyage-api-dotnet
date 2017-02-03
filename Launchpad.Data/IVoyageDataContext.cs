@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity;
-using Launchpad.Models.Entities;
+using Voyage.Models.Entities;
 
-namespace Launchpad.Data
+namespace Voyage.Data
 {
-    public interface ILaunchpadDataContext
+    public interface IVoyageDataContext
     {
         IDbSet<ApplicationLog> Logs { get; set; }
 

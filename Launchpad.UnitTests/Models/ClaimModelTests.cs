@@ -2,12 +2,12 @@
 
 using FluentValidation.Attributes;
 
-using Launchpad.Models;
-using Launchpad.Models.Validators;
+using Voyage.Models;
+using Voyage.Models.Validators;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Models
+namespace Voyage.UnitTests.Models
 {
     public class ClaimModelTests
     {

@@ -2,14 +2,14 @@
 
 using FluentAssertions;
 
-using Launchpad.Data;
-using Launchpad.Data.Repositories.ApplicationLog;
-using Launchpad.Models.Entities;
-using Launchpad.UnitTests.Common;
+using Voyage.Data;
+using Voyage.Data.Repositories.ApplicationLog;
+using Voyage.Models.Entities;
+using Voyage.UnitTests.Common;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Data
+namespace Voyage.UnitTests.Data
 {
     public class ApplicationLogRepositoryTests : BaseUnitTest
     {
@@ -17,7 +17,7 @@ namespace Launchpad.UnitTests.Data
 
         public ApplicationLogRepositoryTests()
         {
-            var mockContext = Mock.Create<ILaunchpadDataContext>();
+            var mockContext = Mock.Create<IVoyageDataContext>();
             _repository = new ApplicationLogRepository(mockContext.Object);
         }
 

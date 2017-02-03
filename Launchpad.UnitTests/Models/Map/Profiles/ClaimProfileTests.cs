@@ -2,13 +2,13 @@
 
 using FluentAssertions;
 
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.UnitTests.Common.AutoMapperFixture;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.UnitTests.Common.AutoMapperFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Models.Map.Profiles
+namespace Voyage.UnitTests.Models.Map.Profiles
 {
     [Collection(AutoMapperCollection.CollectionName)]
     public class ClaimProfileTests

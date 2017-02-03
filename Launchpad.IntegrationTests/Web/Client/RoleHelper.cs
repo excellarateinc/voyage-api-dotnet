@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Launchpad.IntegrationTests.Web.Extensions;
-using Launchpad.Models;
+using Voyage.IntegrationTests.Web.Extensions;
+using Voyage.Models;
 
-namespace Launchpad.IntegrationTests.Web.Client
+namespace Voyage.IntegrationTests.Web.Client
 {
     public class RoleHelper : DataHelper<RoleModel>
     {

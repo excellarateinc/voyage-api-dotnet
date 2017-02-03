@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Attributes;
-using Launchpad.Models.Validators;
+using Voyage.Models.Validators;
 
-namespace Launchpad.Models
+namespace Voyage.Models
 {
     [Validator(typeof(RegistrationModelValidator))]
     public class RegistrationModel

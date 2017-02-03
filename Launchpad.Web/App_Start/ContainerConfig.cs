@@ -3,11 +3,11 @@ using System.Reflection;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
-using Launchpad.Data;
-using Launchpad.Models.Map;
-using Launchpad.Services;
+using Voyage.Data;
+using Voyage.Models.Map;
+using Voyage.Services;
 
-namespace Launchpad.Web
+namespace Voyage.Web
 {
     /// <summary>
     /// This is vanilla autofac configuration based on:
@@ -22,7 +22,7 @@ namespace Launchpad.Web
             var builder = new ContainerBuilder();
 
             // Register the types in the container
-            var connectionString = ConfigurationManager.ConnectionStrings["LaunchpadDataContext"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["VoyageDataContext"].ConnectionString;
             builder.RegisterModule(new DataModule(connectionString));
             builder.RegisterModule<AutoMapperModule>();
             builder.RegisterModule<ServicesModule>();

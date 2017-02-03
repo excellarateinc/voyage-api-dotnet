@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Launchpad.Core.Exceptions
+namespace Voyage.Core.Exceptions
 {
     public class ApiException : Exception
     {

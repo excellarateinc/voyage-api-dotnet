@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
-using Launchpad.Core;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Web.AuthProviders;
-using Launchpad.Web.Middleware;
-using Launchpad.Web.Middleware.Processors;
+using Voyage.Core;
+using Voyage.Services.IdentityManagers;
+using Voyage.Web.AuthProviders;
+using Voyage.Web.Middleware;
+using Voyage.Web.Middleware.Processors;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -14,9 +14,9 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using Launchpad.Models.Entities;
+using Voyage.Models.Entities;
 
-namespace Launchpad.Web
+namespace Voyage.Web
 {
     /// <summary>
     /// Configures the registrations for Autofac

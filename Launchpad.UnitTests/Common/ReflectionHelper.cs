@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Launchpad.UnitTests.Common
+namespace Voyage.UnitTests.Common
 {
     public static class ReflectionHelper
     {

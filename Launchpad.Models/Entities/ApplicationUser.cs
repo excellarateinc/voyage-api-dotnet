@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Launchpad.Models.Entities
+namespace Voyage.Models.Entities
 {
     /// <summary>
     /// Represents an application user. Properties placed on this class will be persisted to the user table

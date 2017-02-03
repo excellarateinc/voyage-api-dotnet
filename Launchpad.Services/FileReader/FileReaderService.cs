@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Launchpad.Services.FileReader
+namespace Voyage.Services.FileReader
 {
     public class FileReaderService : IFileReaderService
     {

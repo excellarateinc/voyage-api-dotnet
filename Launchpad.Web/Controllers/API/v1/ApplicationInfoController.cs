@@ -1,8 +1,8 @@
-﻿using Launchpad.Core;
+﻿using Voyage.Core;
 using System.Web.Http;
-using Launchpad.Services.ApplicationInfo;
+using Voyage.Services.ApplicationInfo;
 
-namespace Launchpad.Web.Controllers.API.V1
+namespace Voyage.Web.Controllers.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]

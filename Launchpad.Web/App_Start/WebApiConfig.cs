@@ -1,9 +1,9 @@
-﻿using Launchpad.Web.Filters;
+﻿using Voyage.Web.Filters;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
 
-namespace Launchpad.Web
+namespace Voyage.Web
 {
     public static class WebApiConfig
     {

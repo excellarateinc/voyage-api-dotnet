@@ -1,9 +1,9 @@
 ﻿using Owin;
 using Microsoft.Owin;
 
-[assembly: OwinStartup(typeof(Launchpad.Web.Startup))]
+[assembly: OwinStartup(typeof(Voyage.Web.Startup))]
 
-namespace Launchpad.Web
+namespace Voyage.Web
 {
     public partial class Startup
     {

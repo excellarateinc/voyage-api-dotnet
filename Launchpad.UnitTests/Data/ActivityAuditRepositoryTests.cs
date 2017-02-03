@@ -1,11 +1,11 @@
 ﻿using System;
 using FluentAssertions;
-using Launchpad.Data;
-using Launchpad.Data.Repositories.ActivityAudit;
-using Launchpad.UnitTests.Common;
+using Voyage.Data;
+using Voyage.Data.Repositories.ActivityAudit;
+using Voyage.UnitTests.Common;
 using Xunit;
 
-namespace Launchpad.UnitTests.Data
+namespace Voyage.UnitTests.Data
 {
     [Trait("Category", "Auditing")]
     public class ActivityAuditRepositoryTests : BaseUnitTest
@@ -14,7 +14,7 @@ namespace Launchpad.UnitTests.Data
 
         public ActivityAuditRepositoryTests()
         {
-            var mockContext = Mock.Create<ILaunchpadDataContext>();
+            var mockContext = Mock.Create<IVoyageDataContext>();
             _repository = new ActivityAuditRepository(mockContext.Object);
         }
 
@@ -28,7 +28,7 @@ namespace Launchpad.UnitTests.Data
         [Fact]
         public void Update_Should_Throw_NotImpelementedException()
         {
-            Action throwAction = () => _repository.Update(new Launchpad.Models.Entities.ActivityAudit());
+            Action throwAction = () => _repository.Update(new Voyage.Models.Entities.ActivityAudit());
             throwAction.ShouldThrow<NotImplementedException>();
         }
     }

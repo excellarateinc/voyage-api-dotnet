@@ -1,8 +1,8 @@
-﻿using Launchpad.Models;
+﻿using Voyage.Models;
 using Microsoft.Owin;
 using System;
 
-namespace Launchpad.Web.Extensions
+namespace Voyage.Web.Extensions
 {
     public static class OwinContextExtensions
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{420A6E90-E022-47D2-9B67-1BC11EBEB88B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.IntegrationTests</RootNamespace>
-    <AssemblyName>Launchpad.IntegrationTests</AssemblyName>
+    <RootNamespace>Voyage.IntegrationTests</RootNamespace>
+    <AssemblyName>Voyage.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -156,8 +156,8 @@
     <Compile Include="Data\ActivityAuditRepositoryTests.cs" />
     <Compile Include="Data\ApplicationLogRepositoryTests.cs" />
     <Compile Include="Data\Constants.cs" />
-    <Compile Include="Data\Extensions\LaunchpadContextExtensions.cs" />
-    <Compile Include="Data\LaunchpadDataContextTests.cs" />
+    <Compile Include="Data\Extensions\VoyageContextExtensions.cs" />
+    <Compile Include="Data\VoyageDataContextTests.cs" />
     <Compile Include="Data\RoleClaimRepositoryTests.cs" />
     <Compile Include="Data\Stores\CustomUserStoreTests.cs" />
     <Compile Include="Data\UserPhoneRepositoryTests.cs" />
@@ -202,25 +202,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+    <ProjectReference Include="..\Launchpad.Core\Voyage.Core.csproj">
       <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
-      <Name>Launchpad.Core</Name>
+      <Name>Voyage.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Data\Launchpad.Data.csproj">
+    <ProjectReference Include="..\Launchpad.Data\Voyage.Data.csproj">
       <Project>{7acf3840-25cc-4a96-824a-8ab6b28781fd}</Project>
-      <Name>Launchpad.Data</Name>
+      <Name>Voyage.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
+    <ProjectReference Include="..\Launchpad.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
-      <Name>Launchpad.Models</Name>
+      <Name>Voyage.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Services\Launchpad.Services.csproj">
+    <ProjectReference Include="..\Launchpad.Services\Voyage.Services.csproj">
       <Project>{550dbb13-a473-4348-b530-64a6a5177ab1}</Project>
-      <Name>Launchpad.Services</Name>
+      <Name>Voyage.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Web\Launchpad.Web.csproj">
+    <ProjectReference Include="..\Launchpad.Web\Voyage.Web.csproj">
       <Project>{6ec214fc-93ea-40b0-b74d-b147ba640dd4}</Project>
-      <Name>Launchpad.Web</Name>
+      <Name>Voyage.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -260,7 +260,7 @@
     <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>REM CALL "$(SolutionDir)\configure-test-db.bat" "$(SolutionDir)\Launchpad.Database\bin\$(ConfigurationName)\Launchpad.Database.dacpac"</PostBuildEvent>
+    <PostBuildEvent>REM CALL "$(SolutionDir)\configure-test-db.bat" "$(SolutionDir)\Voyage.Database\bin\$(ConfigurationName)\Voyage.Database.dacpac"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

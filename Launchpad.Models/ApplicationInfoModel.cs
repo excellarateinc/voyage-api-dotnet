@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Models
+﻿namespace Voyage.Models
 {
     public class ApplicationInfoModel
     {

@@ -1,11 +1,11 @@
-﻿using Launchpad.Core;
-using Launchpad.Models;
-using Launchpad.Web.Filters;
+﻿using Voyage.Core;
+using Voyage.Models;
+using Voyage.Web.Filters;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Launchpad.Services.Role;
+using Voyage.Services.Role;
 
-namespace Launchpad.Web.Controllers.API.V1
+namespace Voyage.Web.Controllers.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class RoleController : ApiController

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Launchpad.Models
+namespace Voyage.Models
 {
     public class ActivityAuditModel
     {

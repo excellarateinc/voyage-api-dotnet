@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.UnitTests.Common;
-using Launchpad.UnitTests.Common.AutoMapperFixture;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.UnitTests.Common;
+using Voyage.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
-namespace Launchpad.UnitTests.Models.Map.Profiles
+namespace Voyage.UnitTests.Models.Map.Profiles
 {
     [Trait("Category", "Mapping")]
     [Collection(AutoMapperCollection.CollectionName)]
@@ -26,7 +26,7 @@ namespace Launchpad.UnitTests.Models.Map.Profiles
                 Id = 1,
                 UserId = string.Empty,
                 PhoneNumber = "6125555555",
-                PhoneType = Launchpad.Models.Enum.PhoneType.Office
+                PhoneType = Voyage.Models.Enum.PhoneType.Office
             };
 
             var model = _mappingFixture.MapperInstance.Map<UserPhoneModel>(userPhone);

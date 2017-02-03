@@ -5,7 +5,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 
-namespace Launchpad.IntegrationTests.Web.Assertions
+namespace Voyage.IntegrationTests.Web.Assertions
 {
     /// <summary>
     /// Custom assertions for HttpResponseMessage

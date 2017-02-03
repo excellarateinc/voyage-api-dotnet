@@ -3,13 +3,13 @@ using System.Transactions;
 
 using FluentAssertions;
 
-using Launchpad.Data;
-using Launchpad.Data.Repositories.UserPhone;
-using Launchpad.Models.Entities;
+using Voyage.Data;
+using Voyage.Data.Repositories.UserPhone;
+using Voyage.Models.Entities;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Data
+namespace Voyage.IntegrationTests.Data
 {
     [Collection(Constants.CollectionName)]
     public class UserPhoneRepositoryTests
@@ -19,7 +19,7 @@ namespace Launchpad.IntegrationTests.Data
         {
             using (new TransactionScope())
             {
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     // Arrange
                     // Create a user phone number
@@ -49,7 +49,7 @@ namespace Launchpad.IntegrationTests.Data
         {
             using (new TransactionScope())
             {
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     // Arrange
                     // Create a user phone number

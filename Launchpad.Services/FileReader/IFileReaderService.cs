@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Services.FileReader
+﻿namespace Voyage.Services.FileReader
 {
     public interface IFileReaderService
     {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Launchpad.Models.Validators
+namespace Voyage.Models.Validators
 {
     public static class RuleBuilderExtensions
     {

@@ -2,11 +2,11 @@
 
 using FluentAssertions;
 
-using Launchpad.Core;
+using Voyage.Core;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Core
+namespace Voyage.UnitTests.Core
 {
     public class ArgumentExtensionsTests
     {

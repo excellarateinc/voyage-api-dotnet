@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Owin;
 
-namespace Launchpad.UnitTests.Web.Middleware
+namespace Voyage.UnitTests.Web.Middleware
 {
     /// <summary>
     /// Request ID is not being populated into the environment dictionary. For these tests, add this fake

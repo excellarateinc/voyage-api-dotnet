@@ -2,9 +2,9 @@
 
 using AutoMapper;
 
-using Launchpad.Models.Map;
+using Voyage.Models.Map;
 
-namespace Launchpad.UnitTests.Common.AutoMapperFixture
+namespace Voyage.UnitTests.Common.AutoMapperFixture
 {
     public class AutoMapperFixture
     {

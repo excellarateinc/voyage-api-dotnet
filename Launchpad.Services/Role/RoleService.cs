@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Launchpad.Core;
-using Launchpad.Core.Exceptions;
-using Launchpad.Data.Repositories.RoleClaim;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.Services.IdentityManagers;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
+using Voyage.Data.Repositories.RoleClaim;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Services.Role
+namespace Voyage.Services.Role
 {
     public class RoleService : IRoleService
     {
@@ -25,11 +25,6 @@ namespace Launchpad.Services.Role
             _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
-        /// <summary>
-        /// Find a role by ID
-        /// </summary>
-        /// <param name="id">Role ID</param>
-        /// <returns>EnttiyResult</returns>
         public RoleModel GetRoleById(string id)
         {
             var role = _roleManager.FindById(id);

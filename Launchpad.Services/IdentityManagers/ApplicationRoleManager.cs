@@ -1,7 +1,7 @@
-﻿using Launchpad.Models.Entities;
+﻿using Voyage.Models.Entities;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Services.IdentityManagers
+namespace Voyage.Services.IdentityManagers
 {
     public class ApplicationRoleManager : RoleManager<ApplicationRole>
     {

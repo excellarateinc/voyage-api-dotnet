@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Launchpad.Models
+namespace Voyage.Models
 {
     public class ResponseErrorModel
     {

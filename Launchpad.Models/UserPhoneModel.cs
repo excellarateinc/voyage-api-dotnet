@@ -1,10 +1,10 @@
 ﻿using FluentValidation.Attributes;
-using Launchpad.Models.Enum;
-using Launchpad.Models.Validators;
+using Voyage.Models.Enum;
+using Voyage.Models.Validators;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Launchpad.Models
+namespace Voyage.Models
 {
     [Validator(typeof(UserPhoneModelValidator))]
     public class UserPhoneModel

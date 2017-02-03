@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace Launchpad.Data.Repositories.ActivityAudit
+namespace Voyage.Data.Repositories.ActivityAudit
 {
     public class ActivityAuditRepository : BaseRepository<Models.Entities.ActivityAudit>, IActivityAuditRepository
     {
-        public ActivityAuditRepository(ILaunchpadDataContext context)
+        public ActivityAuditRepository(IVoyageDataContext context)
             : base(context)
         {
         }

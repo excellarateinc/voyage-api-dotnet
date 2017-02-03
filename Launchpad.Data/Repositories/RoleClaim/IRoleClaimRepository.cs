@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Launchpad.Data.Repositories.RoleClaim
+namespace Voyage.Data.Repositories.RoleClaim
 {
     public interface IRoleClaimRepository : IRepository<Models.Entities.RoleClaim>
     {

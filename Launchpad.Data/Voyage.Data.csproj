@@ -7,8 +7,8 @@
     <ProjectGuid>{7ACF3840-25CC-4A96-824A-8AB6B28781FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.Data</RootNamespace>
-    <AssemblyName>Launchpad.Data</AssemblyName>
+    <RootNamespace>Voyage.Data</RootNamespace>
+    <AssemblyName>Voyage.Data</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -86,12 +86,12 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Repositories\ActivityAudit\IActivityAuditRepository.cs" />
-    <Compile Include="ILaunchpadDataContext.cs" />
+    <Compile Include="IVoyageDataContext.cs" />
     <Compile Include="Repositories\ApplicationLog\IApplicationLogRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\RoleClaim\IRoleClaimRepository.cs" />
     <Compile Include="Repositories\UserPhone\IUserPhoneRepository.cs" />
-    <Compile Include="LaunchpadDataContext.cs" />
+    <Compile Include="VoyageDataContext.cs" />
     <Compile Include="Repositories\ApplicationLog\ApplicationLogRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\RoleClaim\RoleClaimRepository.cs" />
@@ -105,13 +105,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+    <ProjectReference Include="..\Launchpad.Core\Voyage.Core.csproj">
       <Project>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</Project>
-      <Name>Launchpad.Core</Name>
+      <Name>Voyage.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
+    <ProjectReference Include="..\Launchpad.Models\Voyage.Models.csproj">
       <Project>{D2013160-5E92-4EB0-8A10-3B89C44E8572}</Project>
-      <Name>Launchpad.Models</Name>
+      <Name>Voyage.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

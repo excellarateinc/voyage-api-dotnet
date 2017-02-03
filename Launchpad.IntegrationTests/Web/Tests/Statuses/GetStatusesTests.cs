@@ -3,13 +3,13 @@ using System.Net.Http;
 
 using FluentAssertions;
 
-using Launchpad.IntegrationTests.Web.Extensions;
-using Launchpad.IntegrationTests.Web.Hosting;
-using Launchpad.Models;
+using Voyage.IntegrationTests.Web.Extensions;
+using Voyage.IntegrationTests.Web.Hosting;
+using Voyage.Models;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Web.Tests.Statuses
+namespace Voyage.IntegrationTests.Web.Tests.Statuses
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]

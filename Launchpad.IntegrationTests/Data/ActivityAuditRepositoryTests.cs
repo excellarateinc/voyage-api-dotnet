@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Transactions;
 using FluentAssertions;
-using Launchpad.Data;
-using Launchpad.Data.Repositories.ActivityAudit;
+using Voyage.Data;
+using Voyage.Data.Repositories.ActivityAudit;
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Data
+namespace Voyage.IntegrationTests.Data
 {
     [Collection(Constants.CollectionName)]
     public class ActivityAuditRepositoryTests
@@ -13,7 +13,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void GetAll_Should_Return_Records()
         {
-            using (var context = new LaunchpadDataContext())
+            using (var context = new VoyageDataContext())
             {
                 var repository = new ActivityAuditRepository(context);
 

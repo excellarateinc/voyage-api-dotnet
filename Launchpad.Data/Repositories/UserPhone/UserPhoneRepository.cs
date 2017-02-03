@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace Launchpad.Data.Repositories.UserPhone
+namespace Voyage.Data.Repositories.UserPhone
 {
     public class UserPhoneRepository : BaseRepository<Models.Entities.UserPhone>, IUserPhoneRepository
     {
-        public UserPhoneRepository(ILaunchpadDataContext context)
+        public UserPhoneRepository(IVoyageDataContext context)
             : base(context)
         {
         }

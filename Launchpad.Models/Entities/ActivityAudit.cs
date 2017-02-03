@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Launchpad.Models.Entities
+namespace Voyage.Models.Entities
 {
     [Table("ActivityAudit")]
     public class ActivityAudit

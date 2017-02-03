@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace Launchpad.IntegrationTests.Web.Extensions
+namespace Voyage.IntegrationTests.Web.Extensions
 {
     /// <summary>
     /// Helper methods for response messages

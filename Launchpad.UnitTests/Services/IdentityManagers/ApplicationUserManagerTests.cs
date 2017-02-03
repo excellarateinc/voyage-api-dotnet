@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 
-using Launchpad.Models.Entities;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.UnitTests.Common;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
+using Voyage.UnitTests.Common;
 
 using Microsoft.AspNet.Identity;
 
@@ -10,7 +10,7 @@ using Moq;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Services.IdentityManagers
+namespace Voyage.UnitTests.Services.IdentityManagers
 {
     public class ApplicationUserManagerTests : BaseUnitTest
     {

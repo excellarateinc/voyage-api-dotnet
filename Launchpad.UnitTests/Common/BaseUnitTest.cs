@@ -3,7 +3,7 @@ using System.Threading;
 using Moq;
 using Ploeh.AutoFixture;
 
-namespace Launchpad.UnitTests.Common
+namespace Voyage.UnitTests.Common
 {
     public abstract class BaseUnitTest : IDisposable
     {

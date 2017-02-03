@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Launchpad.Models.Map
+namespace Voyage.Models.Map
 {
     public static class MappingConfig
     {

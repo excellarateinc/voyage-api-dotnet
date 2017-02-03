@@ -1,4 +1,4 @@
-﻿namespace Launchpad.IntegrationTests.Web.Hosting
+﻿namespace Voyage.IntegrationTests.Web.Hosting
 {
     public static class HostingOptions
     {

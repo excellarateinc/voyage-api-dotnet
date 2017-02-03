@@ -1,11 +1,11 @@
 ﻿using System;
 
-using Launchpad.IntegrationTests.Web.Client;
-using Launchpad.Web;
+using Voyage.IntegrationTests.Web.Client;
+using Voyage.Web;
 
 using Microsoft.Owin.Hosting;
 
-namespace Launchpad.IntegrationTests.Web.Hosting
+namespace Voyage.IntegrationTests.Web.Hosting
 {
     /// <summary>
     /// Test fixture responsible for bootstrapping and opening the self hosted services

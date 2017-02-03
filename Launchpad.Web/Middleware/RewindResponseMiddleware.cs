@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Launchpad.Web.Middleware
+namespace Voyage.Web.Middleware
 {
     /// <summary>
     /// This middleware will replace the default response.body

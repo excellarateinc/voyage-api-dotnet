@@ -2,13 +2,13 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Launchpad.IntegrationTests.Web.Client;
-using Launchpad.IntegrationTests.Web.Extensions;
-using Launchpad.IntegrationTests.Web.Hosting;
+using Voyage.IntegrationTests.Web.Client;
+using Voyage.IntegrationTests.Web.Extensions;
+using Voyage.IntegrationTests.Web.Hosting;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Web.Tests.Users
+namespace Voyage.IntegrationTests.Web.Tests.Users
 {
     [Trait("Category", "Self-Hosted")]
     [Collection(HostCollectionFixture.Name)]

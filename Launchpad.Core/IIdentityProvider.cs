@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Core
+﻿namespace Voyage.Core
 {
     public interface IIdentityProvider
     {

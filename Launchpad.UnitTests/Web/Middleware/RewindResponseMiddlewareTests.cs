@@ -3,8 +3,8 @@ using System.Net.Http;
 
 using FluentAssertions;
 
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Middleware;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Middleware;
 
 using Microsoft.Owin.Testing;
 
@@ -12,7 +12,7 @@ using Owin;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.Middleware
+namespace Voyage.UnitTests.Web.Middleware
 {
     [Trait("Category", "CustomMiddleware")]
     public class RewindResponseMiddlewareTests : BaseUnitTest

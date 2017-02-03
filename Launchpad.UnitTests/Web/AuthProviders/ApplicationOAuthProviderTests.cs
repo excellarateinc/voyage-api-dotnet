@@ -6,9 +6,9 @@ using Autofac;
 
 using FluentAssertions;
 
-using Launchpad.Services.User;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.AuthProviders;
+using Voyage.Services.User;
+using Voyage.UnitTests.Common;
+using Voyage.Web.AuthProviders;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -22,7 +22,7 @@ using Ploeh.AutoFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.AuthProviders
+namespace Voyage.UnitTests.Web.AuthProviders
 {
     [Trait("Category", "OAuthProvider")]
     public class ApplicationOAuthProviderTests : BaseUnitTest

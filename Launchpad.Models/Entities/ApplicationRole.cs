@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Launchpad.Models.Entities
+namespace Voyage.Models.Entities
 {
     public class ApplicationRole : IdentityRole
     {

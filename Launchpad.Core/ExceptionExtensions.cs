@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Launchpad.Core
+namespace Voyage.Core
 {
     public static class ExceptionExtensions
     {

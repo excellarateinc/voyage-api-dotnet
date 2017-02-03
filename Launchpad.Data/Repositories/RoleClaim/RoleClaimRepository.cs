@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 
-namespace Launchpad.Data.Repositories.RoleClaim
+namespace Voyage.Data.Repositories.RoleClaim
 {
     public class RoleClaimRepository : BaseRepository<Models.Entities.RoleClaim>, IRoleClaimRepository
     {
-        public RoleClaimRepository(ILaunchpadDataContext context)
+        public RoleClaimRepository(IVoyageDataContext context)
             : base(context)
         {
         }

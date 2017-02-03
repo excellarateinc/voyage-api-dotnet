@@ -7,6 +7,6 @@
     [Exception]       NVARCHAR (MAX) NULL,
     [LogEvent]        NVARCHAR (MAX) NULL,
     [Properties]      XML            NULL,
-    CONSTRAINT [PK_dbo.LaunchpadLogs] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_dbo.VoyageLogs] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

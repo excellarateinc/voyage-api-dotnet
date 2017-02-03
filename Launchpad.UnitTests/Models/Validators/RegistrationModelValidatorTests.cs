@@ -1,12 +1,12 @@
 ﻿using FluentValidation.TestHelper;
 
-using Launchpad.Models;
-using Launchpad.Models.Validators;
-using Launchpad.UnitTests.Common;
+using Voyage.Models;
+using Voyage.Models.Validators;
+using Voyage.UnitTests.Common;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Models.Validators
+namespace Voyage.UnitTests.Models.Validators
 {
     [Trait("Category", "Model.Validation")]
     public class RegistrationModelValidatorTests : BaseUnitTest

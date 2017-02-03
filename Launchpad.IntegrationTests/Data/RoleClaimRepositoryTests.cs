@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using Launchpad.Data;
-using Launchpad.Data.Repositories.RoleClaim;
-using Launchpad.IntegrationTests.Data.Extensions;
-using Launchpad.Models.Entities;
+using Voyage.Data;
+using Voyage.Data.Repositories.RoleClaim;
+using Voyage.IntegrationTests.Data.Extensions;
+using Voyage.Models.Entities;
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Data
+namespace Voyage.IntegrationTests.Data
 {
     [Collection(Constants.CollectionName)]
     public class RoleClaimRepositoryTests
@@ -13,7 +13,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void GetAll_Should_Return_RoleClaims()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -29,7 +29,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void GetByRoleAndClaim_Should_Return_Claim()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -45,7 +45,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void GetClaimsByRole_Should_Return_Claims()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -60,7 +60,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void Get_Should_Return_RoleClaim()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -76,7 +76,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void Add_Should_Create_Claim()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -100,7 +100,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void Update_Should_Modify_Claim()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 
@@ -122,7 +122,7 @@ namespace Launchpad.IntegrationTests.Data
         [Fact]
         public void Delete_Should_Remove_Claim()
         {
-            using (var ctx = new LaunchpadDataContext())
+            using (var ctx = new VoyageDataContext())
             {
                 var repository = new RoleClaimRepository(ctx);
 

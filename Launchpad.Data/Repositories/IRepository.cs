@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Launchpad.Data.Repositories
+namespace Voyage.Data.Repositories
 {
     /// <summary>
     /// Basic repository

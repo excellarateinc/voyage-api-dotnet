@@ -5,8 +5,8 @@ using System.Security.Principal;
 
 using FluentAssertions;
 
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Extensions;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Extensions;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -17,7 +17,7 @@ using Ploeh.AutoFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.Extensions
+namespace Voyage.UnitTests.Web.Extensions
 {
     [Trait("Category", "Extension Methods")]
     public class OwinContextExtensionsTests : BaseUnitTest

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Launchpad.Core
+namespace Voyage.Core
 {
     /// <summary>
     /// Extension methods for validating arguments

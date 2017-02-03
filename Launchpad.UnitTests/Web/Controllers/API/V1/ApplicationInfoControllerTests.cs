@@ -5,18 +5,18 @@ using System.Web.Http.Results;
 
 using FluentAssertions;
 
-using Launchpad.Models;
-using Launchpad.Services.ApplicationInfo;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Controllers.API.V1;
+using Voyage.Models;
+using Voyage.Services.ApplicationInfo;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Controllers.API.V1;
 
 using Moq;
 
 using Xunit;
 
-using Constants = Launchpad.Web.Constants;
+using Constants = Voyage.Web.Constants;
 
-namespace Launchpad.UnitTests.Web.Controllers.API.V1
+namespace Voyage.UnitTests.Web.Controllers.API.V1
 {
     public class ApplicationInfoControllerTests : BaseUnitTest
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace Launchpad.IntegrationTests.Web.Client
+namespace Voyage.IntegrationTests.Web.Client
 {
     public sealed class TokenProvider : ApiConsumer
     {

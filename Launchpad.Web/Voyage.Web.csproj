@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.Web</RootNamespace>
-    <AssemblyName>Launchpad.Web</AssemblyName>
+    <RootNamespace>Voyage.Web</RootNamespace>
+    <AssemblyName>Voyage.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
@@ -226,21 +226,21 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+    <ProjectReference Include="..\Launchpad.Core\Voyage.Core.csproj">
       <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
-      <Name>Launchpad.Core</Name>
+      <Name>Voyage.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Data\Launchpad.Data.csproj">
+    <ProjectReference Include="..\Launchpad.Data\Voyage.Data.csproj">
       <Project>{7ACF3840-25CC-4A96-824A-8AB6B28781FD}</Project>
-      <Name>Launchpad.Data</Name>
+      <Name>Voyage.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
+    <ProjectReference Include="..\Launchpad.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
-      <Name>Launchpad.Models</Name>
+      <Name>Voyage.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Services\Launchpad.Services.csproj">
+    <ProjectReference Include="..\Launchpad.Services\Voyage.Services.csproj">
       <Project>{550DBB13-A473-4348-B530-64A6A5177AB1}</Project>
-      <Name>Launchpad.Services</Name>
+      <Name>Voyage.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

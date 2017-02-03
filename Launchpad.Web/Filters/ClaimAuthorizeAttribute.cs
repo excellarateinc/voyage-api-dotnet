@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Launchpad.Core;
+using Voyage.Core;
 using Serilog;
 using System.Net;
 using System.Net.Http;
@@ -8,9 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using Launchpad.Models;
+using Voyage.Models;
 
-namespace Launchpad.Web.Filters
+namespace Voyage.Web.Filters
 {
     public class ClaimAuthorizeAttribute : AuthorizeAttribute
     {

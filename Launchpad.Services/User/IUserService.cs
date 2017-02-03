@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Launchpad.Models;
+using Voyage.Models;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Services.User
+namespace Voyage.Services.User
 {
     public interface IUserService
     {

@@ -3,16 +3,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Launchpad.Core;
-using Launchpad.Core.Exceptions;
-using Launchpad.Data.Repositories.UserPhone;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Role;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
+using Voyage.Data.Repositories.UserPhone;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
+using Voyage.Services.Role;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Services.User
+namespace Voyage.Services.User
 {
     public class UserService : IUserService
     {
@@ -145,8 +145,6 @@ namespace Launchpad.Services.User
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
             var roles = await _userManager.GetRolesAsync(userId);
-
-            // TODO: Refactor this to pass in the role list (IQueryable)
             var roleModels = _roleService.GetRoles().Where(_ => roles.Contains(_.Name));
             return roleModels;
         }

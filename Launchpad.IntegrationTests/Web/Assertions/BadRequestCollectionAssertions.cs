@@ -3,9 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Collections;
 using FluentAssertions.Execution;
-using Launchpad.Models;
+using Voyage.Models;
 
-namespace Launchpad.IntegrationTests.Web.Assertions
+namespace Voyage.IntegrationTests.Web.Assertions
 {
     public class BadRequestCollectionAssertions :
        SelfReferencingCollectionAssertions<ResponseErrorModel, BadRequestCollectionAssertions>

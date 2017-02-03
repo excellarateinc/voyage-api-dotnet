@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Middleware.Processors;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Middleware.Processors;
 
 using Microsoft.Owin;
 
@@ -14,7 +14,7 @@ using Moq;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.Middleware.Processors
+namespace Voyage.UnitTests.Web.Middleware.Processors
 {
     public class ResponseProcessorTests : BaseUnitTest
     {

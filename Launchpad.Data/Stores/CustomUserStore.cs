@@ -1,9 +1,9 @@
 ﻿using System.Data.Entity;
 using System.Threading.Tasks;
-using Launchpad.Models.Entities;
+using Voyage.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Launchpad.Data.Stores
+namespace Voyage.Data.Stores
 {
     public class CustomUserStore : UserStore<ApplicationUser, ApplicationRole, string, IdentityUserLogin, IdentityUserRole, IdentityUserClaim>
     {

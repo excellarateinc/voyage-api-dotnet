@@ -1,8 +1,8 @@
-﻿using Launchpad.Core;
-using Launchpad.Web.Extensions;
+﻿using Voyage.Core;
+using Voyage.Web.Extensions;
 using Microsoft.Owin;
 
-namespace Launchpad.Web.AuthProviders
+namespace Voyage.Web.AuthProviders
 {
     public class IdentityProvider : IIdentityProvider
     {

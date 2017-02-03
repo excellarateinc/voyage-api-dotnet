@@ -1,9 +1,9 @@
-﻿using Launchpad.UnitTests.Common;
-using Launchpad.UnitTests.Common.AutoMapperFixture;
+﻿using Voyage.UnitTests.Common;
+using Voyage.UnitTests.Common.AutoMapperFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Models
+namespace Voyage.UnitTests.Models
 {
     [Collection(AutoMapperCollection.CollectionName)]
     public class AutoMapperValidationTests : BaseUnitTest

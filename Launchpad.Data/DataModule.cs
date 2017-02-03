@@ -1,16 +1,16 @@
 ﻿using System.Data.Entity;
 using Autofac;
 using Autofac.Core;
-using Launchpad.Core;
-using Launchpad.Data.Repositories;
-using Launchpad.Data.Stores;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
+using Voyage.Core;
+using Voyage.Data.Repositories;
+using Voyage.Data.Stores;
+using Voyage.Models;
+using Voyage.Models.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TrackerEnabledDbContext.Common.Configuration;
 
-namespace Launchpad.Data
+namespace Voyage.Data
 {
     public class DataModule : Module
     {
@@ -32,9 +32,9 @@ namespace Launchpad.Data
             BaseAuditConfiguration.Configure();
 
             // Register a data context with an instance per request
-            // Dependency Type: ILaunchpadDataContext
-            // Concrete Type: LaunchpadDataContext
-            builder.RegisterType<LaunchpadDataContext>()
+            // Dependency Type: IVoyageDataContext
+            // Concrete Type: VoyageDataContext
+            builder.RegisterType<VoyageDataContext>()
                 .WithParameter("connectionString", _connectionString)
                 .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(IIdentityProvider), (pi, ctx) => ctx.Resolve<IIdentityProvider>()))
                 .AsSelf()
@@ -49,13 +49,13 @@ namespace Launchpad.Data
 
             // Register the user store (wrapper around the identity tables)
             builder.RegisterType<CustomUserStore>()
-                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
+                .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<VoyageDataContext>()))
                 .As<IUserStore<ApplicationUser, string>>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
             builder.RegisterType<RoleStore<ApplicationRole>>()
-               .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<LaunchpadDataContext>()))
+               .WithParameter(new ResolvedParameter((pi, ctx) => pi.ParameterType == typeof(DbContext), (pi, ctx) => ctx.Resolve<VoyageDataContext>()))
                .As<IRoleStore<ApplicationRole, string>>()
                .InstancePerRequest();
         }

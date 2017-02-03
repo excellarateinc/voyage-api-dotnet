@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
 
-using Launchpad.IntegrationTests.Web.Client;
-using Launchpad.IntegrationTests.Web.Hosting;
+using Voyage.IntegrationTests.Web.Client;
+using Voyage.IntegrationTests.Web.Hosting;
 
-namespace Launchpad.IntegrationTests.Web
+namespace Voyage.IntegrationTests.Web
 {
     public abstract class ApiTest : ApiConsumer
     {

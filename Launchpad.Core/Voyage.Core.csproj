@@ -7,8 +7,8 @@
     <ProjectGuid>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.Core</RootNamespace>
-    <AssemblyName>Launchpad.Core</AssemblyName>
+    <RootNamespace>Voyage.Core</RootNamespace>
+    <AssemblyName>Voyage.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

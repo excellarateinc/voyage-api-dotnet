@@ -1,9 +1,9 @@
-﻿using Launchpad.Models;
+﻿using Voyage.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.ModelBinding;
 
-namespace Launchpad.Web.Extensions
+namespace Voyage.Web.Extensions
 {
     public static class ModelErrorExtensions
     {

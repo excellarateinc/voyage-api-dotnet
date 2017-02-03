@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 using FluentAssertions;
 
-using Launchpad.Core.Exceptions;
-using Launchpad.Data.Repositories.RoleClaim;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.Services.IdentityManagers;
-using Launchpad.Services.Role;
-using Launchpad.UnitTests.Common;
-using Launchpad.UnitTests.Common.AutoMapperFixture;
+using Voyage.Core.Exceptions;
+using Voyage.Data.Repositories.RoleClaim;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
+using Voyage.Services.Role;
+using Voyage.UnitTests.Common;
+using Voyage.UnitTests.Common.AutoMapperFixture;
 
 using Microsoft.AspNet.Identity;
 
@@ -22,7 +22,7 @@ using Ploeh.AutoFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Services
+namespace Voyage.UnitTests.Services
 {
     [Trait("Category", "Role.Service")]
     [Collection(AutoMapperCollection.CollectionName)]

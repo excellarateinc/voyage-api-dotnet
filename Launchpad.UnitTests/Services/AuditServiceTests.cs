@@ -2,12 +2,12 @@
 
 using FluentAssertions;
 
-using Launchpad.Data.Repositories.ActivityAudit;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
-using Launchpad.Services.Audit;
-using Launchpad.UnitTests.Common;
-using Launchpad.UnitTests.Common.AutoMapperFixture;
+using Voyage.Data.Repositories.ActivityAudit;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.Services.Audit;
+using Voyage.UnitTests.Common;
+using Voyage.UnitTests.Common.AutoMapperFixture;
 
 using Moq;
 
@@ -15,7 +15,7 @@ using Ploeh.AutoFixture;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Services
+namespace Voyage.UnitTests.Services
 {
     [Trait("Category", "Audit.Service")]
     [Collection(AutoMapperCollection.CollectionName)]

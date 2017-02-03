@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 
-using Launchpad.IntegrationTests.Web.Hosting;
+using Voyage.IntegrationTests.Web.Hosting;
 
-namespace Launchpad.IntegrationTests.Web.Client
+namespace Voyage.IntegrationTests.Web.Client
 {
     public abstract class ApiConsumer : IDisposable
     {

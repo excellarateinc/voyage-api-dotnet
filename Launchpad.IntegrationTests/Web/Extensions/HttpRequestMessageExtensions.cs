@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Formatting;
 
-namespace Launchpad.IntegrationTests.Web.Extensions
+namespace Voyage.IntegrationTests.Web.Extensions
 {
     public static class HttpRequestMessageExtensions
     {

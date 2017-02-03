@@ -3,12 +3,12 @@ using System.Transactions;
 
 using FluentAssertions;
 
-using Launchpad.Data;
-using Launchpad.Data.Stores;
+using Voyage.Data;
+using Voyage.Data.Stores;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Data.Stores
+namespace Voyage.IntegrationTests.Data.Stores
 {
     [Collection(Constants.CollectionName)]
     public class CustomUserStoreTests
@@ -18,7 +18,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First();
@@ -40,7 +40,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First();
@@ -62,7 +62,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First();
@@ -84,7 +84,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
@@ -104,7 +104,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);
@@ -124,7 +124,7 @@ namespace Launchpad.IntegrationTests.Data.Stores
         {
             using (new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                using (var ctx = new LaunchpadDataContext())
+                using (var ctx = new VoyageDataContext())
                 {
                     // Arrange
                     var user = ctx.Users.First(_ => !_.Deleted);

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 
-namespace Launchpad.Data.Repositories.ApplicationLog
+namespace Voyage.Data.Repositories.ApplicationLog
 {
     /// <summary>
     /// Following our repository pattern - this is readonly (The logger will write the messages)
     /// </summary>
     public class ApplicationLogRepository : BaseRepository<Models.Entities.ApplicationLog>, IApplicationLogRepository
     {
-        public ApplicationLogRepository(ILaunchpadDataContext context)
+        public ApplicationLogRepository(IVoyageDataContext context)
             : base(context)
         {
         }

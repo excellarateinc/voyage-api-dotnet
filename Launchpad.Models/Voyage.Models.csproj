@@ -7,8 +7,8 @@
     <ProjectGuid>{D2013160-5E92-4EB0-8A10-3B89C44E8572}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.Models</RootNamespace>
-    <AssemblyName>Launchpad.Models</AssemblyName>
+    <RootNamespace>Voyage.Models</RootNamespace>
+    <AssemblyName>Voyage.Models</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -115,9 +115,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+    <ProjectReference Include="..\Launchpad.Core\Voyage.Core.csproj">
       <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
-      <Name>Launchpad.Core</Name>
+      <Name>Voyage.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

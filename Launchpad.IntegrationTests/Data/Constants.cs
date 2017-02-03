@@ -1,4 +1,4 @@
-﻿namespace Launchpad.IntegrationTests.Data
+﻿namespace Voyage.IntegrationTests.Data
 {
     public static class Constants
     {

@@ -1,8 +1,8 @@
-﻿using Launchpad.Models.Entities;
+﻿using Voyage.Models.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TrackerEnabledDbContext.Common.Configuration;
 
-namespace Launchpad.Data
+namespace Voyage.Data
 {
     public static class BaseAuditConfiguration
     {

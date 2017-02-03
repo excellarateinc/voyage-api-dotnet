@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Http.ModelBinding;
 using FluentAssertions;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Extensions;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Extensions;
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.Extensions
+namespace Voyage.UnitTests.Web.Extensions
 {
     public class ModelErrorExtensionsTests : BaseUnitTest
     {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Launchpad.Core;
+using Voyage.Core;
 
-namespace Launchpad.Models.Validators
+namespace Voyage.Models.Validators
 {
     public class UserModelValidator : AbstractValidator<UserModel>
     {

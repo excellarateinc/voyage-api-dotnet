@@ -1,6 +1,6 @@
-﻿using Launchpad.Models;
+﻿using Voyage.Models;
 
-namespace Launchpad.Services.ApplicationInfo
+namespace Voyage.Services.ApplicationInfo
 {
     public interface IApplicationInfoService
     {

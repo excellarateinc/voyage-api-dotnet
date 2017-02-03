@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin.Security.OAuth;
 using System.Threading.Tasks;
 
-namespace Launchpad.Web.AuthProviders
+namespace Voyage.Web.AuthProviders
 {
     public interface ILoginOrchestrator
     {

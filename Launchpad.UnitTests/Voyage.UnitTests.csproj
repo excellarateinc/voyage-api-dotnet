@@ -7,8 +7,8 @@
     <ProjectGuid>{CA489C7A-9733-4F0F-82C6-A820F5498B40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Launchpad.UnitTests</RootNamespace>
-    <AssemblyName>Launchpad.UnitTests</AssemblyName>
+    <RootNamespace>Voyage.UnitTests</RootNamespace>
+    <AssemblyName>Voyage.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -221,25 +221,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Launchpad.Core\Launchpad.Core.csproj">
+    <ProjectReference Include="..\Launchpad.Core\Voyage.Core.csproj">
       <Project>{AB3DAB8E-C44A-40B3-9A61-031D34A6F71B}</Project>
-      <Name>Launchpad.Core</Name>
+      <Name>Voyage.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Data\Launchpad.Data.csproj">
+    <ProjectReference Include="..\Launchpad.Data\Voyage.Data.csproj">
       <Project>{7acf3840-25cc-4a96-824a-8ab6b28781fd}</Project>
-      <Name>Launchpad.Data</Name>
+      <Name>Voyage.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Models\Launchpad.Models.csproj">
+    <ProjectReference Include="..\Launchpad.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
-      <Name>Launchpad.Models</Name>
+      <Name>Voyage.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Services\Launchpad.Services.csproj">
+    <ProjectReference Include="..\Launchpad.Services\Voyage.Services.csproj">
       <Project>{550dbb13-a473-4348-b530-64a6a5177ab1}</Project>
-      <Name>Launchpad.Services</Name>
+      <Name>Voyage.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Launchpad.Web\Launchpad.Web.csproj">
+    <ProjectReference Include="..\Launchpad.Web\Voyage.Web.csproj">
       <Project>{6ec214fc-93ea-40b0-b74d-b147ba640dd4}</Project>
-      <Name>Launchpad.Web</Name>
+      <Name>Voyage.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

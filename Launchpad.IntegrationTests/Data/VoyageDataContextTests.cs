@@ -3,18 +3,18 @@ using System.Transactions;
 
 using FluentAssertions;
 
-using Launchpad.Data;
+using Voyage.Data;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Data
+namespace Voyage.IntegrationTests.Data
 {
     /// <summary>
     /// The collection attribute prevents the integration tests from running in parallel. This should be on all integration tests that
     /// have a transaction scope.
     /// </summary>
     [Collection(Constants.CollectionName)]
-    public class LaunchpadDataContextTests
+    public class VoyageDataContextTests
     {
         [Fact]
         public void ActivityAudits_Should_Query_Database()
@@ -23,7 +23,7 @@ namespace Launchpad.IntegrationTests.Data
             using (new TransactionScope())
             {
                 // Create a data context
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     // Just force a database query
                     var results = context.ActivityAudits.Take(10);
@@ -40,7 +40,7 @@ namespace Launchpad.IntegrationTests.Data
             using (new TransactionScope())
             {
                 // Create a data context
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     // Just force a database query
                     var results = context.Logs.Take(10);
@@ -55,7 +55,7 @@ namespace Launchpad.IntegrationTests.Data
         {
             using (new TransactionScope())
             {
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     var results = context.RoleClaims.Take(10).ToList();
                     results.Should().NotBeNull();
@@ -68,7 +68,7 @@ namespace Launchpad.IntegrationTests.Data
         {
             using (new TransactionScope())
             {
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     var results = context.Users.Take(10).ToList();
                     results.Should().NotBeNull();
@@ -81,7 +81,7 @@ namespace Launchpad.IntegrationTests.Data
         {
             using (new TransactionScope())
             {
-                using (var context = new LaunchpadDataContext())
+                using (var context = new VoyageDataContext())
                 {
                     var results = context.Users.First();
                     results.Phones.Should().NotBeNull();

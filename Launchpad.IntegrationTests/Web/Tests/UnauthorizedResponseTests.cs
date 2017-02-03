@@ -2,12 +2,12 @@
 using System.Net;
 using System.Net.Http;
 
-using Launchpad.IntegrationTests.Web.Extensions;
-using Launchpad.IntegrationTests.Web.Hosting;
+using Voyage.IntegrationTests.Web.Extensions;
+using Voyage.IntegrationTests.Web.Hosting;
 
 using Xunit;
 
-namespace Launchpad.IntegrationTests.Web.Tests
+namespace Voyage.IntegrationTests.Web.Tests
 {
     /// <summary>
     /// Contains tests for the cross-cutting concern of authorization. All

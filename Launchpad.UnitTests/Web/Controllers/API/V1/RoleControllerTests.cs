@@ -6,18 +6,18 @@ using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
-using Launchpad.Core.Exceptions;
-using Launchpad.Models;
-using Launchpad.Services.Role;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Controllers.API.V1;
+using Voyage.Core.Exceptions;
+using Voyage.Models;
+using Voyage.Services.Role;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Controllers.API.V1;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Xunit;
-using Constants = Launchpad.Web.Constants;
+using Constants = Voyage.Web.Constants;
 
-namespace Launchpad.UnitTests.Web.Controllers.API.V1
+namespace Voyage.UnitTests.Web.Controllers.API.V1
 {
     [Trait("Category", "Role.Controller")]
     public class RoleControllerTests : BaseUnitTest

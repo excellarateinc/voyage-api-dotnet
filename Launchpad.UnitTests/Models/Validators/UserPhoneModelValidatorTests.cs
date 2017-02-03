@@ -1,10 +1,10 @@
 ﻿using FluentValidation.TestHelper;
 
-using Launchpad.Models.Validators;
+using Voyage.Models.Validators;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Models.Validators
+namespace Voyage.UnitTests.Models.Validators
 {
     [Trait("Category", "Model.Validation")]
     public class UserPhoneModelValidatorTests

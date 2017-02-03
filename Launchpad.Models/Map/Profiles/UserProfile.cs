@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Launchpad.Models.Entities;
+using Voyage.Models.Entities;
 
-namespace Launchpad.Models.Map.Profiles
+namespace Voyage.Models.Map.Profiles
 {
     public class UserProfile : Profile
     {

@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Launchpad.UnitTests.Common.AutoMapperFixture
+namespace Voyage.UnitTests.Common.AutoMapperFixture
 {
     [CollectionDefinition(CollectionName)]
     public class AutoMapperCollection : ICollectionFixture<AutoMapperFixture>

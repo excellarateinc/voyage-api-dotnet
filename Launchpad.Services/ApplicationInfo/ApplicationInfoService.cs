@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using Launchpad.Core;
-using Launchpad.Models;
-using Launchpad.Services.FileReader;
+using Voyage.Core;
+using Voyage.Models;
+using Voyage.Services.FileReader;
 using Newtonsoft.Json.Linq;
 
-namespace Launchpad.Services.ApplicationInfo
+namespace Voyage.Services.ApplicationInfo
 {
     public class ApplicationInfoService : IApplicationInfoService
     {

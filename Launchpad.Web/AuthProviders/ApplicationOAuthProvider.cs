@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Owin;
-using Launchpad.Core;
+using Voyage.Core;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Launchpad.Services.User;
+using Voyage.Services.User;
 
-namespace Launchpad.Web.AuthProviders
+namespace Voyage.Web.AuthProviders
 {
     /// <summary>
     /// This provider is a singleton - since our dependency are per request, we cannot inject the dependencies via the constructor

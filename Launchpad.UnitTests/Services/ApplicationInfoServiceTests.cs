@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
 
-using Launchpad.Services.ApplicationInfo;
-using Launchpad.Services.FileReader;
-using Launchpad.UnitTests.Common;
+using Voyage.Services.ApplicationInfo;
+using Voyage.Services.FileReader;
+using Voyage.UnitTests.Common;
 
 using Moq;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Services
+namespace Voyage.UnitTests.Services
 {
     public class ApplicationInfoServiceTests : BaseUnitTest
     {

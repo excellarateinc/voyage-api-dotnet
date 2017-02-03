@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace Launchpad.Models.Map
+namespace Voyage.Models.Map
 {
     public class AutoMapperModule : Module
     {

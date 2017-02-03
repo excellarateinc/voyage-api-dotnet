@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Launchpad.Models;
-using Launchpad.Services.Audit;
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.Middleware;
-using Launchpad.Web.Middleware.Processors;
+using Voyage.Models;
+using Voyage.Services.Audit;
+using Voyage.UnitTests.Common;
+using Voyage.Web.Middleware;
+using Voyage.Web.Middleware.Processors;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Testing;
@@ -17,7 +17,7 @@ using Owin;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.Middleware
+namespace Voyage.UnitTests.Web.Middleware
 {
     [Trait("Category", "CustomMiddleware")]
     public class ActivityAuditMiddlewareTests : BaseUnitTest

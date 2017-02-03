@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using Launchpad.Core;
-using Launchpad.Data.Repositories.ActivityAudit;
-using Launchpad.Models;
-using Launchpad.Models.Entities;
+using Voyage.Core;
+using Voyage.Data.Repositories.ActivityAudit;
+using Voyage.Models;
+using Voyage.Models.Entities;
 
-namespace Launchpad.Services.Audit
+namespace Voyage.Services.Audit
 {
     public class AuditService : IAuditService
     {

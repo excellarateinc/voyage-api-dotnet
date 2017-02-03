@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Models
+﻿namespace Voyage.Models
 {
     /// <summary>
     /// Indicates if the model can be soft deleted

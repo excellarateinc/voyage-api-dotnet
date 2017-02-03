@@ -1,6 +1,6 @@
 ﻿using Microsoft.Owin;
 
-namespace Launchpad.Web.Middleware.Processors
+namespace Voyage.Web.Middleware.Processors
 {
     /// <summary>
     /// Reads a the response as a string if it was an error

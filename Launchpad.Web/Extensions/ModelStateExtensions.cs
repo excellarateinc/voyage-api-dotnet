@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using System.Web.Http.ModelBinding;
 
-namespace Launchpad.Web.Extensions
+namespace Voyage.Web.Extensions
 {
     public static class ModelStateExtensions
     {

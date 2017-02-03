@@ -4,8 +4,8 @@ using System.Security.Principal;
 
 using FluentAssertions;
 
-using Launchpad.UnitTests.Common;
-using Launchpad.Web.AuthProviders;
+using Voyage.UnitTests.Common;
+using Voyage.Web.AuthProviders;
 
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
@@ -14,7 +14,7 @@ using Moq;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Web.AuthProviders
+namespace Voyage.UnitTests.Web.AuthProviders
 {
     public class IdentityProviderTests : BaseUnitTest
     {

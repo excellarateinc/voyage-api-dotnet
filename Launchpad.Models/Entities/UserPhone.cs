@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Launchpad.Models.Enum;
+using Voyage.Models.Enum;
 
-namespace Launchpad.Models.Entities
+namespace Voyage.Models.Entities
 {
     [Table("UserPhone")]
     public class UserPhone

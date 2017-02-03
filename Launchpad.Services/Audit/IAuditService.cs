@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Launchpad.Models;
+using Voyage.Models;
 
-namespace Launchpad.Services.Audit
+namespace Voyage.Services.Audit
 {
     public interface IAuditService
     {

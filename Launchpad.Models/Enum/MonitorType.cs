@@ -1,4 +1,4 @@
-﻿namespace Launchpad.Models.Enum
+﻿namespace Voyage.Models.Enum
 {
     public enum MonitorType
     {

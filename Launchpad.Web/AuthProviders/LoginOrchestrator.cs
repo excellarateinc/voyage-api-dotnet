@@ -3,9 +3,9 @@ using Autofac.Integration.Owin;
 using Microsoft.Owin.Security.OAuth;
 using System.Linq;
 using System.Threading.Tasks;
-using Launchpad.Services.User;
+using Voyage.Services.User;
 
-namespace Launchpad.Web.AuthProviders
+namespace Voyage.Web.AuthProviders
 {
     public class LoginOrchestrator : ILoginOrchestrator
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Launchpad.Core;
+using Voyage.Core;
 
-namespace Launchpad.Data.Repositories
+namespace Voyage.Data.Repositories
 {
     /// <summary>
     /// Abstract implementation of the repository interface
@@ -11,11 +11,11 @@ namespace Launchpad.Data.Repositories
     {
 #pragma warning disable SA1401 // Fields must be private
 #pragma warning disable SA1306 // Field names must begin with lower-case letter
-        protected ILaunchpadDataContext Context;
+        protected IVoyageDataContext Context;
 #pragma warning restore SA1306 // Field names must begin with lower-case letter
 #pragma warning restore SA1401 // Fields must be private
 
-        protected BaseRepository(ILaunchpadDataContext context)
+        protected BaseRepository(IVoyageDataContext context)
         {
             Context = context.ThrowIfNull(nameof(context));
         }

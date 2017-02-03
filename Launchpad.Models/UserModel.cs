@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentValidation.Attributes;
-using Launchpad.Models.Validators;
+using Voyage.Models.Validators;
 
-namespace Launchpad.Models
+namespace Voyage.Models
 {
     [Validator(typeof(UserModelValidator))]
     public class UserModel

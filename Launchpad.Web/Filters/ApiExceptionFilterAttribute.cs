@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
 using System.Web.Http.Filters;
-using Launchpad.Core.Exceptions;
-using Launchpad.Web.Extensions;
+using Voyage.Core.Exceptions;
+using Voyage.Web.Extensions;
 
-namespace Launchpad.Web.Filters
+namespace Voyage.Web.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Launchpad.Data.Repositories.ApplicationLog
+namespace Voyage.Data.Repositories.ApplicationLog
 {
     public interface IApplicationLogRepository : IRepository<Models.Entities.ApplicationLog>
     {

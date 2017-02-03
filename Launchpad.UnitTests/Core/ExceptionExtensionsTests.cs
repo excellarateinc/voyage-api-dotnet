@@ -2,12 +2,12 @@
 
 using FluentAssertions;
 
-using Launchpad.Core;
-using Launchpad.UnitTests.Common;
+using Voyage.Core;
+using Voyage.UnitTests.Common;
 
 using Xunit;
 
-namespace Launchpad.UnitTests.Core
+namespace Voyage.UnitTests.Core
 {
     public class ExceptionExtensionsTests : BaseUnitTest
     {

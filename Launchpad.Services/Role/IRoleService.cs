@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Launchpad.Models;
+using Voyage.Models;
 using Microsoft.AspNet.Identity;
 
-namespace Launchpad.Services.Role
+namespace Voyage.Services.Role
 {
     public interface IRoleService
     {
