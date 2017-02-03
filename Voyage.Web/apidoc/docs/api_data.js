@@ -230,7 +230,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->create.claim"
+        "name": "app.permission->create.claim"
       }
     ],
     "header": {
@@ -337,7 +337,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 Created\n{\n    \"claimType\": \"lss.permission\",\n    \"claimValue\": \"list.newClaim\",\n    \"id\": 219\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"claimType\": \"app.permission\",\n    \"claimValue\": \"list.newClaim\",\n    \"id\": 219\n}",
           "type": "json"
         }
       ]
@@ -384,7 +384,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->create.role"
+        "name": "app.permission->create.role"
       }
     ],
     "header": {
@@ -499,7 +499,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->view.claim"
+        "name": "app.permission->view.claim"
       }
     ],
     "parameter": {
@@ -625,7 +625,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->view.role"
+        "name": "app.permission->view.role"
       }
     ],
     "parameter": {
@@ -691,7 +691,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n   {\n        \"id\": \"76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6\",\n        \"name\": \"New Role 1\",\n        \"claims\": [\n            {\n                claimType: \"lss.permission\",\n                claimValue: \"view.role\"\n            }\n        ]\n    }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n   {\n        \"id\": \"76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6\",\n        \"name\": \"New Role 1\",\n        \"claims\": [\n            {\n                claimType: \"app.permission\",\n                claimValue: \"view.role\"\n            }\n        ]\n    }\n]",
           "type": "json"
         }
       ]
@@ -758,7 +758,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->list.role-claims"
+        "name": "app.permission->list.role-claims"
       }
     ],
     "parameter": {
@@ -803,7 +803,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"claimType\": \"lss.permission\",\n        \"claimValue\": \"list.newClaim\",\n        \"id\": 17\n    }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"claimType\": \"app.permission\",\n        \"claimValue\": \"list.newClaim\",\n        \"id\": 17\n    }\n]",
           "type": "json"
         }
       ]
@@ -859,7 +859,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->list.roles"
+        "name": "app.permission->list.roles"
       }
     ],
     "success": {
@@ -912,7 +912,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n              {\n                  \"id\": \"c1a44325-5ece-4ff4-8a41-6b5729e8e65d\",\n                  \"name\": \"Administrator\",\n                  \"claims\": [\n                    {\n                      \"claimType\": \"lss.permission\",\n                      \"claimValue\": \"assign.role\"\n                    },\n                    {\n                      \"claimType\": \"lss.permission\",\n                      \"claimValue\": \"create.claim\"\n                    }\n                  ]\n                }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n              {\n                  \"id\": \"c1a44325-5ece-4ff4-8a41-6b5729e8e65d\",\n                  \"name\": \"Administrator\",\n                  \"claims\": [\n                    {\n                      \"claimType\": \"app.permission\",\n                      \"claimValue\": \"assign.role\"\n                    },\n                    {\n                      \"claimType\": \"app.permission\",\n                      \"claimValue\": \"create.claim\"\n                    }\n                  ]\n                }\n]",
           "type": "json"
         }
       ]
@@ -968,7 +968,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->delete.role"
+        "name": "app.permission->delete.role"
       }
     ],
     "parameter": {
@@ -1055,7 +1055,7 @@ define({ "api": [
     "group": "Role",
     "permission": [
       {
-        "name": "lss.permission->delete.role-claim"
+        "name": "app.permission->delete.role-claim"
       }
     ],
     "parameter": {
@@ -1168,7 +1168,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->assign.role"
+        "name": "app.permission->assign.role"
       }
     ],
     "header": {
@@ -1290,7 +1290,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->list.user-claims"
+        "name": "app.permission->list.user-claims"
       }
     ],
     "parameter": {
@@ -1335,7 +1335,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"claimType\": \"lss.permission\",\n        \"claimValue\": \"login\"\n    },\n    {\n        \"claimType\": \"lss.permission\",\n        \"claimValue\": \"list.user-claims\"\n    }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"claimType\": \"app.permission\",\n        \"claimValue\": \"login\"\n    },\n    {\n        \"claimType\": \"app.permission\",\n        \"claimValue\": \"list.user-claims\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -1391,7 +1391,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->create.user"
+        "name": "app.permission->create.user"
       }
     ],
     "header": {
@@ -1604,7 +1604,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->delete.user"
+        "name": "app.permission->delete.user"
       }
     ],
     "parameter": {
@@ -1691,7 +1691,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->view.user"
+        "name": "app.permission->view.user"
       }
     ],
     "parameter": {
@@ -1845,7 +1845,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->view.role"
+        "name": "app.permission->view.role"
       }
     ],
     "parameter": {
@@ -1918,7 +1918,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n    {\n        \"id\": \"7ec91144-a60e-4240-8878-ccba3c4c2ef4\",\n        \"name\": \"Basic\",\n        \"claims\": [\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"login\"\n            },\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"list.user-claims\"\n            }\n    }",
+          "content": "HTTP/1.1 200 OK\n    {\n        \"id\": \"7ec91144-a60e-4240-8878-ccba3c4c2ef4\",\n        \"name\": \"Basic\",\n        \"claims\": [\n            {\n                \"claimType\": \"app.permission\",\n                \"claimValue\": \"login\"\n            },\n            {\n                \"claimType\": \"app.permission\",\n                \"claimValue\": \"list.user-claims\"\n            }\n    }",
           "type": "json"
         }
       ]
@@ -1974,7 +1974,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->list.users"
+        "name": "app.permission->list.users"
       }
     ],
     "success": {
@@ -2104,7 +2104,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->revoke.role"
+        "name": "app.permission->revoke.role"
       }
     ],
     "parameter": {
@@ -2198,7 +2198,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->update.user"
+        "name": "app.permission->update.user"
       }
     ],
     "filename": "../Controllers/API/v1/UserController.cs",
@@ -2397,7 +2397,7 @@ define({ "api": [
     "group": "User",
     "permission": [
       {
-        "name": "lss.permission->list.users"
+        "name": "app.permission->list.users"
       }
     ],
     "parameter": {
@@ -2463,7 +2463,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"id\": \"7ec91144-a60e-4240-8878-ccba3c4c2ef4\",\n        \"name\": \"Basic\",\n        \"claims\": [\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"login\"\n            },\n            {\n                \"claimType\": \"lss.permission\",\n                \"claimValue\": \"list.user-claims\"\n            }\n]",
+          "content": "HTTP/1.1 200 OK\n[\n    {\n        \"id\": \"7ec91144-a60e-4240-8878-ccba3c4c2ef4\",\n        \"name\": \"Basic\",\n        \"claims\": [\n            {\n                \"claimType\": \"app.permission\",\n                \"claimValue\": \"login\"\n            },\n            {\n                \"claimType\": \"app.permission\",\n                \"claimValue\": \"list.user-claims\"\n            }\n]",
           "type": "json"
         }
       ]

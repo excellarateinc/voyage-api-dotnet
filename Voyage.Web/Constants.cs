@@ -13,7 +13,7 @@
 
         public static class LssClaims
         {
-            public const string Type = "lss.permission";
+            public const string Type = "app.permission";
 
             public const string AssignRole = "assign.role";
             public const string CreateRole = "create.role";

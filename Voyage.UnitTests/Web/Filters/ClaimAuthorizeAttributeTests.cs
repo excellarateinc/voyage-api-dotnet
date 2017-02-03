@@ -27,7 +27,7 @@ namespace Voyage.UnitTests.Web.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -53,7 +53,7 @@ namespace Voyage.UnitTests.Web.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
                                         {
@@ -84,7 +84,7 @@ namespace Voyage.UnitTests.Web.Filters
 
             var claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim("lss.permission", "list.test")
+                new Claim("app.permission", "list.test")
             });
 
             var controllerContext = new HttpControllerContext
@@ -108,7 +108,7 @@ namespace Voyage.UnitTests.Web.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -134,7 +134,7 @@ namespace Voyage.UnitTests.Web.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "create.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("lss.permission", "list.test") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {
@@ -163,7 +163,7 @@ namespace Voyage.UnitTests.Web.Filters
 
             var claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim("lss.permission", "list.test")
+                new Claim("app.permission", "list.test")
             });
 
             var controllerContext = new HttpControllerContext

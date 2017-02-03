@@ -23,7 +23,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetUsers
         * @apiGroup User
         *
-        * @apiPermission lss.permission->list.users
+        * @apiPermission app.permission->list.users
         *
         * @apiUse AuthHeader
         *
@@ -73,7 +73,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName UpdateUserAsync
         * @apiGroup User
         *
-        * @apiPermission lss.permission->update.user
+        * @apiPermission app.permission->update.user
         *
         * @apiUse AuthHeader
         *
@@ -96,7 +96,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName DeleteUserAsync
         * @apiGroup User
         *
-        * @apiPermission lss.permission->delete.user
+        * @apiPermission app.permission->delete.user
         *
         * @apiUse AuthHeader
         *
@@ -128,7 +128,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName CreateUser
         * @apiGroup User
         *
-        * @apiPermission lss.permission->create.user
+        * @apiPermission app.permission->create.user
         *
         * @apiUse AuthHeader
         *
@@ -158,7 +158,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetUserAsync
         * @apiGroup User
         *
-        * @apiPermission lss.permission->view.user
+        * @apiPermission app.permission->view.user
         *
         * @apiUse AuthHeader
         *
@@ -184,7 +184,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName User
         * @apiGroup User
         *
-        * @apiPermission lss.permission->list.users
+        * @apiPermission app.permission->list.users
         *
         * @apiUse AuthHeader
         *
@@ -205,11 +205,11 @@ namespace Voyage.Web.Controllers.API.V1
         *           "name": "Basic",
         *           "claims": [
         *               {
-        *                   "claimType": "lss.permission",
+        *                   "claimType": "app.permission",
         *                   "claimValue": "login"
         *               },
         *               {
-        *                   "claimType": "lss.permission",
+        *                   "claimType": "app.permission",
         *                   "claimValue": "list.user-claims"
         *               }
         *   ]
@@ -232,7 +232,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName Claims
         * @apiGroup User
         *
-        * @apiPermission lss.permission->list.user-claims
+        * @apiPermission app.permission->list.user-claims
         *
         * @apiUse AuthHeader
         *
@@ -246,11 +246,11 @@ namespace Voyage.Web.Controllers.API.V1
         *   HTTP/1.1 200 OK
         *   [
         *       {
-        *           "claimType": "lss.permission",
+        *           "claimType": "app.permission",
         *           "claimValue": "login"
         *       },
         *       {
-        *           "claimType": "lss.permission",
+        *           "claimType": "app.permission",
         *           "claimValue": "list.user-claims"
         *       }
         *   ]
@@ -272,7 +272,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName AssignRole
         * @apiGroup User
         *
-        * @apiPermission lss.permission->assign.role
+        * @apiPermission app.permission->assign.role
         *
         * @apiUse AuthHeader
         *
@@ -314,7 +314,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetUserRoleById
         * @apiGroup User
         *
-        * @apiPermission lss.permission->view.role
+        * @apiPermission app.permission->view.role
         *
         * @apiUse AuthHeader
         *
@@ -335,11 +335,11 @@ namespace Voyage.Web.Controllers.API.V1
         *           "name": "Basic",
         *           "claims": [
         *               {
-        *                   "claimType": "lss.permission",
+        *                   "claimType": "app.permission",
         *                   "claimValue": "login"
         *               },
         *               {
-        *                   "claimType": "lss.permission",
+        *                   "claimType": "app.permission",
         *                   "claimValue": "list.user-claims"
         *               }
         *       }
@@ -362,7 +362,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName RevokeRole
         * @apiGroup User
         *
-        * @apiPermission lss.permission->revoke.role
+        * @apiPermission app.permission->revoke.role
         *
         * @apiUse AuthHeader
         *

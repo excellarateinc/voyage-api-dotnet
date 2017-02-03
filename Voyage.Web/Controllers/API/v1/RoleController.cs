@@ -23,7 +23,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetRoleById
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->view.role
+        * @apiPermission app.permission->view.role
         *
         * @apiUse AuthHeader
         *
@@ -44,7 +44,7 @@ namespace Voyage.Web.Controllers.API.V1
         *           "name": "New Role 1",
         *           "claims": [
         *               {
-        *                   claimType: "lss.permission",
+        *                   claimType: "app.permission",
         *                   claimValue: "view.role"
         *               }
         *           ]
@@ -69,7 +69,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetRoles
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->list.roles
+        * @apiPermission app.permission->list.roles
         *
         * @apiUse AuthHeader
         *
@@ -88,11 +88,11 @@ namespace Voyage.Web.Controllers.API.V1
                     "name": "Administrator",
                     "claims": [
                       {
-                        "claimType": "lss.permission",
+                        "claimType": "app.permission",
                         "claimValue": "assign.role"
                       },
                       {
-                        "claimType": "lss.permission",
+                        "claimType": "app.permission",
                         "claimValue": "create.claim"
                       }
                     ]
@@ -116,7 +116,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName CreateRole
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->create.role
+        * @apiPermission app.permission->create.role
         *
         * @apiUse AuthHeader
         *
@@ -158,7 +158,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName AddRoleClaim
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->create.claim
+        * @apiPermission app.permission->create.claim
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
         *
@@ -182,7 +182,7 @@ namespace Voyage.Web.Controllers.API.V1
         *  @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 Created
         *   {
-        *       "claimType": "lss.permission",
+        *       "claimType": "app.permission",
         *       "claimValue": "list.newClaim",
         *       "id": 219
         *   }
@@ -214,7 +214,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetClaimById
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->view.claim
+        * @apiPermission app.permission->view.claim
         *
         * @apiUse AuthHeader
         *
@@ -251,7 +251,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName RemoveRoleClaim
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->delete.role-claim
+        * @apiPermission app.permission->delete.role-claim
         *
         * @apiUse AuthHeader
         *
@@ -279,7 +279,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiName GetRoleClaims
         * @apiGroup Role
         *
-        * @apiPermission lss.permission->list.role-claims
+        * @apiPermission app.permission->list.role-claims
         *
         * @apiParam {String} roleId Role ID
         *
@@ -293,7 +293,7 @@ namespace Voyage.Web.Controllers.API.V1
         *   HTTP/1.1 200 OK
         *   [
         *       {
-        *           "claimType": "lss.permission",
+        *           "claimType": "app.permission",
         *           "claimValue": "list.newClaim",
         *           "id": 17
         *       }
@@ -317,7 +317,7 @@ namespace Voyage.Web.Controllers.API.V1
         * @apiGroup Role
         *
         *
-        * @apiPermission lss.permission->delete.role
+        * @apiPermission app.permission->delete.role
         *
         * @apiUse AuthHeader
         *
