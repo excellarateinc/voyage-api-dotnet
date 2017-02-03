@@ -14,16 +14,16 @@ set root=%root:~0,-1%
 SET toolPath="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe"
 
 ::Path to the dacpac
-SET sourcePath=".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
+SET sourcePath=".\Voyage.Database\bin\Debug\Voyage.Database.dacpac"
 
 ::Connection string for the target
-SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=lp"
+SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Voyage"
 
 ::Generate the default file name
 ::https://blogs.msdn.microsoft.com/myocom/2005/06/03/creating-unique-filenames-in-a-batch-file/
 for /f "delims=/ tokens=1-3" %%a in ("%DATE:~4%") do (
     for /f "delims=:. tokens=1-4" %%m in ("%TIME: =0%") do (
-        set outputPath=Launchpad.Database-%%c-%%b-%%a-%%m%%n%%o%%p.sql
+        set outputPath=Voyage.Database-%%c-%%b-%%a-%%m%%n%%o%%p.sql
     )
 )
 

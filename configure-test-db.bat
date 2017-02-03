@@ -18,11 +18,11 @@ SET sqlLocalDb="C:\Program Files\Microsoft SQL Server\130\Tools\Binn\SqlLocalDB.
 SET sqlInstanceName="Integration-Test-Instance"
 
 ::Path to the dacpac
-SET sourcePath="%~dp0\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
+SET sourcePath="%~dp0\Voyage.Database\bin\Debug\Voyage.Database.dacpac"
 if not [%1]==[] if not [%1]==[-] set sourcePath=%1
 
 ::Connection string for the target
-SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=(localdb)\Integration-Test-Instance;Initial Catalog=Launchpad"
+SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=(localdb)\Integration-Test-Instance;Initial Catalog=Voyage"
 
 ::Clean up mdf Files
 SET dataPath="%UserProfile%\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\Integration-Test-Instance"
