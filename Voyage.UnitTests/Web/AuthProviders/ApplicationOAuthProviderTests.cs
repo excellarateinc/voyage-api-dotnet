@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-
 using Autofac;
-
 using FluentAssertions;
-
 using Voyage.Services.User;
 using Voyage.UnitTests.Common;
 using Voyage.Web.AuthProviders;
-
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.OAuth.Messages;
-
 using Moq;
-
 using Ploeh.AutoFixture;
-
 using Xunit;
 
 namespace Voyage.UnitTests.Web.AuthProviders
@@ -41,7 +34,7 @@ namespace Voyage.UnitTests.Web.AuthProviders
 
             // Setup login delegate
             _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(PathString);
-            _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
+            _provider = new ApplicationOAuthProvider(new[] { _mockLoginOrchestrator.Object });
         }
 
         [Fact]
@@ -157,7 +150,7 @@ namespace Voyage.UnitTests.Web.AuthProviders
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
         {
-            Action throwAction = () => new ApplicationOAuthProvider(null, null);
+            Action throwAction = () => new ApplicationOAuthProvider(null);
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName
@@ -168,7 +161,7 @@ namespace Voyage.UnitTests.Web.AuthProviders
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_LoginOrchestrators_Null()
         {
-            Action throwAction = () => new ApplicationOAuthProvider(_clientId, null);
+            Action throwAction = () => new ApplicationOAuthProvider(null);
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName

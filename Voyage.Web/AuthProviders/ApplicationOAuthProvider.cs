@@ -5,11 +5,14 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Owin.Security.Infrastructure;
 using Voyage.Services.User;
+using Voyage.Web.Auth_Stuff;
 
 namespace Voyage.Web.AuthProviders
 {
@@ -20,17 +23,12 @@ namespace Voyage.Web.AuthProviders
     /// </summary>
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
-        private readonly string _publicClientId;
-
         // Backed off from using a dictionary here - there is no guarantee that the IsMatch logic will be as straight
         // forward as checking the path
         private readonly Dictionary<string, ILoginOrchestrator> _loginOrchestrators;
 
-        public ApplicationOAuthProvider(string publicClientId, IEnumerable<ILoginOrchestrator> loginOrchestrators)
+        public ApplicationOAuthProvider(IEnumerable<ILoginOrchestrator> loginOrchestrators)
         {
-            publicClientId.ThrowIfNull(nameof(publicClientId));
-            _publicClientId = publicClientId;
-
             loginOrchestrators.ThrowIfNull(nameof(loginOrchestrators));
             _loginOrchestrators = loginOrchestrators.ToDictionary(_ => _.TokenPath);
         }
@@ -65,20 +63,7 @@ namespace Voyage.Web.AuthProviders
 
         public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
         {
-            // At this point, it has passed Matchendpoint. If the orchestrator is missing at this point
-            // bring on the crash.
-            var loginOrchestrator = _loginOrchestrators[context.Request.Path.Value];
-
-            if (loginOrchestrator.ValidateRequest(context.TokenRequest.Parameters))
-            {
-                context.Validated();
-            }
-            else
-            {
-                context.SetError("error", "invalid_request");
-            }
-
-            return Task.FromResult<object>(null);
+            return base.ValidateTokenRequest(context);
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
@@ -116,10 +101,19 @@ namespace Voyage.Web.AuthProviders
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            // Resource owner password credentials does not provide a client ID.
-            if (context.ClientId == null)
+            string clientId;
+            string clientSecret;
+            if (context.TryGetBasicCredentials(out clientId, out clientSecret) ||
+                context.TryGetFormCredentials(out clientId, out clientSecret))
             {
-                context.Validated();
+                if (clientId == Clients.Client1.Id && clientSecret == Clients.Client1.Secret)
+                {
+                    context.Validated();
+                }
+                else if (clientId == Clients.Client2.Id && clientSecret == Clients.Client2.Secret)
+                {
+                    context.Validated();
+                }
             }
 
             return Task.FromResult<object>(null);
@@ -127,17 +121,44 @@ namespace Voyage.Web.AuthProviders
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            if (context.ClientId == _publicClientId)
+            if (context.ClientId == Clients.Client1.Id)
             {
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/");
-
-                if (expectedRootUri.AbsoluteUri == context.RedirectUri)
-                {
-                    context.Validated();
-                }
+                context.Validated(Clients.Client1.RedirectUrl);
+            }
+            else if (context.ClientId == Clients.Client2.Id)
+            {
+                context.Validated(Clients.Client2.RedirectUrl);
             }
 
-            return Task.FromResult<object>(null);
+            return Task.FromResult(0);
+        }
+
+        private readonly ConcurrentDictionary<string, string> _authenticationCodes =
+            new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
+
+        private void CreateAuthenticationCode(AuthenticationTokenCreateContext context)
+        {
+            context.SetToken(Guid.NewGuid().ToString("n") + Guid.NewGuid().ToString("n"));
+            _authenticationCodes[context.Token] = context.SerializeTicket();
+        }
+
+        private void ReceiveAuthenticationCode(AuthenticationTokenReceiveContext context)
+        {
+            string value;
+            if (_authenticationCodes.TryRemove(context.Token, out value))
+            {
+                context.DeserializeTicket(value);
+            }
+        }
+
+        private void CreateRefreshToken(AuthenticationTokenCreateContext context)
+        {
+            context.SetToken(context.SerializeTicket());
+        }
+
+        private void ReceiveRefreshToken(AuthenticationTokenReceiveContext context)
+        {
+            context.DeserializeTicket(context.Token);
         }
     }
 }

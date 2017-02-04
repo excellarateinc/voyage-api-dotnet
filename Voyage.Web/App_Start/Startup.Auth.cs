@@ -9,16 +9,15 @@ using Owin;
 using System;
 using System.Configuration;
 using System.Web.Http;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Voyage.Web.Auth_Stuff;
 
 namespace Voyage.Web
 {
     public partial class Startup
     {
-        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
-
-        public static string PublicClientId => "self"; // Configure the application for OAuth based flow
-
-        public static void Configure(IAppBuilder app)
+        public void Configure(IAppBuilder app)
         {
             var httpConfig = new HttpConfiguration();
 
@@ -43,23 +42,59 @@ namespace Voyage.Web
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
-            // 5. Configure oAuth
-            var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
-            OAuthOptions = new OAuthAuthorizationServerOptions
+            // 5. Configure OAuth.
+            // Enable Application Sign In Cookie
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                TokenEndpointPath = new PathString("/api/v1/login"),
-                Provider = oauthProvider,
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AuthenticationType = "Application",
+                AuthenticationMode = AuthenticationMode.Passive,
+                LoginPath = new PathString(Paths.LoginPath),
+                LogoutPath = new PathString(Paths.LogoutPath),
+            });
+
+            // Enable External Sign In Cookie
+            app.SetDefaultSignInAsAuthenticationType("External");
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = "External",
+                AuthenticationMode = AuthenticationMode.Passive,
+                CookieName = CookieAuthenticationDefaults.CookiePrefix + "External",
+                ExpireTimeSpan = TimeSpan.FromMinutes(5),
+            });
+
+            // Setup Authorization Server
+            var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
+            app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
+            {
+                AuthorizeEndpointPath = new PathString(Paths.AuthorizePath),
+                TokenEndpointPath = new PathString(Paths.TokenPath),
+                ApplicationCanDisplayErrors = true,
 
                 // If the config is wrong, let the application crash
                 AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"])),
 
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
-            };
 
-            // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+                // Authorization server provider which controls the lifecycle of Authorization Server
+                Provider = oauthProvider
+
+                // Authorization code provider which creates and receives authorization code
+                // AuthorizationCodeProvider = new AuthenticationTokenProvider
+                // {
+                //    OnCreate = CreateAuthenticationCode,
+                //    OnReceive = ReceiveAuthenticationCode,
+                // },
+
+                //// Refresh token provider which creates and receives referesh token
+                // RefreshTokenProvider = new AuthenticationTokenProvider
+                // {
+                //    OnCreate = CreateRefreshToken,
+                //    OnReceive = ReceiveRefreshToken,
+                // }
+            });
+
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);

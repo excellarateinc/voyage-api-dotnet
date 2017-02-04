@@ -84,9 +84,8 @@ namespace Voyage.Web
                 .SingleInstance();
 
             builder.RegisterType<ApplicationOAuthProvider>()
-                .WithParameter("publicClientId", Startup.PublicClientId)
-                .AsSelf()
-                .SingleInstance();
+               .AsSelf()
+               .SingleInstance();
 
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
