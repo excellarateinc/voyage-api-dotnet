@@ -61,11 +61,6 @@ namespace Voyage.Web.AuthProviders
             return base.MatchEndpoint(context);
         }
 
-        public override Task ValidateTokenRequest(OAuthValidateTokenRequestContext context)
-        {
-            return base.ValidateTokenRequest(context);
-        }
-
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             // Let the orchestrator determine if it is a valid credential and then respond accordingly
@@ -131,34 +126,6 @@ namespace Voyage.Web.AuthProviders
             }
 
             return Task.FromResult(0);
-        }
-
-        private readonly ConcurrentDictionary<string, string> _authenticationCodes =
-            new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
-
-        private void CreateAuthenticationCode(AuthenticationTokenCreateContext context)
-        {
-            context.SetToken(Guid.NewGuid().ToString("n") + Guid.NewGuid().ToString("n"));
-            _authenticationCodes[context.Token] = context.SerializeTicket();
-        }
-
-        private void ReceiveAuthenticationCode(AuthenticationTokenReceiveContext context)
-        {
-            string value;
-            if (_authenticationCodes.TryRemove(context.Token, out value))
-            {
-                context.DeserializeTicket(value);
-            }
-        }
-
-        private void CreateRefreshToken(AuthenticationTokenCreateContext context)
-        {
-            context.SetToken(context.SerializeTicket());
-        }
-
-        private void ReceiveRefreshToken(AuthenticationTokenReceiveContext context)
-        {
-            context.DeserializeTicket(context.Token);
         }
     }
 }

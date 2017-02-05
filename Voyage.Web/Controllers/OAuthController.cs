@@ -18,7 +18,7 @@ namespace Voyage.Web.Controllers
 
             var authentication = HttpContext.GetOwinContext().Authentication;
             var ticket = authentication.AuthenticateAsync("Application").Result;
-            var identity = ticket != null ? ticket.Identity : null;
+            var identity = ticket?.Identity;
             if (identity == null)
             {
                 authentication.Challenge("Application");

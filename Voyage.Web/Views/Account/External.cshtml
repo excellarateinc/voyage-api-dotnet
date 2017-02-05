@@ -1,7 +1,3 @@
-﻿
-@{
-    ViewBag.Title = "External";
-}
-
-<h2>External</h2>
-
+﻿@using System.Web
+<p>Your signin failed.</p>
+<p><a href="@Request.QueryString["ReturnUrl"]">Go Back</a></p>
