@@ -1,0 +1,29 @@
+﻿@using Voyage.Web.Auth_Stuff
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OAuth</title>
+</head>
+<body style="background-color:azure">    
+    <h2>Implicit Grant</h2>
+    <form id="form1" action="http://localhost:52431/OAuth/Authorize" method="GET">
+        <div>
+            <label style="width: 125px;">Client Id</label>
+            <input name="client_id" value=""/>
+            <br />
+            <label style="width: 125px;">Redirect URI</label>
+            <input name="redirect_uri" value=""/>
+            <br />
+            <label style="width: 125px;">Scope</label>
+            <input name="scope" value=""/>
+            <br />
+            <label style="width: 125px;">Response Type</label>
+            <input name="response_type" value=""/>
+            <br />
+            <input id="Authorize" value="Authorize" type="submit"/>
+        </div>
+    </form>
+   
+</body>
+</html>

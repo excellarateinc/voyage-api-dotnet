@@ -1,0 +1,32 @@
+﻿﻿@using System.Security.Claims
+@using System.Web
+@{
+    var authentication = Context.GetOwinContext().Authentication;
+    var ticket = authentication.AuthenticateAsync("Application").Result;
+    var identity = ticket != null ? ticket.Identity : null;
+    var scopes = (Request.QueryString.Get("scope") ?? "").Split(' ');
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Authorize</title>
+</head>
+<body>
+    <h1>Authorization Server</h1>
+    <h2>OAuth2 Authorize</h2>
+    <form method="POST">
+        <p>Hello, @identity.Name</p>
+        <p>A third party application want to do the following on your behalf:</p>
+        <ul>
+            @foreach (var scope in scopes)
+            {
+                <li>@scope</li>
+            }
+        </ul>
+        <p>
+            <input type="submit" name="submit.Grant" value="Grant" />
+            <input type="submit" name="submit.Login" value="Sign in as different user" />
+        </p>
+    </form>
+</body>
+</html>

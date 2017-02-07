@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-
 using Autofac;
-
 using FluentAssertions;
-
 using Voyage.Services.User;
 using Voyage.UnitTests.Common;
 using Voyage.Web.AuthProviders;
-
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.OAuth.Messages;
-
 using Moq;
-
 using Ploeh.AutoFixture;
-
 using Xunit;
 
 namespace Voyage.UnitTests.Web.AuthProviders
@@ -41,7 +34,7 @@ namespace Voyage.UnitTests.Web.AuthProviders
 
             // Setup login delegate
             _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(PathString);
-            _provider = new ApplicationOAuthProvider(_clientId, new[] { _mockLoginOrchestrator.Object });
+            _provider = new ApplicationOAuthProvider(new[] { _mockLoginOrchestrator.Object });
         }
 
         [Fact]
@@ -94,18 +87,6 @@ namespace Voyage.UnitTests.Web.AuthProviders
                 options: new OAuthAuthorizationServerOptions(),
                 parameters: readableCollection);
 
-            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
-                .Returns(true);
-
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
             var ctx = new OAuthValidateTokenRequestContext(
                 context: _mockOwinContext.Object,
                 options: new OAuthAuthorizationServerOptions(),
@@ -119,56 +100,9 @@ namespace Voyage.UnitTests.Web.AuthProviders
         }
 
         [Fact]
-        public async void ValidateTokenRequest_Should_Call_SetError_When_LoginOrchestrator_Returns_False()
-        {
-            var pairs = new Dictionary<string, string[]>();
-            var readableCollection = new ReadableStringCollection(pairs);
-            Mock.Create<BaseValidatingClientContext>();
-
-            var validatingCtx = new OAuthValidateClientAuthenticationContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                parameters: readableCollection);
-
-            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
-                .Returns(false);
-
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
-            var ctx = new OAuthValidateTokenRequestContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                tokenRequest: new TokenEndpointRequest(readableCollection),
-                clientContext: validatingCtx);
-
-            await _provider.ValidateTokenRequest(ctx);
-
-            ctx.HasError.Should().BeTrue();
-            ctx.IsValidated.Should().BeFalse();
-        }
-
-        [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
-        {
-            Action throwAction = () => new ApplicationOAuthProvider(null, null);
-            throwAction.ShouldThrow<ArgumentNullException>()
-                .And
-                .ParamName
-                .Should()
-                .Be("publicClientId");
-        }
-
-        [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_LoginOrchestrators_Null()
         {
-            Action throwAction = () => new ApplicationOAuthProvider(_clientId, null);
+            Action throwAction = () => new ApplicationOAuthProvider(null);
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
                 .ParamName

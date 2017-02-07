@@ -23,11 +23,11 @@ namespace Voyage.IntegrationTests.Web.Client
         /// <returns>Authorization Token</returns>
         public async Task Configure()
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, GetUrl("/api/v1/login"))
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, GetUrl("/OAuth/Token"))
             {
                 Content =
                     new StringContent(
-                    "grant_type=password&username=admin%40admin.com&password=Hello123!",
+                    "grant_type=password&username=admin%40admin.com&password=Hello123!&client_id=123456&client_secret=abcdef",
                     Encoding.UTF8,
                     "application/x-www-form-urlencoded")
             };

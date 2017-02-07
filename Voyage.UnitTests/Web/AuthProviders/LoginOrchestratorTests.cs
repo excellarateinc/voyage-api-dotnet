@@ -32,7 +32,7 @@ namespace Voyage.UnitTests.Web.AuthProviders
         [Fact]
         public void TokenPath_Should_Be_V1()
         {
-            _orchestrator.TokenPath.Should().Be("/api/v1/login");
+            _orchestrator.TokenPath.Should().Be("/OAuth/Token");
         }
 
         [Fact]
