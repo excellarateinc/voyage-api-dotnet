@@ -3,24 +3,24 @@
     public static class Paths
     {
         /// <summary>
-        /// AuthorizationServer project should run on this URL
+        /// AuthorizationServer.
         /// </summary>
         public const string AuthorizationServerBaseAddress = "http://localhost:52431";
 
         /// <summary>
-        /// ResourceServer project should run on this URL
+        /// ResourceServer.
         /// </summary>
         public const string ResourceServerBaseAddress = "http://localhost:52431";
 
         /// <summary>
-        /// ImplicitGrant project should be running on this specific port '38515'
+        /// ImplicitGrant.
         /// </summary>
-        public const string ImplicitGrantCallBackPath = "http://localhost:52431/Home/SignIn";
+        public const string ImplicitGrantCallBackPath = "http://localhost:52431/Home/Index";
 
         /// <summary>
-        /// AuthorizationCodeGrant project should be running on this URL.
+        /// AuthorizationCodeGrant.
         /// </summary>
-        public const string AuthorizeCodeCallBackPath = "http://localhost:52431/";
+        public const string AuthorizeCodeCallBackPath = "http://localhost:52431/Home/Index";
 
         public const string AuthorizePath = "/OAuth/Authorize";
         public const string TokenPath = "/OAuth/Token";

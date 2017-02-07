@@ -37,6 +37,7 @@ namespace Voyage.Web.Controllers
                         identity.AddClaim(new Claim("urn:oauth:scope", scope));
                     }
 
+                    // TODO: Give permission claims here.
                     authentication.SignIn(identity);
                 }
 

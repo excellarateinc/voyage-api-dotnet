@@ -87,18 +87,6 @@ namespace Voyage.UnitTests.Web.AuthProviders
                 options: new OAuthAuthorizationServerOptions(),
                 parameters: readableCollection);
 
-            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
-                .Returns(true);
-
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
             var ctx = new OAuthValidateTokenRequestContext(
                 context: _mockOwinContext.Object,
                 options: new OAuthAuthorizationServerOptions(),
@@ -109,53 +97,6 @@ namespace Voyage.UnitTests.Web.AuthProviders
 
             ctx.HasError.Should().BeFalse();
             ctx.IsValidated.Should().BeTrue();
-        }
-
-        [Fact]
-        public async void ValidateTokenRequest_Should_Call_SetError_When_LoginOrchestrator_Returns_False()
-        {
-            var pairs = new Dictionary<string, string[]>();
-            var readableCollection = new ReadableStringCollection(pairs);
-            Mock.Create<BaseValidatingClientContext>();
-
-            var validatingCtx = new OAuthValidateClientAuthenticationContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                parameters: readableCollection);
-
-            _mockLoginOrchestrator.Setup(_ => _.ValidateRequest(readableCollection))
-                .Returns(false);
-
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
-            var ctx = new OAuthValidateTokenRequestContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                tokenRequest: new TokenEndpointRequest(readableCollection),
-                clientContext: validatingCtx);
-
-            await _provider.ValidateTokenRequest(ctx);
-
-            ctx.HasError.Should().BeTrue();
-            ctx.IsValidated.Should().BeFalse();
-        }
-
-        [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_When_PublicClientId_Null()
-        {
-            Action throwAction = () => new ApplicationOAuthProvider(null);
-            throwAction.ShouldThrow<ArgumentNullException>()
-                .And
-                .ParamName
-                .Should()
-                .Be("publicClientId");
         }
 
         [Fact]
