@@ -1,4 +1,4 @@
-﻿namespace Voyage.Web.Auth_Stuff
+﻿namespace Voyage.Core
 {
     public static class Clients
     {
@@ -6,17 +6,10 @@
         {
             Id = "123456",
             Secret = "abcdef",
-            RedirectUrl = Paths.AuthorizeCodeCallBackPath
+            RedirectUrl = "http://localhost:52431/Home/Index"
         };
 
         public static readonly Client Client2 = new Client
-        {
-            Id = "7890ab",
-            Secret = "7890ab",
-            RedirectUrl = Paths.ImplicitGrantCallBackPath
-        };
-
-        public static readonly Client Client3 = new Client
         {
             Id = "client-super",
             Secret = "secret",

@@ -9,9 +9,9 @@ namespace Voyage.Core
     {
         /// <summary>
         /// Merges two collections:
-        ///     - New items in source are added to destination
-        ///     - Updated items in source are updated in destination
-        ///     - Items in destination that are not in source are removed
+        ///  - New items in source are added to destination
+        ///  - Updated items in source are updated in destination
+        ///  - Items in destination that are not in source are removed
         /// </summary>
         /// <typeparam name="TSource">Source collection type</typeparam>
         /// <typeparam name="TDest">Destination collection type</typeparam>

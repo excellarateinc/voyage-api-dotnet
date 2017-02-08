@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentExtensions.cs" />
+    <Compile Include="Clients.cs" />
     <Compile Include="CollectionHelpers.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExceptionExtensions.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="IIdentityProvider.cs" />
+    <Compile Include="Paths.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

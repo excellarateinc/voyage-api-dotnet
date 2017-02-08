@@ -13,7 +13,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Infrastructure;
-using Voyage.Web.Auth_Stuff;
+using Voyage.Core;
 
 namespace Voyage.Web
 {
@@ -96,6 +96,7 @@ namespace Voyage.Web
                 }
             });
 
+            // Allow Web API to consume bearer tokens.
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             // 6. Add web api to pipeline

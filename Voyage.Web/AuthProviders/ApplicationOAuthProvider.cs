@@ -4,15 +4,11 @@ using Voyage.Core;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Owin.Security.Infrastructure;
 using Voyage.Services.User;
-using Voyage.Web.Auth_Stuff;
 
 namespace Voyage.Web.AuthProviders
 {
@@ -109,10 +105,6 @@ namespace Voyage.Web.AuthProviders
                 {
                     context.Validated();
                 }
-                else if (clientId == Clients.Client3.Id && clientSecret == Clients.Client3.Secret)
-                {
-                    context.Validated();
-                }
             }
 
             return Task.FromResult<object>(null);
@@ -127,10 +119,6 @@ namespace Voyage.Web.AuthProviders
             else if (context.ClientId == Clients.Client2.Id)
             {
                 context.Validated(Clients.Client2.RedirectUrl);
-            }
-            else if (context.ClientId == Clients.Client3.Id)
-            {
-                context.Validated(Clients.Client3.RedirectUrl);
             }
 
             return Task.FromResult(0);
