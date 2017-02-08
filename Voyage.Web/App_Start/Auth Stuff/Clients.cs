@@ -20,7 +20,7 @@
         {
             Id = "client-super",
             Secret = "secret",
-            RedirectUrl = "http://localhost:3000/dashboard"
+            RedirectUrl = "http://localhost:3000"
         };
     }
 
