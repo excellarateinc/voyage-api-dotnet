@@ -39,7 +39,7 @@ namespace Voyage.Web
             app.UseCors(CorsOptions.AllowAll);
 
             // 3. Use the readable response middleware
-           // app.Use<RewindResponseMiddleware>();
+            app.Use<RewindResponseMiddleware>();
 
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
@@ -103,7 +103,7 @@ namespace Voyage.Web
         }
 
         private readonly ConcurrentDictionary<string, string> _authenticationCodes =
-    new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
+            new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
 
         private void CreateAuthenticationCode(AuthenticationTokenCreateContext context)
         {

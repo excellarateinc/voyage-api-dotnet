@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,7 +34,6 @@ namespace Voyage.Web.Controllers
                         identity.AddClaim(new Claim("urn:oauth:scope", scope));
                     }
 
-                    // TODO: Give permission claims here.
                     authentication.SignIn(identity);
                 }
 

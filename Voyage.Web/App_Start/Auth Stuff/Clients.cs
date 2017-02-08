@@ -15,6 +15,13 @@
             Secret = "7890ab",
             RedirectUrl = Paths.ImplicitGrantCallBackPath
         };
+
+        public static readonly Client Client3 = new Client
+        {
+            Id = "client-super",
+            Secret = "secret",
+            RedirectUrl = "http://localhost:3000/dashboard"
+        };
     }
 
 #pragma warning disable SA1402 // File may only contain a single class

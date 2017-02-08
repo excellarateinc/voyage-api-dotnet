@@ -109,6 +109,10 @@ namespace Voyage.Web.AuthProviders
                 {
                     context.Validated();
                 }
+                else if (clientId == Clients.Client3.Id && clientSecret == Clients.Client3.Secret)
+                {
+                    context.Validated();
+                }
             }
 
             return Task.FromResult<object>(null);
@@ -123,6 +127,10 @@ namespace Voyage.Web.AuthProviders
             else if (context.ClientId == Clients.Client2.Id)
             {
                 context.Validated(Clients.Client2.RedirectUrl);
+            }
+            else if (context.ClientId == Clients.Client3.Id)
+            {
+                context.Validated(Clients.Client3.RedirectUrl);
             }
 
             return Task.FromResult(0);
