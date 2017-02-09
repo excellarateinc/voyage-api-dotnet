@@ -14,7 +14,7 @@ set root=%root:~0,-1%
 SET toolPath="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe"
 
 ::Path to the dacpac
-SET sourcePath=".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac"
+SET sourcePath=".\Voyage.Database\bin\Debug\Voyage.Database.dacpac"
 
 ::Connection string for the target
 SET connectionString="Integrated Security=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Voyage"
