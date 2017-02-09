@@ -1,33 +1,50 @@
 ﻿@model Voyage.Core.Exceptions.NotFoundException
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h1>Authorization Server</h1>
-    <form method="POST">
-        <h2>Forms Login</h2>
-        <ul>
-            <li>
-                <label for="username">User name: </label>
-                <input type="text" id="username" name="username"/>
-            </li>
-            <li>
-                <label for="password">Password: </label>
-                <input type="password" id="password" name="password"/>
-            </li>
-            <li>
-                <input type="checkbox" id="isPersistent" name="isPersistent"/>
-                <label for="isPersistent">Remember Me</label>
-                <input type="submit" name="submit.Signin" value="Sign In"/>
-            </li>
-        </ul>
-        @if (Model != null)
-        {
-            <div style="color:lightcoral">Login failed</div>
-        }
-    </form>
-</body>
-</html>
+<div class="row">
+    <div class="col-md-6 col-sm-8 col-xs-12 col-md-offset-3 col-sm-offset-2">
+        <div class="well well-sm">         
+            <div class="col-md-offset-3 col-sm-offset-2">
+                <img src="../../Content/Images/voyage-logo-vert.svg" alt="voyage-logo" width="300" height="400">
+            </div>                
+            <form method="POST" class="form-horizontal" style="margin-top: -20px;">
+                <fieldset>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div class="col-md-9 col-md-offset-3 col-sm-offset-2">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="User Id">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div class="col-md-9 col-md-offset-3 col-sm-offset-2">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div class="col-md-9 col-md-offset-3 col-sm-offset-2">
+                            <div class="checkbox" style="padding-left: 0;">
+                                <label>
+                                    <input type="checkbox" id="isPersistent" name="isPersistent">
+                                    <span class="checkbox-material">
+                                        <span class="check"></span>
+                                    </span> Remember Me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div class="col-md-9 col-md-offset-3 col-sm-offset-2">
+                            <button type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.Signin">
+                                Log In
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (Model != null)
+                    {
+                        <div style="color: lightcoral">Login failed</div>
+                    }
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
