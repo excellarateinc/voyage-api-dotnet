@@ -270,7 +270,6 @@
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
     <Compile Include="Controllers\API\v1\ApplicationInfoController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Extensions\ModelErrorExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
@@ -305,7 +304,6 @@
     <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\OAuth\Authorize.cshtml" />
     <Content Include="Views\OAuth\AuthorizeError.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

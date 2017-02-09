@@ -32,15 +32,13 @@
                     </div>
                     <div class="form-group" style="margin-top: 10px;">
                         <div class="col-md-9 col-md-offset-2 col-sm-offset-2">
-                            <button type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.Signin">
-                                Log In
-                            </button>
+                            <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.Signin" value="Log In"/>
                         </div>
                     </div>
 
                     @if (Model != null)
                     {
-                        <div style="color: lightcoral">Login failed</div>
+                        <div class="col-md-offset-2 col-sm-offset-2" style="color: lightcoral">Login Failed</div>
                     }
                 </fieldset>
             </form>
