@@ -1,4 +1,6 @@
-﻿namespace Voyage.Core
+﻿using System.Collections.Generic;
+
+namespace Voyage.Core
 {
     public static class Clients
     {
@@ -6,14 +8,26 @@
         {
             Id = "123456",
             Secret = "abcdef",
-            RedirectUrl = "http://localhost:52431/Home/Index"
+            RedirectUrl = "http://localhost:52431/Home/Index",
+            AllowedScopes = new List<string>
+            {
+                "profile",
+                "email",
+                "api"
+            }
         };
 
         public static readonly Client Client2 = new Client
         {
             Id = "client-super",
             Secret = "secret",
-            RedirectUrl = "http://localhost:3000"
+            RedirectUrl = "http://localhost:3000",
+            AllowedScopes = new List<string>
+            {
+                "profile",
+                "email",
+                "api"
+            }
         };
     }
 
@@ -26,5 +40,7 @@
         public string Secret { get; set; }
 
         public string RedirectUrl { get; set; }
+
+        public List<string> AllowedScopes { get; set; }
     }
 }

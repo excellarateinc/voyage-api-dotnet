@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using Voyage.Core;
 
 namespace Voyage.Web.Controllers
 {
@@ -22,7 +23,9 @@ namespace Voyage.Web.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var scopes = (Request.QueryString.Get("scope") ?? string.Empty).Split(' ');
+            // TODO: Get specific client's scopes.
+            var scopes = Clients.Client2.AllowedScopes;
+            ViewBag.Scopes = scopes;
 
             if (Request.HttpMethod == "POST")
             {
