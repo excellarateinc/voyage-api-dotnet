@@ -142,8 +142,8 @@ This is a utility that can deploy a .dacpac file. Additionally, it can also be u
 #### Sample Command
 ```
 "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe" /TargetConnectionString:"Integrated Security=SS
-PI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Launchpad" /SourceFile:".\Launchpad.Database.dacpac" /Action:Publish
-Publishing to database 'Launchpad' on server 'localhost'.
+PI;Persist Security Info=False;Data Source=localhost;Initial Catalog=Voyage" /SourceFile:".\Voyage.Database.dacpac" /Action:Publish
+Publishing to database 'Voyage' on server 'localhost'.
 Initializing deployment (Start)
 Initializing deployment (Complete)
 Analyzing deployment plan (Start)
@@ -167,7 +167,7 @@ add-type -path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\
 
 $dacService = new-object Microsoft.SqlServer.Dac.DacServices "server=localhost;Integrated Security = True;"
 
-$dp = [Microsoft.SqlServer.Dac.DacPackage]::Load(".\Launchpad.Database.dacpac")
+$dp = [Microsoft.SqlServer.Dac.DacPackage]::Load(".\Voyage.Database.dacpac")
 
 
 
@@ -176,7 +176,7 @@ try{
     register-objectevent -in $dacService -eventname Message -source "msg" -action { out-host -in $Event.SourceArgs[1].Message.Message } | Out-Null
  
     echo "Starting Deployment"
-    $result =  $dacService.deploy($dp, "Launchpad", "True")     
+    $result =  $dacService.deploy($dp, "Voyage", "True")     
 }
 catch [Exception]{
     echo $_.Exception|format-list -force
@@ -193,8 +193,8 @@ A T-SQL script can generated using the .dacpac and a target database. This scrip
 ####Sample Command
 ```
 "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130\SqlPackage.exe" /TargetConnectionString:"Integrated Se
-curity=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=lp" /SourceFile:".\Launchpad.Database\bin\Debug\Launchpad.Database.dacpac" /Action:S
-cript /OutputPath:Launchpad.Database-2016-07-12-09480717.sql
+curity=SSPI;Persist Security Info=False;Data Source=localhost;Initial Catalog=lp" /SourceFile:".\Voyage.Database\bin\Debug\Voyage.Database.dacpac" /Action:S
+cript /OutputPath:Voyage.Database-2016-07-12-09480717.sql
 Generating publish script for database 'lp' on server 'localhost'.
-Successfully generated script to file C:\code\Launchpad.Database-2016-07-12-09480717.sql.
+Successfully generated script to file C:\code\Voyage.Database-2016-07-12-09480717.sql.
 ```
