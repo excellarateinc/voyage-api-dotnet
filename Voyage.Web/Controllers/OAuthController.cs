@@ -28,6 +28,15 @@ namespace Voyage.Web.Controllers
             var scopes = Clients.Client2.AllowedScopes;
             ViewBag.Scopes = scopes;
 
+            // TODO: Add check if client is allowed to bypass "Grant" check.
+            identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
+            foreach (var scope in scopes)
+            {
+                identity.AddClaim(new Claim("urn:oauth:scope", scope));
+            }
+
+            authentication.SignIn(identity);
+
             if (Request.HttpMethod == "POST")
             {
                 if (!string.IsNullOrEmpty(Request.Form.Get("submit.Grant")))
