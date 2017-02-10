@@ -5,7 +5,7 @@
 * def
 
 ### Server Testing 
-1. Integration tests exist for the Launchpad.Data
+1. Integration tests exist for the Voyage.Data
    - The primary goal of these tests is to excercise the EntityFramework configuration and repositories
 2. There should be a mirrored structure between project files and test files
    - This allows the developer to locate the test file quickly based on the location of the project file
