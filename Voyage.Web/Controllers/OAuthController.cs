@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Filters;
 using Voyage.Core;
 
 namespace Voyage.Web.Controllers

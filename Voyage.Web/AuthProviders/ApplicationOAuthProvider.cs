@@ -80,11 +80,6 @@ namespace Voyage.Web.AuthProviders
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
 
-        public override Task TokenEndpointResponse(OAuthTokenEndpointResponseContext context)
-        {
-            return base.TokenEndpointResponse(context);
-        }
-
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
             foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)

@@ -66,6 +66,7 @@ namespace Voyage.Web
 
             // Setup Authorization Server
             var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
+            var appTokenProvider = ContainerConfig.Container.Resolve<ApplicationTokenProvider>();
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
                 AuthorizeEndpointPath = new PathString(Paths.AuthorizePath),
@@ -82,11 +83,7 @@ namespace Voyage.Web
                 Provider = oauthProvider,
 
                 // Authorization code provider which creates and receives authorization code
-                AuthorizationCodeProvider = new AuthenticationTokenProvider
-                {
-                    OnCreate = CreateAuthenticationCode,
-                    OnReceive = ReceiveAuthenticationCode,
-                },
+                AuthorizationCodeProvider = appTokenProvider,
 
                 // Refresh token provider which creates and receives referesh token
                 RefreshTokenProvider = new AuthenticationTokenProvider
@@ -101,24 +98,6 @@ namespace Voyage.Web
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);
-        }
-
-        private readonly ConcurrentDictionary<string, string> _authenticationCodes =
-            new ConcurrentDictionary<string, string>(StringComparer.Ordinal);
-
-        private void CreateAuthenticationCode(AuthenticationTokenCreateContext context)
-        {
-            context.SetToken(Guid.NewGuid().ToString("n") + Guid.NewGuid().ToString("n"));
-            _authenticationCodes[context.Token] = context.SerializeTicket();
-        }
-
-        private void ReceiveAuthenticationCode(AuthenticationTokenReceiveContext context)
-        {
-            string value;
-            if (_authenticationCodes.TryRemove(context.Token, out value))
-            {
-                context.DeserializeTicket(value);
-            }
         }
 
         private void CreateRefreshToken(AuthenticationTokenCreateContext context)
