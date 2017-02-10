@@ -72,8 +72,8 @@ Download and install the following required software for development:
    - Click the "Manage Connections" button (Green electrical outlet icon). 
    - Under the GitHub section, click "Clone".
    - Enter your GitHub credentials.
-   - Choose "launchpad-dotnet-api" from the list of repositories.
-     * The official repository is located here https://github.com/lssinc/launchpad-dotnet-api
+   - Choose "voyage-dotnet-api" from the list of repositories.
+     * The official repository is located here https://github.com/lssinc/voyage-dotnet-api
    - Choose a path. (Example C:\Source)
    - Click "Clone".
    - Once cloning is complete, open the "Launchpad.API" solution.
@@ -85,7 +85,7 @@ Download and install the following required software for development:
      * Go to the "Tools" tab, select "NuGet Package Manager" then "Package Manager Console". From the console that shows up, click the "Restore" button in the upper right corner.
 3. Create the database
    - NOTE: This assumes there is a local SqlServer configured on Localhost and Windows Authentication is enabled
-   - Build the Launchpad.Database project
+   - Build the Voyage.Database project
    - Double click the localhost.publish.xml
    - Once the dialog appears, click the Publish button
    - A Data Tools Operation panel will appear and contain the results of the publish operation
@@ -100,14 +100,14 @@ Download and install the following required software for development:
    - Expand the "Application Development Features" node.
    - Check the "ASP.NET 4.6" checkbox.
    - Click "OK".
-5. Add the launchpad application to IIS
+5. Add the voyage application to IIS
    - Click the start button, and search for "inetmgr". Open the IIS Manager application.
    - Expand the root node, right click on "Sites" and select "Add Website".
-   - Enter "Launchpad" as the Site name and point the physical path to the full path of the Launchpad.Web folder. (Example: C:\Source\launchpad-dotnet-api\Launchpad.Web)
+   - Enter "Voyage" as the Site name and point the physical path to the full path of the Voyage.Web folder. (Example: C:\Source\voyage-dotnet-api\Voyage.Web)
    - Change port 80 to 52431.
    - Click OK
    - Click "Application Pools" from the left nav. 
-   - Right click the "Launchpad" application pool and select "Advanced Settings...".
+   - Right click the "Voyage" application pool and select "Advanced Settings...".
    - Ensure the .NET CLR Version is v4.0.
    - Under the "Process Model" section, click the bolded word "ApplicationPoolIdentity", then click the "..." button.
    - Click "Custom account" and click "Set"
@@ -120,13 +120,13 @@ Download and install the following required software for development:
    - Expand the "Logins" folder
    - Right click on your windows username and select "Properties".
    - Click "User Mapping" from the left navigation.
-   - Click the checkbox next to "Launchpad"
+   - Click the checkbox next to "Voyage"
    - Click the checkbox next to "db_owner" in the bottom panel.
    - Click OK   
 7. Install the API Documentation
    - Open up a command prompt
    - Run "npm install apidoc -g"
-   - Change directory "cd" to the Launchpad.Web folder.
+   - Change directory "cd" to the Voyage.Web folder.
    - Run this command: "npm run doc"
    - You will see a "Done" message when it is complete.   
    - **Note:** If the script fails to execute, try closing the command prompt and opening a new one and run the command again. If there are multiple prompts open at the same time, the command prompt will not always pick up the new global module when both commands are not run from the same instance.
@@ -145,7 +145,7 @@ Password: Hello123!
 
 1. Run the application
    - Open Visual Studio with administrator privileges.
-   - Open the "Launchpad.API" solution.
+   - Open the "Voyage.API" solution.
    - Press Control + F5.
    - You are now up and running. Your browser will open and display the API documentation for the application.
 2. Run the tests   
