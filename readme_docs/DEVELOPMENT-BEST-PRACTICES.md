@@ -7,7 +7,7 @@ Best practices that all developers on the team agree to adhere to when writing n
 
 ## Dependency Injection
 The application is using Autofac as the DI container. Each project contains a module file that is responsible for registering the contained
-components with the container. The overall container is setup in the ContainerConfig in ***Launchpad.Web***.
+components with the container. The overall container is setup in the ContainerConfig in ***Voyage.Web***.
 
 The lifetime for the majority of components should be per request to keep request scopes isolated. Autofac will handle diposing the resolved
 values the end of the request. For more: [http://docs.autofac.org/en/latest/lifetime/disposal.html](http://docs.autofac.org/en/latest/lifetime/disposal.html)
@@ -74,7 +74,7 @@ Take advantage of Serilog by using the message template to provide both a human 
 For example, given the following message template:
 
 ```
- _logger.ForContext<LaunchpadDataContext>()
+ _logger.ForContext<VoyageDataContext>()
         .Error(validationException, "({eventCode:l}) {validationErrors}", EventCodes.EntityValidation, string.Join(";", errorMessages));
 ```
 
@@ -95,7 +95,7 @@ And the JSON object will be:
   "Properties":{
       "eventCode":"EntityValidation",
       "validationErrors":"'User' has error 'User name delete@admin.com is already taken.'",
-      "SourceContext":"Launchpad.Data.LaunchpadDataContext"},
+      "SourceContext":"Voyage.Data.VoyageDataContext"},
       "Renderings":{"eventCode":[{"Format":"l","Rendering":"EntityValidation"}]
     }
   }
