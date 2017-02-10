@@ -37,9 +37,9 @@ There are two options for initializing the LocalDb instance for the developer en
 
 *Post Build Event*
 
-Use the post build event on Launchpad.Web.IntegrationTests to automatically call the configure-test-db.bat Note: This will cause the build of the project be slower since it will need to deploy the .dacpac
+Use the post build event on Voyage.IntegrationTests to automatically call the configure-test-db.bat Note: This will cause the build of the project be slower since it will need to deploy the .dacpac
 ```
-CALL "$(SolutionDir)\configure-test-db.bat" "$(SolutionDir)\Launchpad.Database\bin\$(ConfigurationName)\Launchpad.Database.dacpac"
+CALL "$(SolutionDir)\configure-test-db.bat" "$(SolutionDir)\Voyage.Database\bin\$(ConfigurationName)\Voyage.Database.dacpac"
 ```
 *Manually Invoke .bat*
 
@@ -277,7 +277,7 @@ For local development, everything that is needed to create the LocalDb instance 
 2. Using SqlLocalDb.exe delete the instance
 3. Delete the log and data files
 4. Using SqlLocalDb.exe create and start the instance
-5. Using SqlPackage.exe deploy the .dacpac from the Launchpad.Database project
+5. Using SqlPackage.exe deploy the .dacpac from the Voyage.Database project
 
 Since the .dacpac contains all the schema and seed data to run the application, this process gives a new instance of the database with all required data.
 
