@@ -32,7 +32,7 @@ The activity auditing uses the core.ActivityAudit table.
 
 ### Database Auditing
 Database auditing is implemented using the [Tracker Enabled DbContext](https://github.com/bilal-fazlani/tracker-enabled-dbcontext)
-nuget package. This package includes a custom DbContext called TrackerIdentityContext. The LaunchpadDataContext inherits from this class. 
+nuget package. This package includes a custom DbContext called TrackerIdentityContext. The VoyageDataContext inherits from this class. 
 When save changes is called on the context, the ChangeTracker is used to create audit records. 
 
 Each entity must be configured for auditing. In the application, this is done by creating an IAuditConfiguration. There should be a 
