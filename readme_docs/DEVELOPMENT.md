@@ -76,7 +76,7 @@ Download and install the following required software for development:
      * The official repository is located here https://github.com/lssinc/voyage-dotnet-api
    - Choose a path. (Example C:\Source)
    - Click "Clone".
-   - Once cloning is complete, open the "Launchpad.API" solution.
+   - Once cloning is complete, open the "Voyage.API" solution.
 2. Build it
    - With the solution open, press Control + Shift + B or right click the solution and select "Build Solution".
    - Visual Studio should automatically restore the dependencies on the first build.
