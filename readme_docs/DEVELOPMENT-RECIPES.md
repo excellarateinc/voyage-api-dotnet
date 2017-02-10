@@ -53,7 +53,7 @@ Below is an example of the comments used to document an endpoint.
 ### Reusable apiDoc blocks
 apiDoc supports creating reusuable documentation blocks using [@apiDefine](http://apidocjs.com/#param-api-define). This 
 cuts down on repeated comment blocks for shared elements such as errors. 
-All reusable blocks should be placed in  ***Launchpad.Web\\_apidoc.js***
+All reusable blocks should be placed in  ***Voyage.Web\\_apidoc.js***
 
 ### Current @apiDefine blocks
 
@@ -81,7 +81,7 @@ All reusable blocks should be placed in  ***Launchpad.Web\\_apidoc.js***
 ### Generating documentation
 To generate the api docs after a change:
 
-1. In ***Launchpad.Web/apidoc*** execute npm run apidoc
+1. In ***Voyage.Web/apidoc*** execute npm run apidoc
    - This is an npm script that is defined in package.json
    - Script: apidoc -o docs -i .\\ -f \".cs$\" -f \"_apidoc.js\"
    - This will scan the Controllers folder for endpoints and place the output in \docs
@@ -108,7 +108,7 @@ Each version of the an api will have a new controller source file and a unique u
 > __VALIDATE THIS APPROACH__
 
 Data auditing is implemented using the [Tracker Enabled DbContext](https://github.com/bilal-fazlani/tracker-enabled-dbcontext)
-nuget package. This package includes a custom DbContext called TrackerIdentityContext. The LaunchpadDataContext inherits from this class. 
+nuget package. This package includes a custom DbContext called TrackerIdentityContext. The VoyageDataContext inherits from this class. 
 When save changes is called on the context, the ChangeTracker is used to create audit records. 
 
 Each entity must be configured for auditing. In the application, this is done by adding a row to the BaseAuditConfiguration.cs file. There should be a 
@@ -294,7 +294,7 @@ When adding a new controller, there are several attributes that should be used t
 ### Implementation
 The following steps provide guidance around adding a new controller.
 
-1. Add a new class file to Launchpad.Web in the correct version folder
+1. Add a new class file to Voyage.Web in the correct version folder
    1. The class should end in the suffix Controller
 2. Add class and method attributes
 3. Add dependencies on services
@@ -316,9 +316,9 @@ Services (Not Api Services) evaluate and execute the business logic in the appli
 ### Implementation
 The following steps provide guidance around adding a new service
 
-1. Add a new class to Launchpad.Services
+1. Add a new class to Voyage.Services
   1. This file should end in the suffix Service to indicate it is a service
-2. Add a new interface to Launchpad.Services
+2. Add a new interface to Voyage.Services
   1. This interface will be the contract that the aformentioned class implements. 
   2. Define the methods for the service.
 3. Implement in interface in the class
@@ -403,7 +403,7 @@ errors. An ActionFilterAttribute will then transform the dictionary into the exp
 
 #### Creating A Validator
 
-* In Launchpad.Models create a new class {Model}Validator under the validators folder
+* In Voyage.Models create a new class {Model}Validator under the validators folder
 * Inherit AbstractValidator<TModel>
 * Configure rules using the fluent API
 ```
