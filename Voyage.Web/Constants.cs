@@ -2,9 +2,7 @@
 {
     public static class Constants
     {
-#pragma warning disable SA1401 // Fields must be private
         public static string ApplicationName = "Voyage .Net API";
-#pragma warning restore SA1401 // Fields must be private
 
         public static class RoutePrefixes
         {
