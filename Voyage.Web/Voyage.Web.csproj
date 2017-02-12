@@ -263,8 +263,6 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="AuthProviders\ApplicationTokenProvider.cs" />
     <Compile Include="AuthProviders\IdentityProvider.cs" />
-    <Compile Include="AuthProviders\ILoginOrchestrator.cs" />
-    <Compile Include="AuthProviders\LoginOrchestrator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />
@@ -290,9 +288,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

@@ -24,90 +24,12 @@ namespace Voyage.UnitTests.Web.AuthProviders
         private readonly string _clientId;
         private readonly ApplicationOAuthProvider _provider;
         private readonly Mock<IOwinContext> _mockOwinContext;
-        private readonly Mock<ILoginOrchestrator> _mockLoginOrchestrator;
 
         public ApplicationOAuthProviderTests()
         {
             _clientId = Fixture.Create<string>();
             _mockOwinContext = Mock.Create<IOwinContext>();
-            _mockLoginOrchestrator = Mock.Create<ILoginOrchestrator>();
-
-            // Setup login delegate
-            _mockLoginOrchestrator.Setup(_ => _.TokenPath).Returns(PathString);
-            _provider = new ApplicationOAuthProvider(new[] { _mockLoginOrchestrator.Object });
-        }
-
-        [Fact]
-        public async void MatchEndPoint_Should_Call_MatchesTokenEndpoint_When_LoginOrchestrator_Matches()
-        {
-              // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
-            OAuthMatchEndpointContext ctx = new OAuthMatchEndpointContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions());
-
-            await _provider.MatchEndpoint(ctx);
-
-            ctx.IsTokenEndpoint.Should().BeTrue();
-        }
-
-        [Fact]
-        public async void MatchEndPoint_Should_Not_Call_MatchesTokenEndpoint_When_LoginOrchestrator_DoesNotMatch()
-        {
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
-
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString + "!"));
-
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
-            OAuthMatchEndpointContext ctx = new OAuthMatchEndpointContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions());
-
-            await _provider.MatchEndpoint(ctx);
-
-            ctx.IsTokenEndpoint.Should().BeFalse();
-        }
-
-        [Fact]
-        public async void ValidateTokenRequest_Should_Call_Validated_When_LoginOrchestrator_Returns_True()
-        {
-            var pairs = new Dictionary<string, string[]>();
-            var readableCollection = new ReadableStringCollection(pairs);
-            Mock.Create<BaseValidatingClientContext>();
-
-            var validatingCtx = new OAuthValidateClientAuthenticationContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                parameters: readableCollection);
-
-            var ctx = new OAuthValidateTokenRequestContext(
-                context: _mockOwinContext.Object,
-                options: new OAuthAuthorizationServerOptions(),
-                tokenRequest: new TokenEndpointRequest(readableCollection),
-                clientContext: validatingCtx);
-
-            await _provider.ValidateTokenRequest(ctx);
-
-            ctx.HasError.Should().BeFalse();
-            ctx.IsValidated.Should().BeTrue();
-        }
-
-        [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_When_LoginOrchestrators_Null()
-        {
-            Action throwAction = () => new ApplicationOAuthProvider(null);
-            throwAction.ShouldThrow<ArgumentNullException>()
-                .And
-                .ParamName
-                .Should()
-                .Be("loginOrchestrators");
+            _provider = new ApplicationOAuthProvider();
         }
 
         [Fact]
@@ -117,18 +39,17 @@ namespace Voyage.UnitTests.Web.AuthProviders
             var password = "giraffe";
             OAuthGrantResourceOwnerCredentialsContext oAuthContext = new OAuthGrantResourceOwnerCredentialsContext(_mockOwinContext.Object, new OAuthAuthorizationServerOptions(), _clientId, user, password, new List<string>());
 
-            // Setup the request
-            var mockRequest = Mock.Create<IOwinRequest>();
+            // Setup the user service
+            var mockUserService = Mock.Create<IUserService>();
+            mockUserService.Setup(x => x.IsValidCredential(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
 
-            mockRequest.Setup(_ => _.Path)
-              .Returns(new PathString(PathString));
+            // Skip mocking out autofac, just build the container to use
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.Register(c => mockUserService.Object);
+            var container = containerBuilder.Build();
 
-            _mockOwinContext.Setup(_ => _.Request)
-              .Returns(mockRequest.Object);
-
-            // Setup the login orchestrator
-            _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
-                .ReturnsAsync(false);
+            _mockOwinContext.Setup(_ => _.Get<ILifetimeScope>(It.IsAny<string>()))
+                .Returns(container);
 
             // ACT
             await _provider.GrantResourceOwnerCredentials(oAuthContext);
@@ -148,14 +69,10 @@ namespace Voyage.UnitTests.Web.AuthProviders
             // Identity fake
             var identity = new ClaimsIdentity();
 
-            // Setup login
-            // Setup the login orchestrator
-            _mockLoginOrchestrator.Setup(_ => _.ValidateCredential(oAuthContext))
-                .ReturnsAsync(true);
-
             // Setup the user service
             var mockUserService = Mock.Create<IUserService>();
 
+            mockUserService.Setup(_ => _.IsValidCredential(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, OAuthDefaults.AuthenticationType))
                 .ReturnsAsync(identity);
             mockUserService.Setup(_ => _.CreateClaimsIdentityAsync(user, CookieAuthenticationDefaults.AuthenticationType))
@@ -173,8 +90,6 @@ namespace Voyage.UnitTests.Web.AuthProviders
 
             // Configure the context properties
             var mockOwinRequest = Mock.Create<IOwinRequest>();
-            mockOwinRequest.Setup(_ => _.Path)
-                .Returns(new PathString(PathString));
 
             mockOwinRequest.Setup(_ => _.Context).Returns(_mockOwinContext.Object);
             _mockOwinContext.Setup(_ => _.Request).Returns(mockOwinRequest.Object);

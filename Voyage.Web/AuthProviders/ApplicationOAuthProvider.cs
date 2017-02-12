@@ -5,7 +5,6 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Voyage.Services.User;
@@ -19,16 +18,6 @@ namespace Voyage.Web.AuthProviders
     /// </summary>
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
-        // Backed off from using a dictionary here - there is no guarantee that the IsMatch logic will be as straight
-        // forward as checking the path
-        private readonly Dictionary<string, ILoginOrchestrator> _loginOrchestrators;
-
-        public ApplicationOAuthProvider(IEnumerable<ILoginOrchestrator> loginOrchestrators)
-        {
-            loginOrchestrators.ThrowIfNull(nameof(loginOrchestrators));
-            _loginOrchestrators = loginOrchestrators.ToDictionary(_ => _.TokenPath);
-        }
-
         public static AuthenticationProperties CreateProperties(string userName)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
@@ -38,30 +27,11 @@ namespace Voyage.Web.AuthProviders
             return new AuthenticationProperties(data);
         }
 
-        /// <summary>
-        /// Determines if the incoming request matches an endpoint. This override is here to support multiple versions of the
-        /// login service
-        /// </summary>
-        /// <param name="context">Context</param>
-        /// <returns>Task</returns>
-        public override Task MatchEndpoint(OAuthMatchEndpointContext context)
-        {
-            // Check if there is a match path in the array - if so it is a token endpoint
-            if (_loginOrchestrators.ContainsKey(context.Request.Path.Value))
-            {
-                context.MatchesTokenEndpoint();
-                return Task.Delay(0);
-            }
-
-            // If it does not match a token endpoint, execute the default behavior
-            return base.MatchEndpoint(context);
-        }
-
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            // Let the orchestrator determine if it is a valid credential and then respond accordingly
-            var loginOrchestrator = _loginOrchestrators[context.Request.Path.Value];
-            var valid = await loginOrchestrator.ValidateCredential(context);
+            var scope = context.OwinContext.GetAutofacLifetimeScope();
+            var userService = scope.Resolve<IUserService>();
+            var valid = await userService.IsValidCredential(context.UserName, context.Password);
 
             if (!valid)
             {
@@ -69,8 +39,6 @@ namespace Voyage.Web.AuthProviders
                 return;
             }
 
-            var scope = context.OwinContext.GetAutofacLifetimeScope();
-            var userService = scope.Resolve<IUserService>();
             ClaimsIdentity oAuthIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await userService.CreateClaimsIdentityAsync(context.UserName, CookieAuthenticationDefaults.AuthenticationType);
 
