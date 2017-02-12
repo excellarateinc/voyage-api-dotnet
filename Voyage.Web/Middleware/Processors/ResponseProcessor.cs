@@ -15,15 +15,15 @@ namespace Voyage.Web.Middleware.Processors
         public virtual async Task<string> GetResponseStringAsync(IOwinResponse response)
         {
             if (!response.Body.CanSeek)
-                throw new Exception($"The body does not support seek. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
+                throw new Exception("The body does not support seek. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
 
             if (!ShouldProcess(response))
-                throw new Exception($"ShouldProcess predicate failed. This processor should not read this type of response");
+                throw new Exception("ShouldProcess predicate failed. This processor should not read this type of response");
 
             var responseStream = response.Body as MemoryStream;
             if (responseStream == null)
             {
-                throw new Exception($"The response.body could not be cast as MemoryStream. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
+                throw new Exception("The response.body could not be cast as MemoryStream. Ensure that the RewindResponseMiddleware is registered earlier in the pipeline");
             }
 
             responseStream.Seek(0, SeekOrigin.Begin);
