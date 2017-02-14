@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -16,7 +14,6 @@ using Newtonsoft.Json;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.UnitTests.Common;
-using Voyage.Web;
 using Voyage.Web.Filters;
 using Xunit;
 
