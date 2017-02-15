@@ -44,28 +44,7 @@ namespace Voyage.UnitTests.Web.Filters
         {
             // Arrange
             var apiExceptionFilter = new ApiExceptionFilterAttribute();
-
-            var controllerContext = new HttpControllerContext
-            {
-                Request = new HttpRequestMessage(),
-                RequestContext =
-                    new HttpRequestContext
-                    {
-                        Principal = new ClaimsPrincipal()
-                    }
-            };
-
-            controllerContext.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-
-            var actionContext = new HttpActionContext(
-                controllerContext,
-                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
-
-            var context = new HttpActionExecutedContext
-            {
-                Exception = new NotFoundException("Item Not Found"),
-                ActionContext = actionContext
-            };
+            var context = GetMockActionContext(new NotFoundException("Item Not Found"));
 
             // Act
             apiExceptionFilter.OnException(context);
@@ -79,6 +58,73 @@ namespace Voyage.UnitTests.Web.Filters
             var errorModelList = JsonConvert.DeserializeObject<List<ResponseErrorModel>>(response.Content.ReadAsStringAsync().Result);
             errorModelList.Should().HaveCount(1);
             errorModelList.First().ErrorDescription.Should().Be("Item Not Found");
+        }
+
+        [Fact]
+        public void BadRequest_ApiException_Should_Set_Correct_BadRequest_Response()
+        {
+            // Arrange
+            var apiExceptionFilter = new ApiExceptionFilterAttribute();
+            var context = GetMockActionContext(new BadRequestException("Item Was Invalid"));
+
+            // Act
+            apiExceptionFilter.OnException(context);
+
+            // Assert
+            var response = context.Response;
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+            var errorModelList = JsonConvert.DeserializeObject<List<ResponseErrorModel>>(response.Content.ReadAsStringAsync().Result);
+            errorModelList.Should().HaveCount(1);
+            errorModelList.First().ErrorDescription.Should().Be("Item Was Invalid");
+        }
+
+        [Fact]
+        public void Unauthorized_ApiException_Should_Set_Correct_Unauthorized_Response()
+        {
+            // Arrange
+            var apiExceptionFilter = new ApiExceptionFilterAttribute();
+            var context = GetMockActionContext(new UnauthorizedException("Not Authorized"));
+
+            // Act
+            apiExceptionFilter.OnException(context);
+
+            // Assert
+            var response = context.Response;
+
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+            var errorModelList = JsonConvert.DeserializeObject<List<ResponseErrorModel>>(response.Content.ReadAsStringAsync().Result);
+            errorModelList.Should().HaveCount(1);
+            errorModelList.First().ErrorDescription.Should().Be("Not Authorized");
+        }
+
+        private HttpActionExecutedContext GetMockActionContext(ApiException apiException)
+        {
+            var controllerContext = new HttpControllerContext
+            {
+                Request = new HttpRequestMessage(),
+                RequestContext =
+                new HttpRequestContext
+                {
+                    Principal = new ClaimsPrincipal()
+                }
+            };
+
+            controllerContext.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
+            var actionContext = new HttpActionContext(
+                controllerContext,
+                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
+
+            return new HttpActionExecutedContext
+            {
+                Exception = apiException,
+                ActionContext = actionContext
+            };
         }
     }
 }
