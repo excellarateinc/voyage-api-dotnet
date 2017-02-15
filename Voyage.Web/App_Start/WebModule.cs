@@ -73,16 +73,6 @@ namespace Voyage.Web
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            // Login orchestrators - these will be passed into the
-            // OAuthProvider implementation which is a single instance.
-            // As a result, these must be registered in the same scope AND
-            // any dependencies that exist at a per request scope must be resolved
-            // from the owin context
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .AssignableTo<ILoginOrchestrator>()
-                .As<ILoginOrchestrator>()
-                .SingleInstance();
-
             builder.RegisterType<ApplicationOAuthProvider>()
                .AsSelf()
                .SingleInstance();
