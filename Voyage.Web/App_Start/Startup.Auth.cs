@@ -9,17 +9,11 @@ using Owin;
 using System;
 using System.Collections.Concurrent;
 using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Infrastructure;
-using Microsoft.Owin.Security.Jwt;
 using Voyage.Core;
-using Voyage.Web.Formats;
 
 namespace Voyage.Web
 {
@@ -71,15 +65,12 @@ namespace Voyage.Web
             });
 
             // Setup Authorization Server
+            var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
+            var appTokenProvider = ContainerConfig.Container.Resolve<ApplicationTokenProvider>();
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
-                // Authorize path
                 AuthorizeEndpointPath = new PathString(Paths.AuthorizePath),
-
-                // Token path
                 TokenEndpointPath = new PathString(Paths.TokenPath),
-
-                // Show error
                 ApplicationCanDisplayErrors = true,
 
                 // If the config is wrong, let the application crash
@@ -89,13 +80,10 @@ namespace Voyage.Web
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
 
                 // Authorization server provider which controls the lifecycle of Authorization Server
-                Provider = ContainerConfig.Container.Resolve<ApplicationJwtProvider>(),
-
-                // Jwt custom format
-                AccessTokenFormat = new CustomJwtFormat(),
+                Provider = oauthProvider,
 
                 // Authorization code provider which creates and receives authorization code
-                AuthorizationCodeProvider = ContainerConfig.Container.Resolve<ApplicationTokenProvider>(),
+                AuthorizationCodeProvider = appTokenProvider,
 
                 // Refresh token provider which creates and receives referesh token
                 RefreshTokenProvider = new AuthenticationTokenProvider
@@ -106,17 +94,7 @@ namespace Voyage.Web
             });
 
             // Allow Web API to consume bearer tokens.
-            var secretKey = Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["oAuth:SecretKey"]);
-            app.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
-            {
-                AuthenticationMode = AuthenticationMode.Active,
-                AllowedAudiences = new[] { ConfigurationManager.AppSettings["oAuth:Audience"] },
-                IssuerSecurityTokenProviders = new IIssuerSecurityTokenProvider[]
-                {
-                    new SymmetricKeyIssuerSecurityTokenProvider(ConfigurationManager.AppSettings["oAuth:Issuer"], secretKey)
-                },
-                Provider = new OAuthBearerAuthenticationProvider()
-            });
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);

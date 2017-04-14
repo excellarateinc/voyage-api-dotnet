@@ -254,4 +254,3 @@ ModelManifest.xml
 Launchpad.Web/apidoc
 *.jfm
 /xunit-integration-results.xml
-/ResharperSettings.DotSettings
