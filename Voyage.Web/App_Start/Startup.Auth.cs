@@ -65,6 +65,8 @@ namespace Voyage.Web
             });
 
             // Setup Authorization Server
+            var oauthProvider = ContainerConfig.Container.Resolve<ApplicationOAuthProvider>();
+            var appTokenProvider = ContainerConfig.Container.Resolve<ApplicationTokenProvider>();
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
                 AuthorizeEndpointPath = new PathString(Paths.AuthorizePath),
@@ -78,10 +80,10 @@ namespace Voyage.Web
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
 
                 // Authorization server provider which controls the lifecycle of Authorization Server
-                Provider = new ApplicationOAuthProvider(),
+                Provider = oauthProvider,
 
                 // Authorization code provider which creates and receives authorization code
-                AuthorizationCodeProvider = new ApplicationTokenProvider(),
+                AuthorizationCodeProvider = appTokenProvider,
 
                 // Refresh token provider which creates and receives referesh token
                 RefreshTokenProvider = new AuthenticationTokenProvider
