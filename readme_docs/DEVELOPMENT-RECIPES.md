@@ -157,7 +157,7 @@ Anonymous services can be used without including an Authorization header. The fo
 
 | Path | Description | 
 |:----|:----|
-| /api/vX/login | Attempts to authentication the user and returns an authorization token on success.|
+| /oauth/token | Attempts to authentication the user and returns an authorization token on success.|
 | /api/vX/account/register | Registers a new user|
 | /api/vX/statuses | Returns application status information | 
 
@@ -211,7 +211,7 @@ The workflow for consuming these sevices is as follows:
 
 #### Sample Login Request
 ```
-POST http://54.196.167.24/api/v1/login HTTP/1.1
+POST http://54.196.167.24/api/oauth/Token HTTP/1.1
 Host: 54.196.167.24
 Connection: keep-alive
 Content-Length: 65
@@ -224,7 +224,7 @@ Accept: */*
 Accept-Encoding: gzip, deflate
 Accept-Language: en-US,en;q=0.8
 
-grant_type=password&username=admin%40admin.com&password=Hello123!
+grant_type=password&username=admin%40admin.com&password=Hello123!&client_id=123456&client_secret=abcdef
 
 ```
 
@@ -243,7 +243,15 @@ Access-Control-Allow-Credentials: true
 X-Powered-By: ASP.NET
 Date: Tue, 06 Dec 2016 21:47:04 GMT
 
-{"access_token":"eSqrWlnTcxdMBEB_MO-i812xCBysFGidFy2KHsYjRDbP21vBT5XpuHd3f_fxAYMvyuDhC84S02oAAzd8y4JO07R-R4svWnMiF38EOrJIpKJeP9S-aEs9TVpq7LQEJ1fZlSVcDZV_xttBTetveordQl0vKF7021fXCu05N-X4Y_SIQmVliiwk3v4xSx8skrobV4HBEDyiPEjYut04l_9j_m9BiEzfuGp0_B_o8phUu29SLRMhbtCrGHtCxrfW0BqcsRE3eerp2w2U-ynalVAWgTH339CmWFRK44WPgfpTUVNwnKnj2mr40iglYqKCi-ifxlA_9F4dNfJ4ixQj4QpIjXkAV9_WB1bsCnl-0cVsbWAvmHtIrXQKy9LKt7KykncxuCQlOMgt0K8BH-T9kSffiU2xpnBa9pcYsAIVN1ObZpkjV9RhyVwEyNphIEpUqHwir_fRMBtuSiH1gG5v3H60Vdr_cROTui9x-fhizM-s3ZnlviQhHc1qbhAIA48zYm8GOO8XO_z2H8zS-t94NVthBd1Z3QtI-024HmmXd9NzRKg0A30xSQsE0URm7-2jUN1HUwVNbNuDjXEf05FR2yfGnxoIWA5ZP25ozy_3UBsFXXWAiEDumi6Kk57M2B-xoINzxfZIJvcd_H_9EObGG8G_bcyAXHKnbu0Gwrbhb3Zwv4fslPI1diMXox4kJZtYxEOTjCSaZQlM9sq7I64Fl6apzj_PKLtRw1JMOgKLLzF9Ceo","token_type":"bearer","expires_in":86399,"userName":"admin@admin.com",".issued":"Tue, 06 Dec 2016 21:46:56 GMT",".expires":"Wed, 07 Dec 2016 21:46:56 GMT"}
+{
+  "access_token": "YU_pXtyMUGJQGp6pmjkRCyDnJVI3IDMvdlAB3PKFoq-qVLhdEwzGvMenqi3li__Ye0PcutgxiGdXIRnnV6VG2mMZORF1_iNEj2bCDQjahPlIet1YuGTfEzOwTDYrj-UB3keEqtpW6n-X67PMqQNxj-FkWr7uryVYi3xDFRCgCdW0SMuxTS6l8wTjcviHgZKJjS57Krt3Yl2M9UKA9QSQoeHfsZvvvneoVoQgPAaNItd9SWYvjXj4mTyAE67RRV1BdTQPQmn8iPVsBSdGGbg2g2Div4ITMyyGR3TcUAHH2wKXuJDF6_mDg99vn91Hqsh3YjeLNDeEYblQiuNy2C3dtnCi4p9adW48KyRf9MukkOT-dbVNFs_-2vpBNsMH-9HNSieNGFThd8l8HgdX4aFMAfiZVJNWjg4IAqqgVl30JFXJ5731j-fd6HwnuOnSTYbaWiWtN4xV0-UuEiA-hWOfXfIVcmoU8RR8GFYcRhTqSVIZOOKt-_iGRW3CQ8RbJdT1Hxd3LBv8Bv91yjpUwnjg2LFuZrgZmsFClbQ-RR9armD8XIrCQOav4p5jHuxBPUrzo0R0J2lHJ8lcBAuLKqjLZzIUuaWJxJpkKoypu8dRk6WSUGw4Xi6-ZLMTx4Kb23A9xtgSLJ6NpQlSLWHXPkO09FwYNI1zCFzwbi2kwqRGfRhA-Ya0UTZ6R25_7Bn4YQdh",
+  "token_type": "bearer",
+  "expires_in": 86399,
+  "refresh_token": "VK22OWDiZQS3tj8LdRjVAN3dX5L-J_fr3koRfcmBOR_iNiNbRoyquwoSvVz_ucXaWw_xLehPxea_1IkpFzJRBJnn-oyT0wUqRHhFlB-734hUtmkiKe3qFdI8189Bly-ytzlvkkkRcrekyRy7QscPc9-kC7JsORdEnMZhV5dOfefDZ5oDdXt-PDclVyWM9aGc7J-uHzr-9ndVlUU3zjlPHFUQ0sCTfcr5SEwYDdplRYMRvF3PBWJId79VzY0eNbwl-GVQmG0nyBXR9yyuKgqSsYvASLlBLhATSuL9qTqP1Dm0ATLwHrhS6__xPOoukHjKVgjmb53HMP9K0SB3Vxq_YySUSsavKBwjLr53MmxA1W6FGm-FyoDURwfB3wDpnayBZ7OookzkUL81KXI89P4CDqPF3TNeVUG_1uUOH0Xq8P-qoc1lQ3MBDz1JFBVyODBwN7fet9F_kpDyG_-uoxiH9uydrfmmkpwkCEJVB-X-5Eq_eRe26MRcdwt5BPBR0unYJX3f8RbbSJ_qXFuQx5I3PGksiymWv7g6qBl-Xa--r2ck9ODAIFnphcpGjMUIdjKa1tGvPQ2FjD-uFnbRF12fpgjZ33qphipc-E0KaaeFw2sFpb5agG5kEL7tAygGoYPaGI2SOcXtharJGJm0QwfV1cHt85C-Qb9PG6nLFtCYWBaQauw4K4dAI7ZKZMKeJCDE",
+  "userName": "admin@admin.com",
+  ".issued": "Mon, 10 Apr 2017 16:59:26 GMT",
+  ".expires": "Tue, 11 Apr 2017 16:59:26 GMT"
+}
 
 ```
 
