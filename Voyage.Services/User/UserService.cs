@@ -142,6 +142,24 @@ namespace Voyage.Services.User
             return userIdentity;
         }
 
+        public async Task<ClaimsIdentity> CreateJwtClaimsIdentityAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+                throw new NotFoundException($"Could not locate entity with Id {userName}");
+
+            var identity = new ClaimsIdentity("JWT");
+
+            // Add in role claims
+            var userRoles = _userManager.GetRoles(user.Id);
+            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
+                .SelectMany(_ => _)
+                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
+            identity.AddClaims(roleClaims);
+
+            return identity;
+        }
+
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
             var roles = await _userManager.GetRolesAsync(userId);

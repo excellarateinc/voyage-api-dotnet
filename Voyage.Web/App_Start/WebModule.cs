@@ -81,6 +81,10 @@ namespace Voyage.Web
                .AsSelf()
                .SingleInstance();
 
+            builder.RegisterType<ApplicationJwtProvider>()
+                .AsSelf()
+                .SingleInstance();
+
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
             {
