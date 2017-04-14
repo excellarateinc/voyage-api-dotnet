@@ -1,1 +1,1 @@
-﻿{ "build": { "buildNumber": "some_number"}}
+﻿Voyage API v1.0
