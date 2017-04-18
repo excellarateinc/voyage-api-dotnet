@@ -274,6 +274,7 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="AuthProviders\ApplicationTokenProvider.cs" />
     <Compile Include="AuthProviders\IdentityProvider.cs" />
+    <Compile Include="AuthProviders\RsaKeyContainerProvider.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />

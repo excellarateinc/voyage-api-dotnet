@@ -73,6 +73,10 @@ namespace Voyage.Web
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
+            builder.RegisterType<RsaKeyContainerProvider>()
+                .AsSelf()
+                .SingleInstance();
+
             builder.RegisterType<ApplicationOAuthProvider>()
                .AsSelf()
                .SingleInstance();

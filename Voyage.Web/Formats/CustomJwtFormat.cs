@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.IdentityModel.Tokens;
-using System.Text;
+using Autofac;
 using Microsoft.Owin.Security;
+using Voyage.Web.AuthProviders;
 
 namespace Voyage.Web.Formats
 {
@@ -20,15 +21,12 @@ namespace Voyage.Web.Formats
              */
             var audience = ConfigurationManager.AppSettings["oAuth:Audience"];
             var issuer = ConfigurationManager.AppSettings["oAuth:Issuer"];
-            var secretKey = ConfigurationManager.AppSettings["oAuth:SecretKey"];
             var issued = data.Properties.IssuedUtc;
             var expires = data.Properties.ExpiresUtc;
 
             // Sign key
-            var signingKey = new InMemorySymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
-            // Create credential base on given key and security algorithm
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature, SecurityAlgorithms.Sha256Digest);
+            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerProvider>();
+            var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()), SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
 
             // Create jwt token
             var token = new JwtSecurityToken(issuer, audience, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingCredentials);

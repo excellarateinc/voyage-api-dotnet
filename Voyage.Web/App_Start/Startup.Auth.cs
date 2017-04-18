@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Configuration;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -101,22 +102,24 @@ namespace Voyage.Web
                 RefreshTokenProvider = new AuthenticationTokenProvider
                 {
                     OnCreate = CreateRefreshToken,
-                    OnReceive = ReceiveRefreshToken,
+                    OnReceive = ReceiveRefreshToken
                 }
             });
 
-            // Allow Web API to consume bearer tokens.
-            var secretKey = Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["oAuth:SecretKey"]);
-            app.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
+            // Allow Web API to consume bearer JWT tokens.
+            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerProvider>();
+            var tokenParam = new System.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidIssuer = ConfigurationManager.AppSettings["oAuth:Issuer"],
+                ValidAudience = ConfigurationManager.AppSettings["oAuth:Audience"],
+                IssuerSigningKey = new System.IdentityModel.Tokens.RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer())
+            };
+            var jwtTokenOptions = new JwtBearerAuthenticationOptions
             {
                 AuthenticationMode = AuthenticationMode.Active,
-                AllowedAudiences = new[] { ConfigurationManager.AppSettings["oAuth:Audience"] },
-                IssuerSecurityTokenProviders = new IIssuerSecurityTokenProvider[]
-                {
-                    new SymmetricKeyIssuerSecurityTokenProvider(ConfigurationManager.AppSettings["oAuth:Issuer"], secretKey)
-                },
-                Provider = new OAuthBearerAuthenticationProvider()
-            });
+                TokenValidationParameters = tokenParam
+            };
+            app.UseJwtBearerAuthentication(jwtTokenOptions);
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);
