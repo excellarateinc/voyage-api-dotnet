@@ -28,6 +28,8 @@ namespace Voyage.Services.User
 
         Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
 
+        Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId);
+
         RoleModel GetUserRoleById(string userId, string roleId);
 
         Task<UserModel> GetUserAsync(string userId);
