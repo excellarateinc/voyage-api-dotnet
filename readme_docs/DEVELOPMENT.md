@@ -73,7 +73,7 @@ Download and install the following required software for development:
    - Under the GitHub section, click "Clone".
    - Enter your GitHub credentials.
    - Choose "voyage-dotnet-api" from the list of repositories.
-     * The official repository is located here https://github.com/lssinc/voyage-dotnet-api
+     * The official repository is located here https://github.com/lssinc/voyage-api-dotnet
    - Choose a path. (Example C:\Source)
    - Click "Clone".
    - Once cloning is complete, open the "Voyage.API" solution.
