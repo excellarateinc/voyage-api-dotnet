@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Filters;
 using Voyage.Core;
 
 namespace Voyage.Web.Controllers
@@ -28,34 +27,26 @@ namespace Voyage.Web.Controllers
             var scopes = Clients.Client2.AllowedScopes;
             ViewBag.Scopes = scopes;
 
-            // TODO: Add check if client is allowed to bypass "Grant" check.
-            identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
-            foreach (var scope in scopes)
+            if (Request.HttpMethod != "POST")
+                return View();
+
+            if (!string.IsNullOrEmpty(Request.Form.Get("submit.Grant")))
             {
-                identity.AddClaim(new Claim("urn:oauth:scope", scope));
+                identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
+
+                foreach (var scope in scopes)
+                {
+                    identity.AddClaim(new Claim("urn:oauth:scope", scope));
+                }
+
+                authentication.SignIn(identity);
             }
 
-            authentication.SignIn(identity);
-
-            if (Request.HttpMethod == "POST")
+            if (!string.IsNullOrEmpty(Request.Form.Get("submit.Login")))
             {
-                if (!string.IsNullOrEmpty(Request.Form.Get("submit.Grant")))
-                {
-                    identity = new ClaimsIdentity(identity.Claims, "Bearer", identity.NameClaimType, identity.RoleClaimType);
-                    foreach (var scope in scopes)
-                    {
-                        identity.AddClaim(new Claim("urn:oauth:scope", scope));
-                    }
-
-                    authentication.SignIn(identity);
-                }
-
-                if (!string.IsNullOrEmpty(Request.Form.Get("submit.Login")))
-                {
-                    authentication.SignOut("Application");
-                    authentication.Challenge("Application");
-                    return new HttpUnauthorizedResult();
-                }
+                authentication.SignOut("Application");
+                authentication.Challenge("Application");
+                return new HttpUnauthorizedResult();
             }
 
             return View();

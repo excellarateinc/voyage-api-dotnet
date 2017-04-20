@@ -73,13 +73,9 @@ namespace Voyage.Web
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
 
-            builder.RegisterType<ApplicationOAuthProvider>()
-               .AsSelf()
-               .SingleInstance();
-
-            builder.RegisterType<ApplicationTokenProvider>()
-               .AsSelf()
-               .SingleInstance();
+            builder.RegisterType<ApplicationJwtProvider>()
+                .AsSelf()
+                .SingleInstance();
 
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
