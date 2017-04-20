@@ -16,6 +16,8 @@ namespace Voyage.Services.User
 
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
 
+        Task<ClaimsIdentity> CreateJwtClaimsIdentityAsync(string userName);
+
         IEnumerable<UserModel> GetUsers();
 
         Task<RoleModel> AssignUserRoleAsync(string userId, RoleModel roleModel);
@@ -25,6 +27,8 @@ namespace Voyage.Services.User
         Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId);
 
         Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
+
+        Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId);
 
         RoleModel GetUserRoleById(string userId, string roleId);
 

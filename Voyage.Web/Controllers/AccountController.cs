@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Owin;
-using FluentValidation.Validators;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Voyage.Core.Exceptions;
@@ -30,15 +26,12 @@ namespace Voyage.Web.Controllers
                     var userService = context.Resolve<IUserService>();
                     try
                     {
-                        var isValidCredential =
-                            await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
+                        var isValidCredential = await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
                         if (!isValidCredential)
                             throw new NotFoundException();
 
                         ClaimsIdentity identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
-                        authentication.SignIn(
-                            new AuthenticationProperties { IsPersistent = isPersistent },
-                            new ClaimsIdentity(identity.Claims, "Application"));
+                        authentication.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, new ClaimsIdentity(identity.Claims, "Application"));
                     }
                     catch (NotFoundException notFoundException)
                     {
