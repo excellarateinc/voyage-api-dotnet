@@ -23,7 +23,7 @@ namespace Voyage.Services.KeyContainer
         /// <param name="keyName"></param>
         public void DeleteKeyFromContainer(string keyName = "VoyageKey")
         {
-            var cp = new CspParameters { KeyContainerName = keyName };
+            var cp = new CspParameters { KeyContainerName = keyName, Flags = CspProviderFlags.UseMachineKeyStore };
             var rsa = new RSACryptoServiceProvider(cp) { PersistKeyInCsp = false };
 
             rsa.Clear();
@@ -36,7 +36,7 @@ namespace Voyage.Services.KeyContainer
         /// <returns></returns>
         private string GetPrivateAndPublicKey(string keyName)
         {
-            var cp = new CspParameters { KeyContainerName = keyName };
+            var cp = new CspParameters { KeyContainerName = keyName, Flags = CspProviderFlags.UseMachineKeyStore };
             var rsa = new RSACryptoServiceProvider(2048, cp) { PersistKeyInCsp = true };
 
             var publicPrivateKey = rsa.ToXmlString(true);
