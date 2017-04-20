@@ -20,6 +20,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.Jwt;
 using Voyage.Core;
+using Voyage.Services.KeyContainer;
 using Voyage.Web.Formats;
 
 namespace Voyage.Web
@@ -93,21 +94,11 @@ namespace Voyage.Web
                 Provider = ContainerConfig.Container.Resolve<ApplicationJwtProvider>(),
 
                 // Jwt custom format
-                AccessTokenFormat = new CustomJwtFormat(),
-
-                // Authorization code provider which creates and receives authorization code
-                AuthorizationCodeProvider = ContainerConfig.Container.Resolve<ApplicationTokenProvider>(),
-
-                // Refresh token provider which creates and receives referesh token
-                RefreshTokenProvider = new AuthenticationTokenProvider
-                {
-                    OnCreate = CreateRefreshToken,
-                    OnReceive = ReceiveRefreshToken
-                }
+                AccessTokenFormat = new CustomJwtFormat()
             });
 
             // Allow Web API to consume bearer JWT tokens.
-            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerProvider>();
+            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerService>();
             var tokenParam = new System.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidIssuer = ConfigurationManager.AppSettings["oAuth:Issuer"],
@@ -123,16 +114,6 @@ namespace Voyage.Web
 
             // 6. Add web api to pipeline
             app.UseWebApi(httpConfig);
-        }
-
-        private void CreateRefreshToken(AuthenticationTokenCreateContext context)
-        {
-            context.SetToken(context.SerializeTicket());
-        }
-
-        private void ReceiveRefreshToken(AuthenticationTokenReceiveContext context)
-        {
-            context.DeserializeTicket(context.Token);
         }
     }
 }

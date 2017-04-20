@@ -79,6 +79,8 @@
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="ApplicationInfo\IApplicationInfoService.cs" />
     <Compile Include="Audit\IAuditService.cs" />
+    <Compile Include="KeyContainer\IRsaKeyContainerService.cs" />
+    <Compile Include="KeyContainer\RsaKeyContainerService.cs" />
     <Compile Include="Role\IRoleService.cs" />
     <Compile Include="FileReader\IFileReaderService.cs" />
     <Compile Include="User\IUserService.cs" />
@@ -111,6 +113,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens;
 using Autofac;
 using Microsoft.Owin.Security;
-using Voyage.Web.AuthProviders;
+using Voyage.Services.KeyContainer;
 
 namespace Voyage.Web.Formats
 {
@@ -25,7 +25,7 @@ namespace Voyage.Web.Formats
             var expires = data.Properties.ExpiresUtc;
 
             // Sign key
-            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerProvider>();
+            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerService>();
             var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()), SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
 
             // Create jwt token

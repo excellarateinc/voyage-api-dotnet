@@ -267,14 +267,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthProviders\ApplicationJwtProvider.cs" />
-    <Compile Include="AuthProviders\ApplicationOAuthProvider.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
-    <Compile Include="AuthProviders\ApplicationTokenProvider.cs" />
     <Compile Include="AuthProviders\IdentityProvider.cs" />
-    <Compile Include="AuthProviders\RsaKeyContainerProvider.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\v1\AccountController.cs" />

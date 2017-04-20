@@ -212,7 +212,6 @@
     <Compile Include="Services\RoleServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
     <Compile Include="Web\AuthProviders\ApplicationJwtProviderTests.cs" />
-    <Compile Include="Web\AuthProviders\ApplicationOAuthProviderTests.cs" />
     <Compile Include="Web\AuthProviders\IdentityProviderTests.cs" />
     <Compile Include="Web\ConstantsTests.cs" />
     <Compile Include="Web\ControllerExtensions.cs" />
@@ -224,7 +223,6 @@
     <Compile Include="Web\Extensions\OwinContextExtensionsTests.cs" />
     <Compile Include="Web\Filters\ApiExceptionFilterAttributeTests.cs" />
     <Compile Include="Web\Filters\ClaimAuthorizeAttributeTests.cs" />
-    <Compile Include="Web\Formats\CustomJwtFormatTest.cs" />
     <Compile Include="Web\Middleware\ActivityAuditMiddlewareTests.cs" />
     <Compile Include="Web\Middleware\Processors\ErrorResponseProcessorTests.cs" />
     <Compile Include="Web\Middleware\Processors\ResponseProcessorTests.cs" />
