@@ -25,7 +25,7 @@ namespace Voyage.Web.Formats
             var expires = data.Properties.ExpiresUtc;
 
             // Sign key
-            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerService>();
+            var rsaProvider = ContainerConfig.Container.Resolve<IRsaKeyContainerService>();
             var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()), SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
 
             // Create jwt token

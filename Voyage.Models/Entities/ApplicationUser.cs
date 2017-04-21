@@ -26,5 +26,8 @@ namespace Voyage.Models.Entities
 
         [Required]
         public bool Deleted { get; set; }
+
+        [Required]
+        public bool IsVerifyRequired { get; set; }
     }
 }

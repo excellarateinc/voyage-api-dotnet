@@ -34,6 +34,8 @@ namespace Voyage.Services.User
 
         Task<UserModel> GetUserAsync(string userId);
 
+        Task<UserModel> GetUserByNameAsync(string userName);
+
         Task<IdentityResult> DeleteUserAsync(string userId);
 
         Task<UserModel> UpdateUserAsync(string userId, UserModel model);

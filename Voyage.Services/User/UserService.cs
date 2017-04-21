@@ -100,7 +100,8 @@ namespace Voyage.Services.User
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                IsActive = true
+                IsActive = true,
+                IsVerifyRequired = true
             };
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
@@ -222,6 +223,15 @@ namespace Voyage.Services.User
 
             var identityResult = await _userManager.DeleteAsync(appUser);
             return identityResult;
+        }
+
+        public async Task<UserModel> GetUserByNameAsync(string userName)
+        {
+            var appUser = await _userManager.FindByNameAsync(userName);
+            if (appUser == null || appUser.Deleted)
+                throw new NotFoundException($"Could not locate entity with Name {userName}");
+
+            return _mapper.Map<UserModel>(appUser);
         }
     }
 }

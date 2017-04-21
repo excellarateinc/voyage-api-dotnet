@@ -20,5 +20,7 @@ namespace Voyage.Models
         public List<UserPhoneModel> Phones { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsVerifyRequired { get; set; }
     }
 }

@@ -8,7 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using Autofac;
+using Autofac.Integration.Owin;
 using Voyage.Models;
+using Voyage.Services.User;
 
 namespace Voyage.Web.Filters
 {
@@ -45,7 +48,7 @@ namespace Voyage.Web.Filters
             }
         }
 
-        public override Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
+        public override async Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
             var identity = actionContext.RequestContext.Principal.Identity as ClaimsIdentity;
 
@@ -68,7 +71,28 @@ namespace Voyage.Web.Filters
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
 
-            return Task.FromResult<object>(null);
+            // Check if log in user needs to be verify or inactive
+            var container = actionContext.Request.GetOwinContext().GetAutofacLifetimeScope();
+            var userService = container.Resolve<IUserService>();
+            var user = await userService.GetUserByNameAsync(identity.Name);
+            if (!user.IsActive)
+            {
+                var requestErrorModel = new ResponseErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    ErrorDescription = "User has been disabled."
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, new List<ResponseErrorModel> { requestErrorModel });
+            }
+            else if (user.IsVerifyRequired)
+            {
+                var requestErrorModel = new ResponseErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    ErrorDescription = "User verification is required."
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, new List<ResponseErrorModel> { requestErrorModel });
+            }
         }
     }
 }

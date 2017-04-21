@@ -7,17 +7,10 @@ using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using System.Collections.Concurrent;
 using System.Configuration;
-using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.Jwt;
 using Voyage.Core;
 using Voyage.Services.KeyContainer;
@@ -98,7 +91,7 @@ namespace Voyage.Web
             });
 
             // Allow Web API to consume bearer JWT tokens.
-            var rsaProvider = ContainerConfig.Container.Resolve<RsaKeyContainerService>();
+            var rsaProvider = ContainerConfig.Container.Resolve<IRsaKeyContainerService>();
             var tokenParam = new System.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidIssuer = ConfigurationManager.AppSettings["oAuth:Issuer"],
