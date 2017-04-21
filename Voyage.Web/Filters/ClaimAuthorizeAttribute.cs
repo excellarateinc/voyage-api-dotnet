@@ -77,6 +77,10 @@ namespace Voyage.Web.Filters
             var user = await userService.GetUserByNameAsync(identity.Name);
             if (!user.IsActive)
             {
+                Log.Logger
+                    .ForContext<ClaimAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} is not active.", EventCodes.Authorization, identity.Name);
+
                 var requestErrorModel = new ResponseErrorModel
                 {
                     Error = Core.Constants.ErrorCodes.Forbidden,
@@ -86,6 +90,10 @@ namespace Voyage.Web.Filters
             }
             else if (user.IsVerifyRequired)
             {
+                Log.Logger
+                    .ForContext<ClaimAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} need a verification.", EventCodes.Authorization, identity.Name);
+
                 var requestErrorModel = new ResponseErrorModel
                 {
                     Error = Core.Constants.ErrorCodes.Forbidden,
