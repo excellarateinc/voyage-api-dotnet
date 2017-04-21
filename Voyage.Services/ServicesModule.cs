@@ -4,6 +4,7 @@ using Voyage.Services.ApplicationInfo;
 using Voyage.Services.Audit;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
+using Voyage.Services.KeyContainer;
 using Voyage.Services.Role;
 using Voyage.Services.User;
 
@@ -33,6 +34,10 @@ namespace Voyage.Services
             builder.RegisterType<RoleService>()
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
+
+            builder.RegisterType<RsaKeyContainerService>()
+                .AsSelf()
+                .SingleInstance();
 
             builder.RegisterType<ApplicationUserManager>()
                .AsSelf()
