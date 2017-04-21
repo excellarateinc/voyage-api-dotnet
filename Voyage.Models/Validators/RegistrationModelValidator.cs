@@ -32,6 +32,10 @@ namespace Voyage.Models.Validators
             RuleFor(_ => _.LastName)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Last name is a required field");
+
+            RuleFor(_ => _.PhoneNumber)
+                .NotEmpty()
+                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is required field");
         }
     }
 }

@@ -100,7 +100,9 @@ namespace Voyage.Services.User
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                IsActive = true
+                PhoneNumber = model.PhoneNumber,
+                IsActive = true,
+                PhoneNumberConfirmed = true
             };
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
