@@ -155,6 +155,124 @@ Password: Hello123!
   
 :arrow_up: [Back to Top](#table-of-contents)
 
+### Access Secured Web Services
+By default, the API secures all webservice endpoints with the exception of the /api/status public endpoint. Without going
+into how you secure a webservice endpoint (see Developer Recipes), this section will discuss the default OAuth2 security
+implementation and how to access web services. 
+
+#### Oauth2: Quick Overview
+OAuth2 is an authentication method that allows for 2 authenticating actors: Client, User. 
+* Client - the 'app' that is making the request to the API
+* User - the person that is using the app to make a request to the API
+
+Currently, the API supports 2 OAuth authentication methods 
+* Client Credentials - Client only authentication used mainly for server-to-server exchanges 
+* Implicit Authentication - Client + User authentication use mainly for web and mobile apps 
+
+#### OAuth2: Client Credentials
+##### Overview
+* The client accesses the API directly without a user and uses a secure password to authenticate.
+* The client is the only actor using the API and must provide a client ID and password
+* The API will not load a User object into the session unless the client ID maps to a User username
+* API services that require a User object loaded into memory will not function with this authentication method
+* This authentication method is reserved for testing and for server-to-server exchanges
+
+##### Web Service: `http://localhost:8080/oauth/token`
+* used for Client Credential authentication
+* pass in the Client ID and Client Secret and get back an access token
+* returns a JWT bearer token that expires within a few hours
+
+##### Client seed data
+* client id: client-super
+* client secret: secret
+* Send the Client ID and Client Secret via basic auth
+* POST to: /oauth/token
+* POST data: client_id, client_secret, grant_type=client_credentials
+* The result will be an access code value
+
+##### Test Using Postman
+
+1. Within the Authorization section of a Postman request, choose the "OAuth2" option 
+![Postman OAuth Client Credentials Authorization](./images/DEVELOPMENT_postman_auth1.png)
+
+2. Click the orange "Get New Access Token"
+![Postman OAuth Client Credentials Get New Access Token](./images/DEVELOPMENT_postman_auth2.png)
+
+3. Enter the token URL and login information. Be sure to select Grant Type "Client Credentials" 
+![Postman OAuth Client Credentials Request Token](./images/DEVELOPMENT_postman_auth3.png)
+
+4. Click on the new token row and select "Use Token" orange button to apply the token to your request.
+![Postman OAuth Client Credentials Use Token](./images/DEVELOPMENT_postman_auth4.png)
+
+5. Click on the Headers section to verify that the Authorization header has been applied with the Access Token
+![Postman OAuth Client Credentials Authorization Header](./images/DEVELOPMENT_postman_auth5.png)
+
+
+#### OAuth2: Implicit Authentication
+##### Overview
+* The user instructs the client 'app' to make API requests on the user's behalf. 
+* The client initiates the authentication using their client ID, but does not provide a password because
+  the user will be required to enter their own username and password to authorize the client. 
+* The API will load both the Client and User objects into the session
+* This authentication method is the preferred method for a web or mobile app
+
+##### Web Service: `http://localhost:52431/oauth/authorize`
+* used for Implicit Authentication
+* accepts the Client ID, redirect url, and few other params
+* redirects a server-side user login form
+* upon successful authentication of the user and client, a redirect back to the caller with the access token.
+* returns a JWT bearer token that expires within a few hours
+
+#### Client seed data
+* client id: client-super
+* redirect url: http://localhost:3000
+* response type: token
+
+#### User seed data
+* username: admin@admin.com
+* password: Hello123!
+
+#### Test Using Browser
+The method described below is easiest to perform within a web browser. While it is possible to do this within cURL,
+it takes more effort to handle the temporary session cookie and to follow redirects. The simplest way is to use a browser,
+which will be demonstrated below. 
+
+1. Copy/paste the following URL into your browser address bar 
+   `http://localhost:52431/oauth/authorize?client_id=client-super&redirect_uri=http://localhost:3000&response_type=token`
+   ![OAuth Implicit Authorization Browser 1](./images/DEVELOPMENT_implicit_auth1.png)
+   * Endpoint Address: http://localhost:52431/oauth/authorize
+   * Parameters:
+     - client_id - the client identifier
+     - redirect_uri - the address to redirect back to with the access token upon successful user authentication
+     - response_type - the expected type of code to return back on the redirect_uri (code=temp code, token=longer term access token)
+   * This assumes you are using the default seed data that comes with the app (see /src/main/resources/db.changelog/)
+
+2. Login as the 'super' user
+   ![OAuth Implicit Authorization Browser 2](./images/DEVELOPMENT_implicit_auth2.png)
+   * Username: admin@admin.com
+   * Password: HEllo123!
+
+3. Accept the Grant Request
+   ![OAuth Implicit Authorization Browser 3](./images/DEVELOPMENT_implicit_auth3.png)
+
+4. Retrieve the Access Token from the URL parameters
+   ![OAuth Implicit Authorization Browser 4](./images/DEVELOPMENT_implicit_auth4.png)
+   
+   ![OAuth Implicit Authorization Browser 5](./images/DEVELOPMENT_implicit_auth5.png)
+   
+   * Upon successful authentication, the app will redirect to the given redirect uri
+   * The redirect uri doesn't likely existing on you local environment (or any environment)
+   * You will receive a 404 Not Found error page
+   * Look at the URL and you will see that there is a #access_token=eyJhbGciOiJSUzI1NiIsIn... as a parameter
+   * Copy the entire URL out to a text editor and copy the enter access_token value
+
+   Example access token: `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0ODkxMjg4NDcsInVzZXJfbmFtZSI6InN1cGVyIiwiYXV0aG9yaXRpZXMiOlsiYXBpLnBlcm1pc3Npb25zLmRlbGV0ZSIsImFwaS5yb2xlcy5kZWxldGUiLCJhcGkucm9sZXMudXBkYXRlIiwiYXBpLnBlcm1pc3Npb25zLmxpc3QiLCJhcGkucGVybWlzc2lvbnMudXBkYXRlIiwiYXBpLnVzZXJzLmNyZWF0ZSIsImFwaS51c2Vycy5nZXQiLCJhcGkudXNlcnMubGlzdCIsImFwaS5wZXJtaXNzaW9ucy5nZXQiLCJhcGkucm9sZXMuZ2V0IiwiYXBpLnVzZXJzLnVwZGF0ZSIsImFwaS5yb2xlcy5jcmVhdGUiLCJhcGkudXNlcnMuZGVsZXRlIiwiYXBpLnBlcm1pc3Npb25zLmNyZWF0ZSIsImFwaS5yb2xlcy5saXN0Il0sImp0aSI6ImY0NTlkZWEwLTJlNGQtNDgxNi1hMjUwLTQ5YjhjNzQ5Mjg5YiIsImNsaWVudF9pZCI6ImNsaWVudC1zdXBlciIsInNjb3BlIjpbIlJlYWQgRGF0YSIsIldyaXRlIERhdGEiXX0.OAKT6c5cpfwkzlQRz5AS_svSRWBROo_UN6I9_aE2EHky4OjGUwh7DExiDTYwr-kcLE9o1P7ZDW28g_f2SZVpx8AYosOJiN727060zbrT1q2shmnKhVv7pQJomzshdrXdCo0Lwz1eQ7punQv21mwEohIz4x0aX8IrxkcV8_-1hanGyKYkcdRdOdcWKYx2D_2k1_Z_wRhLuyV8vhmtjOPqWpNBjg6XmwRyA2GaRxJQAsWlQdyGC69GOLV4HVCgPJSUX7rgK1yatVGR8WyTcXclTmb9E9XBrom2zkq2NxZ4ZDVnHu6oq9Fszv3BbM-uwsPggFFG0D0YKG6s00uetXWz_A`
+
+5. Copy the access token into the Authorization header of a webservice request (via cURL or Postman)
+   ![OAuth Implicit Authorization Browser 6](./images/DEVELOPMENT_implicit_auth6.png)
+
+   :arrow_up: [Back to Top](#table-of-contents)
+
 ## Code Branching
 The following code branching strategy is meant to ensure the following objectives: 
 * Encourage the benefits of frequent commits/pushes to the Git repo
