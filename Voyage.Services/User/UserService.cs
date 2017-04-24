@@ -182,9 +182,24 @@ namespace Voyage.Services.User
                     .SelectMany(_ => _)
                     .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
                 identity.AddClaims(roleClaims);
+
+                var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
+                identity.AddClaim(new Claim("client_id", client.Id));
+                identity.AddClaim(new Claim("client_secret", client.Secret));
             }
 
             return identity;
+        }
+
+        public bool IsValidClient(string clientId, string clientSecret)
+        {
+            if ((Clients.Client2.Id == clientId && Clients.Client2.Secret == clientSecret) ||
+                (Clients.Client1.Id == clientId && Clients.Client1.Secret == clientSecret))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)

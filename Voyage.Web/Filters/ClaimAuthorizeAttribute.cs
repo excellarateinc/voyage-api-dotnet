@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Voyage.Core;
 using Serilog;
 using System.Net;
@@ -71,8 +72,36 @@ namespace Voyage.Web.Filters
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
 
+            if (identity != null && identity.Name == null)
+            {
+                ValidateClient(actionContext, identity);
+            }
+            else
+            {
+                await ValidateUser(actionContext, identity);
+            }
+        }
+
+        private void ValidateClient(HttpActionContext context, ClaimsIdentity identity)
+        {
+            var clientId = identity.Claims.FirstOrDefault(c => c.Type == "client_id");
+            var clientSecret = identity.Claims.FirstOrDefault(c => c.Type == "client_secret");
+            var container = context.Request.GetOwinContext().GetAutofacLifetimeScope();
+            var userService = container.Resolve<IUserService>();
+
+            if (clientId == null || clientSecret == null || !userService.IsValidClient(clientId.Value, clientSecret.Value))
+            {
+                Log.Logger
+                    .ForContext<ClaimAuthorizeAttribute>()
+                    .Information("({eventCode:l}) unable to validate client when trying to access api", EventCodes.Authorization);
+                context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized);
+            }
+        }
+
+        private async Task ValidateUser(HttpActionContext context, ClaimsIdentity identity)
+        {
             // Check if log in user needs to be verify or inactive
-            var container = actionContext.Request.GetOwinContext().GetAutofacLifetimeScope();
+            var container = context.Request.GetOwinContext().GetAutofacLifetimeScope();
             var userService = container.Resolve<IUserService>();
             var user = await userService.GetUserByNameAsync(identity.Name);
             if (!user.IsActive)
@@ -86,7 +115,7 @@ namespace Voyage.Web.Filters
                     Error = Core.Constants.ErrorCodes.Forbidden,
                     ErrorDescription = "User has been disabled."
                 };
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, new List<ResponseErrorModel> { requestErrorModel });
+                context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
             else if (user.IsVerifyRequired)
             {
@@ -99,7 +128,7 @@ namespace Voyage.Web.Filters
                     Error = Core.Constants.ErrorCodes.Forbidden,
                     ErrorDescription = "User verification is required."
                 };
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden, new List<ResponseErrorModel> { requestErrorModel });
+                context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
         }
     }

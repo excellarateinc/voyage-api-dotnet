@@ -24,7 +24,6 @@ namespace Voyage.Web.AuthProviders
             ClaimsIdentity addionaloAuthIdentity = await userService.CreateClientClaimsIdentityAsync(context.ClientId);
             var oAuthIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
             oAuthIdentity.AddClaims(addionaloAuthIdentity.Claims);
-            oAuthIdentity.AddClaim(new Claim("ClientId", context.ClientId));
             var ticket = new AuthenticationTicket(oAuthIdentity, new AuthenticationProperties());
             context.Validated(ticket);
         }
