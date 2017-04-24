@@ -191,17 +191,6 @@ namespace Voyage.Services.User
             return identity;
         }
 
-        public bool IsValidClient(string clientId, string clientSecret)
-        {
-            if ((Clients.Client2.Id == clientId && Clients.Client2.Secret == clientSecret) ||
-                (Clients.Client1.Id == clientId && Clients.Client1.Secret == clientSecret))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
             var roles = await _userManager.GetRolesAsync(userId);

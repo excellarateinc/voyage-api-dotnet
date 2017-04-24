@@ -26,8 +26,6 @@ namespace Voyage.Services.User
 
         Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId);
 
-        bool IsValidClient(string clientId, string clientSecret);
-
         Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
 
         Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId);
