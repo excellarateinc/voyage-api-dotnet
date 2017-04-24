@@ -16,7 +16,7 @@
     <RootNamespace>Voyage.Web</RootNamespace>
     <AssemblyName>Voyage.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -269,6 +269,7 @@
     <Compile Include="Controllers\API\v1\RoleController.cs" />
     <Compile Include="Controllers\API\v1\UserController.cs" />
     <Compile Include="Controllers\API\v1\ApplicationInfoController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Extensions\ModelErrorExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
@@ -310,6 +311,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Voyage.Core\Voyage.Core.csproj">
