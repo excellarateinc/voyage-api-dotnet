@@ -4,7 +4,7 @@ namespace Voyage.Web.Controllers
 {
     public class HomeController : Controller
     {
-        // Redirect the default landing page to the API helper page
+        // Redirect the default landing page to the API helper page.
         [AllowAnonymous]
         public ActionResult Index()
         {
