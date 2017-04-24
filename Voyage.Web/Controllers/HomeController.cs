@@ -12,7 +12,7 @@ namespace Voyage.Web.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return RedirectPermanent("~/apidoc/docs/index.html");
+            return RedirectPermanent("~/docs");
         }
     }
 }
