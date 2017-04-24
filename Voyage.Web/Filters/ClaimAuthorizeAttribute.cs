@@ -72,29 +72,9 @@ namespace Voyage.Web.Filters
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
 
-            if (identity != null && identity.Name == null)
-            {
-                ValidateClient(actionContext, identity);
-            }
-            else
+            if (identity?.Name != null)
             {
                 await ValidateUser(actionContext, identity);
-            }
-        }
-
-        private void ValidateClient(HttpActionContext context, ClaimsIdentity identity)
-        {
-            var clientId = identity.Claims.FirstOrDefault(c => c.Type == "client_id");
-            var clientSecret = identity.Claims.FirstOrDefault(c => c.Type == "client_secret");
-            var container = context.Request.GetOwinContext().GetAutofacLifetimeScope();
-            var userService = container.Resolve<IUserService>();
-
-            if (clientId == null || clientSecret == null || !userService.IsValidClient(clientId.Value, clientSecret.Value))
-            {
-                Log.Logger
-                    .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) unable to validate client when trying to access api", EventCodes.Authorization);
-                context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
         }
 
