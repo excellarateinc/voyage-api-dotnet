@@ -23,5 +23,5 @@ namespace Voyage.Models.Entities
 
         [Required]
         public PhoneType PhoneType { get; set; }
-    }
+    } 
 }
