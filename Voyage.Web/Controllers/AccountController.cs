@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Collections.Specialized;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Voyage.Core.Exceptions;
 using Voyage.Services.User;
+using Voyage.Web.Models;
 
 namespace Voyage.Web.Controllers
 {
@@ -15,7 +18,7 @@ namespace Voyage.Web.Controllers
     {
         public async Task<ActionResult> Login()
         {
-            var authentication = HttpContext.GetOwinContext().Authentication;
+            var loginModel = GetModel();
             if (Request.HttpMethod == "POST")
             {
                 var isPersistent = !string.IsNullOrEmpty(Request.Form.Get("isPersistent"));
@@ -30,22 +33,40 @@ namespace Voyage.Web.Controllers
                         if (!isValidCredential)
                             throw new NotFoundException();
 
+                        var authentication = HttpContext.GetOwinContext().Authentication;
                         ClaimsIdentity identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
                         authentication.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, new ClaimsIdentity(identity.Claims, "Application"));
                     }
                     catch (NotFoundException notFoundException)
                     {
-                        return View(notFoundException);
+                        loginModel.NotFoundException = notFoundException;
+                        return View(loginModel);
                     }
                 }
             }
 
-            return View();
+            return View(loginModel);
         }
 
         public ActionResult Logout()
         {
             return View();
+        }
+
+        private LoginModel GetModel()
+        {
+            var loginModel = new LoginModel();
+            try
+            {
+                // Get client return url
+                loginModel.ReturnUrl = Server.UrlEncode(Request.QueryString["ReturnUrl"]);
+
+                return loginModel;
+            }
+            catch (Exception)
+            {
+                return loginModel;
+            }
         }
     }
 }
