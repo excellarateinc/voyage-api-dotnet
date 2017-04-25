@@ -126,7 +126,7 @@ Download and install the following required software for development:
 7. Install the API Documentation
    - Open up a command prompt
    - Run "npm install apidoc -g"
-   - Change directory "cd" to the Voyage.Web/apidoc folder.
+   - Change directory "cd" to the Voyage.Web/docs folder.
    - Run this command: "npm run apidoc"
    - You will see a "Done" message when it is complete.   
    - **Note:** If the script fails to execute, try closing the command prompt and opening a new one and run the command again. If there are multiple prompts open at the same time, the command prompt will not always pick up the new global module when both commands are not run from the same instance.
