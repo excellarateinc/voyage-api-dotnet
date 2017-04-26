@@ -2,8 +2,9 @@
 {
     public enum ForgotPasswordStep
     {
-        ValidatingUser,
-        VerifyingCode,
-        ValidatingQuestions
+        VerifyUser,
+        VerifySecurityCode,
+        VerifySecurityAnswers,
+        ResetPassword
     }
 }

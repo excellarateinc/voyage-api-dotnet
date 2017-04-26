@@ -6,8 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Owin;
-using PhoneNumbers;
+using Voyage.Models;
 using Voyage.Models.Enum;
+using Voyage.Services.Audit;
+using Voyage.Services.PasswordRecovery;
+using Voyage.Services.Phone;
 using Voyage.Services.User;
 using Voyage.Web.Filters;
 using Voyage.Web.Models;
@@ -19,7 +22,7 @@ namespace Voyage.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.ValidatingUser };
+            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.VerifyUser };
 
             return View(model);
         }
@@ -34,93 +37,56 @@ namespace Voyage.Web.Controllers
 
             try
             {
-                if (!string.IsNullOrEmpty(Request.Form.Get("submit.Submit")))
+                var context = HttpContext.GetOwinContext().GetAutofacLifetimeScope();
+                var passwordRecoverService = context.Resolve<IPasswordRecoverService>();
+
+                if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifyUser")))
                 {
-                    var userName = Request.Form.Get("username");
-                    var phonenumber = Request.Form.Get("phonenumber");
+                    model = await passwordRecoverService.ValidateUserInfoAsync(Request.Form.Get("username"), Request.Form.Get("phonenumber"));
 
-                    if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(phonenumber))
+                    if (!model.HasError)
                     {
-                        model.HasError = true;
-                        model.ErrorMessage = "User name and phone number are required fields.";
-                    }
-                    else
-                    {
-                        // validate phone number input
-                        var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-                        var phoneNumber = phoneNumberUtil.Parse(phonenumber, "US");
-                        var isValid = phoneNumberUtil.IsValidNumber(phoneNumber);
-
-                        if (isValid)
+                        // 5. save user name to session for next step
+                        Session["appUser"] = new UserApplicationSession
                         {
-                            var context = HttpContext.GetOwinContext().GetAutofacLifetimeScope();
-                            var userService = context.Resolve<IUserService>();
-
-                            // validate user and phone number and send verification code
-                            var user = await userService.GetUserByNameAsync(userName);
-                            var userPhoneNumber = user.Phones.FirstOrDefault(c => c.PhoneNumber == phonenumber);
-                            if (userPhoneNumber != null)
-                            {
-                                // user SNS to generate code -> save -> send
-                                // 1. get SNS
-                                // 2. get generated code
-                                // 3. save generated code to database
-                                // 4. send code via text message
-                                // 5. save user name to session for next step
-                                Session["userName"] = userName;
-                            }
-                        }
-
-                        // set next step
-                        model.ForgotPasswordStep = ForgotPasswordStep.VerifyingCode;
+                            UserId = model.UserId
+                        };
                     }
                 }
-                else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifyCode")))
+                else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityCode")))
                 {
                     // verify code
-                    var code = Request.Form.Get("code");
-                    if (string.IsNullOrWhiteSpace(code))
-                    {
-                        model.HasError = true;
-                        model.ErrorMessage = "Code to verify is a required field.";
-                        model.ForgotPasswordStep = ForgotPasswordStep.VerifyingCode;
-                    }
-                    else
-                    {
-                        // 1. validate code here
-                        // 2. get user questions by user name
-                        var userName = Session["userName"];
+                    var appUser = Session["appUser"] as UserApplicationSession;
+                    model = await passwordRecoverService.VerifyCodeAsync(appUser?.UserId, Request.Form.Get("code"));
 
-                        // 3. add to model
-                        // 4. set next step to verify answers
-                        model.ForgotPasswordStep = ForgotPasswordStep.ValidatingQuestions;
+                    // after verifying code successfully save code for later use
+                    if (!model.HasError)
+                    {
+                        appUser.PasswordRecoveryToken = model.PasswordRecoveryToken;
+                        Session["appUser"] = appUser;
                     }
                 }
-                else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifyQuestions")))
+                else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityAnswers")))
                 {
-                    var answer1 = Request.Form.Get("answer1");
-                    var answer2 = Request.Form.Get("answer2");
+                    var appUser = Session["appUser"] as UserApplicationSession;
+                    model = passwordRecoverService.VerifySecurityAnswers(appUser?.UserId, new List<string>());
+                }
+                else if (!string.IsNullOrEmpty(Request.Form.Get("submit.ResetPassword")))
+                {
+                    var appUser = Session["appUser"] as UserApplicationSession;
+                    model = await passwordRecoverService.ResetPasswordAsync(Session["userName"].ToString(), appUser?.PasswordRecoveryToken, Request.Form.Get("newpassword"), Request.Form.Get("confirmnewpassword"));
 
-                    if (string.IsNullOrWhiteSpace(answer1) || string.IsNullOrWhiteSpace(answer2))
+                    // redirect user to log in if no error
+                    if (!model.HasError)
                     {
-                        model.HasError = true;
-                        model.ErrorMessage = "All security anwers are required field.";
-                        model.ForgotPasswordStep = ForgotPasswordStep.ValidatingQuestions;
-                    }
-                    else
-                    {
-                        // 1. get answers by user name
-                        var userName = Session["userName"];
-
-                        // 2. verify answers
-                        // 3. redirect to log in
+                        Session.Clear();
                         return RedirectPermanent(Request.QueryString["ReturnUrl"]);
                     }
                 }
             }
             catch (Exception ex)
             {
-                // log error
+                // log error to database
             }
 
             return View(model);

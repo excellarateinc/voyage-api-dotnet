@@ -22,5 +22,7 @@ namespace Voyage.Models
         public bool IsActive { get; set; }
 
         public bool IsVerifyRequired { get; set; }
+
+        public string PasswordRecoveryToken { get; set; }
     }
 }

@@ -17,5 +17,7 @@ namespace Voyage.Models
 
         [JsonConverter(typeof(StringEnumConverter))]
         public PhoneType PhoneType { get; set; }
+
+        public string VerificationCode { get; set; }
     }
 }

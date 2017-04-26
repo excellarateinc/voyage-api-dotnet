@@ -1,5 +1,5 @@
 ﻿@using Voyage.Models.Enum
-@model Voyage.Web.Models.ForgotPasswordModel
+@model Voyage.Models.ForgotPasswordModel
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,7 @@
             <div class="col-xs-12">
                 <img src="../../Content/Images/voyage-logo-vert.svg" alt="voyage-logo">
             </div>
-            @if (Model.ForgotPasswordStep == ForgotPasswordStep.ValidatingUser)
+            @if (Model.ForgotPasswordStep == ForgotPasswordStep.VerifyUser)
             {
                 <form method="POST" class="form-horizontal" style="margin-left: 20px;">
                     @Html.AntiForgeryToken()
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px;">
                             <div class="col-xs-12">
-                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.Submit" value="Submit"/>
+                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.VerifyUser" value="Submit"/>
                                 <a class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" href="@Request.QueryString.Get("ReturnUrl")">Cancel</a>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                     </fieldset>
                 </form>
             }
-            else if (Model.ForgotPasswordStep == ForgotPasswordStep.VerifyingCode)
+            else if (Model.ForgotPasswordStep == ForgotPasswordStep.VerifySecurityCode)
             {
                 <form method="POST" class="form-horizontal" style="margin-left: 20px;">
                     @Html.AntiForgeryToken()
@@ -53,7 +53,7 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px;">
                             <div class="col-xs-12">
-                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.VerifyCode" value="Submit"/>
+                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.VerifySecurityCode" value="Submit"/>
                                 <a class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" href="@Request.QueryString.Get("ReturnUrl")">Cancel</a>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                     </fieldset>
                 </form>
             }
-            else if (Model.ForgotPasswordStep == ForgotPasswordStep.ValidatingQuestions)
+            else if (Model.ForgotPasswordStep == ForgotPasswordStep.VerifySecurityAnswers)
             {
                 <form method="POST" class="form-horizontal" style="margin-left: 20px;">
                     @Html.AntiForgeryToken()
@@ -89,7 +89,41 @@
                         </div>
                         <div class="form-group" style="margin-top: 10px;">
                             <div class="col-xs-12">
-                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.VerifyQuestions" value="Submit"/>
+                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.VerifySecurityAnswers" value="Submit"/>
+                                <a class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" href="@Request.QueryString.Get("ReturnUrl")">Cancel</a>
+                            </div>
+                        </div>
+
+                        @if (Model.HasError)
+                        {
+                            <div class="col-xs-12" style="color: lightcoral">@Model.ErrorMessage</div>
+                        }
+                    </fieldset>
+                </form>
+            }
+            else if (Model.ForgotPasswordStep == ForgotPasswordStep.ResetPassword)
+            {
+                <form method="POST" class="form-horizontal" style="margin-left: 20px;">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <h4>Reset Password</h4>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input type="text" class="form-control" id="newpassword" name="newpassword" required placeholder="New password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input type="text" class="form-control" id="confirmnewpassword" name="confirmnewpassword" required placeholder="Confirm new password">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px;">
+                            <div class="col-xs-12">
+                                <input type="submit" class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" name="submit.ResetPassword" value="Submit" />
                                 <a class="btn btn-primary btn-raised btn-lg" style="background-color: #4285f4" href="@Request.QueryString.Get("ReturnUrl")">Cancel</a>
                             </div>
                         </div>

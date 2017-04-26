@@ -16,6 +16,7 @@
     [UserName]             NVARCHAR (MAX) NULL,
     [Deleted]              BIT            DEFAULT ((0)) NOT NULL,
     [IsVerifyRequired ] BIT NOT NULL DEFAULT ((0)), 
+    [PasswordRecoveryToken] NVARCHAR(MAX) NULL, 
     CONSTRAINT [PK_dbo.Users] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

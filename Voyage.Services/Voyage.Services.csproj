@@ -62,6 +62,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PhoneNumbers, Version=8.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libphonenumber-csharp.8.3.1.1\lib\PhoneNumbers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -81,6 +84,10 @@
     <Compile Include="Audit\IAuditService.cs" />
     <Compile Include="KeyContainer\IRsaKeyContainerService.cs" />
     <Compile Include="KeyContainer\RsaKeyContainerService.cs" />
+    <Compile Include="PasswordRecovery\IPasswordRecoverService.cs" />
+    <Compile Include="PasswordRecovery\PasswordRecoverService.cs" />
+    <Compile Include="Phone\IPhoneService.cs" />
+    <Compile Include="Phone\PhoneService.cs" />
     <Compile Include="Role\IRoleService.cs" />
     <Compile Include="FileReader\IFileReaderService.cs" />
     <Compile Include="User\IUserService.cs" />
