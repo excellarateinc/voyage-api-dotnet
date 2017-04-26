@@ -215,10 +215,10 @@
     <Compile Include="Web\AuthProviders\IdentityProviderTests.cs" />
     <Compile Include="Web\ConstantsTests.cs" />
     <Compile Include="Web\ControllerExtensions.cs" />
-    <Compile Include="Web\Controllers\API\V1\AccountControllerTests.cs" />
-    <Compile Include="Web\Controllers\API\V1\RoleControllerTests.cs" />
-    <Compile Include="Web\Controllers\API\V1\ApplicationInfoControllerTests.cs" />
-    <Compile Include="Web\Controllers\API\V1\UserControllerTests.cs" />
+    <Compile Include="Web\API\V1\AccountControllerTests.cs" />
+    <Compile Include="Web\API\V1\RoleControllerTests.cs" />
+    <Compile Include="Web\API\V1\ApplicationInfoControllerTests.cs" />
+    <Compile Include="Web\API\V1\UserControllerTests.cs" />
     <Compile Include="Web\Extensions\ModelErrorExtensionsTests.cs" />
     <Compile Include="Web\Extensions\OwinContextExtensionsTests.cs" />
     <Compile Include="Web\Filters\ApiExceptionFilterAttributeTests.cs" />
@@ -260,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Map\Resolvers\" />
+    <Folder Include="Web\Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

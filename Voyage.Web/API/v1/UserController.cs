@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Voyage.Services.User;
 
-namespace Voyage.Web.Controllers.API.V1
+namespace Voyage.Web.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class UserController : ApiController
