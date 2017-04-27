@@ -39,6 +39,36 @@ namespace Voyage.UnitTests.Models.Validators
         }
 
         [Fact]
+        public void Should_Have_Error_When_Password_Has_No_Special_Characters()
+        {
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "Hellooo");
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Password_Has_No_Uppercase_Letter()
+        {
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "hellooo");
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Password_Has_No_Lowercase_Letter()
+        {
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "HELLLO");
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Password_Has_No_Digit()
+        {
+            _validator.ShouldHaveValidationErrorFor(model => model.Password, "Hellooo");
+        }
+
+        [Fact]
+        public void Should_Not_Have_Error_With_Valid_Password()
+        {
+            _validator.ShouldNotHaveValidationErrorFor(model => model.Password, "Hello!1");
+        }
+
+        [Fact]
         public void Should_Have_Error_When_ConfirmPassword_Does_Not_Match_Password()
         {
             _validator.ShouldHaveValidationErrorFor(
