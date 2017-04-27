@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -105,14 +106,23 @@ namespace Voyage.Services.User
                 PhoneNumberConfirmed = true
             };
 
-            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
+            var appUser = await _userManager.FindByNameAsync(user.UserName);
 
-            if (identityResult.Succeeded)
+            if (appUser.UserName != user.UserName)
             {
-                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
-            }
+                IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
 
-            return identityResult;
+                if (identityResult.Succeeded)
+                {
+                    identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
+                }
+
+                return identityResult;
+            }
+            else
+            {
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
+            }
         }
 
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
