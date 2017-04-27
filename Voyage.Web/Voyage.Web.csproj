@@ -301,7 +301,6 @@
     <Compile Include="Middleware\Processors\ResponseProcessor.cs" />
     <Compile Include="Middleware\RewindResponseMiddleware.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\UserApplicationSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

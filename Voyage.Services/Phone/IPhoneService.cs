@@ -1,13 +1,17 @@
-﻿namespace Voyage.Services.Phone
+﻿using System.Threading.Tasks;
+
+namespace Voyage.Services.Phone
 {
     public interface IPhoneService
     {
-        string GenerateVerificationCode();
+        string GenerateSecurityCode();
 
-        void InsertVerificationCode(int phoneId, string code);
+        void InsertSecurityCode(int phoneId, string code);
 
-        void ResetVerificationCode(int phoneId);
+        void ResetSecurityCode(int phoneId);
 
         bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber);
+
+        Task SendSecurityCode(string phoneNumber, string securityCode);
     }
 }

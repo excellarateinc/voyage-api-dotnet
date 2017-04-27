@@ -12,6 +12,6 @@ namespace Voyage.Services.Audit
 
         Task RecordAsync(ActivityAuditModel model);
 
-        IQueryable<ActivityAudit> GeAudittActivityWithinTime(string userName, string path, int timeInMinutes);
+        IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes);
     }
 }

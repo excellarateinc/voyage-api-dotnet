@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Voyage.Models;
+using Voyage.Web.Models;
 
 namespace Voyage.Services.PasswordRecovery
 {
@@ -8,10 +9,10 @@ namespace Voyage.Services.PasswordRecovery
     {
         Task<ForgotPasswordModel> ValidateUserInfoAsync(string userName, string phoneNumber);
 
-        Task<ForgotPasswordModel> VerifyCodeAsync(string userId, string code);
+        Task<ForgotPasswordModel> VerifyCodeAsync(UserApplicationSession appUser, string code);
 
         ForgotPasswordModel VerifySecurityAnswers(string userId, List<string> anwers);
 
-        Task<ForgotPasswordModel> ResetPasswordAsync(string userName, string verificationCode, string newPassword, string confirmNewPassword);
+        Task<ForgotPasswordModel> ResetPasswordAsync(UserApplicationSession appUser, string newPassword, string confirmNewPassword);
     }
 }

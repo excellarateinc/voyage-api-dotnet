@@ -1,4 +1,11 @@
 ﻿using System;
+using System.Configuration;
+using System.Net;
+using System.Threading.Tasks;
+using Amazon;
+using Amazon.Runtime;
+using Amazon.SimpleNotificationService;
+using Amazon.SimpleNotificationService.Model;
 using PhoneNumbers;
 using Voyage.Data.Repositories.UserPhone;
 
@@ -13,13 +20,13 @@ namespace Voyage.Services.Phone
             _phoneRepository = phoneRepository;
         }
 
-        public string GenerateVerificationCode()
+        public string GenerateSecurityCode()
         {
             var random = new Random();
             return random.Next(000000, 999999).ToString();
         }
 
-        public void InsertVerificationCode(int phoneId, string code)
+        public void InsertSecurityCode(int phoneId, string code)
         {
             var userPhone = _phoneRepository.Get(phoneId);
             userPhone.VerificationCode = code;
@@ -27,12 +34,12 @@ namespace Voyage.Services.Phone
             _phoneRepository.SaveChanges();
         }
 
-        public void ResetVerificationCode(int phoneId)
+        public void ResetSecurityCode(int phoneId)
         {
             var userPhone = _phoneRepository.Get(phoneId);
 
             // reset verification code to anything other than previous code that has been used
-            userPhone.VerificationCode = GenerateVerificationCode();
+            userPhone.VerificationCode = GenerateSecurityCode();
             _phoneRepository.Update(userPhone);
             _phoneRepository.SaveChanges();
         }
@@ -44,6 +51,20 @@ namespace Voyage.Services.Phone
             formatedPhoneNumber = phoneNumberUtil.Format(phone, PhoneNumberFormat.E164);
 
             return phoneNumberUtil.IsValidNumber(phone);
+        }
+
+        public async Task SendSecurityCode(string phoneNumber, string securityCode)
+        {
+            var credential = new BasicAWSCredentials(ConfigurationManager.AppSettings.Get("AwsAccessKey"), ConfigurationManager.AppSettings.Get("AwsSecretKey"));
+            var client = new AmazonSimpleNotificationServiceClient(credential, RegionEndpoint.USEast1);
+
+            var publishRequest = new PublishRequest
+            {
+                Message = "Security Code: " + securityCode,
+                PhoneNumber = phoneNumber
+            };
+
+            await client.PublishAsync(publishRequest);
         }
     }
 }
