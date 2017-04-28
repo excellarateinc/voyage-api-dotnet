@@ -106,15 +106,5 @@ namespace Voyage.UnitTests.Web.API.V1
                 .Should()
                 .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
         }
-
-        [Fact]
-        public void Register_Should_Have_AllowAnonymous_Attribute()
-        {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                .Should()
-                .BeDecoratedWith<AllowAnonymousAttribute>();
-        }
     }
 }

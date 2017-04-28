@@ -166,18 +166,14 @@ namespace Voyage.Services.User
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public async Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId)
+        public ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId)
         {
             // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
             var identity = new ClaimsIdentity("JWT");
             if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
             {
-                var user = await _userManager.FindByNameAsync("admin@admin.com");
-                if (user == null)
-                    throw new NotFoundException($"Could not locate entity with Id admin@admin.com");
-
-                // Add in role claims Administrator
-                var userRoles = _userManager.GetRoles(user.Id);
+                // Add in role claims
+                var userRoles = new List<string> { "Administrator" };
                 var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
                     .SelectMany(_ => _)
                     .Select(_ => new Claim(_.ClaimType, _.ClaimValue));

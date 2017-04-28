@@ -97,5 +97,24 @@ namespace Voyage.Services.Phone
             var phone = user.Phones.FirstOrDefault(c => c.VerificationCode == securityCode);
             return phone != null;
         }
+
+        /// <summary>
+        /// clear user phone security. This usually use after security code is verified
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task ClearUserPhoneSecurityCode(string userId)
+        {
+            var user = await _userService.GetUserAsync(userId);
+            foreach (var userPhone in user.Phones)
+            {
+                if (!string.IsNullOrWhiteSpace(userPhone.VerificationCode))
+                {
+                    userPhone.VerificationCode = string.Empty;
+                }
+            }
+
+            await _userService.UpdateUserAsync(user.Id, user);
+        }
     }
 }

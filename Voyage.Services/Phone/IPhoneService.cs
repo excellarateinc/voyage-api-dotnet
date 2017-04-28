@@ -13,5 +13,7 @@ namespace Voyage.Services.Phone
         Task SendSecurityCode(string phoneNumber, string securityCode);
 
         Task<bool> IsValidSecurityCode(string userId, string securityCode);
+
+        Task ClearUserPhoneSecurityCode(string userId);
     }
 }

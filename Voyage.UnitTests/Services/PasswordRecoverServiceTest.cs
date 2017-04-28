@@ -172,6 +172,7 @@ namespace Voyage.UnitTests.Services
                 PasswordRecoveryToken = "RecoveryToken"
             };
             _phoneServiceMock.Setup(c => c.IsValidSecurityCode(userId, securityCode)).ReturnsAsync(true);
+            _phoneServiceMock.Setup(c => c.ClearUserPhoneSecurityCode(It.IsAny<string>())).Returns(Task.Delay(0));
 
             var model = await GetPasswordRecoverService().VerifyCodeAsync(appUser, securityCode);
 

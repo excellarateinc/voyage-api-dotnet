@@ -108,6 +108,8 @@ namespace Voyage.Services.PasswordRecovery
             {
                 if (await _phoneService.IsValidSecurityCode(appUser.UserId, code))
                 {
+                    await _phoneService.ClearUserPhoneSecurityCode(appUser.UserId);
+
                     // set next step to verify answers
                     // TODO bypass security questions/answers for now
                     // model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityAnswers;
@@ -164,7 +166,12 @@ namespace Voyage.Services.PasswordRecovery
                 var user = await _userService.GetUserAsync(appUser.UserId);
                 var identity = await _userService.ChangePassword(user.Id, user.PasswordRecoveryToken, newPassword);
                 if (!identity.Errors.Any())
+                {
+                    user.PasswordRecoveryToken = string.Empty;
+                    await _userService.UpdateUserAsync(user.Id, user);
+
                     return model;
+                }
 
                 SetModelError(model, identity.Errors, ForgotPasswordStep.ResetPassword);
             }
