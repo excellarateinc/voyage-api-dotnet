@@ -209,6 +209,8 @@
     <Compile Include="Services\ApplicationInfoServiceTests.cs" />
     <Compile Include="Services\AuditServiceTests.cs" />
     <Compile Include="Services\IdentityManagers\ApplicationUserManagerTests.cs" />
+    <Compile Include="Services\PasswordRecoverServiceTest.cs" />
+    <Compile Include="Services\PhoneServiceTests.cs" />
     <Compile Include="Services\RoleServiceTests.cs" />
     <Compile Include="Services\UserServiceTests.cs" />
     <Compile Include="Web\AuthProviders\ApplicationJwtProviderTests.cs" />

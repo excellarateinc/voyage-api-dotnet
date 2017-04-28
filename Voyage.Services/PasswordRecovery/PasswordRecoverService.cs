@@ -41,7 +41,20 @@ namespace Voyage.Services.PasswordRecovery
             }
             else
             {
-                // validate phone number input
+                // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
+                var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
+
+                // 3. insert audit log
+                await WriteAuditLog(userName);
+
+                // 2. there are 5 or more attempts so we won't send verification code
+                if (attempts.Count >= 5)
+                {
+                    SetModelError(model, "Too many attempt to recover password. Please wait for 20 minutes.");
+                    return model;
+                }
+
+                // 4. validate phone number input
                 var formatedPhoneNumber = string.Empty;
                 if (_phoneService.IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber))
                 {
@@ -50,23 +63,6 @@ namespace Voyage.Services.PasswordRecovery
                     var userPhoneNumber = user.Phones.FirstOrDefault(c => c.PhoneNumber == formatedPhoneNumber);
                     if (userPhoneNumber != null)
                     {
-                        // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
-                        var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
-
-                        // there are 5 or more attempts so we won't send verification code
-                        if (attempts.Count >= 5)
-                        {
-                            SetModelError(model, "Too many attempt to recover password. Please wait for 20 minutes.");
-
-                            // write audit log using as starting 20 minutes wait
-                            await WriteAuditLog(userName);
-
-                            return model;
-                        }
-
-                        // insert audit log
-                        await WriteAuditLog(userName);
-
                         // generate password recovery token
                         var passwordRecoverToken = await _userService.GeneratePasswordResetTokenAsync(user.Id);
                         user.PasswordRecoveryToken = passwordRecoverToken;
@@ -86,7 +82,7 @@ namespace Voyage.Services.PasswordRecovery
                     }
                 }
 
-                // set next step
+                // 5. set next step
                 model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityCode;
             }
 
@@ -110,24 +106,16 @@ namespace Voyage.Services.PasswordRecovery
             }
             else
             {
-                // verify security code
-                var user = await _userService.GetUserAsync(appUser.UserId);
-                var phone = user.Phones.FirstOrDefault(c => c.VerificationCode == code);
-
-                // check if security code found
-                if (phone == null)
+                if (await _phoneService.IsValidSecurityCode(appUser.UserId, code))
                 {
-                    SetModelError(model, "Provided code is invalid.", ForgotPasswordStep.VerifySecurityCode);
-                }
-                else
-                {
-                    // reset phone security code after it was used
-                    _phoneService.ResetSecurityCode(phone.Id);
-
                     // set next step to verify answers
                     // TODO bypass security questions/answers for now
                     // model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityAnswers;
                     model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
+                }
+                else
+                {
+                    SetModelError(model, "Provided code is invalid.", ForgotPasswordStep.VerifySecurityCode);
                 }
             }
 
@@ -150,6 +138,7 @@ namespace Voyage.Services.PasswordRecovery
             }
             else
             {
+                // TODO validate answers will go here
                 model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
             }
 

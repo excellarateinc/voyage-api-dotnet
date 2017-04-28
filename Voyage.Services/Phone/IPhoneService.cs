@@ -8,10 +8,10 @@ namespace Voyage.Services.Phone
 
         void InsertSecurityCode(int phoneId, string code);
 
-        void ResetSecurityCode(int phoneId);
-
         bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber);
 
         Task SendSecurityCode(string phoneNumber, string securityCode);
+
+        Task<bool> IsValidSecurityCode(string userId, string securityCode);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.SessionState;
 using Autofac;
 using Autofac.Integration.Owin;
 using Voyage.Models;
@@ -39,7 +38,10 @@ namespace Voyage.Web.Controllers
 
                 if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifyUser")))
                 {
+                    // validate user and phone number
                     model = await passwordRecoverService.ValidateUserInfoAsync(Request.Form.Get("username"), Request.Form.Get("phonenumber"));
+
+                    // if there is not error set time allowance to 10 minutes and move to next step
                     if (!model.HasError)
                     {
                         // save user id and password recovery token to session for next step to identify if it is the same session
@@ -54,6 +56,7 @@ namespace Voyage.Web.Controllers
                 }
                 else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityCode")))
                 {
+                    // session must not be new
                     if (!IsNewSession(model))
                     {
                         // verify code
@@ -70,6 +73,7 @@ namespace Voyage.Web.Controllers
                 }
                 else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityAnswers")))
                 {
+                    // session must not be new
                     if (!IsNewSession(model))
                     {
                         var appUser = Session["appUser"] as UserApplicationSession;
@@ -78,8 +82,10 @@ namespace Voyage.Web.Controllers
                 }
                 else if (!string.IsNullOrEmpty(Request.Form.Get("submit.ResetPassword")))
                 {
+                    // session must not be new
                     if (!IsNewSession(model))
                     {
+                        // reset user password
                         var appUser = Session["appUser"] as UserApplicationSession;
                         model = await passwordRecoverService.ResetPasswordAsync(appUser, Request.Form.Get("newpassword"), Request.Form.Get("confirmnewpassword"));
 
@@ -102,6 +108,11 @@ namespace Voyage.Web.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// check if current request is new session
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private bool IsNewSession(ForgotPasswordModel model)
         {
             if (!Session.IsNewSession)
