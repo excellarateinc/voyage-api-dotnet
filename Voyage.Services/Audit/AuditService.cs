@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Voyage.Core;
 using Voyage.Data.Repositories.ActivityAudit;
@@ -27,6 +30,23 @@ namespace Voyage.Services.Audit
         public Task RecordAsync(ActivityAuditModel model)
         {
             return Task.Run(() => Record(model));
+        }
+
+        public IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes)
+        {
+            var twentyMinutesFromNow = DateTime.UtcNow.AddMinutes(-20);
+            var lastAuditRecord = _activityRepository.GetAll().Where(c => c.UserName == userName && c.Path == path).OrderByDescending(c => c.Date).Take(10);
+
+            var activityWithin20Minutes = new List<ActivityAudit>();
+            foreach (var activityAudit in lastAuditRecord)
+            {
+                if (DateTime.Compare(activityAudit.Date, twentyMinutesFromNow) == 1)
+                {
+                    activityWithin20Minutes.Add(activityAudit);
+                }
+            }
+
+            return activityWithin20Minutes;
         }
     }
 }

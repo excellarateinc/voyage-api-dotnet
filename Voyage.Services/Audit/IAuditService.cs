@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Voyage.Models;
+using Voyage.Models.Entities;
 
 namespace Voyage.Services.Audit
 {
@@ -8,5 +11,7 @@ namespace Voyage.Services.Audit
         void Record(ActivityAuditModel model);
 
         Task RecordAsync(ActivityAuditModel model);
+
+        IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes);
     }
 }

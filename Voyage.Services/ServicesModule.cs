@@ -5,6 +5,8 @@ using Voyage.Services.Audit;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.KeyContainer;
+using Voyage.Services.PasswordRecovery;
+using Voyage.Services.Phone;
 using Voyage.Services.Role;
 using Voyage.Services.User;
 
@@ -29,6 +31,14 @@ namespace Voyage.Services
 
             builder.RegisterType<UserService>()
                 .As<IUserService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<PhoneService>()
+                .As<IPhoneService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<PasswordRecoverService>()
+                .As<IPasswordRecoverService>()
                 .InstancePerRequest();
 
             builder.RegisterType<RoleService>()

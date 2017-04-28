@@ -29,5 +29,7 @@ namespace Voyage.Models.Entities
 
         [Required]
         public bool IsVerifyRequired { get; set; }
+
+        public string PasswordRecoveryToken { get; set; }
     }
 }

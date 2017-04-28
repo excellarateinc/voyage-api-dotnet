@@ -23,5 +23,7 @@ namespace Voyage.Models.Entities
 
         [Required]
         public PhoneType PhoneType { get; set; }
+
+        public string VerificationCode { get; set; }
     }
 }

@@ -176,7 +176,7 @@ namespace Voyage.Services.User
                 if (user == null)
                     throw new NotFoundException($"Could not locate entity with Id admin@admin.com");
 
-                // Add in role claims
+                // Add in role claims Administrator
                 var userRoles = _userManager.GetRoles(user.Id);
                 var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
                     .SelectMany(_ => _)
@@ -236,6 +236,16 @@ namespace Voyage.Services.User
                 throw new NotFoundException($"Could not locate entity with Name {userName}");
 
             return _mapper.Map<UserModel>(appUser);
+        }
+
+        public async Task<IdentityResult> ChangePassword(string userId, string token, string newPassword)
+        {
+            return await _userManager.ResetPasswordAsync(userId, token, newPassword);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(string userName)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(userName);
         }
     }
 }
