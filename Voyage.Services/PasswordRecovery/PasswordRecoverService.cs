@@ -140,7 +140,7 @@ namespace Voyage.Services.PasswordRecovery
             }
             else
             {
-                // TODO validate answers will go here
+                // TODO validating answers will go here
                 model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
             }
 

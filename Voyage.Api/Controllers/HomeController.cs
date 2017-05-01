@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Voyage.Web.Controllers
+namespace Voyage.Api.Controllers
 {
     public class HomeController : Controller
     {
@@ -8,7 +8,7 @@ namespace Voyage.Web.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
+            return RedirectPermanent("~/docs");
         }
     }
 }

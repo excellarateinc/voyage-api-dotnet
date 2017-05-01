@@ -28,7 +28,7 @@ namespace Voyage.Web
             ContainerConfig.Register(httpConfig);
 
             // Configure API
-            WebApiConfig.Register(httpConfig);
+            // WebApiConfig.Register(httpConfig);
 
             // configure FluentValidation model validator provider
             FluentValidationModelValidatorProvider.Configure(httpConfig);
@@ -89,24 +89,6 @@ namespace Voyage.Web
                 // Jwt custom format
                 AccessTokenFormat = new CustomJwtFormat()
             });
-
-            // Allow Web API to consume bearer JWT tokens.
-            var rsaProvider = ContainerConfig.Container.Resolve<IRsaKeyContainerService>();
-            var tokenParam = new System.IdentityModel.Tokens.TokenValidationParameters
-            {
-                ValidIssuer = ConfigurationManager.AppSettings["oAuth:Issuer"],
-                ValidAudience = ConfigurationManager.AppSettings["oAuth:Audience"],
-                IssuerSigningKey = new System.IdentityModel.Tokens.RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer())
-            };
-            var jwtTokenOptions = new JwtBearerAuthenticationOptions
-            {
-                AuthenticationMode = AuthenticationMode.Active,
-                TokenValidationParameters = tokenParam
-            };
-            app.UseJwtBearerAuthentication(jwtTokenOptions);
-
-            // 6. Add web api to pipeline
-            app.UseWebApi(httpConfig);
         }
     }
 }
