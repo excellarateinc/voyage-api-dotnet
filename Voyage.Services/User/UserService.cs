@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -11,7 +12,6 @@ using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
-using Microsoft.AspNet.Identity;
 
 namespace Voyage.Services.User
 {
@@ -97,7 +97,7 @@ namespace Voyage.Services.User
         {
             var user = new ApplicationUser
             {
-                UserName = model.Email,
+                UserName = model.UserName,
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -105,24 +105,20 @@ namespace Voyage.Services.User
                 IsActive = true,
                 PhoneNumberConfirmed = true
             };
-
             var appUser = await _userManager.FindByNameAsync(user.UserName);
-
-            if (appUser.UserName != user.UserName)
-            {
-                IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
-
-                if (identityResult.Succeeded)
-                {
-                    identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
-                }
-
-                return identityResult;
-            }
-            else
+            if (appUser.UserName == user.UserName)
             {
                 throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
             }
+
+            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
+
+            if (identityResult.Succeeded)
+            {
+                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
+            }
+
+            return identityResult;
         }
 
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)

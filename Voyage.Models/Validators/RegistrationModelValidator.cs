@@ -7,9 +7,11 @@ namespace Voyage.Models.Validators
     {
         public RegistrationModelValidator()
         {
+            RuleFor(_ => _.UserName)
+                .NotEmpty()
+                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Username is a required field");
+
             RuleFor(_ => _.Email)
-              .NotEmpty()
-              .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Email is a required field")
               .EmailAddress()
               .WithErrorCodeMessage(Constants.ErrorCodes.InvalidEmail, "Email is invalid");
 
@@ -24,7 +26,7 @@ namespace Voyage.Models.Validators
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPassword, "Password must have one upper case letter")
                 .Matches(@"(?=.*[a-z])")
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPassword, "Password must have one lower case letter")
-                .Matches("(?=.*[0-9])")
+                .Matches(@"(?=.*[0-9])")
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPassword, "Password must have one digit");
 
             RuleFor(_ => _.ConfirmPassword)

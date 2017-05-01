@@ -113,12 +113,6 @@ namespace Voyage.UnitTests.Models.Validators
         }
 
         [Fact]
-        public void Should_Have_Error_When_Email_Is_Null()
-        {
-            _validator.ShouldHaveValidationErrorFor(model => model.Email, null as string);
-        }
-
-        [Fact]
         public void Should_Have_Error_When_Email_Is_Invalid()
         {
             _validator.ShouldHaveValidationErrorFor(model => model.Email, "abc");
@@ -128,6 +122,12 @@ namespace Voyage.UnitTests.Models.Validators
         public void Should_Have_Error_when_PhoneNumber_Is_Null()
         {
             _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumber, null as string);
+        }
+
+        [Fact]
+        public void Should_Have_Error_when_UseName_Is_Null()
+        {
+            _validator.ShouldHaveValidationErrorFor(model => model.UserName, null as string);
         }
 
         [Fact]

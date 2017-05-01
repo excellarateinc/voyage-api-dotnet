@@ -36,9 +36,9 @@ namespace Voyage.UnitTests.Models.Validators
         }
 
         [Fact]
-        public void Should_Have_Error_When_Email_Is_Null()
+        public void Should_Have_Error_when_UseName_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.Email, null as string);
+            _validator.ShouldHaveValidationErrorFor(model => model.Username, null as string);
         }
 
         [Fact]
