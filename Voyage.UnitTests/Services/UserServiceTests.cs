@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -789,41 +790,48 @@ namespace Voyage.UnitTests.Services
         }
 
         [Fact]
-        public async Task Register_Should_Call_UserManager()
+        public async Task Register_Should_Call_FindByNameAsync_And_Not_Throw_Exception()
         {
             // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
+                .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
-
-            var applicationUser = new ApplicationUser();
 
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
                 .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
                 .Returns(Task.Delay(0));
 
-            _mockStore.As<IUserRoleStore<ApplicationUser>>()
-                .Setup(_ => _.GetRolesAsync(applicationUser))
-                .ReturnsAsync(new string[0]);
-
-            _mockStore.Setup(_ => _.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(applicationUser);
-
-            _mockStore.As<IUserRoleStore<ApplicationUser>>()
-                .Setup(_ => _.AddToRoleAsync(applicationUser, "Basic"))
-                .Returns(Task.Delay(0));
-
-            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))
-                .ReturnsAsync(null);
-
-            _mockStore.Setup(_ => _.CreateAsync(It.Is<ApplicationUser>(match => match.Email == model.Email && match.UserName == model.Email)))
-                .Returns(Task.Delay(0));
+            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(c => c == model.UserName)))
+                .ReturnsAsync(new ApplicationUser());
 
             // ACT
             await _userService.RegisterAsync(model);
 
             // ASSERT
+            Mock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
+        {
+            // ARRANGE
+            var model = Fixture.Build<RegistrationModel>()
+                .With(_ => _.UserName, "testUserName")
+                .With(_ => _.Email, "test@test.com")
+                .With(_ => _.Password, "cool1Password!!")
+                .Create();
+
+            _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync(new ApplicationUser { UserName = "testUserName" });
+
+            // ACT
+            var ex = Assert.ThrowsAsync<BadRequestException>(async () => await _userService.RegisterAsync(model));
+
+            // ASSERT
+            Assert.Equal(ex.Result.StatusCode, HttpStatusCode.BadRequest);
+            Assert.True(ex.Result.Message.Contains("User already exists with the username. Please choose a different username"));
             Mock.VerifyAll();
         }
 
