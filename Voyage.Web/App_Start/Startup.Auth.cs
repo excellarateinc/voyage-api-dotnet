@@ -96,7 +96,7 @@ namespace Voyage.Web
             {
                 ValidIssuer = ConfigurationManager.AppSettings["oAuth:Issuer"],
                 ValidAudience = ConfigurationManager.AppSettings["oAuth:Audience"],
-                IssuerSigningKey = new System.IdentityModel.Tokens.RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer())
+                IssuerSigningKey = rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()
             };
             var jwtTokenOptions = new JwtBearerAuthenticationOptions
             {

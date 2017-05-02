@@ -24,17 +24,24 @@ namespace Voyage.Web.Formats
             var issued = data.Properties.IssuedUtc;
             var expires = data.Properties.ExpiresUtc;
 
+            JwtPayload jwtPayLoad = new JwtPayload(issuer, audience, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime);
+
             // Sign key
             var rsaProvider = ContainerConfig.Container.Resolve<IRsaKeyContainerService>();
-            var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()), SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
+
+            // var signingCredentials = new SigningCredentials(new RsaSecurityKey(rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer()), SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest);
+            var key = rsaProvider.GetRsaCryptoServiceProviderFromKeyContainer();
 
             // Create jwt token
-            var token = new JwtSecurityToken(issuer, audience, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingCredentials);
+            // var token = new JwtSecurityToken(issuer, audience, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingCredentials);
+            string jwe = Jose.JWT.Encode(jwtPayLoad, key, Jose.JweAlgorithm.RSA_OAEP, Jose.JweEncryption.A256GCM);
+
+            var claims = Jose.JWT.Decode(jwe, key);
 
             // Create jwt handler to generate token string
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.WriteToken(token);
-            return jwt;
+            // var handler = new JwtSecurityTokenHandler();
+            // var jwt = handler.WriteToken(token);
+            return jwe;
         }
 
         public AuthenticationTicket Unprotect(string protectedText)
