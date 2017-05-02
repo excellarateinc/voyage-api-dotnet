@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Voyage.Services.User;
 using Microsoft.AspNet.Identity;
+using Voyage.Web.Filters;
 
-namespace Voyage.Web.Controllers.API.V1
+namespace Voyage.Web.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AccountController : ApiController
@@ -37,7 +38,7 @@ namespace Voyage.Web.Controllers.API.V1
         *
         * @apiUse BadRequestError
         */
-        [AllowAnonymous]
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateUser)]
         [Route("account/register")]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Voyage.Data.Repositories.UserPhone
@@ -42,7 +43,9 @@ namespace Voyage.Data.Repositories.UserPhone
 
         public override Models.Entities.UserPhone Update(Models.Entities.UserPhone model)
         {
-            throw new NotImplementedException("Updates are handled via the user object");
+            Context.UserPhones.AddOrUpdate(model);
+            Context.SaveChanges();
+            return model;
         }
     }
 }

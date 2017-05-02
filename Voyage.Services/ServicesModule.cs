@@ -5,6 +5,8 @@ using Voyage.Services.Audit;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.KeyContainer;
+using Voyage.Services.PasswordRecovery;
+using Voyage.Services.Phone;
 using Voyage.Services.Role;
 using Voyage.Services.User;
 
@@ -24,19 +26,27 @@ namespace Voyage.Services
                 .InstancePerRequest();
 
             builder.RegisterType<FileReaderService>()
-                .AsImplementedInterfaces()
+                .As<IFileReaderService>()
                 .InstancePerRequest();
 
             builder.RegisterType<UserService>()
-                .AsImplementedInterfaces()
+                .As<IUserService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<PhoneService>()
+                .As<IPhoneService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<PasswordRecoverService>()
+                .As<IPasswordRecoverService>()
                 .InstancePerRequest();
 
             builder.RegisterType<RoleService>()
-                .AsImplementedInterfaces()
+                .As<IRoleService>()
                 .InstancePerRequest();
 
             builder.RegisterType<RsaKeyContainerService>()
-                .AsSelf()
+                .As<IRsaKeyContainerService>()
                 .SingleInstance();
 
             builder.RegisterType<ApplicationUserManager>()
@@ -48,7 +58,7 @@ namespace Voyage.Services
                 .InstancePerRequest();
 
             builder.RegisterType<AuditService>()
-                .AsImplementedInterfaces()
+                .As<IAuditService>()
                 .InstancePerRequest();
         }
     }

@@ -101,9 +101,8 @@ namespace Voyage.Services.User
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
                 IsActive = true,
-                PhoneNumberConfirmed = true
+                IsVerifyRequired = true
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
             if (appUser.UserName == user.UserName)
@@ -173,22 +172,22 @@ namespace Voyage.Services.User
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public async Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId)
+        public ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId)
         {
             // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
             var identity = new ClaimsIdentity("JWT");
             if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
             {
-                var user = await _userManager.FindByNameAsync("admin@admin.com");
-                if (user == null)
-                    throw new NotFoundException($"Could not locate entity with Id admin@admin.com");
-
                 // Add in role claims
-                var userRoles = _userManager.GetRoles(user.Id);
+                var userRoles = new List<string> { "Administrator" };
                 var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
                     .SelectMany(_ => _)
                     .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
                 identity.AddClaims(roleClaims);
+
+                var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
+                identity.AddClaim(new Claim("client_id", client.Id));
+                identity.AddClaim(new Claim("client_secret", client.Secret));
             }
 
             return identity;
@@ -230,6 +229,25 @@ namespace Voyage.Services.User
 
             var identityResult = await _userManager.DeleteAsync(appUser);
             return identityResult;
+        }
+
+        public async Task<UserModel> GetUserByNameAsync(string userName)
+        {
+            var appUser = await _userManager.FindByNameAsync(userName);
+            if (appUser == null || appUser.Deleted)
+                throw new NotFoundException($"Could not locate entity with Name {userName}");
+
+            return _mapper.Map<UserModel>(appUser);
+        }
+
+        public async Task<IdentityResult> ChangePassword(string userId, string token, string newPassword)
+        {
+            return await _userManager.ResetPasswordAsync(userId, token, newPassword);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(string userName)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(userName);
         }
     }
 }

@@ -36,13 +36,6 @@ namespace Voyage.UnitTests.Data
         }
 
         [Fact]
-        public void Update_Should_Throw_NotImplementedException()
-        {
-            Action throwAction = () => _repository.Update(new ApplicationLog());
-            throwAction.ShouldThrow<NotImplementedException>();
-        }
-
-        [Fact]
         public void GetAll_Should_Throw_NotImplementedException()
         {
             Action throwAction = () => _repository.GetAll();

@@ -28,14 +28,20 @@ namespace Voyage.Services.User
 
         Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
 
-        Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId);
+        ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId);
 
         RoleModel GetUserRoleById(string userId, string roleId);
 
         Task<UserModel> GetUserAsync(string userId);
 
+        Task<UserModel> GetUserByNameAsync(string userName);
+
         Task<IdentityResult> DeleteUserAsync(string userId);
 
         Task<UserModel> UpdateUserAsync(string userId, UserModel model);
+
+        Task<IdentityResult> ChangePassword(string userId, string token, string newPassword);
+
+        Task<string> GeneratePasswordResetTokenAsync(string userName);
     }
 }

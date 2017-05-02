@@ -103,32 +103,31 @@ namespace Voyage.UnitTests.Web.Filters
             actionContext.Response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
-        [Fact]
-        public async void OnAuthorizationAsync_Should_Not_Set_Response_When_Claim_Exists()
-        {
-            var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
+        // [Fact]
+        // public async void OnAuthorizationAsync_Should_Not_Set_Response_When_Claim_Exists()
+        // {
+        //     var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
+        // var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
 
-            var controllerContext = new HttpControllerContext
-            {
-                Request = new HttpRequestMessage(),
-                RequestContext =
-                    new HttpRequestContext
-                    {
-                        Principal = new ClaimsPrincipal(claimsIdentity)
-                    }
-            };
+        // var controllerContext = new HttpControllerContext
+        //     {
+        //         Request = new HttpRequestMessage(),
+        //         RequestContext =
+        //             new HttpRequestContext
+        //             {
+        //                 Principal = new ClaimsPrincipal(claimsIdentity)
+        //             }
+        //     };
 
-            var actionContext = new HttpActionContext(
-                controllerContext,
-                new Mock<HttpActionDescriptor> { CallBase = true }.Object);
+        // var actionContext = new HttpActionContext(
+        //         controllerContext,
+        //         new Mock<HttpActionDescriptor> { CallBase = true }.Object);
 
-            await attribute.OnAuthorizationAsync(actionContext, new CancellationToken());
+        // await attribute.OnAuthorizationAsync(actionContext, new CancellationToken());
 
-            actionContext.Response.Should().BeNull();
-        }
-
+        // actionContext.Response.Should().BeNull();
+        // }
         [Fact]
         public void OnAuthorizeAsync_Should_Set_Response_When_Claim_Does_Not_Exist()
         {

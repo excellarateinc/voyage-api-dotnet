@@ -8,14 +8,14 @@ using FluentAssertions;
 using Voyage.Models;
 using Voyage.Services.User;
 using Voyage.UnitTests.Common;
-using Voyage.Web.Controllers.API.V1;
+using Voyage.Web.API.V1;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Xunit;
 using Constants = Voyage.Web.Constants;
 
-namespace Voyage.UnitTests.Web.Controllers.API.V1
+namespace Voyage.UnitTests.Web.API.V1
 {
     public class AccountControllerTests : BaseUnitTest
     {
@@ -105,16 +105,6 @@ namespace Voyage.UnitTests.Web.Controllers.API.V1
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
                 .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
-        }
-
-        [Fact]
-        public void Register_Should_Have_AllowAnonymous_Attribute()
-        {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                .Should()
-                .BeDecoratedWith<AllowAnonymousAttribute>();
         }
     }
 }

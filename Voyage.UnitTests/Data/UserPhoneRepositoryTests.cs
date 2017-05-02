@@ -30,14 +30,6 @@ namespace Voyage.UnitTests.Data
         }
 
         [Fact]
-        public void Update_Should_Throw_NotImplementedException()
-        {
-            Action throwAction = () => _phoneRepository.Update(new UserPhone());
-            throwAction
-                .ShouldThrow<NotImplementedException>();
-        }
-
-        [Fact]
         public void GetAll_Should_Throw_NotImplementedException()
         {
             Action throwAction = () => _phoneRepository.GetAll();

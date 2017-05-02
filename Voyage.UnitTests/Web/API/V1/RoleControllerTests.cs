@@ -10,14 +10,14 @@ using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.Role;
 using Voyage.UnitTests.Common;
-using Voyage.Web.Controllers.API.V1;
+using Voyage.Web.API.V1;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Xunit;
 using Constants = Voyage.Web.Constants;
 
-namespace Voyage.UnitTests.Web.Controllers.API.V1
+namespace Voyage.UnitTests.Web.API.V1
 {
     [Trait("Category", "Role.Controller")]
     public class RoleControllerTests : BaseUnitTest

@@ -8,7 +8,7 @@ using FluentAssertions;
 using Voyage.Models;
 using Voyage.Services.ApplicationInfo;
 using Voyage.UnitTests.Common;
-using Voyage.Web.Controllers.API.V1;
+using Voyage.Web.API.V1;
 
 using Moq;
 
@@ -16,7 +16,7 @@ using Xunit;
 
 using Constants = Voyage.Web.Constants;
 
-namespace Voyage.UnitTests.Web.Controllers.API.V1
+namespace Voyage.UnitTests.Web.API.V1
 {
     public class ApplicationInfoControllerTests : BaseUnitTest
     {

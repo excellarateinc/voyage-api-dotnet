@@ -19,6 +19,8 @@ namespace Voyage.Models.Map.Profiles
                 .ForMember(dest => dest.Phones, opt => opt.MapFrom(src => src.Phones))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
                 .ForMember(dest => dest.Phones, opt => opt.Ignore())
+                .ForMember(dest => dest.IsVerifyRequired, opt => opt.MapFrom(src => src.IsVerifyRequired))
+                .ForMember(dest => dest.PasswordRecoveryToken, opt => opt.MapFrom(src => src.PasswordRecoveryToken))
                 .ForAllOtherMembers(opt => opt.Ignore());
         }
     }
