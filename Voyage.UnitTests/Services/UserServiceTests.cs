@@ -840,7 +840,7 @@ namespace Voyage.UnitTests.Services
                 .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
                 .Returns(Task.Delay(0));
 
-            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(match => match == model.Email)))
+            _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new ApplicationUser());
 
             // ACT
