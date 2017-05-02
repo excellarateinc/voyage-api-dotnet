@@ -13,11 +13,11 @@ using Moq;
 using Newtonsoft.Json;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
-using Voyage.UnitTests.Common;
 using Voyage.Web.Filters;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Filters
+namespace Voyage.Web.UnitTests.Web.Filters
 {
     public class ApiExceptionFilterAttributeTests : BaseUnitTest
     {

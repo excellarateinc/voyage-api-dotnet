@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Web.Http;
-
 using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web;
 using Voyage.Web.Filters;
+using Voyage.Web.UnitTests.Common;
 
-namespace Voyage.UnitTests.Web
+namespace Voyage.Web.UnitTests.Web
 {
     public static class ControllerExtensions
     {

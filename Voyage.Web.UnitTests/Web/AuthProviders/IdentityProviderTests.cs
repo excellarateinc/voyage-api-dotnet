@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Security.Principal;
-
 using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web.AuthProviders;
-
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-
 using Moq;
-
+using Voyage.Web.AuthProviders;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.AuthProviders
+namespace Voyage.Web.UnitTests.Web.AuthProviders
 {
     public class IdentityProviderTests : BaseUnitTest
     {

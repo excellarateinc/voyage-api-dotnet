@@ -5,6 +5,9 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNet.Identity;
+using Moq;
+using Ploeh.AutoFixture;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
@@ -12,14 +15,11 @@ using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using Voyage.Services.User;
-using Voyage.UnitTests.Common;
-using Voyage.UnitTests.Common.AutoMapperFixture;
-using Microsoft.AspNet.Identity;
-using Moq;
-using Ploeh.AutoFixture;
+using Voyage.Web.UnitTests.Common;
+using Voyage.Web.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
-namespace Voyage.UnitTests.Services
+namespace Voyage.Web.UnitTests.Services
 {
     [Trait("Category", "User.Service")]
     [Collection(AutoMapperCollection.CollectionName)]

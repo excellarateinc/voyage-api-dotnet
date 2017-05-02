@@ -1,11 +1,8 @@
 ﻿using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web
+namespace Voyage.Web.UnitTests.Web
 {
     /// <summary>
     /// The route prefixes are critical to web api routing, let's test the constants so that

@@ -2,10 +2,10 @@
 using FluentAssertions;
 using Voyage.Data;
 using Voyage.Data.Repositories.ActivityAudit;
-using Voyage.UnitTests.Common;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Data
+namespace Voyage.Web.UnitTests.Data
 {
     [Trait("Category", "Auditing")]
     public class ActivityAuditRepositoryTests : BaseUnitTest

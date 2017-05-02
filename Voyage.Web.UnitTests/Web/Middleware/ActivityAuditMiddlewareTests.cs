@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using Voyage.Models;
-using Voyage.Services.Audit;
-using Voyage.UnitTests.Common;
-using Voyage.Web.Middleware;
-using Voyage.Web.Middleware.Processors;
-
 using Microsoft.Owin;
 using Microsoft.Owin.Testing;
-
 using Moq;
-
 using Owin;
-
+using Voyage.Models;
+using Voyage.Services.Audit;
+using Voyage.Web.Middleware;
+using Voyage.Web.Middleware.Processors;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Middleware
+namespace Voyage.Web.UnitTests.Web.Middleware
 {
     [Trait("Category", "CustomMiddleware")]
     public class ActivityAuditMiddlewareTests : BaseUnitTest

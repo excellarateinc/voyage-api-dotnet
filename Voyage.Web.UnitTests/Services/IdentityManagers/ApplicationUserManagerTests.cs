@@ -1,16 +1,12 @@
 ﻿using FluentAssertions;
-
+using Microsoft.AspNet.Identity;
+using Moq;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
-using Voyage.UnitTests.Common;
-
-using Microsoft.AspNet.Identity;
-
-using Moq;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Services.IdentityManagers
+namespace Voyage.Web.UnitTests.Services.IdentityManagers
 {
     public class ApplicationUserManagerTests : BaseUnitTest
     {

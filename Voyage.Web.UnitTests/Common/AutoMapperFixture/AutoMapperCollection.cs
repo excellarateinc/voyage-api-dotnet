@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Voyage.UnitTests.Common.AutoMapperFixture
+namespace Voyage.Web.UnitTests.Common.AutoMapperFixture
 {
     [CollectionDefinition(CollectionName)]
     public class AutoMapperCollection : ICollectionFixture<AutoMapperFixture>

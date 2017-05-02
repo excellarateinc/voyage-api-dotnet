@@ -1,21 +1,16 @@
 ﻿using System;
-
 using FluentAssertions;
-
+using Moq;
+using Ploeh.AutoFixture;
 using Voyage.Data.Repositories.ActivityAudit;
 using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.Audit;
-using Voyage.UnitTests.Common;
-using Voyage.UnitTests.Common.AutoMapperFixture;
-
-using Moq;
-
-using Ploeh.AutoFixture;
-
+using Voyage.Web.UnitTests.Common;
+using Voyage.Web.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
-namespace Voyage.UnitTests.Services
+namespace Voyage.Web.UnitTests.Services
 {
     [Trait("Category", "Audit.Service")]
     [Collection(AutoMapperCollection.CollectionName)]

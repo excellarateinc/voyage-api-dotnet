@@ -1,18 +1,13 @@
 ﻿using System.IO;
 using System.Net.Http;
-
 using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web.Middleware;
-
 using Microsoft.Owin.Testing;
-
 using Owin;
-
+using Voyage.Web.Middleware;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Middleware
+namespace Voyage.Web.UnitTests.Web.Middleware
 {
     [Trait("Category", "CustomMiddleware")]
     public class RewindResponseMiddlewareTests : BaseUnitTest

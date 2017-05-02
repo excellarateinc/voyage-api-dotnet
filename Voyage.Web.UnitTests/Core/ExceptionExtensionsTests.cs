@@ -1,13 +1,10 @@
 ﻿using System;
-
 using FluentAssertions;
-
 using Voyage.Core;
-using Voyage.UnitTests.Common;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Core
+namespace Voyage.Web.UnitTests.Core
 {
     public class ExceptionExtensionsTests : BaseUnitTest
     {

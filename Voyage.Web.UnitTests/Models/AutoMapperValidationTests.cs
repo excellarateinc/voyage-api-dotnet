@@ -1,9 +1,8 @@
-﻿using Voyage.UnitTests.Common;
-using Voyage.UnitTests.Common.AutoMapperFixture;
-
+﻿using Voyage.Web.UnitTests.Common;
+using Voyage.Web.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
-namespace Voyage.UnitTests.Models
+namespace Voyage.Web.UnitTests.Models
 {
     [Collection(AutoMapperCollection.CollectionName)]
     public class AutoMapperValidationTests : BaseUnitTest

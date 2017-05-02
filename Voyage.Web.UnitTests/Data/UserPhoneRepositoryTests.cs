@@ -1,15 +1,12 @@
 ﻿using System;
-
 using FluentAssertions;
-
 using Voyage.Data;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models.Entities;
-using Voyage.UnitTests.Common;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Data
+namespace Voyage.Web.UnitTests.Data
 {
     public class UserPhoneRepositoryTests : BaseUnitTest
     {

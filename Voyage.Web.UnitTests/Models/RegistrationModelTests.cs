@@ -1,13 +1,10 @@
 ﻿using FluentAssertions;
-
 using FluentValidation.Attributes;
-
 using Voyage.Models;
 using Voyage.Models.Validators;
-
 using Xunit;
 
-namespace Voyage.UnitTests.Models
+namespace Voyage.Web.UnitTests.Models
 {
     [Trait("Category", "Model.Validation")]
     public class RegistrationModelTests

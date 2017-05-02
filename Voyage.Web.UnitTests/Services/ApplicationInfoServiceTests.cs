@@ -1,14 +1,11 @@
 ﻿using FluentAssertions;
-
+using Moq;
 using Voyage.Services.ApplicationInfo;
 using Voyage.Services.FileReader;
-using Voyage.UnitTests.Common;
-
-using Moq;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Services
+namespace Voyage.Web.UnitTests.Services
 {
     public class ApplicationInfoServiceTests : BaseUnitTest
     {

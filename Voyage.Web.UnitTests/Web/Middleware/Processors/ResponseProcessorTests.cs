@@ -2,19 +2,14 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-
 using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web.Middleware.Processors;
-
 using Microsoft.Owin;
-
 using Moq;
-
+using Voyage.Web.Middleware.Processors;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Middleware.Processors
+namespace Voyage.Web.UnitTests.Web.Middleware.Processors
 {
     public class ResponseProcessorTests : BaseUnitTest
     {

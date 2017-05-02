@@ -1,14 +1,11 @@
-﻿using FluentValidation.TestHelper;
-
+﻿using System.Collections.Generic;
+using FluentValidation.TestHelper;
 using Voyage.Models;
 using Voyage.Models.Validators;
-using Voyage.UnitTests.Common;
-
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-using System.Collections.Generic;
-
-namespace Voyage.UnitTests.Models.Validators
+namespace Voyage.Web.UnitTests.Models.Validators
 {
     [Trait("Category", "Model.Validation")]
     public class RegistrationModelValidatorTests : BaseUnitTest

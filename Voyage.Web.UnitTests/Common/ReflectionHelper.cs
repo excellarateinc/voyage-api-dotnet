@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Voyage.UnitTests.Common
+namespace Voyage.Web.UnitTests.Common
 {
     public static class ReflectionHelper
     {

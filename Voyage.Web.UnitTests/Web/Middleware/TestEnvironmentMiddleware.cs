@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Microsoft.Owin;
 
-namespace Voyage.UnitTests.Web.Middleware
+namespace Voyage.Web.UnitTests.Web.Middleware
 {
     /// <summary>
     /// Request ID is not being populated into the environment dictionary. For these tests, add this fake

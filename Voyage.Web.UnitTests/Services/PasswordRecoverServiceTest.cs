@@ -9,11 +9,11 @@ using Voyage.Services.Audit;
 using Voyage.Services.PasswordRecovery;
 using Voyage.Services.Phone;
 using Voyage.Services.User;
-using Voyage.UnitTests.Common.AutoMapperFixture;
 using Voyage.Web.Models;
+using Voyage.Web.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
-namespace Voyage.UnitTests.Services
+namespace Voyage.Web.UnitTests.Services
 {
     [Trait("Category", "ForgotPassword.Service")]
     [Collection(AutoMapperCollection.CollectionName)]

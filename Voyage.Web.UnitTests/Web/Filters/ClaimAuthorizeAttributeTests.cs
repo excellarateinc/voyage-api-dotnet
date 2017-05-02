@@ -6,13 +6,12 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 using FluentAssertions;
-using Voyage.UnitTests.Common;
-using Voyage.Web;
-using Voyage.Web.Filters;
 using Moq;
+using Voyage.Web.Filters;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Filters
+namespace Voyage.Web.UnitTests.Web.Filters
 {
     public class ClaimAuthorizeAttributeTests : BaseUnitTest
     {

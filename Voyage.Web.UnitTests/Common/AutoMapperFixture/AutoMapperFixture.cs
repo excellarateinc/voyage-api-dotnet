@@ -1,10 +1,8 @@
 ﻿using System;
-
 using AutoMapper;
-
 using Voyage.Models.Map;
 
-namespace Voyage.UnitTests.Common.AutoMapperFixture
+namespace Voyage.Web.UnitTests.Common.AutoMapperFixture
 {
     public class AutoMapperFixture
     {

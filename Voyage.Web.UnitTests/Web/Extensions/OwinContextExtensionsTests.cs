@@ -2,22 +2,16 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
-
 using FluentAssertions;
-
-using Voyage.UnitTests.Common;
-using Voyage.Web.Extensions;
-
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-
 using Moq;
-
 using Ploeh.AutoFixture;
-
+using Voyage.Web.Extensions;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.Extensions
+namespace Voyage.Web.UnitTests.Web.Extensions
 {
     [Trait("Category", "Extension Methods")]
     public class OwinContextExtensionsTests : BaseUnitTest

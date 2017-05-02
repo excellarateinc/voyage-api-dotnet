@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using Autofac;
-using Voyage.Services.User;
-using Voyage.UnitTests.Common;
-using Voyage.Web.AuthProviders;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Moq;
 using Ploeh.AutoFixture;
+using Voyage.Services.User;
+using Voyage.Web.AuthProviders;
+using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.UnitTests.Web.AuthProviders
+namespace Voyage.Web.UnitTests.Web.AuthProviders
 {
     [Trait("Category", "JwtProvider")]
     public class ApplicationJwtProviderTests : BaseUnitTest

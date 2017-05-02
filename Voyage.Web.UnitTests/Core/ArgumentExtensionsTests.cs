@@ -1,12 +1,9 @@
 ﻿using System;
-
 using FluentAssertions;
-
 using Voyage.Core;
-
 using Xunit;
 
-namespace Voyage.UnitTests.Core
+namespace Voyage.Web.UnitTests.Core
 {
     public class ArgumentExtensionsTests
     {
