@@ -11,6 +11,8 @@
             public const string EntityNotFound = "notfound.entity";
             public const string Unauthorized = "error.unauthorized";
             public const string Forbidden = "error.forbidden";
+            public const string InvalidPhoneNumber = "invalid.phonenumber";
+            public const string InvalidPassword = "invalid.password";
         }
     }
 }
