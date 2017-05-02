@@ -16,10 +16,9 @@ namespace Voyage.Services.IdentityManagers
         {
             UserValidator = new UserValidator<ApplicationUser>(this)
             {
-                AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
+                AllowOnlyAlphanumericUserNames = true,
+                RequireUniqueEmail = false
             };
-
             PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,

@@ -11,6 +11,12 @@ namespace Voyage.Web.Filters
         public void OnAuthentication(AuthenticationContext authenticationContext)
         {
             var urlInfo = authenticationContext.HttpContext.Request.QueryString["ReturnUrl"];
+            if (string.IsNullOrWhiteSpace(urlInfo))
+            {
+                SetUnauthorizedResponse(authenticationContext);
+                return;
+            }
+
             var urlSegments = urlInfo.Split('?');
             if (urlSegments.Length < 2)
             {

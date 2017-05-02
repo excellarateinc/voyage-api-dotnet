@@ -43,8 +43,8 @@ namespace Voyage.UnitTests.Services.IdentityManagers
         {
             var validator = _manager.UserValidator as UserValidator<ApplicationUser>;
 
-            validator.AllowOnlyAlphanumericUserNames.Should().BeFalse();
-            validator.RequireUniqueEmail.Should().BeTrue();
+            validator.AllowOnlyAlphanumericUserNames.Should().BeTrue();
+            validator.RequireUniqueEmail.Should().BeFalse();
         }
 
         [Fact]
