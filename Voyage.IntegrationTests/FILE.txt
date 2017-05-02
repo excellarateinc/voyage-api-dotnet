@@ -1,1 +1,0 @@
-﻿{ "build": { "buildNumber": "some_number"}}
