@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Models;
-using Voyage.Models.Enum;
 using Voyage.Services.Audit;
 using Voyage.Services.Phone;
 using Voyage.Services.User;
@@ -33,58 +34,55 @@ namespace Voyage.Services.PasswordRecovery
         /// <returns></returns>
         public async Task<ForgotPasswordModel> ValidateUserInfoAsync(string userName, string phoneNumber)
         {
-            var model = new ForgotPasswordModel();
+            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.VerifyUser };
 
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(phoneNumber))
             {
-                SetModelError(model, "User name and phone number are required fields.");
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "User name and phone number are required fields.");
             }
-            else
+
+            // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
+            var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
+
+            // 3. insert audit log
+            await WriteAuditLog(userName);
+
+            // 2. there are 5 or more attempts so we won't send verification code
+            if (attempts.Count >= 5)
             {
-                // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
-                var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
-
-                // 3. insert audit log
-                await WriteAuditLog(userName);
-
-                // 2. there are 5 or more attempts so we won't send verification code
-                if (attempts.Count >= 5)
-                {
-                    SetModelError(model, "Too many attempt to recover password. Please wait for 20 minutes.");
-                    return model;
-                }
-
-                // 4. validate phone number input
-                var formatedPhoneNumber = string.Empty;
-                if (_phoneService.IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber))
-                {
-                    // validate user and phone number and send verification code
-                    var user = await _userService.GetUserByNameAsync(userName);
-                    var userPhoneNumber = user.Phones.FirstOrDefault(c => c.PhoneNumber == formatedPhoneNumber);
-                    if (userPhoneNumber != null)
-                    {
-                        // generate password recovery token
-                        var passwordRecoverToken = await _userService.GeneratePasswordResetTokenAsync(user.Id);
-                        user.PasswordRecoveryToken = passwordRecoverToken;
-                        await _userService.UpdateUserAsync(user.Id, user);
-
-                        // generate security code
-                        var securityCode = _phoneService.GenerateSecurityCode();
-
-                        // save to our database
-                        _phoneService.InsertSecurityCode(userPhoneNumber.Id, securityCode);
-
-                        // send text to user using amazon SNS
-                        await _phoneService.SendSecurityCode(formatedPhoneNumber, securityCode);
-
-                        // set user id and password recover token in model for session use
-                        model.UserId = user.Id;
-                    }
-                }
-
-                // 5. set next step
-                model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityCode;
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "Too many attempt to recover password. Please wait for 20 minutes.");
             }
+
+            // 4. validate phone number input
+            var formatedPhoneNumber = string.Empty;
+            if (_phoneService.IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber))
+            {
+                // validate user and phone number and send verification code
+                var user = await _userService.GetUserByNameAsync(userName);
+                var userPhoneNumber = user.Phones.FirstOrDefault(c => c.PhoneNumber == formatedPhoneNumber);
+                if (userPhoneNumber != null)
+                {
+                    // generate password recovery token
+                    var passwordRecoverToken = await _userService.GeneratePasswordResetTokenAsync(user.Id);
+                    user.PasswordRecoveryToken = passwordRecoverToken;
+                    await _userService.UpdateUserAsync(user.Id, user);
+
+                    // generate security code
+                    var securityCode = _phoneService.GenerateSecurityCode();
+
+                    // save to our database
+                    _phoneService.InsertSecurityCode(userPhoneNumber.Id, securityCode);
+
+                    // send text to user using amazon SNS
+                    await _phoneService.SendSecurityCode(formatedPhoneNumber, securityCode);
+
+                    // set user id and password recover token in model for session use
+                    model.UserId = user.Id;
+                }
+            }
+
+            // 5. set next step
+            model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityCode;
 
             return model;
         }
@@ -97,28 +95,26 @@ namespace Voyage.Services.PasswordRecovery
         /// <returns></returns>
         public async Task<ForgotPasswordModel> VerifyCodeAsync(UserApplicationSession appUser, string code)
         {
-            var model = new ForgotPasswordModel();
+            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.VerifySecurityCode };
 
             // check for empty security code
             if (string.IsNullOrWhiteSpace(code))
             {
-                SetModelError(model, "Security code is a required field.", ForgotPasswordStep.VerifySecurityCode);
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "Security code is a required field.");
+            }
+
+            if (await _phoneService.IsValidSecurityCode(appUser.UserId, code))
+            {
+                await _phoneService.ClearUserPhoneSecurityCode(appUser.UserId);
+
+                // set next step to verify answers
+                // TODO bypass security questions/answers for now
+                // model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityAnswers;
+                model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
             }
             else
             {
-                if (await _phoneService.IsValidSecurityCode(appUser.UserId, code))
-                {
-                    await _phoneService.ClearUserPhoneSecurityCode(appUser.UserId);
-
-                    // set next step to verify answers
-                    // TODO bypass security questions/answers for now
-                    // model.ForgotPasswordStep = ForgotPasswordStep.VerifySecurityAnswers;
-                    model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
-                }
-                else
-                {
-                    SetModelError(model, "Provided code is invalid.", ForgotPasswordStep.VerifySecurityCode);
-                }
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "Provided code is invalid.");
             }
 
             return model;
@@ -132,17 +128,15 @@ namespace Voyage.Services.PasswordRecovery
         /// <returns></returns>
         public ForgotPasswordModel VerifySecurityAnswers(string userId, List<string> anwers)
         {
-            var model = new ForgotPasswordModel();
+            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.VerifySecurityAnswers };
 
             if (anwers.Any(c => c == string.Empty))
             {
-                SetModelError(model, "All answers are required.", ForgotPasswordStep.VerifySecurityAnswers);
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "All answers are required.");
             }
-            else
-            {
-                // TODO validating answers will go here
-                model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
-            }
+
+            // TODO validating answers will go here
+            model.ForgotPasswordStep = ForgotPasswordStep.ResetPassword;
 
             return model;
         }
@@ -156,25 +150,23 @@ namespace Voyage.Services.PasswordRecovery
         /// <returns></returns>
         public async Task<ForgotPasswordModel> ResetPasswordAsync(UserApplicationSession appUser, string newPassword, string confirmNewPassword)
         {
-            var model = new ForgotPasswordModel();
+            var model = new ForgotPasswordModel { ForgotPasswordStep = ForgotPasswordStep.ResetPassword };
             if (newPassword != confirmNewPassword)
             {
-                SetModelError(model, "New password must match with New confirm password.", ForgotPasswordStep.ResetPassword);
+                throw new PasswordRecoverException(model.ForgotPasswordStep, "New password must match with New confirm password.");
             }
-            else
+
+            var user = await _userService.GetUserAsync(appUser.UserId);
+            var identity = await _userService.ChangePassword(user.Id, user.PasswordRecoveryToken, newPassword);
+            if (!identity.Errors.Any())
             {
-                var user = await _userService.GetUserAsync(appUser.UserId);
-                var identity = await _userService.ChangePassword(user.Id, user.PasswordRecoveryToken, newPassword);
-                if (!identity.Errors.Any())
-                {
-                    user.PasswordRecoveryToken = string.Empty;
-                    await _userService.UpdateUserAsync(user.Id, user);
+                user.PasswordRecoveryToken = string.Empty;
+                await _userService.UpdateUserAsync(user.Id, user);
 
-                    return model;
-                }
-
-                SetModelError(model, identity.Errors, ForgotPasswordStep.ResetPassword);
+                return model;
             }
+
+            ThrowPasswordRecoverException(identity.Errors, ForgotPasswordStep.ResetPassword);
 
             return model;
         }
@@ -200,12 +192,11 @@ namespace Voyage.Services.PasswordRecovery
         }
 
         /// <summary>
-        /// set error to model
+        /// throw password recovery exception
         /// </summary>
-        /// <param name="model"></param>
         /// <param name="errorMessages"></param>
         /// <param name="step"></param>
-        private void SetModelError(ForgotPasswordModel model, IEnumerable<string> errorMessages, ForgotPasswordStep step)
+        private void ThrowPasswordRecoverException(IEnumerable<string> errorMessages, ForgotPasswordStep step)
         {
             var builder = new StringBuilder();
             foreach (var identityError in errorMessages)
@@ -214,20 +205,7 @@ namespace Voyage.Services.PasswordRecovery
                 builder.AppendLine();
             }
 
-            SetModelError(model, builder.ToString(), step);
-        }
-
-        /// <summary>
-        /// set error to model
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="errorMessage"></param>
-        /// <param name="step"></param>
-        private void SetModelError(ForgotPasswordModel model, string errorMessage, ForgotPasswordStep step = ForgotPasswordStep.VerifyUser)
-        {
-            model.HasError = true;
-            model.ErrorMessage = errorMessage;
-            model.ForgotPasswordStep = step;
+            throw new PasswordRecoverException(step, builder.ToString());
         }
     }
 }

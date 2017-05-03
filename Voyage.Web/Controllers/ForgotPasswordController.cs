@@ -5,8 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Owin;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Models;
-using Voyage.Models.Enum;
 using Voyage.Services.PasswordRecovery;
 using Voyage.Web.Filters;
 using Voyage.Web.Models;
@@ -41,34 +42,26 @@ namespace Voyage.Web.Controllers
                     // validate user and phone number
                     model = await passwordRecoverService.ValidateUserInfoAsync(Request.Form.Get("username"), Request.Form.Get("phonenumber"));
 
-                    // if there is not error set time allowance to 10 minutes and move to next step
-                    if (!model.HasError)
+                    // save user id and password recovery token to session for next step to identify if it is the same session
+                    Session["appUser"] = new UserApplicationSession
                     {
-                        // save user id and password recovery token to session for next step to identify if it is the same session
-                        Session["appUser"] = new UserApplicationSession
-                        {
-                            UserId = model.UserId
-                        };
+                        UserId = model.UserId
+                    };
 
-                        // set this password recovery session for 10 minutes after the security code is sent
-                        Session.Timeout = 10;
-                    }
+                    // set this password recovery session for 10 minutes after the security code is sent
+                    Session.Timeout = 10;
                 }
                 else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityCode")))
                 {
                     // session must not be new
-                    if (!IsNewSession(model))
+                    if (!IsNewSession(model) && Session["appUser"] != null)
                     {
                         // verify code
                         var appUser = Session["appUser"] as UserApplicationSession;
                         model = await passwordRecoverService.VerifyCodeAsync(appUser, Request.Form.Get("code"));
 
-                        // after verifying code successfully save code for later use
-                        if (!model.HasError)
-                        {
-                            appUser.PasswordRecoveryToken = model.PasswordRecoveryToken;
-                            Session["appUser"] = appUser;
-                        }
+                        appUser.PasswordRecoveryToken = model.PasswordRecoveryToken;
+                        Session["appUser"] = appUser;
                     }
                 }
                 else if (!string.IsNullOrEmpty(Request.Form.Get("submit.VerifySecurityAnswers")))
@@ -89,20 +82,17 @@ namespace Voyage.Web.Controllers
                         var appUser = Session["appUser"] as UserApplicationSession;
                         model = await passwordRecoverService.ResetPasswordAsync(appUser, Request.Form.Get("newpassword"), Request.Form.Get("confirmnewpassword"));
 
-                        // redirect user to log in if no error
-                        if (!model.HasError)
-                        {
-                            Session.Clear();
-                            return RedirectPermanent(Request.QueryString["ReturnUrl"]);
-                        }
+                        Session.Clear();
+                        return RedirectPermanent(Request.QueryString["ReturnUrl"]);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (PasswordRecoverException ex)
             {
                 // log error to database
                 model.HasError = true;
                 model.ErrorMessage = ex.Message;
+                model.ForgotPasswordStep = ex.ForgotPasswordStep;
             }
 
             return View(model);

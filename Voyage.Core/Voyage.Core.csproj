@@ -57,7 +57,9 @@
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\PasswordRecoverException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
+    <Compile Include="ForgotPasswordStep.cs" />
     <Compile Include="IIdentityProvider.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

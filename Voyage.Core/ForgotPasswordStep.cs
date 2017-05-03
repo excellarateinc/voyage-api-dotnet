@@ -1,4 +1,4 @@
-﻿namespace Voyage.Models.Enum
+﻿namespace Voyage.Core
 {
     public enum ForgotPasswordStep
     {

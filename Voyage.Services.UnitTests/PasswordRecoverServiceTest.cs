@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Moq;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Models.Enum;
@@ -24,17 +26,17 @@ namespace Voyage.Services.UnitTests
         private Mock<IAuditService> _auditServiceMock;
 
         [Fact]
-        public async Task ValidateUserInfo_must_check_for_empty_inputs()
+        public void ValidateUserInfo_must_check_for_empty_inputs()
         {
             CreateNewMockServices();
-            var model = await GetPasswordRecoverService().ValidateUserInfoAsync(string.Empty, string.Empty);
+            var exceptionObj = Assert.ThrowsAsync<PasswordRecoverException>(async () => await GetPasswordRecoverService().ValidateUserInfoAsync(string.Empty, string.Empty));
 
-            Assert.True(model.HasError);
-            Assert.NotEmpty(model.ErrorMessage);
+            Assert.Equal(exceptionObj.Result.ForgotPasswordStep, ForgotPasswordStep.VerifyUser);
+            Assert.NotEmpty(exceptionObj.Result.Message);
         }
 
         [Fact]
-        public async Task ValidateUerInfo_must_stop_the_attempt_when_more_than_5_times_already()
+        public void ValidateUerInfo_must_stop_the_attempt_when_more_than_5_times_already()
         {
             CreateNewMockServices();
             var phoneNumber = string.Empty;
@@ -43,10 +45,10 @@ namespace Voyage.Services.UnitTests
             _auditServiceMock.Setup(c => c.RecordAsync(It.IsAny<ActivityAuditModel>())).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out phoneNumber)).Returns(false);
 
-            var model = await GetPasswordRecoverService().ValidateUserInfoAsync("TestUserName", "InvalidPhone");
+            var exceptionObj = Assert.ThrowsAsync<PasswordRecoverException>( async () => await GetPasswordRecoverService().ValidateUserInfoAsync("TestUserName", "InvalidPhone"));
 
-            Assert.True(model.HasError);
-            Assert.NotEmpty(model.ErrorMessage);
+            Assert.Equal(exceptionObj.Result.ForgotPasswordStep, ForgotPasswordStep.VerifyUser);
+            Assert.NotEmpty(exceptionObj.Result.Message);
         }
 
         [Fact]
@@ -131,17 +133,17 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public async Task ValifyCode_must_check_for_empty_code()
+        public void ValifyCode_must_check_for_empty_code()
         {
             CreateNewMockServices();
-            var model = await GetPasswordRecoverService().VerifyCodeAsync(new UserApplicationSession(), string.Empty);
+            var exceptionObj = Assert.ThrowsAsync<PasswordRecoverException>(async () => await GetPasswordRecoverService().VerifyCodeAsync(new UserApplicationSession(), string.Empty));
 
-            Assert.True(model.HasError);
-            Assert.NotEmpty(model.ErrorMessage);
+            Assert.NotNull(exceptionObj.Result);
+            Assert.NotEmpty(exceptionObj.Result.Message);
         }
 
         [Fact]
-        public async Task ValifyCode_must_valify_invalid_code_and_add_error_once_empty_check_is_passed()
+        public void ValifyCode_must_valify_invalid_code_and_add_error_once_empty_check_is_passed()
         {
             CreateNewMockServices();
             var userId = "UserId";
@@ -153,11 +155,11 @@ namespace Voyage.Services.UnitTests
             };
             _phoneServiceMock.Setup(c => c.IsValidSecurityCode(userId, securityCode)).ReturnsAsync(false);
 
-            var model = await GetPasswordRecoverService().VerifyCodeAsync(appUser, "NotValidCode");
+            var exceptionObj = Assert.ThrowsAsync<PasswordRecoverException>(async () => await GetPasswordRecoverService().VerifyCodeAsync(appUser, "NotValidCode"));
 
-            Assert.True(model.HasError);
-            Assert.NotEmpty(model.ErrorMessage);
-            Assert.Equal(model.ForgotPasswordStep, ForgotPasswordStep.VerifySecurityCode);
+            Assert.NotNull(exceptionObj.Result);
+            Assert.NotEmpty(exceptionObj.Result.Message);
+            Assert.Equal(exceptionObj.Result.ForgotPasswordStep, ForgotPasswordStep.VerifySecurityCode);
         }
 
         [Fact]

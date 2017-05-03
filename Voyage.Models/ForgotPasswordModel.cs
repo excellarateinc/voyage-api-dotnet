@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Voyage.Models.Enum;
+using Voyage.Core;
 
 namespace Voyage.Models
 {
