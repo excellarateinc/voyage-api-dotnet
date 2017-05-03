@@ -185,48 +185,21 @@
   <ItemGroup>
     <Compile Include="Common\BaseUnitTest.cs" />
     <Compile Include="Common\ReflectionHelper.cs" />
-    <Compile Include="Core\ArgumentExtensionsTests.cs" />
-    <Compile Include="Core\ExceptionExtensionsTests.cs" />
-    <Compile Include="Data\ActivityAuditRepositoryTests.cs" />
-    <Compile Include="Data\ApplicationLogRepositoryTests.cs" />
-    <Compile Include="Data\UserPhoneRepositoryTests.cs" />
-    <Compile Include="Models\AutoMapperValidationTests.cs" />
-    <Compile Include="Models\ClaimModelTests.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperCollection.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperFixture.cs" />
-    <Compile Include="Models\Map\Profiles\ActivityAuditProfileTests.cs" />
-    <Compile Include="Models\Map\Profiles\ClaimProfileTests.cs" />
-    <Compile Include="Models\Map\Profiles\RoleProfileTests.cs" />
-    <Compile Include="Models\Map\Profiles\UserPhoneProfileTest.cs" />
-    <Compile Include="Models\Map\Profiles\UserProfileTests.cs" />
-    <Compile Include="Models\RegistrationModelTests.cs" />
-    <Compile Include="Models\RoleModelTests.cs" />
-    <Compile Include="Models\UserModelTests.cs" />
-    <Compile Include="Models\Validators\ClaimModelValidatorTests.cs" />
-    <Compile Include="Models\Validators\RegistrationModelValidatorTests.cs" />
-    <Compile Include="Models\Validators\RoleModelValidatorTests.cs" />
-    <Compile Include="Models\Validators\UserModelValidatorTests.cs" />
-    <Compile Include="Models\Validators\UserPhoneModelValidatorTests.cs" />
-    <Compile Include="Services\ApplicationInfoServiceTests.cs" />
-    <Compile Include="Services\AuditServiceTests.cs" />
-    <Compile Include="Services\IdentityManagers\ApplicationUserManagerTests.cs" />
-    <Compile Include="Services\PasswordRecoverServiceTest.cs" />
-    <Compile Include="Services\PhoneServiceTests.cs" />
-    <Compile Include="Services\RoleServiceTests.cs" />
-    <Compile Include="Services\UserServiceTests.cs" />
-    <Compile Include="Web\AuthProviders\ApplicationJwtProviderTests.cs" />
-    <Compile Include="Web\AuthProviders\IdentityProviderTests.cs" />
-    <Compile Include="Web\ConstantsTests.cs" />
-    <Compile Include="Web\ControllerExtensions.cs" />
-    <Compile Include="Web\Extensions\ModelErrorExtensionsTests.cs" />
-    <Compile Include="Web\Extensions\OwinContextExtensionsTests.cs" />
-    <Compile Include="Web\Filters\ApiExceptionFilterAttributeTests.cs" />
-    <Compile Include="Web\Filters\ClaimAuthorizeAttributeTests.cs" />
-    <Compile Include="Web\Middleware\ActivityAuditMiddlewareTests.cs" />
-    <Compile Include="Web\Middleware\Processors\ErrorResponseProcessorTests.cs" />
-    <Compile Include="Web\Middleware\Processors\ResponseProcessorTests.cs" />
-    <Compile Include="Web\Middleware\RewindResponseMiddlewareTests.cs" />
-    <Compile Include="Web\Middleware\TestEnvironmentMiddleware.cs" />
+    <Compile Include="AuthProviders\ApplicationJwtProviderTests.cs" />
+    <Compile Include="AuthProviders\IdentityProviderTests.cs" />
+    <Compile Include="ConstantsTests.cs" />
+    <Compile Include="ControllerExtensions.cs" />
+    <Compile Include="Extensions\ModelErrorExtensionsTests.cs" />
+    <Compile Include="Extensions\OwinContextExtensionsTests.cs" />
+    <Compile Include="Filters\ApiExceptionFilterAttributeTests.cs" />
+    <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />
+    <Compile Include="Middleware\ActivityAuditMiddlewareTests.cs" />
+    <Compile Include="Middleware\Processors\ErrorResponseProcessorTests.cs" />
+    <Compile Include="Middleware\Processors\ResponseProcessorTests.cs" />
+    <Compile Include="Middleware\RewindResponseMiddlewareTests.cs" />
+    <Compile Include="Middleware\TestEnvironmentMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,8 +231,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Map\Resolvers\" />
-    <Folder Include="Web\Controllers\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
