@@ -10,6 +10,8 @@ namespace Voyage.Services.Phone
 
         bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber);
 
+        string GetE164Format(string phoneNumber);
+
         Task SendSecurityCode(string phoneNumber, string securityCode);
 
         Task<bool> IsValidSecurityCode(string userId, string securityCode);

@@ -122,8 +122,7 @@ namespace Voyage.Web.UnitTests.Services
                 FirstName = "First1",
                 LastName = "Last1"
             };
-            _mockStore.Setup(_ => _.FindByIdAsync(id))
-                .ReturnsAsync(null);
+            _mockStore.Setup(_ => _.FindByIdAsync(id)).ReturnsAsync(null);
 
             Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.UpdateUserAsync(id, userModel); });
         }
@@ -250,6 +249,9 @@ namespace Voyage.Web.UnitTests.Services
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
 
+            var outputValue = string.Empty;
+            _mockPhoneRepository.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out outputValue)).Returns(true);
+
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
             entityResult.Phones
@@ -294,6 +296,9 @@ namespace Voyage.Web.UnitTests.Services
             _mockStore.Setup(_ => _.UpdateAsync(It.Is<ApplicationUser>(user => user.UserName == userModel.Username)))
                 .Returns(Task.Delay(0));
 
+            var outputValue = string.Empty;
+            _mockPhoneRepository.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out outputValue)).Returns(true);
+
             var entityResult = await _userService.UpdateUserAsync(id, userModel);
 
             entityResult.Phones
@@ -302,6 +307,44 @@ namespace Voyage.Web.UnitTests.Services
                 .And
                 .HaveCount(1);
             entityResult.Phones.First().ShouldBeEquivalentTo(phone);
+        }
+
+        [Fact]
+        public void UpdateUser_Should_Throw_Exception_When_Phone_Number_Is_Invalid()
+        {
+            var id = Fixture.Create<string>();
+            var phone = Fixture.Create<UserPhoneModel>();
+
+            var userModel = new UserModel
+            {
+                Id = id,
+                Username = "sally@sally.com",
+                FirstName = "First1",
+                LastName = "Last1",
+                Phones = new List<UserPhoneModel> { phone }
+            };
+
+            var appUser = new ApplicationUser
+            {
+                Id = id,
+                UserName = "sue@sue.com",
+                Email = "sue@sue.com",
+                FirstName = "First2",
+                LastName = "Last2",
+                Phones = new List<UserPhone>()
+            };
+
+            _mockStore.Setup(_ => _.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(appUser);
+
+            var outputValue = string.Empty;
+            _mockPhoneRepository.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out outputValue)).Returns(false);
+
+            var exceptionObj = Assert.ThrowsAsync<BadRequestException>(async () => await _userService.UpdateUserAsync(id, userModel));
+
+            Assert.NotNull(exceptionObj.Result);
+            Assert.NotEmpty(exceptionObj.Result.Message);
+            Assert.Equal(exceptionObj.Result.StatusCode, HttpStatusCode.BadRequest);
         }
 
         [Fact]

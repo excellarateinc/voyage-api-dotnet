@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.Runtime;
-using Amazon.SimpleNotificationService;
-using Amazon.SimpleNotificationService.Model;
-using PhoneNumbers;
+using AutoMapper;
+using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
-using Voyage.Services.User;
+using Voyage.Models;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
 
 namespace Voyage.Services.Phone
 {
     public class PhoneService : IPhoneService
     {
         private readonly IUserPhoneRepository _phoneRepository;
-        private readonly IUserService _userService;
+        private readonly ApplicationUserManager _userManager;
+        private readonly IMapper _mapper;
 
-        public PhoneService(IUserPhoneRepository phoneRepository, IUserService userService)
+        public PhoneService(ApplicationUserManager userManager, IMapper mapper, IUserPhoneRepository phoneRepository)
         {
             _phoneRepository = phoneRepository;
-            _userService = userService;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -54,11 +56,17 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber)
         {
-            var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-            var phone = phoneNumberUtil.Parse(phoneNumber, "US");
-            formatedPhoneNumber = phoneNumberUtil.Format(phone, PhoneNumberFormat.E164);
+            return _phoneRepository.IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber);
+        }
 
-            return phoneNumberUtil.IsValidNumber(phone);
+        /// <summary>
+        /// Return E164 formated phone number. Throw Exception if phone number is not valid
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        public string GetE164Format(string phoneNumber)
+        {
+            return _phoneRepository.GetE164Format(phoneNumber);
         }
 
         /// <summary>
@@ -69,20 +77,7 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
-            var formatedPhoneNumber = string.Empty;
-            if (IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber))
-            {
-                var credential = new BasicAWSCredentials(ConfigurationManager.AppSettings.Get("AwsAccessKey"), ConfigurationManager.AppSettings.Get("AwsSecretKey"));
-                var client = new AmazonSimpleNotificationServiceClient(credential, RegionEndpoint.USEast1);
-
-                var publishRequest = new PublishRequest
-                {
-                    Message = "Security Code: " + securityCode,
-                    PhoneNumber = formatedPhoneNumber
-                };
-
-                await client.PublishAsync(publishRequest);
-            }
+            await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
         }
 
         /// <summary>
@@ -93,7 +88,7 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task<bool> IsValidSecurityCode(string userId, string securityCode)
         {
-            var user = await _userService.GetUserAsync(userId);
+            var user = await GetUserAsync(userId);
             var phone = user.Phones.FirstOrDefault(c => c.VerificationCode == securityCode);
             return phone != null;
         }
@@ -105,7 +100,7 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task ClearUserPhoneSecurityCode(string userId)
         {
-            var user = await _userService.GetUserAsync(userId);
+            var user = await GetUserAsync(userId);
             foreach (var userPhone in user.Phones)
             {
                 if (!string.IsNullOrWhiteSpace(userPhone.VerificationCode))
@@ -114,7 +109,61 @@ namespace Voyage.Services.Phone
                 }
             }
 
-            await _userService.UpdateUserAsync(user.Id, user);
+            await UpdateUserAsync(user.Id, user);
+        }
+
+        private async Task<UserModel> GetUserAsync(string userId)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            if (appUser == null || appUser.Deleted)
+                throw new Voyage.Core.Exceptions.NotFoundException($"Could not locate entity with ID {userId}");
+
+            return _mapper.Map<UserModel>(appUser);
+        }
+
+        private async Task<UserModel> UpdateUserAsync(string userId, UserModel model)
+        {
+            var appUser = await _userManager.FindByIdAsync(userId);
+            if (appUser == null)
+                throw new Voyage.Core.Exceptions.NotFoundException($"Could not locate entity with Id {userId}");
+
+            if (!IsValidPhoneNumbers(model))
+            {
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "Invalid phone number.");
+            }
+
+            _mapper.Map<UserModel, ApplicationUser>(model, appUser);
+
+            CollectionHelpers.MergeCollection(
+                _mapper,
+                source: model.Phones,
+                destination: appUser.Phones,
+                predicate: (s, d) => s.Id == d.Id,
+                deleteAction: entity => _phoneRepository.Delete(entity.Id));
+
+            await _userManager.UpdateAsync(appUser);
+            return _mapper.Map<UserModel>(appUser);
+        }
+
+        private bool IsValidPhoneNumbers(UserModel userModel)
+        {
+            // validate user phone numbers
+            var isValidPhoneNumbers = true;
+            foreach (var phone in userModel.Phones)
+            {
+                var formatedPhoneNumber = string.Empty;
+                if (IsValidPhoneNumber(phone.PhoneNumber, out formatedPhoneNumber))
+                {
+                    phone.PhoneNumber = formatedPhoneNumber;
+                }
+                else
+                {
+                    isValidPhoneNumbers = false;
+                    break;
+                }
+            }
+
+            return isValidPhoneNumbers;
         }
     }
 }

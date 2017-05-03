@@ -1,8 +1,10 @@
-﻿using Moq;
+﻿using Microsoft.AspNet.Identity;
+using Moq;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
 using Voyage.Services.Phone;
-using Voyage.Services.User;
+using Voyage.Web.UnitTests.Common;
 using Voyage.Web.UnitTests.Common.AutoMapperFixture;
 using Xunit;
 
@@ -10,20 +12,35 @@ namespace Voyage.Web.UnitTests.Services
 {
     [Trait("Category", "Phone.Service")]
     [Collection(AutoMapperCollection.CollectionName)]
-    public class PhoneServiceTests
+    public class PhoneServiceTests : BaseUnitTest
     {
-        private Mock<IUserService> _userServiceMock;
+        private readonly AutoMapperFixture _mapperFixture;
         private Mock<IUserPhoneRepository> _userPhoneRepositoryMock;
         private PhoneService _phoneService;
+        private Mock<IUserStore<ApplicationUser>> _mockStore;
+        private ApplicationUserManager _userManager;
+
+        public PhoneServiceTests(AutoMapperFixture mapperFixture)
+        {
+            _mockStore = Mock.Create<IUserStore<ApplicationUser>>();
+            _mockStore.As<IUserPasswordStore<ApplicationUser>>();
+            _mockStore.As<IQueryableUserStore<ApplicationUser>>();
+            _mockStore.As<IUserRoleStore<ApplicationUser>>();
+            _mockStore.As<IUserClaimStore<ApplicationUser>>();
+
+            _userPhoneRepositoryMock = Mock.Create<IUserPhoneRepository>();
+            _userManager = new ApplicationUserManager(_mockStore.Object);
+            _mapperFixture = mapperFixture;
+        }
 
         [Fact]
         public void InsertSecurityCode_Should_Set_Collect_values()
         {
-            CreateNewMockServices();
+            _userPhoneRepositoryMock = new Mock<IUserPhoneRepository>();
             _userPhoneRepositoryMock.Setup(c => c.Get(1234)).Returns(new UserPhone());
             _userPhoneRepositoryMock.Setup(c => c.Update(It.IsAny<UserPhone>()));
             _userPhoneRepositoryMock.Setup(c => c.SaveChanges());
-            _phoneService = new PhoneService(_userPhoneRepositoryMock.Object, _userServiceMock.Object);
+            _phoneService = new PhoneService(_userManager, _mapperFixture.MapperInstance, _userPhoneRepositoryMock.Object);
 
             _phoneService.InsertSecurityCode(1234, "code");
 
@@ -33,21 +50,15 @@ namespace Voyage.Web.UnitTests.Services
         [Fact]
         public void ResetSecurityCode_Should_Call_All_Require_Parameters()
         {
-            CreateNewMockServices();
+            _userPhoneRepositoryMock = new Mock<IUserPhoneRepository>();
             _userPhoneRepositoryMock.Setup(c => c.Get(1234)).Returns(new UserPhone());
             _userPhoneRepositoryMock.Setup(c => c.Update(It.IsAny<UserPhone>()));
             _userPhoneRepositoryMock.Setup(c => c.SaveChanges());
-            _phoneService = new PhoneService(_userPhoneRepositoryMock.Object, _userServiceMock.Object);
+            _phoneService = new PhoneService(_userManager, _mapperFixture.MapperInstance, _userPhoneRepositoryMock.Object);
 
             _phoneService.InsertSecurityCode(1234, "code");
 
             _userPhoneRepositoryMock.VerifyAll();
-        }
-
-        private void CreateNewMockServices()
-        {
-            _userPhoneRepositoryMock = new Mock<IUserPhoneRepository>();
-            _userServiceMock = new Mock<IUserService>();
         }
     }
 }

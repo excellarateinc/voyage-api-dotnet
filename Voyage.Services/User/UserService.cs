@@ -36,6 +36,11 @@ namespace Voyage.Services.User
             if (appUser == null)
                 throw new NotFoundException($"Could not locate entity with Id {userId}");
 
+            if (!IsValidPhoneNumbers(model))
+            {
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "Invalid phone number.");
+            }
+
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
 
             CollectionHelpers.MergeCollection(
@@ -248,6 +253,27 @@ namespace Voyage.Services.User
         public async Task<string> GeneratePasswordResetTokenAsync(string userName)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(userName);
+        }
+
+        private bool IsValidPhoneNumbers(UserModel userModel)
+        {
+            // validate user phone numbers
+            var isValidPhoneNumbers = true;
+            foreach (var phone in userModel.Phones)
+            {
+                var formatedPhoneNumber = string.Empty;
+                if (_phoneRepository.IsValidPhoneNumber(phone.PhoneNumber, out formatedPhoneNumber))
+                {
+                    phone.PhoneNumber = formatedPhoneNumber;
+                }
+                else
+                {
+                    isValidPhoneNumbers = false;
+                    break;
+                }
+            }
+
+            return isValidPhoneNumbers;
         }
     }
 }
