@@ -105,7 +105,7 @@ namespace Voyage.Services.User
                 IsVerifyRequired = true
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
-            if (appUser.UserName == user.UserName)
+            if (appUser == null || appUser.UserName == user.UserName)
             {
                 throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
             }
