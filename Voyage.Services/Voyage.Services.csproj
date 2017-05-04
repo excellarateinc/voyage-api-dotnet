@@ -79,6 +79,7 @@
     <Compile Include="IdentityManagers\ApplicationUserManager.cs" />
     <Compile Include="ApplicationInfo\IApplicationInfoService.cs" />
     <Compile Include="Audit\IAuditService.cs" />
+    <Compile Include="Identity\IdentityResultResponse.cs" />
     <Compile Include="KeyContainer\IRsaKeyContainerService.cs" />
     <Compile Include="KeyContainer\RsaKeyContainerService.cs" />
     <Compile Include="PasswordRecovery\IPasswordRecoverService.cs" />

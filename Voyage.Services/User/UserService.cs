@@ -10,6 +10,7 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;
+using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 
@@ -98,7 +99,7 @@ namespace Voyage.Services.User
             return _mapper.Map<UserModel>(appUser);
         }
 
-        public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
+        public async Task<IdentityResultResponse> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser
             {
@@ -110,19 +111,22 @@ namespace Voyage.Services.User
                 IsVerifyRequired = true
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
-            if (appUser == null || appUser.UserName == user.UserName)
+            if (appUser != null)
             {
-                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
+                if (appUser.UserName == user.UserName)
+                    throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
             }
 
-            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
+            var identityResult = await _userManager.CreateAsync(user, model.Password);
 
             if (identityResult.Succeeded)
             {
                 identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
             }
 
-            return identityResult;
+            var identityResponse = new IdentityResultResponse(identityResult) { Id = user.Id };
+
+            return identityResponse;
         }
 
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)

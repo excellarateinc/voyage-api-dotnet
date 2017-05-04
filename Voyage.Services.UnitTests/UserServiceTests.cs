@@ -857,7 +857,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public async Task Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
+        public void Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
         {
             // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
@@ -899,7 +899,7 @@ namespace Voyage.Services.UnitTests
 
             // ASSERT
             Mock.VerifyAll();
-            result.Succeeded.Should().BeFalse();
+            result.IdentityResult.Succeeded.Should().BeFalse();
         }
     }
 }

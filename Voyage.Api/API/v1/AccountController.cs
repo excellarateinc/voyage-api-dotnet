@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Voyage.Api.Filters;
 using Voyage.Services.User;
+using System;
 
 namespace Voyage.Api.API.V1
 {
@@ -20,10 +22,10 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {post} /v1/account/register Register a new account
+        * @api {post} /api/v1/profile Create new profile
         * @apiVersion 0.1.0
-        * @apiName CreateAccount
-        * @apiGroup Account
+        * @apiName CreateProfile
+        * @apiGroup Profile
         *
         * @apiPermission none
         *
@@ -32,21 +34,28 @@ namespace Voyage.Api.API.V1
         * @apiParam {String} confirmPassword User's password (x2)
         * @apiParam {String} firstName First name
         * @apiParam {String} lastName Last name
+        * @apiSuccess {Object[]} users.phones User phone numbers
+        * @apiSuccess {String} users.phones.phoneNumber Phone number
+        * @apiSuccess {String} users.phones.phoneType Phone type
         *
         * @apiSuccessExample Success-Response:
-        *      HTTP/1.1 204 NO CONTENT
+        *      HTTP/1.1 201 Created
+        *      { "Location" : /api/v1/users/1 } 
         *
         * @apiUse BadRequestError
         */
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateUser)]
-        [Route("account/register")]
-        public async Task<IHttpActionResult> Register(RegistrationModel model)
+        [Route("profile")]
+        public async Task<HttpResponseMessage> Register(RegistrationModel model)
         {
-            IdentityResult result = await _userService.RegisterAsync(model);
-            if (!result.Succeeded)
-                return BadRequest();
+            var result = await _userService.RegisterAsync(model);
+            if (!result.IdentityResult.Succeeded)
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
 
-            return StatusCode(HttpStatusCode.NoContent);
+            var response = Request.CreateResponse(HttpStatusCode.Created);            
+            var uri = Url.Link("GetUserAsync", new { userId = result.Id });
+            response.Headers.Location = new Uri(uri);
+
+            return response;
         }
     }
 }
