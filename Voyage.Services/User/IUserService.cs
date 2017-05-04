@@ -9,7 +9,7 @@ namespace Voyage.Services.User
 {
     public interface IUserService
     {
-        Task<IdentityResultResponse> RegisterAsync(RegistrationModel model);
+        Task<UserModel> RegisterAsync(RegistrationModel model);
 
         Task<UserModel> CreateUserAsync(UserModel model);
 

@@ -1,13 +1,9 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using Voyage.Api.Filters;
 using Voyage.Services.User;
-using System;
 
 namespace Voyage.Api.API.V1
 {
@@ -45,17 +41,17 @@ namespace Voyage.Api.API.V1
         * @apiUse BadRequestError
         */
         [Route("profile")]
-        public async Task<HttpResponseMessage> Register(RegistrationModel model)
+        public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            var result = await _userService.RegisterAsync(model);
-            if (!result.IdentityResult.Succeeded)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-
-            var response = Request.CreateResponse(HttpStatusCode.Created);            
-            var uri = Url.Link("GetUserAsync", new { userId = result.Id });
-            response.Headers.Location = new Uri(uri);
-
-            return response;
+            try
+            {
+                var result = await _userService.RegisterAsync(model);                
+                return CreatedAtRoute("GetUserAsync", new { userId = result.Id }, result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

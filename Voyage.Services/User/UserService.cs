@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -99,7 +100,7 @@ namespace Voyage.Services.User
             return _mapper.Map<UserModel>(appUser);
         }
 
-        public async Task<IdentityResultResponse> RegisterAsync(RegistrationModel model)
+        public async Task<UserModel> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser
             {
@@ -112,21 +113,20 @@ namespace Voyage.Services.User
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
             if (appUser != null)
-            {
-                if (appUser.UserName == user.UserName)
-                    throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
-            }
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
 
             var identityResult = await _userManager.CreateAsync(user, model.Password);
+            if (!identityResult.Succeeded)
+                throw new BadRequestException(string.Join(Environment.NewLine, identityResult.Errors));
 
-            if (identityResult.Succeeded)
-            {
-                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
-            }
+            identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
+            if (!identityResult.Succeeded)
+                throw new BadRequestException(string.Join(Environment.NewLine, identityResult.Errors));
 
-            var identityResponse = new IdentityResultResponse(identityResult) { Id = user.Id };
+            var userModel = new UserModel();
+            _mapper.Map<ApplicationUser, UserModel>(user, userModel);
 
-            return identityResponse;
+            return userModel;
         }
 
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)

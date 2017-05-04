@@ -31,6 +31,7 @@ namespace Voyage.Services.UnitTests
         private readonly Mock<IRoleService> _mockRoleService;
         private readonly Mock<IUserPhoneRepository> _mockPhoneRepository;
         private readonly AutoMapperFixture _mapperFixture;
+        private readonly Mock<ApplicationUserManager> _applicationUserManagerMock;
 
         public UserServiceTests(AutoMapperFixture mapperFixture)
         {
@@ -40,6 +41,7 @@ namespace Voyage.Services.UnitTests
             _mockStore.As<IUserRoleStore<ApplicationUser>>();
             _mockStore.As<IUserClaimStore<ApplicationUser>>();
 
+            _applicationUserManagerMock = Mock.Create<ApplicationUserManager>();
             _mockRoleService = Mock.Create<IRoleService>();
             _mockPhoneRepository = Mock.Create<IUserPhoneRepository>();
             _mapperFixture = mapperFixture;
@@ -833,30 +835,6 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public async Task Register_Should_Call_FindByNameAsync_And_Not_Throw_Exception()
-        {
-            // ARRANGE
-            var model = Fixture.Build<RegistrationModel>()
-                .With(_ => _.UserName, "testUserName")
-                .With(_ => _.Email, "test@test.com")
-                .With(_ => _.Password, "cool1Password!!")
-                .Create();
-
-            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
-                .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Returns(Task.Delay(0));
-
-            _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(c => c == model.UserName)))
-                .ReturnsAsync(new ApplicationUser());
-
-            // ACT
-            await _userService.RegisterAsync(model);
-
-            // ASSERT
-            Mock.VerifyAll();
-        }
-
-        [Fact]
         public void Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
         {
             // ARRANGE
@@ -876,30 +854,6 @@ namespace Voyage.Services.UnitTests
             Assert.Equal(ex.Result.StatusCode, HttpStatusCode.BadRequest);
             Assert.True(ex.Result.Message.Contains("User already exists with the username. Please choose a different username"));
             Mock.VerifyAll();
-        }
-
-        [Fact]
-        public async Task Register_Should_Return_Error_When_Model_Is_Invalid()
-        {
-            // ARRANGE
-            var model = Fixture.Build<RegistrationModel>()
-                .With(_ => _.Email, "testtestcom")
-                .With(_ => _.Password, "cool1Password!!")
-                .Create();
-
-            _mockStore.As<IUserPasswordStore<ApplicationUser>>()
-                .Setup(_ => _.SetPasswordHashAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .Returns(Task.Delay(0));
-
-            _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
-                .ReturnsAsync(new ApplicationUser());
-
-            // ACT
-            var result = await _userService.RegisterAsync(model);
-
-            // ASSERT
-            Mock.VerifyAll();
-            result.IdentityResult.Succeeded.Should().BeFalse();
         }
     }
 }
