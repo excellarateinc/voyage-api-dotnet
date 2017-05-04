@@ -20,7 +20,7 @@ namespace Voyage.Api.API.V1
         * @apiVersion 0.1.0
         * @apiName GetStatuses
         * @apiGroup Status
-        *
+        * @apiSampleRequest localhost:55850/api/v1/statuses
         * @apiSuccess {String} version Version Number
         *
         * @apiSuccessExample Success-Response:
