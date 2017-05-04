@@ -18,7 +18,7 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {post} /api/v1/profile Create new profile
+        * @api {post} /v1/profile Create new profile
         * @apiVersion 0.1.0
         * @apiName CreateProfile
         * @apiGroup Profile
@@ -30,13 +30,36 @@ namespace Voyage.Api.API.V1
         * @apiParam {String} confirmPassword User's password (x2)
         * @apiParam {String} firstName First name
         * @apiParam {String} lastName Last name
-        * @apiSuccess {Object[]} users.phones User phone numbers
-        * @apiSuccess {String} users.phones.phoneNumber Phone number
-        * @apiSuccess {String} users.phones.phoneType Phone type
+        * @apiParam {Object[]} users.phones User phone numbers
+        * @apiParam {String} users.phones.phoneNumber Phone number
+        * @apiParam {String} users.phones.phoneType Phone type
         *
-        * @apiSuccessExample Success-Response:
-        *      HTTP/1.1 201 Created
-        *      { "Location" : /api/v1/users/1 } 
+        * @apiHeader (Response Headers) {String} location Location of the newly created resource
+        *
+        * @apiHeaderExample {json} Location-Example
+        * {
+        *    "Location": "http://voyageframework.com/api/v1/users/b78ae241-1fa6-498c-aa48-9742245d0d2f"
+        * }
+        * 
+        * @apiSuccessExample Success-Response:        
+        * 
+        * HTTP/1.1 201 Created
+        * {
+        *    "id": "f9d69894-7908-4606-918e-410dca8c3238",
+        *    "firstName": "FirstName",
+        *    "lastName": "LastName",
+        *    "username": "FirstName3@app.com",
+        *    "email": "FirstName3@app.com",
+        *    "phones": [
+        *        {
+        *            "id": 3,
+        *            "userId": "f9d69894-7908-4606-918e-410dca8c3238",
+        *            "phoneNumber": "5555551212",
+        *            "phoneType": "Mobile"
+        *        }
+        *    ],
+        *    "isActive": true
+        * }
         *
         * @apiUse BadRequestError
         */
