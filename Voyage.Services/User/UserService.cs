@@ -106,17 +106,24 @@ namespace Voyage.Services.User
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                Phones = model.PhoneNumbers.Select(phone => new UserPhone()
+                {
+                    PhoneNumber = _phoneRepository.GetE164Format(phone.PhoneNumber),
+                    PhoneType = phone.PhoneType,
+                    UserId = new ApplicationUser().Id
+                }).ToList(),
                 IsActive = true,
                 IsVerifyRequired = true
             };
+
             var appUser = await _userManager.FindByNameAsync(user.UserName);
-            if (appUser == null || appUser.UserName == user.UserName)
+            if (appUser != null)
             {
+                if (appUser.UserName == user.UserName)
                 throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
             }
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
-
             if (identityResult.Succeeded)
             {
                 identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
