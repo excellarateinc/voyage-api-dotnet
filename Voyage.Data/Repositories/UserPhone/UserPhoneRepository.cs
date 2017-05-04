@@ -20,7 +20,7 @@ namespace Voyage.Data.Repositories.UserPhone
 
         public override Models.Entities.UserPhone Add(Models.Entities.UserPhone model)
         {
-            throw new NotImplementedException("Phone numbers are added via user object");
+            return model;
         }
 
         /// <summary>

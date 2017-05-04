@@ -18,14 +18,6 @@ namespace Voyage.Data.UnitTests
         }
 
         [Fact]
-        public void Add_Should_Throw_NotImplementedException()
-        {
-            Action throwAction = () => _phoneRepository.Add(new UserPhone());
-            throwAction
-                .ShouldThrow<NotImplementedException>();
-        }
-
-        [Fact]
         public void GetAll_Should_Throw_NotImplementedException()
         {
             Action throwAction = () => _phoneRepository.GetAll();

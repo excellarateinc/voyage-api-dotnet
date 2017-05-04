@@ -840,6 +840,14 @@ namespace Voyage.Services.UnitTests
                 .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
+                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                                    {
+                                        new UserPhoneModel
+                                        {
+                                            PhoneNumber = "(202) 555-0100",
+                                            PhoneType = Voyage.Models.Enum.PhoneType.Mobile
+                                        }
+                                    })
                 .Create();
 
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
@@ -848,6 +856,7 @@ namespace Voyage.Services.UnitTests
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.Is<string>(c => c == model.UserName)))
                 .ReturnsAsync(new ApplicationUser());
+            _mockPhoneRepository.Setup(c => c.GetE164Format(It.IsAny<string>())).Returns("(202) 555-0100");
 
             // ACT
             await _userService.RegisterAsync(model);
@@ -857,17 +866,27 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public async Task Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
+        public void Register_Should_Call_FindByNameAsync_And_Throw_Exception_For_Duplicated_User()
         {
             // ARRANGE
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
+                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                                    {
+                                        new UserPhoneModel
+                                        {
+                                            PhoneNumber = "(202) 555-0100",
+                                            PhoneType = Voyage.Models.Enum.PhoneType.Mobile
+                                        }
+                                    })
                 .Create();
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new ApplicationUser { UserName = "testUserName" });
+
+            _mockPhoneRepository.Setup(c => c.GetE164Format(It.IsAny<string>())).Returns("(202) 555-0100");
 
             // ACT
             var ex = Assert.ThrowsAsync<BadRequestException>(async () => await _userService.RegisterAsync(model));
@@ -885,6 +904,14 @@ namespace Voyage.Services.UnitTests
             var model = Fixture.Build<RegistrationModel>()
                 .With(_ => _.Email, "testtestcom")
                 .With(_ => _.Password, "cool1Password!!")
+                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                                    {
+                                        new UserPhoneModel
+                                        {
+                                            PhoneNumber = "(202) 555-0100",
+                                            PhoneType = Voyage.Models.Enum.PhoneType.Mobile
+                                        }
+                                    })
                 .Create();
 
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
@@ -893,6 +920,8 @@ namespace Voyage.Services.UnitTests
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new ApplicationUser());
+
+            _mockPhoneRepository.Setup(c => c.GetE164Format(It.IsAny<string>())).Returns("(202) 555-0100");
 
             // ACT
             var result = await _userService.RegisterAsync(model);
