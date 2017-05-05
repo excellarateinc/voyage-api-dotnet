@@ -18,8 +18,8 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {post} /v1/profile Create new profile
-        * @apiVersion 0.1.0
+        * @api {post} /v1/profile Create profile
+        * @apiVersion 1.0.0
         * @apiName CreateProfile
         * @apiGroup Profile
         *

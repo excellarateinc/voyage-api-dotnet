@@ -21,7 +21,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId Get a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoleById
         * @apiGroup Role
         *
@@ -67,7 +67,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles Get all roles
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoles
         * @apiGroup Role
         *
@@ -114,7 +114,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/roles Create a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName CreateRole
         * @apiGroup Role
         *
@@ -163,7 +163,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/roles/:roleId/claims Create a role claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName AddRoleClaim
         * @apiGroup Role Claim
         *
@@ -219,7 +219,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetClaimById
         * @apiGroup Role Claim
         *
@@ -256,7 +256,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RemoveRoleClaim
         * @apiGroup Role Claim
         *
@@ -284,7 +284,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId/claims Get role claims
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoleClaims
         * @apiGroup Role Claim
         *
@@ -321,7 +321,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/roles/:roleId Delete a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RemoveRole
         * @apiGroup Role
         *

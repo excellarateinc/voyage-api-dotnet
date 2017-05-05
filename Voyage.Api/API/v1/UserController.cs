@@ -21,7 +21,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users Get all users
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUsers
         * @apiGroup User
         *
@@ -73,7 +73,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {put} /v1/users/:userId Update user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
         *
@@ -96,7 +96,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/users/:userId Delete a user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName DeleteUserAsync
         * @apiGroup User
         *
@@ -128,7 +128,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/users Create user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName CreateUser
         * @apiGroup User
         *
@@ -191,7 +191,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId Get user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUserAsync
         * @apiGroup User
         *
@@ -237,7 +237,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/roles Get user roles
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName User
         * @apiGroup User Role
         *
@@ -285,7 +285,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/claims Get user claims
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName Claims
         * @apiGroup User Claim
         *
@@ -325,7 +325,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/users/:userId/roles Assign role to user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName AssignRole
         * @apiGroup User Role
         *
@@ -367,7 +367,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/roles/:roleId Get role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUserRoleById
         * @apiGroup User Role
         *
@@ -415,7 +415,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RevokeRole
         * @apiGroup User Role
         *
