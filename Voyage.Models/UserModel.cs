@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentValidation.Attributes;
+using Newtonsoft.Json;
 using Voyage.Models.Validators;
 
 namespace Voyage.Models
@@ -23,6 +24,7 @@ namespace Voyage.Models
 
         public bool IsVerifyRequired { get; set; }
 
+        [JsonIgnore]
         public string PasswordRecoveryToken { get; set; }
     }
 }

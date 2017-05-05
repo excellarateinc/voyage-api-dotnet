@@ -91,7 +91,7 @@ namespace Voyage.Services.User
 
         public async Task<UserModel> CreateUserAsync(UserModel model)
         {
-            var appUser = new ApplicationUser();
+            var appUser = new ApplicationUser { IsActive = true, IsVerifyRequired = true };
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
             IdentityResult result = await _userManager.CreateAsync(appUser, "Hello123!");
             if (!result.Succeeded)
