@@ -9,15 +9,15 @@ namespace Voyage.Api.UnitTests
 {
     public static class ControllerExtensions
     {
-        public static void AssertClaim<TType>(
+        public static void AssertPermission<TType>(
             this TType controller,
             Expression<Action<TType>> expression,
-            string claimValue,
-            string claimType = Constants.AppClaims.Type) where TType : ApiController
+            string permissionValue,
+            string permissionType = Constants.AppPermissions.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
                 .Should()
-                .BeDecoratedWith<ClaimAuthorizeAttribute>(_ => _.ClaimValue == claimValue && _.ClaimType == claimType);
+                .BeDecoratedWith<PermissionAuthorizeAttribute>(_ => _.PermissionValue == permissionValue && _.PermissionType == permissionType);
         }
 
         public static void AssertRoute<TType>(

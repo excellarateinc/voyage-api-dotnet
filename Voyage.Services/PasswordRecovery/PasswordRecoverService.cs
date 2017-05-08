@@ -9,7 +9,6 @@ using Voyage.Models;
 using Voyage.Services.Audit;
 using Voyage.Services.Phone;
 using Voyage.Services.User;
-using Voyage.Web.Models;
 
 namespace Voyage.Services.PasswordRecovery
 {

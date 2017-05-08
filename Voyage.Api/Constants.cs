@@ -9,7 +9,7 @@
             public const string V1 = "api/v1";
         }
 
-        public static class AppClaims
+        public static class AppPermissions
         {
             public const string Type = "app.permission";
 
@@ -21,16 +21,16 @@
             public const string ViewRole = "view.role";
 
             public const string ListUsers = "list.users";
-            public const string ListUserClaims = "list.user-claims";
+            public const string ListUserPermissions = "list.user-permissions";
             public const string ViewUser = "view.user";
             public const string UpdateUser = "update.user";
             public const string DeleteUser = "delete.user";
             public const string CreateUser = "create.user";
 
-            public const string DeleteRoleClaim = "delete.role-claim";
-            public const string CreateClaim = "create.claim";
-            public const string ViewClaim = "view.claim";
-            public const string ListRoleClaims = "list.role-claims";
+            public const string DeleteRolePermission = "delete.role-permission";
+            public const string CreatePermission = "create.permission";
+            public const string ViewPermission = "view.permission";
+            public const string ListRolePermissions = "list.role-permissions";
         }
     }
 }

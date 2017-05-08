@@ -66,11 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ApplicationLog.sql" />
-    <Build Include="dbo\Tables\RoleClaim.sql" />
+    <Build Include="dbo\Tables\RolePermission.sql" />
     <Build Include="dbo\Tables\Role.sql" />
     <Build Include="dbo\Tables\UserRole.sql" />
     <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\UserClaim.sql" />
+    <Build Include="dbo\Tables\UserPermission.sql" />
     <Build Include="dbo\Tables\UserLogin.sql" />
     <Build Include="dbo\Tables\UserPhone.sql" />
     <Build Include="dbo\Tables\ActivityAudit.sql" />
@@ -81,7 +81,7 @@
     <PostDeploy Include="Scripts\Post-Deployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\Seed\RoleClaim.sql" />
+    <None Include="Scripts\Seed\RolePermission.sql" />
     <None Include="Scripts\Seed\Role.sql" />
     <None Include="Scripts\Seed\UserRole.sql" />
     <None Include="Scripts\Seed\UserPhone.sql" />

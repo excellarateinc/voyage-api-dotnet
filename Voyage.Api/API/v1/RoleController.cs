@@ -34,9 +34,9 @@ namespace Voyage.Api.API.V1
         * @apiSuccess {Object} role
         * @apiSuccess {String} role.id Role ID
         * @apiSuccess {String} role.name Name of the role
-        * @apiSuccess {Object[]} role.claims Claims associated to the role
-        * @apiSuccess {String} role.claims.claimType Type of the claim
-        * @apiSuccess {String} role.claims.claimValue Value of the claim
+        * @apiSuccess {Object[]} role.permissions Permissions associated to the role
+        * @apiSuccess {String} role.permissions.permissionType Type of the permission
+        * @apiSuccess {String} role.permissions.permissionValue Value of the permission
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -44,10 +44,10 @@ namespace Voyage.Api.API.V1
         *      {
         *           "id": "76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6",
         *           "name": "New Role 1",
-        *           "claims": [
+        *           "permissions": [
         *               {
-        *                   claimType: "app.permission",
-        *                   claimValue: "view.role"
+        *                   permissionType: "app.permission",
+        *                   permissionValue: "view.role"
         *               }
         *           ]
         *       }
@@ -56,7 +56,7 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewRole)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.ViewRole)]
         [HttpGet]
         [Route("roles/{roleId}", Name = "GetRoleById")]
         public IHttpActionResult GetRoleById(string roleId)
@@ -78,9 +78,9 @@ namespace Voyage.Api.API.V1
         * @apiSuccess {Object[]} roles List of roles
         * @apiSuccess {String} roles.id Role ID
         * @apiSuccess {String} roles.name Name of the role
-        * @apiSuccess {Object[]} roles.claims Claims associated to the role
-        * @apiSuccess {String} roles.claims.claimType Type of the claim
-        * @apiSuccess {String} roles.claims.claimValue Value of the claim
+        * @apiSuccess {Object[]} roles.permissions Permissions associated to the role
+        * @apiSuccess {String} roles.permissions.permissionType Type of the permission
+        * @apiSuccess {String} roles.permissions.permissionValue Value of the permission
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -88,14 +88,14 @@ namespace Voyage.Api.API.V1
                 {
                     "id": "c1a44325-5ece-4ff4-8a41-6b5729e8e65d",
                     "name": "Administrator",
-                    "claims": [
+                    "permissions": [
                       {
-                        "claimType": "app.permission",
-                        "claimValue": "assign.role"
+                        "permissionType": "app.permission",
+                        "permissionValue": "assign.role"
                       },
                       {
-                        "claimType": "app.permission",
-                        "claimValue": "create.claim"
+                        "permissionType": "app.permission",
+                        "permissionValue": "create.permission"
                       }
                     ]
                   }
@@ -103,7 +103,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoles)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.ListRoles)]
         [HttpGet]
         [Route("roles")]
         public IHttpActionResult GetRoles()
@@ -145,14 +145,14 @@ namespace Voyage.Api.API.V1
         *       "id": "34d87057-fafa-4e5d-822b-cddb1700b507",
         *       "name": "Billing",
         *       "description": "Billing Department"
-        *       "claims": []
+        *       "permissions": []
         *   }
         *
         * @apiUse UnauthorizedError
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateRole)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.CreateRole)]
         [HttpPost]
         [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
@@ -162,37 +162,37 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {post} /v1/roles/:roleId/claims Create a role claim
+        * @api {post} /v1/roles/:roleId/permissions Create a role permission
         * @apiVersion 1.0.0
-        * @apiName AddRoleClaim
-        * @apiGroup Role Claim
+        * @apiName AddRolePermission
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->create.claim
+        * @apiPermission app.permission->create.permission
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
         *
         * @apiHeaderExample {json} Location-Example
         *   {
-        *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/claims/219"
+        *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/permissions/219"
         *   }
         *
         * @apiUse AuthHeader
         *
         * @apiParam {string} roleId Role ID
-        * @apiParam {Object} claim Claim
-        * @apiParam {String} claim.claimType Type of the claim
-        * @apiParam {String} claim.claimValue Value of the claim
+        * @apiParam {Object} permission Permission
+        * @apiParam {String} permission.permissionType Type of the permission
+        * @apiParam {String} permission.permissionValue Value of the permission
         *
-        * @apiSuccess {Object} claim Claim
-        * @apiSuccess {Integer} claim.id Claim ID
-        * @apiSuccess {String} claim.claimType Type
-        * @apiSuccess {String} claim.claimValue Value
+        * @apiSuccess {Object} permission Permission
+        * @apiSuccess {Integer} permission.id Permission ID
+        * @apiSuccess {String} permission.permissionType Type
+        * @apiSuccess {String} permission.permissionValue Value
         *
         *  @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 Created
         *   {
-        *       "claimType": "app.permission",
-        *       "claimValue": "list.newClaim",
+        *       "permissionType": "app.permission",
+        *       "permissionValue": "list.newPermission",
         *       "id": 219
         *   }
         *
@@ -200,72 +200,72 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateClaim)]
-        [Route("roles/{roleId}/claims")]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.CreatePermission)]
+        [Route("roles/{roleId}/permissions")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
+        public async Task<IHttpActionResult> AddPermission([FromUri] string roleId, PermissionModel permission)
         {
-            var result = await _roleService.AddClaimAsync(roleId, claim);
+            var result = await _roleService.AddPermissionAsync(roleId, permission);
             var actionResult = CreatedAtRoute(
-                "GetClaimById",
+                "GetPermissionById",
                 new
                 {
                     RoleId = roleId,
-                    ClaimId = result.Id
+                    PermissionId = result.Id
                 },
                 result);
             return actionResult;
         }
 
         /**
-        * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
+        * @api {get} /v1/roles/:roleId/permissions/:permissionId Get a permission
         * @apiVersion 1.0.0
-        * @apiName GetClaimById
-        * @apiGroup Role Claim
+        * @apiName GetPermissionById
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->view.claim
+        * @apiPermission app.permission->view.permission
         *
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
-        * @apiParam {String} claimId Claim ID
+        * @apiParam {String} permissionId Permission ID
         *
-        * @apiSuccess {Object} claim Claim
-        * @apiSuccess {Integer} claim.id Claim ID
-        * @apiSuccess {String} claim.claimType Type
-        * @apiSuccess {String} claim.claimValue Value
+        * @apiSuccess {Object} permission Permission
+        * @apiSuccess {Integer} permission.id Permission ID
+        * @apiSuccess {String} permission.permissionType Type
+        * @apiSuccess {String} permission.permissionValue Value
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   {
-        *       "claimType": "app.permission",
-        *       "claimValue": "list.newClaim",
+        *       "permissionType": "app.permission",
+        *       "permissionValue": "list.newPermission",
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewClaim)]
-        [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.ViewPermission)]
+        [Route("roles/{roleId}/permissions/{permissionId}", Name = "GetPermissionById")]
         [HttpGet]
-        public IHttpActionResult GetClaimById(string roleId, int claimId)
+        public IHttpActionResult GetPermissionById(string roleId, int permissionId)
         {
-            var result = _roleService.GetClaimById(roleId, claimId);
+            var result = _roleService.GetPermissionById(roleId, permissionId);
             return Ok(result);
         }
 
         /**
-        * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim
+        * @api {delete} /v1/roles/:roleId/permissions/:permissionId Remove a role permission
         * @apiVersion 1.0.0
-        * @apiName RemoveRoleClaim
-        * @apiGroup Role Claim
+        * @apiName RemoveRolePermission
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->delete.role-claim
+        * @apiPermission app.permission->delete.role-permission
         *
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
-        * @apiParam {Integer} claimId Claim ID
+        * @apiParam {Integer} permissionId Permission ID
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -273,49 +273,49 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         *
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRoleClaim)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.DeleteRolePermission)]
         [HttpDelete]
-        [Route("roles/{roleId}/claims/{claimId}")]
-        public IHttpActionResult RemoveClaim(string roleId, int claimId)
+        [Route("roles/{roleId}/permissions/{permissionId}")]
+        public IHttpActionResult RemovePermission(string roleId, int permissionId)
         {
-            _roleService.RemoveClaim(roleId, claimId);
+            _roleService.RemovePermission(roleId, permissionId);
             return Ok();
         }
 
         /**
-        * @api {get} /v1/roles/:roleId/claims Get role claims
+        * @api {get} /v1/roles/:roleId/permissions Get role permissions
         * @apiVersion 1.0.0
-        * @apiName GetRoleClaims
-        * @apiGroup Role Claim
+        * @apiName GetRolePermissions
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->list.role-claims
+        * @apiPermission app.permission->list.role-permissions
         *
         * @apiParam {String} roleId Role ID
         *
         * @apiUse AuthHeader
         *
-        * @apiSuccess {Object[]} claims Claims associated to the role
-        * @apiSuccess {String} claims.claimType Type of the claim
-        * @apiSuccess {String} claims.claimValue Value of the claim
+        * @apiSuccess {Object[]} permissions Permissions associated to the role
+        * @apiSuccess {String} permissions.permissionType Type of the permission
+        * @apiSuccess {String} permissions.permissionValue Value of the permission
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
         *       {
-        *           "claimType": "app.permission",
-        *           "claimValue": "list.newClaim",
+        *           "permissionType": "app.permission",
+        *           "permissionValue": "list.newPermission",
         *           "id": 17
         *       }
         *   ]
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoleClaims)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.ListRolePermissions)]
         [HttpGet]
-        [Route("roles/{roleId}/claims")]
-        public IHttpActionResult GetClaims(string roleId)
+        [Route("roles/{roleId}/permissions")]
+        public IHttpActionResult GetPermissions(string roleId)
         {
-            var result = _roleService.GetRoleClaimsByRoleId(roleId);
+            var result = _roleService.GetRolePermissionsByRoleId(roleId);
             return Ok(result);
         }
 
@@ -340,7 +340,7 @@ namespace Voyage.Api.API.V1
         * @apiUse NotFoundError
         **/
         [HttpDelete]
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRole)]
+        [PermissionAuthorize(PermissionValue = Constants.AppPermissions.DeleteRole)]
         [Route("roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {

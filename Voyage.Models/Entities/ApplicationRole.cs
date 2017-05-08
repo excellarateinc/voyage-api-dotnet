@@ -7,6 +7,6 @@ namespace Voyage.Models.Entities
     {
         public string Description { get; set; }
 
-        public virtual ICollection<RoleClaim> Claims { get; set; }
+        public virtual ICollection<RolePermission> Permissions { get; set; }
     }
 }

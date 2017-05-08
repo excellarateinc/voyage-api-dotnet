@@ -1,4 +1,4 @@
-﻿namespace Voyage.Web.Models
+﻿namespace Voyage.Models
 {
     public class UserApplicationSession
     {

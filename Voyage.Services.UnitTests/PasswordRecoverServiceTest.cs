@@ -12,7 +12,6 @@ using Voyage.Services.PasswordRecovery;
 using Voyage.Services.Phone;
 using Voyage.Services.UnitTests.Common.AutoMapperFixture;
 using Voyage.Services.User;
-using Voyage.Web.Models;
 using Xunit;
 
 namespace Voyage.Services.UnitTests

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Security.Permissions;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Routing;
@@ -38,18 +39,18 @@ namespace Voyage.Api.UnitTests.API.V1
                 Configuration = new HttpConfiguration()
             };
 
-            var claimIdentity = new ClaimsIdentity();
-            claimIdentity.AddClaim(new Claim("fakeClaim", "fake"));
-            claimIdentity.AddClaim(new Claim(Constants.AppClaims.Type, "view.test"));
-            _userController.User = new ClaimsPrincipal(claimIdentity);
+            var permissionIdentity = new ClaimsIdentity();
+            permissionIdentity.AddClaim(new Claim("fakePermission", "fake"));
+            permissionIdentity.AddClaim(new Claim(Constants.AppPermissions.Type, "view.test"));
+            _userController.User = new ClaimsPrincipal(permissionIdentity);
             _userController.Url = _mockUrlHelper.Object;
         }
 
         [Fact]
-        public void CreateUser_Should_Have_ClaimAuthorizeAttribute()
+        public void CreateUser_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.CreateUser(new UserModel()), Constants.AppClaims.CreateUser);
+            _userController.AssertPermission(_ => _.CreateUser(new UserModel()), Constants.AppPermissions.CreateUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -117,10 +118,10 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void DeleteUser_Should_Have_ClaimAuthorizeAttribute()
+        public void DeleteUser_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.DeleteUser("id"), Constants.AppClaims.DeleteUser);
+            _userController.AssertPermission(_ => _.DeleteUser("id"), Constants.AppPermissions.DeleteUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -170,10 +171,10 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void UpdateUser_Should_Have_ClaimAuthorizeAttribute()
+        public void UpdateUser_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.UpdateUser("id", new UserModel()), Constants.AppClaims.UpdateUser);
+            _userController.AssertPermission(_ => _.UpdateUser("id", new UserModel()), Constants.AppPermissions.UpdateUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -227,9 +228,9 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetUserRoleById_Should_Have_ClaimAuthorizeAttribute()
+        public void GetUserRoleById_Should_Have_PermissionAuthorizeAttribute()
         {
-            _userController.AssertClaim(_ => _.GetUserRoleById("userId", "roleId"), Constants.AppClaims.ViewRole);
+            _userController.AssertPermission(_ => _.GetUserRoleById("userId", "roleId"), Constants.AppPermissions.ViewRole);
         }
 
         [Fact]
@@ -260,48 +261,48 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetUsers_Should_Have_ClaimAuthorizeAttribute()
+        public void GetUsers_Should_Have_PermissionAuthorizeAttribute()
         {
-            _userController.AssertClaim(
+            _userController.AssertPermission(
                 _ => _.GetUsers(),
-                Constants.AppClaims.ListUsers);
+                Constants.AppPermissions.ListUsers);
         }
 
         [Fact]
-        public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
+        public void GetPermissions_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.GetClaims("abc"), Constants.AppClaims.ListUserClaims);
+            _userController.AssertPermission(_ => _.GetPermissions("abc"), Constants.AppPermissions.ListUserPermissions);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
-        public void AssignRole_Should_Have_ClaimAuthorizeAttribute()
+        public void AssignRole_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.AssignRole("userId", new RoleModel()), Constants.AppClaims.AssignRole);
+            _userController.AssertPermission(_ => _.AssignRole("userId", new RoleModel()), Constants.AppPermissions.AssignRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
-        public async void GetClaims_Should_Call_User_Service()
+        public async void GetPermissions_Should_Call_User_Service()
         {
             var id = "abc";
-            var fakeClaims = Fixture.CreateMany<ClaimModel>().ToList();
+            var fakePermissions = Fixture.CreateMany<PermissionModel>().ToList();
 
-            _mockUserService.Setup(_ => _.GetUserClaimsAsync(id))
-                .ReturnsAsync(fakeClaims);
+            _mockUserService.Setup(_ => _.GetUserPermissionsAsync(id))
+                .ReturnsAsync(fakePermissions);
 
-            var result = await _userController.GetClaims(id);
+            var result = await _userController.GetPermissions(id);
 
             var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            IEnumerable<ClaimModel> models;
+            IEnumerable<PermissionModel> models;
             message.TryGetContentValue(out models).Should().BeTrue();
 
-            models.Should().BeEquivalentTo(fakeClaims);
+            models.Should().BeEquivalentTo(fakePermissions);
         }
 
         [Fact]
@@ -420,23 +421,23 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetClaims_Should_Have_HttpGetAttribute()
+        public void GetPermissions_Should_Have_HttpGetAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetPermissions("abc"))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
                 .BeDecoratedWith<HttpGetAttribute>();
         }
 
         [Fact]
-        public void GetClaims_Should_Have_RouteAttribute()
+        public void GetPermissions_Should_Have_RouteAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            ReflectionHelper.GetMethod<UserController>(_ => _.GetClaims("abc"))
+            ReflectionHelper.GetMethod<UserController>(_ => _.GetPermissions("abc"))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
               .Should()
-              .BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/claims");
+              .BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/Permissions");
         }
 
         [Fact]
@@ -456,10 +457,10 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void RevokeRole_Should_Have_ClaimAuthorizeAttribute()
+        public void RevokeRole_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.RemoveRole("userId", "roleId"), Constants.AppClaims.RevokeRole);
+            _userController.AssertPermission(_ => _.RemoveRole("userId", "roleId"), Constants.AppPermissions.RevokeRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -488,10 +489,10 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetUser_Should_Have_ClaimAuthorizeAttribute()
+        public void GetUser_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _userController.AssertClaim(_ => _.GetUser("id"), Constants.AppClaims.ViewUser);
+            _userController.AssertPermission(_ => _.GetUser("id"), Constants.AppPermissions.ViewUser);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 

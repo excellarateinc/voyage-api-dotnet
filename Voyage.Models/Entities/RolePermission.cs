@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Voyage.Models.Entities
 {
-    [Table("RoleClaim")]
-    public class RoleClaim
+    [Table("RolePermission")]
+    public class RolePermission
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,8 +16,8 @@ namespace Voyage.Models.Entities
 
         public virtual ApplicationRole Role { get; set; }
 
-        public string ClaimType { get; set; }
+        public string PermissionType { get; set; }
 
-        public string ClaimValue { get; set; }
+        public string PermissionValue { get; set; }
     }
 }

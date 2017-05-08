@@ -34,7 +34,7 @@ namespace Voyage.Web.Controllers
                             throw new NotFoundException();
 
                         var authentication = HttpContext.GetOwinContext().Authentication;
-                        ClaimsIdentity identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
+                        ClaimsIdentity identity = await userService.CreatePermissionsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
                         authentication.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, new ClaimsIdentity(identity.Claims, "Application"));
                     }
                     catch (NotFoundException notFoundException)

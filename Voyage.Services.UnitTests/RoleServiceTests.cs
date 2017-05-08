@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Core.Exceptions;
-using Voyage.Data.Repositories.RoleClaim;
+using Voyage.Data.Repositories.RolePermission;
 using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
@@ -24,7 +24,7 @@ namespace Voyage.Services.UnitTests
     {
         private readonly RoleService _roleService;
         private readonly ApplicationRoleManager _roleManager;
-        private readonly Mock<IRoleClaimRepository> _mockRepository;
+        private readonly Mock<IRolePermissionRepository> _mockRepository;
         private readonly Mock<IRoleStore<ApplicationRole>> _mockRoleStore;
         private readonly AutoMapperFixture _mapperFixture;
 
@@ -33,7 +33,7 @@ namespace Voyage.Services.UnitTests
             _mockRoleStore = Mock.Create<IRoleStore<ApplicationRole>>();
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>();
 
-            _mockRepository = Mock.Create<IRoleClaimRepository>();
+            _mockRepository = Mock.Create<IRolePermissionRepository>();
 
             _roleManager = new ApplicationRoleManager(_mockRoleStore.Object);
 
@@ -46,17 +46,17 @@ namespace Voyage.Services.UnitTests
         public void GetRoleClaimsByRoleId_Should_Call_Repostiory()
         {
             var targetId = Fixture.Create<string>();
-            var roleClaim1 = new RoleClaim { RoleId = targetId, ClaimType = "target-type" };
-            var roleClaim2 = new RoleClaim { RoleId = Fixture.Create<string>() };
+            var roleClaim1 = new RolePermission { RoleId = targetId, PermissionType = "target-type" };
+            var roleClaim2 = new RolePermission { RoleId = Fixture.Create<string>() };
             var repoResult = new[] { roleClaim1, roleClaim2 }.AsQueryable();
 
             _mockRepository.Setup(_ => _.GetAll())
                 .Returns(repoResult);
 
-            var result = _roleService.GetRoleClaimsByRoleId(targetId);
+            var result = _roleService.GetRolePermissionsByRoleId(targetId);
 
             result.Should().NotBeNullOrEmpty().And.HaveCount(1);
-            result.First().ClaimType.Should().Be("target-type");
+            result.First().PermissionType.Should().Be("target-type");
         }
 
         [Fact]
@@ -64,22 +64,22 @@ namespace Voyage.Services.UnitTests
         {
             var roleId = Fixture.Create<string>();
             int id = 1;
-            RoleClaim repoClaim = new RoleClaim
+            RolePermission repoClaim = new RolePermission
             {
-                ClaimType = Fixture.Create<string>(),
-                ClaimValue = Fixture.Create<string>(),
+                PermissionType = Fixture.Create<string>(),
+                PermissionValue = Fixture.Create<string>(),
                 Id = Fixture.Create<int>()
             };
 
             _mockRepository.Setup(_ => _.Get(id))
                 .Returns(repoClaim);
 
-            var entityResult = _roleService.GetClaimById(roleId, id);
+            var entityResult = _roleService.GetPermissionById(roleId, id);
 
             Mock.VerifyAll();
             entityResult.Id.Should().Be(repoClaim.Id);
-            entityResult.ClaimType.Should().Be(repoClaim.ClaimType);
-            entityResult.ClaimValue.Should().Be(repoClaim.ClaimValue);
+            entityResult.PermissionType.Should().Be(repoClaim.PermissionType);
+            entityResult.PermissionValue.Should().Be(repoClaim.PermissionValue);
         }
 
         [Fact]
@@ -89,9 +89,9 @@ namespace Voyage.Services.UnitTests
             int id = 1;
 
             _mockRepository.Setup(_ => _.Get(id))
-                .Returns((RoleClaim)null);
+                .Returns((RolePermission)null);
 
-            Assert.Throws<NotFoundException>(() => { _roleService.GetClaimById(roleId, id); });
+            Assert.Throws<NotFoundException>(() => { _roleService.GetPermissionById(roleId, id); });
             Mock.VerifyAll();
         }
 
@@ -194,7 +194,7 @@ namespace Voyage.Services.UnitTests
             _mockRepository.Setup(_ => _.Delete(claimId));
 
             // act
-            _roleService.RemoveClaim(roleId, claimId);
+            _roleService.RemovePermission(roleId, claimId);
 
             Mock.VerifyAll();
         }
@@ -215,12 +215,12 @@ namespace Voyage.Services.UnitTests
         public void GetRoleClaims_Should_Call_Repository()
         {
             var roleName = "admin";
-            var claims = new[] { new RoleClaim { ClaimType = "type", ClaimValue = "value" } };
+            var claims = new[] { new RolePermission { PermissionType = "type", PermissionValue = "value" } };
 
-            _mockRepository.Setup(_ => _.GetClaimsByRole(roleName))
+            _mockRepository.Setup(_ => _.GetPermissionsByRole(roleName))
                 .Returns(claims.AsQueryable());
 
-            var entityResult = _roleService.GetRoleClaims(roleName);
+            var entityResult = _roleService.GetRolePermissions(roleName);
 
             Mock.VerifyAll();
 
@@ -234,22 +234,22 @@ namespace Voyage.Services.UnitTests
 
             var appRole = new ApplicationRole { Id = "abc" };
 
-            var claim = Fixture.Create<ClaimModel>();
+            var claim = Fixture.Create<PermissionModel>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(appRole);
 
-            _mockRepository.Setup(_ => _.Add(It.Is<RoleClaim>(
+            _mockRepository.Setup(_ => _.Add(It.Is<RolePermission>(
                 value => value.RoleId == appRole.Id &&
-                  value.ClaimType == claim.ClaimType &&
-                  value.ClaimValue == claim.ClaimValue)))
-            .Returns(new RoleClaim());
+                  value.PermissionType == claim.PermissionType &&
+                  value.PermissionValue == claim.PermissionValue)))
+            .Returns(new RolePermission());
 
-            var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
+            var entityResult = await _roleService.AddPermissionAsync(model.Id, claim);
 
             Mock.VerifyAll();
-            entityResult.ClaimValue.Should().Be(claim.ClaimValue);
-            entityResult.ClaimType.Should().Be(claim.ClaimType);
+            entityResult.PermissionValue.Should().Be(claim.PermissionValue);
+            entityResult.PermissionType.Should().Be(claim.PermissionType);
         }
 
         [Fact]
@@ -257,12 +257,12 @@ namespace Voyage.Services.UnitTests
         {
             var model = Fixture.Create<RoleModel>();
 
-            var claim = Fixture.Create<ClaimModel>();
+            var claim = Fixture.Create<PermissionModel>();
 
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(null);
 
-            Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.AddClaimAsync(model.Id, claim); });
+            Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.AddPermissionAsync(model.Id, claim); });
             Mock.VerifyAll();
         }
 

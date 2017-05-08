@@ -194,7 +194,7 @@
     <Compile Include="Extensions\ModelErrorExtensionsTests.cs" />
     <Compile Include="Extensions\OwinContextExtensionsTests.cs" />
     <Compile Include="Filters\ApiExceptionFilterAttributeTests.cs" />
-    <Compile Include="Filters\ClaimAuthorizeAttributeTests.cs" />
+    <Compile Include="Filters\PermissionAuthorizeAttributeTests.cs" />
     <Compile Include="Middleware\ActivityAuditMiddlewareTests.cs" />
     <Compile Include="Middleware\Processors\ErrorResponseProcessorTests.cs" />
     <Compile Include="Middleware\Processors\ResponseProcessorTests.cs" />

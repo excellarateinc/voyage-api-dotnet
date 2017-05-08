@@ -4,24 +4,24 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
-using Voyage.Data.Repositories.RoleClaim;
 using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
+using Voyage.Data.Repositories.RolePermission;
 
 namespace Voyage.Services.Role
 {
     public class RoleService : IRoleService
     {
         private readonly ApplicationRoleManager _roleManager;
-        private readonly IRoleClaimRepository _roleClaimRepository;
+        private readonly IRolePermissionRepository _rolePermissionRepository;
         private readonly IMapper _mapper;
 
-        public RoleService(ApplicationRoleManager roleManager, IRoleClaimRepository roleClaimRepository, IMapper mapper)
+        public RoleService(ApplicationRoleManager roleManager, IRolePermissionRepository rolePermissionRepository, IMapper mapper)
         {
             _roleManager = roleManager.ThrowIfNull(nameof(roleManager));
-            _roleClaimRepository = roleClaimRepository.ThrowIfNull(nameof(roleClaimRepository));
+            _rolePermissionRepository = rolePermissionRepository.ThrowIfNull(nameof(rolePermissionRepository));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
@@ -35,20 +35,20 @@ namespace Voyage.Services.Role
             return _mapper.Map<RoleModel>(role);
         }
 
-        public async Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim)
+        public async Task<PermissionModel> AddPermissionAsync(string roleId, PermissionModel permission)
         {
             var roleEntity = await _roleManager.FindByIdAsync(roleId);
             if (roleEntity == null)
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
-            var roleClaim = new RoleClaim
+            var rolePermission = new RolePermission
             {
                 RoleId = roleEntity.Id,
-                ClaimValue = claim.ClaimValue,
-                ClaimType = claim.ClaimType
+                PermissionValue = permission.PermissionValue,
+                PermissionType = permission.PermissionType
             };
-            _roleClaimRepository.Add(roleClaim);
-            return _mapper.Map<ClaimModel>(roleClaim);
+            _rolePermissionRepository.Add(rolePermission);
+            return _mapper.Map<PermissionModel>(rolePermission);
         }
 
         public async Task<IdentityResult> RemoveRoleAsync(string roleId)
@@ -82,35 +82,35 @@ namespace Voyage.Services.Role
             return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaims(string name)
+        public IEnumerable<PermissionModel> GetRolePermissions(string name)
         {
-            var claims = _roleClaimRepository.GetClaimsByRole(name);
-            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
+            var permissions = _rolePermissionRepository.GetPermissionsByRole(name);
+            return _mapper.Map<IEnumerable<PermissionModel>>(permissions);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
+        public IEnumerable<PermissionModel> GetRolePermissionsByRoleId(string id)
         {
-            var claims = _roleClaimRepository.GetAll()
+            var permissions = _rolePermissionRepository.GetAll()
                 .Where(_ => _.RoleId == id)
                 .ToList();
-            return _mapper.Map<IEnumerable<ClaimModel>>(claims);
+            return _mapper.Map<IEnumerable<PermissionModel>>(permissions);
         }
 
-        public void RemoveClaim(string roleId, int claimId)
+        public void RemovePermission(string roleId, int permissionId)
         {
-            // With the current model, the claim id uniquely identifies the RoleClaim
-            // It is not normalized - the record contains the RoleId and the complete definition of the claim
-            // This means something like a "login" claim is repeated for each role
-            _roleClaimRepository.Delete(claimId);
+            // With the current model, the permission id uniquely identifies the RolePermission
+            // It is not normalized - the record contains the RoleId and the complete definition of the permission
+            // This means something like a "login" permission is repeated for each role
+            _rolePermissionRepository.Delete(permissionId);
         }
 
-        public ClaimModel GetClaimById(string roleId, int claimId)
+        public PermissionModel GetPermissionById(string roleId, int permissionId)
         {
-            var claim = _roleClaimRepository.Get(claimId);
-            if (claim == null)
+            var permission = _rolePermissionRepository.Get(permissionId);
+            if (permission == null)
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
-            return _mapper.Map<ClaimModel>(claim);
+            return _mapper.Map<PermissionModel>(permission);
         }
 
         public RoleModel GetRoleByName(string name)

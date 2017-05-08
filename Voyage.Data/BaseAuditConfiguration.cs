@@ -19,7 +19,7 @@ namespace Voyage.Data
 
             EntityTracker.TrackAllProperties<IdentityUserRole>();
 
-            EntityTracker.TrackAllProperties<RoleClaim>();
+            EntityTracker.TrackAllProperties<RolePermission>();
 
             EntityTracker.TrackAllProperties<UserPhone>();
         }

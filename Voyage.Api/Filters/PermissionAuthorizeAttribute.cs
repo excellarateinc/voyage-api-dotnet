@@ -14,17 +14,17 @@ using Autofac.Integration.Owin;
 using Voyage.Models;
 using Voyage.Services.User;
 
-namespace Voyage.Web.Filters
+namespace Voyage.Api.Filters
 {
-    public class ClaimAuthorizeAttribute : AuthorizeAttribute
+    public class PermissionAuthorizeAttribute : AuthorizeAttribute
     {
-        public string ClaimValue { get; set; }
+        public string PermissionValue { get; set; }
 
-        public string ClaimType { get; set; }
+        public string PermissionType { get; set; }
 
-        public ClaimAuthorizeAttribute()
+        public PermissionAuthorizeAttribute()
         {
-            ClaimType = Constants.AppClaims.Type;
+            PermissionType = Constants.AppPermissions.Type;
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)
@@ -39,12 +39,12 @@ namespace Voyage.Web.Filters
                 };
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
-            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
+            else if (identity != null && !identity.HasClaim(PermissionType, PermissionValue))
             {
                 // Check if the user has the correct claim
                 Log.Logger
-                      .ForContext<ClaimAuthorizeAttribute>()
-                      .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
+                      .ForContext<PermissionAuthorizeAttribute>()
+                      .Information("({eventCode:l}) {user} does not have permission {permissionType}.{permissionValue}", EventCodes.Authorization, identity.Name, PermissionType, PermissionValue);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
         }
@@ -63,12 +63,12 @@ namespace Voyage.Web.Filters
                 };
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
-            else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
+            else if (identity != null && !identity.HasClaim(PermissionType, PermissionValue))
             {
                 // Check if the user has the correct claim
                 Log.Logger
-                    .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
+                    .ForContext<PermissionAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} does not have permission {permissionType}.{permissionValue}", EventCodes.Authorization, identity.Name, PermissionType, PermissionValue);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
 
@@ -88,12 +88,12 @@ namespace Voyage.Web.Filters
             if (!user.IsActive)
             {
                 Log.Logger
-                    .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) {user} is not active.", EventCodes.Authorization, identity.Name);
+                    .ForContext<PermissionAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} is not active.", EventCodes.UserDisabled, identity.Name);
 
                 var requestErrorModel = new ResponseErrorModel
                 {
-                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    Error = EventCodes.UserDisabled,
                     ErrorDescription = "User has been disabled."
                 };
                 context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
@@ -101,12 +101,12 @@ namespace Voyage.Web.Filters
             else if (user.IsVerifyRequired)
             {
                 Log.Logger
-                    .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) {user} need a verification.", EventCodes.Authorization, identity.Name);
+                    .ForContext<PermissionAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} need a verification.", EventCodes.RequireVerification, identity.Name);
 
                 var requestErrorModel = new ResponseErrorModel
                 {
-                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    Error = EventCodes.RequireVerification,
                     ErrorDescription = "User verification is required."
                 };
                 context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });

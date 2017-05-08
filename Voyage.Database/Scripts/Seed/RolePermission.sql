@@ -1,4 +1,4 @@
-﻿WITH RoleClaim_CTE 
+﻿WITH RolePermission_CTE 
 AS (
 	SELECT *
 	FROM (
@@ -21,27 +21,27 @@ AS (
 			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'app.permission', N'list.role-claims')
 			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'app.permission', N'delete.role-claim')
 			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'app.permission', N'create.claim')	 
-		) AS RoleClaimSeed([RoleId], [ClaimType], [ClaimValue])
+		) AS RolePermissionSeed([RoleId], [PermissionType], [PermissionValue])
 	)
 
 -- Reference Data for Role Claim
-MERGE INTO dbo.[ROLECLAIM] AS [Target]
-USING RoleClaim_CTE AS [Source]
-	ON [Target].[RoleId] = [Source].[RoleId] and [Target].[ClaimValue] = [Source].[ClaimValue]
+MERGE INTO dbo.[ROLEPERMISSION] AS [Target]
+USING RolePermission_CTE AS [Source]
+	ON [Target].[RoleId] = [Source].[RoleId] and [Target].[PermissionValue] = [Source].[PermissionValue]
 WHEN NOT MATCHED BY TARGET
 	THEN
 		INSERT (
 			  [RoleId]
-			, [ClaimType]
-			, [ClaimValue]
+			, [PermissionType]
+			, [PermissionValue]
 			)
 		VALUES (
 			
 			  [Source].[RoleId]
-			, [Source].[ClaimType]
-			, [Source].[ClaimValue]
+			, [Source].[PermissionType]
+			, [Source].[PermissionValue]
 			)
 WHEN MATCHED 
 	THEN
-		UPDATE SET [Target].[ClaimType] = [Source].[ClaimType]
+		UPDATE SET [Target].[PermissionType] = [Source].[PermissionType]
 	OUTPUT $action, inserted.*, deleted.*;

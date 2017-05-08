@@ -5,7 +5,7 @@ using FluentAssertions;
 using Voyage.Web.Filters;
 using Voyage.Web.UnitTests.Common;
 
-namespace Voyage.Web.UnitTests.Web
+namespace Voyage.Web.UnitTests
 {
     public static class ControllerExtensions
     {
@@ -13,11 +13,11 @@ namespace Voyage.Web.UnitTests.Web
             this TType controller,
             Expression<Action<TType>> expression,
             string claimValue,
-            string claimType = Constants.AppClaims.Type) where TType : ApiController
+            string claimType = Constants.AppPermissions.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
                 .Should()
-                .BeDecoratedWith<ClaimAuthorizeAttribute>(_ => _.ClaimValue == claimValue && _.ClaimType == claimType);
+                .BeDecoratedWith<PermissionAuthorizeAttribute>(_ => _.PermissionValue == claimValue && _.PermissionType == claimType);
         }
 
         public static void AssertRoute<TType>(

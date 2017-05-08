@@ -21,28 +21,28 @@ namespace Voyage.Models.UnitTests.Map.Profiles
         {
             var claim = new Claim("type1", "value1");
 
-            var claimModel = _mappingFixture.MapperInstance.Map<ClaimModel>(claim);
+            var claimModel = _mappingFixture.MapperInstance.Map<PermissionModel>(claim);
 
             claimModel.Should().NotBeNull();
-            claimModel.ClaimType.Should().Be(claim.Type);
-            claimModel.ClaimValue.Should().Be(claim.Value);
+            claimModel.PermissionType.Should().Be(claim.Type);
+            claimModel.PermissionValue.Should().Be(claim.Value);
             claimModel.Id.Should().Be(default(int));
         }
 
         [Fact]
         public void RoleClaim_Should_Map_To_ClaimModel()
         {
-            var roleClaim = new RoleClaim
+            var roleClaim = new RolePermission
             {
-                ClaimType = "type",
-                ClaimValue = "value"
+                PermissionType = "type",
+                PermissionValue = "value"
             };
 
-            var claim = _mappingFixture.MapperInstance.Map<ClaimModel>(roleClaim);
+            var claim = _mappingFixture.MapperInstance.Map<PermissionModel>(roleClaim);
 
             claim.Should().NotBeNull();
-            claim.ClaimValue.Should().Be(roleClaim.ClaimValue);
-            claim.ClaimType.Should().Be(roleClaim.ClaimType);
+            claim.PermissionValue.Should().Be(roleClaim.PermissionValue);
+            claim.PermissionType.Should().Be(roleClaim.PermissionType);
         }
     }
 }

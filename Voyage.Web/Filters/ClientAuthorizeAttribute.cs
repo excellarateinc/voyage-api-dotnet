@@ -60,7 +60,7 @@ namespace Voyage.Web.Filters
         {
             // Check if the user has the correct claim
             Log.Logger
-                .ForContext<ClaimAuthorizeAttribute>()
+                .ForContext<PermissionAuthorizeAttribute>()
                 .Information("({eventCode:l}) Unauthozied client.", EventCodes.Authorization);
             context.Result = new ContentResult
             {

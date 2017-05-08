@@ -38,41 +38,41 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetClaims_Should_Have_RouteAttribute()
+        public void GetPermissions_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.GetClaims("id"), "roles/{roleId}/claims");
+            _roleController.AssertRoute(_ => _.GetPermissions("id"), "roles/{roleId}/Permissions");
         }
 
         [Fact]
-        public void GetClaims_Should_Have_HttpGetAttribute()
+        public void GetPermissions_Should_Have_HttpGetAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetClaims("Id"));
+            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetPermissions("Id"));
         }
 
         [Fact]
-        public void GetClaims_Should_Have_ClaimAuthorizeAttribute()
+        public void GetPermissions_Should_Have_PermissionAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetClaims("id"), Constants.AppClaims.ListRoleClaims);
+            _roleController.AssertPermission(_ => _.GetPermissions("id"), Constants.AppPermissions.ListRolePermissions);
         }
 
         [Fact]
-        public async void GetClaims_Should_Call_RoleService_And_Return_Ok_On_Success()
+        public async void GetPermissions_Should_Call_RoleService_And_Return_Ok_On_Success()
         {
             var id = Fixture.Create<string>();
-            var claims = Fixture.CreateMany<ClaimModel>();
+            var Permissions = Fixture.CreateMany<PermissionModel>();
 
-            _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleId(id))
-                .Returns(claims);
+            _mockRoleService.Setup(_ => _.GetRolePermissionsByRoleId(id))
+                .Returns(Permissions);
 
-            var result = _roleController.GetClaims(id);
+            var result = _roleController.GetPermissions(id);
 
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(CreateCancelToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            IEnumerable<ClaimModel> messageModels;
+            IEnumerable<PermissionModel> messageModels;
             message.TryGetContentValue(out messageModels).Should().BeTrue("Message is readable");
-            messageModels.ShouldBeEquivalentTo(claims);
+            messageModels.ShouldBeEquivalentTo(Permissions);
         }
 
         [Fact]
@@ -93,9 +93,9 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void RemoveClaim_Should_Have_ClaimAuthorizeAttribute()
+        public void RemovePermission_Should_Have_PermissionAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.RemoveClaim("a", 1), Constants.AppClaims.DeleteRoleClaim);
+            _roleController.AssertPermission(_ => _.RemovePermission("a", 1), Constants.AppPermissions.DeleteRolePermission);
         }
 
         [Fact]
@@ -105,32 +105,32 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void RemoveRole_Should_Have_ClaimAuthorizeAttribute()
+        public void RemoveRole_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.RemoveRole("id"), Constants.AppClaims.DeleteRole);
+            _roleController.AssertPermission(_ => _.RemoveRole("id"), Constants.AppPermissions.DeleteRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
-        public void GetRoles_Should_Have_ClaimAuthorizeAttribute()
+        public void GetRoles_Should_Have_PermissionAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetRoles(), Constants.AppClaims.ListRoles);
+            _roleController.AssertPermission(_ => _.GetRoles(), Constants.AppPermissions.ListRoles);
         }
 
         [Fact]
-        public void CreateRole_Should_Have_ClaimAuthorizeAttribute()
+        public void CreateRole_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.CreateRole(new RoleModel()), Constants.AppClaims.CreateRole);
+            _roleController.AssertPermission(_ => _.CreateRole(new RoleModel()), Constants.AppPermissions.CreateRole);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
-        public void AddClaim_Should_Have_ClaimAuthorizeAttribute()
+        public void AddPermission_Should_Have_PermissionAuthorizeAttribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            _roleController.AssertClaim(_ => _.AddClaim("id", new ClaimModel()), Constants.AppClaims.CreateClaim);
+            _roleController.AssertPermission(_ => _.AddPermission("id", new PermissionModel()), Constants.AppPermissions.CreatePermission);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -258,28 +258,28 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetRoleById_Should_Have_ClaimAuthorizeAttribute()
+        public void GetRoleById_Should_Have_PermissionAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetRoleById("id"), Constants.AppClaims.ViewRole);
+            _roleController.AssertPermission(_ => _.GetRoleById("id"), Constants.AppPermissions.ViewRole);
         }
 
         [Fact]
-        public void AddClaim_Should_Have_HttpPost_Attribute()
+        public void AddPermission_Should_Have_HttpPost_Attribute()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim("id", new ClaimModel()))
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddPermission("id", new PermissionModel()))
                 .Should().BeDecoratedWith<HttpPostAttribute>();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         [Fact]
-        public void AddClaim_Should_Have_Known_Route()
+        public void AddPermission_Should_Have_Known_Route()
         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            ReflectionHelper.GetMethod<RoleController>(_ => _.AddClaim("id", new ClaimModel()))
-               .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "roles/{roleId}/claims");
+            ReflectionHelper.GetMethod<RoleController>(_ => _.AddPermission("id", new PermissionModel()))
+               .Should().BeDecoratedWith<RouteAttribute>(value => value.Template == "roles/{roleId}/Permissions");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
@@ -292,37 +292,37 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void GetClaimById_Should_Have_HttpGetAttribute()
+        public void GetPermissionById_Should_Have_HttpGetAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetClaimById("roleId", 0));
+            _roleController.AssertAttribute<RoleController, HttpGetAttribute>(_ => _.GetPermissionById("roleId", 0));
         }
 
         [Fact]
-        public void GetClaimById_Should_Have_RouteAttribute()
+        public void GetPermissionById_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.GetClaimById("roleId", 0), "roles/{roleId}/claims/{claimId}");
+            _roleController.AssertRoute(_ => _.GetPermissionById("roleId", 0), "roles/{roleId}/Permissions/{PermissionId}");
         }
 
         [Fact]
-        public void GetClaimById_Should_Have_ClaimAuthorizeAttribute()
+        public void GetPermissionById_Should_Have_PermissionAuthorizeAttribute()
         {
-            _roleController.AssertClaim(_ => _.GetClaimById("roleId", 0), Constants.AppClaims.ViewClaim);
+            _roleController.AssertPermission(_ => _.GetPermissionById("roleId", 0), Constants.AppPermissions.ViewPermission);
         }
 
         [Fact]
-        public async void GetClaimById_Should_Call_RoleService_And_Return_Ok()
+        public async void GetPermissionById_Should_Call_RoleService_And_Return_Ok()
         {
             // ARRANGE
             var roleId = Fixture.Create<string>();
-            var claimId = Fixture.Create<int>();
-            var claim = Fixture.Create<ClaimModel>();
+            var PermissionId = Fixture.Create<int>();
+            var Permission = Fixture.Create<PermissionModel>();
 
             _mockRoleService
-                .Setup(_ => _.GetClaimById(roleId, claimId))
-                .Returns(claim);
+                .Setup(_ => _.GetPermissionById(roleId, PermissionId))
+                .Returns(Permission);
 
             // ACT
-            var result = _roleController.GetClaimById(roleId, claimId);
+            var result = _roleController.GetPermissionById(roleId, PermissionId);
 
             // ASSERT
             Mock.VerifyAll();
@@ -330,10 +330,10 @@ namespace Voyage.Api.UnitTests.API.V1
             var message = await result.ExecuteAsync(new CancellationToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            ClaimModel resultModel;
+            PermissionModel resultModel;
             message.TryGetContentValue(out resultModel).Should().BeTrue();
 
-            resultModel.ShouldBeEquivalentTo(claim);
+            resultModel.ShouldBeEquivalentTo(Permission);
         }
 
         [Fact]
@@ -358,13 +358,13 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public async void AddClaim_Should_Call_RoleService_And_Return_Created()
+        public async void AddPermission_Should_Call_RoleService_And_Return_Created()
         {
             // Arrange
             var role = Fixture.Create<RoleModel>();
-            var claim = Fixture.Create<ClaimModel>();
-            var serviceResult = Fixture.Create<ClaimModel>();
-            _mockRoleService.Setup(_ => _.AddClaimAsync(role.Id, claim))
+            var Permission = Fixture.Create<PermissionModel>();
+            var serviceResult = Fixture.Create<PermissionModel>();
+            _mockRoleService.Setup(_ => _.AddPermissionAsync(role.Id, Permission))
                 .ReturnsAsync(serviceResult);
 
             const string link = "http://fakelink.com";
@@ -374,18 +374,18 @@ namespace Voyage.Api.UnitTests.API.V1
             {
                 routeDictionary.ContainsKey("RoleId").Should().BeTrue();
                 routeDictionary["RoleId"].ToString().Should().Be(role.Id);
-                routeDictionary.ContainsKey("ClaimId").Should().BeTrue();
-                routeDictionary["ClaimId"].As<int>().Should().Be(serviceResult.Id);
+                routeDictionary.ContainsKey("PermissionId").Should().BeTrue();
+                routeDictionary["PermissionId"].As<int>().Should().Be(serviceResult.Id);
                 return true;
             };
 
             _mockUrlHelper.Setup(_ => _.Link(
-                "GetClaimById",
+                "GetPermissionById",
                 It.Is<Dictionary<string, object>>(args => routeDictionaryMatcher(args))))
                 .Returns(link);
 
             // Act
-            var result = await _roleController.AddClaim(role.Id, claim);
+            var result = await _roleController.AddPermission(role.Id, Permission);
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());
@@ -393,16 +393,16 @@ namespace Voyage.Api.UnitTests.API.V1
             message.StatusCode.Should().Be(HttpStatusCode.Created);
             message.Headers.Location.Should().Be(link);
 
-            ClaimModel messageModel;
+            PermissionModel messageModel;
             message.TryGetContentValue(out messageModel).Should().BeTrue();
 
             messageModel.ShouldBeEquivalentTo(serviceResult);
         }
 
         [Fact]
-        public void RemoveClaim_Should_Have_HttpDeleteAttribute()
+        public void RemovePermission_Should_Have_HttpDeleteAttribute()
         {
-            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemoveClaim("roleId", 1));
+            _roleController.AssertAttribute<RoleController, HttpDeleteAttribute>(_ => _.RemovePermission("roleId", 1));
         }
 
         [Fact]
@@ -414,22 +414,22 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void RemoveClaim_Should_Have_RouteAttribute()
+        public void RemovePermission_Should_Have_RouteAttribute()
         {
-            _roleController.AssertRoute(_ => _.RemoveClaim("roleId", 1), "roles/{roleId}/claims/{claimId}");
+            _roleController.AssertRoute(_ => _.RemovePermission("roleId", 1), "roles/{roleId}/Permissions/{PermissionId}");
         }
 
         [Fact]
-        public async void RemoveClaim_Should_Call_RoleService()
+        public async void RemovePermission_Should_Call_RoleService()
         {
             // Arrange
             var roleId = Fixture.Create<string>();
-            var claimId = Fixture.Create<int>();
+            var PermissionId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId));
+            _mockRoleService.Setup(_ => _.RemovePermission(roleId, PermissionId));
 
             // Act
-            var result = _roleController.RemoveClaim(roleId, claimId);
+            var result = _roleController.RemovePermission(roleId, PermissionId);
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());

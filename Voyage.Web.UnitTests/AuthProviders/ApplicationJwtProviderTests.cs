@@ -33,7 +33,7 @@ namespace Voyage.Web.UnitTests.AuthProviders
 
             // Setup the user service
             var mockUserService = Mock.Create<IUserService>();
-            mockUserService.Setup(x => x.CreateClientClaimsIdentityAsync(It.IsAny<string>())).Returns(new ClaimsIdentity());
+            mockUserService.Setup(x => x.CreateClientPermissionsIdentityAsync(It.IsAny<string>())).ReturnsAsync(new ClaimsIdentity());
 
             // Skip mocking out autofac, just build the container to use
             var containerBuilder = new ContainerBuilder();

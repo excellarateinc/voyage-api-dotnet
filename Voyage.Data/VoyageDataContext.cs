@@ -39,7 +39,7 @@ namespace Voyage.Data
 
         public IDbSet<ApplicationLog> Logs { get; set; }
 
-        public IDbSet<RoleClaim> RoleClaims { get; set; }
+        public IDbSet<RolePermission> RolePermissions { get; set; }
 
         public IDbSet<UserPhone> UserPhones { get; set; }
 
@@ -111,7 +111,7 @@ namespace Voyage.Data
                 .ToTable("UserLogin");
 
             modelBuilder.Entity<IdentityUserClaim>()
-                .ToTable("UserClaim");
+                .ToTable("UserPermission");
 
             var role = modelBuilder.Entity<ApplicationRole>()
                 .ToTable("Role");

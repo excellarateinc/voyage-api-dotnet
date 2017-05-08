@@ -9,7 +9,7 @@
             public const string V1 = "api/v1";
         }
 
-        public static class AppClaims
+        public static class AppPermissions
         {
             public const string Type = "app.permission";
 

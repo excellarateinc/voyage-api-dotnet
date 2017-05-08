@@ -7,7 +7,7 @@ namespace Voyage.Data
     {
         IDbSet<ApplicationLog> Logs { get; set; }
 
-        IDbSet<RoleClaim> RoleClaims { get; set; }
+        IDbSet<RolePermission> RolePermissions { get; set; }
 
         IDbSet<ApplicationUser> Users { get; set; }
 

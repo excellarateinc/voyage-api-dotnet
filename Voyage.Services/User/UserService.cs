@@ -11,7 +11,6 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;
-using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 
@@ -129,17 +128,17 @@ namespace Voyage.Services.User
             return userModel;
         }
 
-        public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)
+        public async Task<IEnumerable<PermissionModel>> GetUserPermissionsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException($"Could not locate entity with Id {userId}");
 
-            var identity = await CreateClaimsIdentityAsync(user.UserName, "OAuth");
-            return _mapper.Map<IEnumerable<ClaimModel>>(identity.Claims);
+            var identity = await CreatePermissionsIdentityAsync(user.UserName, "OAuth");
+            return _mapper.Map<IEnumerable<PermissionModel>>(identity.Claims);
         }
 
-        public async Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType)
+        public async Task<ClaimsIdentity> CreatePermissionsIdentityAsync(string userName, string authenticationType)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
@@ -148,17 +147,17 @@ namespace Voyage.Services.User
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await _userManager.CreateIdentityAsync(user, authenticationType);
 
-            // Add in role claims
+            // Add in role permissions
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
+            var rolePermissions = userRoles.Select(_ => _roleService.GetRolePermissions(_))
                 .SelectMany(_ => _)
-                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-            userIdentity.AddClaims(roleClaims);
+                .Select(_ => new Claim(_.PermissionType, _.PermissionValue));
+            userIdentity.AddClaims(rolePermissions);
 
             return userIdentity;
         }
 
-        public async Task<ClaimsIdentity> CreateJwtClaimsIdentityAsync(string userName)
+        public async Task<ClaimsIdentity> CreateJwtPermissionsIdentityAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
@@ -166,40 +165,43 @@ namespace Voyage.Services.User
 
             var identity = new ClaimsIdentity("JWT");
 
-            // Add in role claims
+            // Add in role permissions
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
+            var rolePermissions = userRoles.Select(_ => _roleService.GetRolePermissions(_))
                 .SelectMany(_ => _)
-                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-            identity.AddClaims(roleClaims);
+                .Select(_ => new Claim(_.PermissionType, _.PermissionValue));
+            identity.AddClaims(rolePermissions);
 
             return identity;
         }
 
         /// <summary>
-        /// This create client claims based on test data. Your application will need to create claim based on your business rule
+        /// This create client permissions based on test data. Your application will need to create permission based on your business rule
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId)
+        public async Task<ClaimsIdentity> CreateClientPermissionsIdentityAsync(string clientId)
         {
-            // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
-            var identity = new ClaimsIdentity("JWT");
-            if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
+            return await Task.Run(() =>
             {
-                // Add in role claims
-                var userRoles = new List<string> { "Administrator" };
-                var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                    .SelectMany(_ => _)
-                    .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-                identity.AddClaims(roleClaims);
+                // TODO: This create client permissions based on test data.Your application will need to create permission based on your business rule
+                var identity = new ClaimsIdentity("JWT");
+                if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
+                {
+                    // Add in role permissions
+                    var userRoles = new List<string> { "Administrator" };
+                    var rolePermissions = userRoles.Select(_ => _roleService.GetRolePermissions(_))
+                        .SelectMany(_ => _)
+                        .Select(_ => new Claim(_.PermissionType, _.PermissionValue));
+                    identity.AddClaims(rolePermissions);
 
-                var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
-                identity.AddClaim(new Claim("client_id", client.Id));
-                identity.AddClaim(new Claim("client_secret", client.Secret));
-            }
+                    var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
+                    identity.AddClaim(new Claim("client_id", client.Id));
+                    identity.AddClaim(new Claim("client_secret", client.Secret));
+                }
 
-            return identity;
+                return identity;
+            });
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)

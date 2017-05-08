@@ -7,7 +7,7 @@ namespace Voyage.Services.Role
 {
     public interface IRoleService
     {
-        IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id);
+        IEnumerable<PermissionModel> GetRolePermissionsByRoleId(string id);
 
         RoleModel GetRoleByName(string name);
 
@@ -17,14 +17,14 @@ namespace Voyage.Services.Role
 
         IEnumerable<RoleModel> GetRoles();
 
-        IEnumerable<ClaimModel> GetRoleClaims(string name);
+        IEnumerable<PermissionModel> GetRolePermissions(string name);
 
-        Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim);
+        Task<PermissionModel> AddPermissionAsync(string roleId, PermissionModel permission);
 
         Task<IdentityResult> RemoveRoleAsync(string roleId);
 
-        void RemoveClaim(string roleId, int claimId);
+        void RemovePermission(string roleId, int permissionId);
 
-        ClaimModel GetClaimById(string roleId, int claimId);
+        PermissionModel GetPermissionById(string roleId, int permissionId);
     }
 }

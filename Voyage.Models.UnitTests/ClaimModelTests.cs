@@ -10,9 +10,9 @@ namespace Voyage.Models.UnitTests
         [Fact]
         public void Class_Should_Have_Validator_Class()
         {
-            typeof(ClaimModel)
+            typeof(PermissionModel)
                 .Should()
-                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(ClaimModelValidator));
+                .BeDecoratedWith<ValidatorAttribute>(_ => _.ValidatorType == typeof(PermissionModelValidator));
         }
     }
 }

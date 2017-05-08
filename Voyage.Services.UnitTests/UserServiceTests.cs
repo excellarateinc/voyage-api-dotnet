@@ -425,7 +425,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetUserClaimsAsync_Should_Return_Failed_Result_When_Not_Found()
+        public async Task GetUserClaimsAsync_Should_Return_Failed_Result_When_Not_Found()
         {
             // Arrange
             var id = Fixture.Create<string>();
@@ -433,7 +433,7 @@ namespace Voyage.Services.UnitTests
                 .ReturnsAsync(null);
 
             // Assert
-            Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.GetUserClaimsAsync(id); });
+            await Assert.ThrowsAsync<NotFoundException>(async () => { await _userService.GetUserPermissionsAsync(id); });
         }
 
         [Fact]
@@ -441,7 +441,7 @@ namespace Voyage.Services.UnitTests
         {
             var roles = new[] { "Admin" };
             var id = Fixture.Create<string>();
-            var roleClaims = new[] { new ClaimModel { ClaimType = "type1", ClaimValue = "value1" } };
+            var roleClaims = new[] { new PermissionModel { PermissionType = "type1", PermissionValue = "value1" } };
 
             var appUser = new ApplicationUser
             {
@@ -463,15 +463,15 @@ namespace Voyage.Services.UnitTests
                 .Setup(_ => _.GetClaimsAsync(appUser))
                 .ReturnsAsync(new List<Claim>());
 
-            _mockRoleService.Setup(_ => _.GetRoleClaims(roles[0]))
+            _mockRoleService.Setup(_ => _.GetRolePermissions(roles[0]))
                 .Returns(roleClaims);
 
             // Act
-            var entityResult = await _userService.GetUserClaimsAsync(id);
+            var entityResult = await _userService.GetUserPermissionsAsync(id);
 
             Mock.VerifyAll();
             entityResult.Should().NotBeNullOrEmpty();
-            entityResult.Any(_ => _.ClaimValue == "value1" && _.ClaimType == "type1").Should().BeTrue();
+            entityResult.Any(_ => _.PermissionValue == "value1" && _.PermissionType == "type1").Should().BeTrue();
         }
 
         public async void RemoveUserFromRoleAsync_Should_Return_Failed_Result_When_Not_Found()
@@ -636,9 +636,9 @@ namespace Voyage.Services.UnitTests
         [Fact]
         public async void CreateClaimsIdentity_Should_Return_Identity()
         {
-            var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.test" } };
+            var roleClaims = new[] { new PermissionModel { PermissionType = "permission", PermissionValue = "delete.test" } };
 
-            _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
+            _mockRoleService.Setup(_ => _.GetRolePermissions("Admin"))
              .Returns(roleClaims);
 
             string user = "bob@bob.com";
@@ -658,7 +658,7 @@ namespace Voyage.Services.UnitTests
             _mockStore.Setup(_ => _.FindByNameAsync(user))
                .ReturnsAsync(model);
 
-            var result = await _userService.CreateClaimsIdentityAsync(user, "OAuth");
+            var result = await _userService.CreatePermissionsIdentityAsync(user, "OAuth");
 
             result.Should().NotBeNull();
             result.HasClaim("permission", "view.test");
@@ -678,7 +678,7 @@ namespace Voyage.Services.UnitTests
                 .ReturnsAsync(null);
 
             Func<Task> throwAction = async () =>
-                await _userService.CreateClaimsIdentityAsync(user, "OAuth");
+                await _userService.CreatePermissionsIdentityAsync(user, "OAuth");
 
             throwAction.ShouldThrow<NotFoundException>();
         }

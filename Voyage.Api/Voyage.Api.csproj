@@ -245,7 +245,7 @@
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\OwinContextExtensions.cs" />
     <Compile Include="Filters\ApiExceptionFilterAttribute.cs" />
-    <Compile Include="Filters\ClaimAuthorizeAttribute.cs" />
+    <Compile Include="Filters\PermissionAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

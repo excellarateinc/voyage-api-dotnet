@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Voyage.Models;
 using Microsoft.AspNet.Identity;
-using Voyage.Services.Identity;
 
 namespace Voyage.Services.User
 {
@@ -15,9 +14,9 @@ namespace Voyage.Services.User
 
         Task<bool> IsValidCredential(string userName, string password);
 
-        Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
+        Task<ClaimsIdentity> CreatePermissionsIdentityAsync(string userName, string authenticationType);
 
-        Task<ClaimsIdentity> CreateJwtClaimsIdentityAsync(string userName);
+        Task<ClaimsIdentity> CreateJwtPermissionsIdentityAsync(string userName);
 
         IEnumerable<UserModel> GetUsers();
 
@@ -27,9 +26,9 @@ namespace Voyage.Services.User
 
         Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId);
 
-        Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId);
+        Task<IEnumerable<PermissionModel>> GetUserPermissionsAsync(string userId);
 
-        ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId);
+        Task<ClaimsIdentity> CreateClientPermissionsIdentityAsync(string clientId);
 
         RoleModel GetUserRoleById(string userId, string roleId);
 

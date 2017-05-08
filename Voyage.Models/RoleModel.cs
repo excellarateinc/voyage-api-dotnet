@@ -13,6 +13,6 @@ namespace Voyage.Models
 
         public string Description { get; set; }
 
-        public IEnumerable<ClaimModel> Claims { get; set; }
+        public IEnumerable<PermissionModel> Permissions { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Voyage.Models;
-using Voyage.Web.Models;
 
 namespace Voyage.Services.PasswordRecovery
 {

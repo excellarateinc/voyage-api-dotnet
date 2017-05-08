@@ -102,12 +102,12 @@
     <Compile Include="IVoyageDataContext.cs" />
     <Compile Include="Repositories\ApplicationLog\IApplicationLogRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
-    <Compile Include="Repositories\RoleClaim\IRoleClaimRepository.cs" />
+    <Compile Include="Repositories\RolePermission\IRolePermissionRepository.cs" />
     <Compile Include="Repositories\UserPhone\IUserPhoneRepository.cs" />
     <Compile Include="VoyageDataContext.cs" />
     <Compile Include="Repositories\ApplicationLog\ApplicationLogRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\RoleClaim\RoleClaimRepository.cs" />
+    <Compile Include="Repositories\RolePermission\RolePermissionRepository.cs" />
     <Compile Include="Stores\CustomUserStore.cs" />
     <Compile Include="Repositories\UserPhone\UserPhoneRepository.cs" />
   </ItemGroup>

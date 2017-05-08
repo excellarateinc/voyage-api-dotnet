@@ -82,12 +82,12 @@
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="ResponseErrorModel.cs" />
-    <Compile Include="ClaimModel.cs" />
+    <Compile Include="PermissionModel.cs" />
     <Compile Include="Entities\ActivityAudit.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\ApplicationLog.cs" />
-    <Compile Include="Entities\RoleClaim.cs" />
+    <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="UserApplicationSession.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="Map\AutoMapperModule.cs" />
     <Compile Include="Map\MappingConfig.cs" />
     <Compile Include="Map\Profiles\ActivityAuditProfile.cs" />
-    <Compile Include="Map\Profiles\ClaimProfile.cs" />
+    <Compile Include="Map\Profiles\PermissionProfile.cs" />
     <Compile Include="Map\Profiles\UserPhoneProfile.cs" />
     <Compile Include="Map\Profiles\RoleProfile.cs" />
     <Compile Include="Map\Profiles\UserProfile.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="RegistrationModel.cs" />
     <Compile Include="RoleModel.cs" />
     <Compile Include="UserModel.cs" />
-    <Compile Include="Validators\ClaimModelValidator.cs" />
+    <Compile Include="Validators\PermissionModelValidator.cs" />
     <Compile Include="Validators\RegistrationModelValidator.cs" />
     <Compile Include="Validators\RoleModelValidator.cs" />
     <Compile Include="Validators\UserModelValidator.cs" />
