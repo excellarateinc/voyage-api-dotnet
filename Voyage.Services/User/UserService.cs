@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;
+using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 
@@ -89,7 +91,7 @@ namespace Voyage.Services.User
 
         public async Task<UserModel> CreateUserAsync(UserModel model)
         {
-            var appUser = new ApplicationUser();
+            var appUser = new ApplicationUser { IsActive = true, IsVerifyRequired = true };
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
             IdentityResult result = await _userManager.CreateAsync(appUser, "Hello123!");
             if (!result.Succeeded)
@@ -98,7 +100,7 @@ namespace Voyage.Services.User
             return _mapper.Map<UserModel>(appUser);
         }
 
-        public async Task<IdentityResult> RegisterAsync(RegistrationModel model)
+        public async Task<UserModel> RegisterAsync(RegistrationModel model)
         {
             var user = new ApplicationUser
             {
@@ -110,19 +112,21 @@ namespace Voyage.Services.User
                 IsVerifyRequired = true
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
-            if (appUser == null || appUser.UserName == user.UserName)
-            {
+            if (appUser != null)
                 throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
-            }
 
-            IdentityResult identityResult = await _userManager.CreateAsync(user, model.Password);
+            var identityResult = await _userManager.CreateAsync(user, model.Password);
+            if (!identityResult.Succeeded)
+                throw new BadRequestException(string.Join(Environment.NewLine, identityResult.Errors));
 
-            if (identityResult.Succeeded)
-            {
-                identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
-            }
+            identityResult = await _userManager.AddToRoleAsync(user.Id, "Basic");
+            if (!identityResult.Succeeded)
+                throw new BadRequestException(string.Join(Environment.NewLine, identityResult.Errors));
 
-            return identityResult;
+            var userModel = new UserModel();
+            _mapper.Map<ApplicationUser, UserModel>(user, userModel);
+
+            return userModel;
         }
 
         public async Task<IEnumerable<ClaimModel>> GetUserClaimsAsync(string userId)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentValidation.Attributes;
+using Newtonsoft.Json;
 using Voyage.Models.Validators;
 using Embarr.WebAPI.AntiXss;
 
@@ -30,6 +31,7 @@ namespace Voyage.Models
         public bool IsVerifyRequired { get; set; }
 
         [AntiXss]
+        [JsonIgnore]
         public string PasswordRecoveryToken { get; set; }
     }
 }

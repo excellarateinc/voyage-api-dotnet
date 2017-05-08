@@ -151,7 +151,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var result = await _userController.DeleteUser(id);
 
             var message = await result.ExecuteAsync(CreateCancelToken());
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]

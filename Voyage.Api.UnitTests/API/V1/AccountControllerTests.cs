@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Web.Http.Routing;
 using FluentAssertions;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.API.V1;
 using Voyage.Api.UnitTests.Common;
+using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
 using Xunit;
@@ -20,15 +24,18 @@ namespace Voyage.Api.UnitTests.API.V1
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<UrlHelper> _mockUrlHelper;
 
         public AccountControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
+            _mockUrlHelper = Mock.Create<UrlHelper>();
             _accountController = new AccountController(_mockUserService.Object)
             {
                 Request = new HttpRequestMessage(),
-                Configuration = new HttpConfiguration()
-            };
+                Configuration = new HttpConfiguration(),
+                Url = _mockUrlHelper.Object
+        };
         }
 
         [Fact]
@@ -41,17 +48,17 @@ namespace Voyage.Api.UnitTests.API.V1
                 .Create();
 
             _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(IdentityResult.Success);
+                .ReturnsAsync(new UserModel());
+
+            _mockUrlHelper.Setup(_ => _.Link("GetUserAsync", It.IsAny<Dictionary<string, object>>()))
+                .Returns("http://testlink.com");
 
             // ACT
             var result = await _accountController.Register(model);
-
-            // ASSERT
-            Mock.VerifyAll();
-
+            
             var message = await result.ExecuteAsync(new CancellationToken());
-
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            
+            message.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
@@ -63,14 +70,12 @@ namespace Voyage.Api.UnitTests.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            _mockUserService.Setup(_ => _.RegisterAsync(model))
-                .ReturnsAsync(new IdentityResult());
+            _mockUserService.Setup(_ => _.RegisterAsync(model)).Throws(new BadRequestException());            
 
             // ACT
             var result = await _accountController.Register(model);
 
             // ASSERT
-            Mock.VerifyAll();
             var message = await result.ExecuteAsync(new CancellationToken());
 
             message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -103,7 +108,7 @@ namespace Voyage.Api.UnitTests.API.V1
             ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("account/register"));
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("profile"));
         }
     }
 }

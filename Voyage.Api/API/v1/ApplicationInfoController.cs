@@ -17,7 +17,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/statuses Get application info
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetStatuses
         * @apiGroup Status
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/statuses

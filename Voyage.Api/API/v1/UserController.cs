@@ -1,4 +1,6 @@
-﻿using Voyage.Core;
+﻿using System.Net;
+using System.Net.Http;
+using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -19,7 +21,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users Get all users
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUsers
         * @apiGroup User
         *
@@ -46,6 +48,8 @@ namespace Voyage.Api.API.V1
         *          "email": "admin@admin.com",
         *          "firstName": "Admin_First",
         *          "lastName": "Admin_Last",
+        *          "isActive": true,
+        *          "isVerifyRequired": true,
         *          "phones":
         *          [
         *             {
@@ -69,7 +73,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {put} /v1/users/:userId Update user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
@@ -92,7 +96,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/users/:userId Delete a user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName DeleteUserAsync
         * @apiGroup User
         *
@@ -104,7 +108,7 @@ namespace Voyage.Api.API.V1
         *
         *
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
+        *   HTTP/1.1 204 NO CONTENT
         *
         *
         * @apiUse UnauthorizedError
@@ -119,16 +123,32 @@ namespace Voyage.Api.API.V1
             if (!result.Succeeded)
                 return BadRequest();
 
-            return Ok(result);
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
         }
 
         /**
         * @api {post} /v1/users Create user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName CreateUser
         * @apiGroup User
         *
         * @apiPermission app.permission->create.user
+        * 
+        * @apiParamExample {json} Request-Example:
+        *      {
+        *          "userName": "John",
+        *          "email": "John@John.com",
+        *          "firstName": "John FirstName",
+        *          "lastName": "John LastName",
+        *          "phones":
+        *          [
+        *             {
+        *                 "phoneNumber": "123-123-1233",
+        *                 "phoneType": "mobile"
+        *             }
+        *          ]
+        *       }
+        *
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users
         * @apiUse AuthHeader
         *
@@ -139,8 +159,26 @@ namespace Voyage.Api.API.V1
         *       "Location": "http://localhost:52431/api/v1/users/b78ae241-1fa6-498c-aa48-9742245d0d2f"
         *   }
         *
-        * @apiUse UserRequestModel
-        * @apiUse UserSuccessModel
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   [
+        *      {
+        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *          "userName": "John",
+        *          "email": "John@John.com",
+        *          "firstName": "John FirstName",
+        *          "lastName": "John LastName",
+        *          "isActive": true,
+        *          "isVerifyRequired": true,
+        *          "phones":
+        *          [
+        *             {
+        *                 "phoneNumber": "123-123-1233",
+        *                 "phoneType": "mobile"
+        *             }
+        *          ]
+        *       }
+        *   ]
         * @apiUse UnauthorizedError
         **/
         [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateUser)]
@@ -154,7 +192,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId Get user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUserAsync
         * @apiGroup User
         *
@@ -165,7 +203,27 @@ namespace Voyage.Api.API.V1
         * @apiParam {String} userId User ID
         *
         *
-        * @apiUse UserSuccessModel
+        * @apiSuccessExample Success-Response:
+        *   HTTP/1.1 200 OK
+        *   [
+        *      {
+        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
+        *          "userName": "John",
+        *          "email": "John@John.com",
+        *          "firstName": "John FirstName",
+        *          "lastName": "John LastName",
+        *          "isActive": true,
+        *          "isVerifyRequired": true,
+        *          "phones":
+        *          [
+        *             {
+        *                 "phoneNumber": "123-123-1233",
+        *                 "phoneType": "mobile"
+        *             }
+        *          ]
+        *       }
+        *   ]
+        *   
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
@@ -180,9 +238,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/roles Get user roles
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName User
-        * @apiGroup User
+        * @apiGroup User Role
         *
         * @apiPermission app.permission->list.users
         *
@@ -228,9 +286,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/claims Get user claims
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName Claims
-        * @apiGroup User
+        * @apiGroup User Claim
         *
         * @apiPermission app.permission->list.user-claims
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/claims
@@ -268,8 +326,10 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/users/:userId/roles Assign role to user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName AssignRole
+        * @apiGroup User Role
+        *
         * @apiGroup User
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles
         * @apiPermission app.permission->assign.role
@@ -310,9 +370,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/users/:userId/roles/:roleId Get role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetUserRoleById
-        * @apiGroup User
+        * @apiGroup User Role
         *
         * @apiPermission app.permission->view.role
         *
@@ -358,8 +418,10 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RevokeRole
+        * @apiGroup User Role
+        *
         * @apiGroup User
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles/:roleId
         * @apiPermission app.permission->revoke.role

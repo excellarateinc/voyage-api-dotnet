@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Voyage.Models;
 using Microsoft.AspNet.Identity;
+using Voyage.Services.Identity;
 
 namespace Voyage.Services.User
 {
     public interface IUserService
     {
-        Task<IdentityResult> RegisterAsync(RegistrationModel model);
+        Task<UserModel> RegisterAsync(RegistrationModel model);
 
         Task<UserModel> CreateUserAsync(UserModel model);
 

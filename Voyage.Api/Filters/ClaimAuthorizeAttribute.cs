@@ -89,11 +89,11 @@ namespace Voyage.Api.Filters
             {
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) {user} is not active.", EventCodes.Authorization, identity.Name);
+                    .Information("({eventCode:l}) {user} is not active.", EventCodes.UserDisabled, identity.Name);
 
                 var requestErrorModel = new ResponseErrorModel
                 {
-                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    Error = EventCodes.UserDisabled,
                     ErrorDescription = "User has been disabled."
                 };
                 context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
@@ -102,11 +102,11 @@ namespace Voyage.Api.Filters
             {
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
-                    .Information("({eventCode:l}) {user} need a verification.", EventCodes.Authorization, identity.Name);
+                    .Information("({eventCode:l}) {user} need a verification.", EventCodes.RequireVerification, identity.Name);
 
                 var requestErrorModel = new ResponseErrorModel
                 {
-                    Error = Core.Constants.ErrorCodes.Forbidden,
+                    Error = EventCodes.RequireVerification,
                     ErrorDescription = "User verification is required."
                 };
                 context.Response = context.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });

@@ -64,7 +64,7 @@ namespace Voyage.Services.Role
         public async Task<RoleModel> CreateRoleAsync(RoleModel model)
         {
             // Create the role
-            var role = new ApplicationRole { Name = model.Name };
+            var role = new ApplicationRole { Name = model.Name, Description = model.Description ?? string.Empty };
             IdentityResult result = await _roleManager.CreateAsync(role);
             if (!result.Succeeded)
             {

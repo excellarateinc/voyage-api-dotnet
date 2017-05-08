@@ -1,4 +1,6 @@
-﻿using Voyage.Core;
+﻿using System.Net;
+using System.Net.Http;
+using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -19,7 +21,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId Get a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoleById
         * @apiGroup Role
         *
@@ -65,7 +67,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles Get all roles
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoles
         * @apiGroup Role
         *
@@ -112,11 +114,18 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/roles Create a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName CreateRole
         * @apiGroup Role
         *
         * @apiPermission app.permission->create.role
+        * 
+        * @apiParamExample {json} Request-Example:
+        *   {
+        *     "name": "Billing"
+        *     "description": "Billing Department"
+        *   }
+        *
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles
         * @apiUse AuthHeader
         *
@@ -127,15 +136,16 @@ namespace Voyage.Api.API.V1
         *       "Location": "http://localhost:52431/api/v1/roles/34d87057-fafa-4e5d-822b-cddb1700b507"
         *   }
         *
-        * @apiParam {Object} role Role
-        * @apiParam {String} role.id Role ID
+        * @apiParam {Object} role Role        
         * @apiParam {String} role.name Name of the role
+        * @apiParam {String} role.description Description for this role
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
         *   {
         *       "id": "34d87057-fafa-4e5d-822b-cddb1700b507",
-        *       "name": "New Role 2",
+        *       "name": "Billing",
+        *       "description": "Billing Department"
         *       "claims": []
         *   }
         *
@@ -154,9 +164,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/roles/:roleId/claims Create a role claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName AddRoleClaim
-        * @apiGroup Role
+        * @apiGroup Role Claim
         *
         * @apiPermission app.permission->create.claim
         *
@@ -210,9 +220,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetClaimById
-        * @apiGroup Role
+        * @apiGroup Role Claim
         *
         * @apiPermission app.permission->view.claim
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
@@ -247,9 +257,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RemoveRoleClaim
-        * @apiGroup Role
+        * @apiGroup Role Claim
         *
         * @apiPermission app.permission->delete.role-claim
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
@@ -275,9 +285,9 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId/claims Get role claims
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoleClaims
-        * @apiGroup Role
+        * @apiGroup Role Claim
         *
         * @apiPermission app.permission->list.role-claims
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims
@@ -312,7 +322,7 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/roles/:roleId Delete a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RemoveRole
         * @apiGroup Role
         * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId
@@ -324,7 +334,7 @@ namespace Voyage.Api.API.V1
         * @apiParam {String} roleId Role ID
         *
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
+        *   HTTP/1.1 204 NO CONTENT
         *
         * @apiUse UnauthorizedError
         *
@@ -335,8 +345,8 @@ namespace Voyage.Api.API.V1
         [Route("roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
-            var result = await _roleService.RemoveRoleAsync(roleId);
-            return Ok(result);
+            await _roleService.RemoveRoleAsync(roleId);
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
         }
     }
 }
