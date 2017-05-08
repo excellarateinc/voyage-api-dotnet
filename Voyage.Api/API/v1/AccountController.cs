@@ -24,7 +24,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Profile
         *
         * @apiPermission none
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/account/register
         * @apiParam {String} email User's email
         * @apiParam {String} password User's password
         * @apiParam {String} confirmPassword User's password (x2)

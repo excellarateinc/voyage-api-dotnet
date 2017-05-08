@@ -28,7 +28,7 @@ namespace Voyage.Api.API.V1
         * @apiPermission app.permission->list.users
         *
         * @apiUse AuthHeader
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users
         * @apiSuccess {Object[]} users List of users
         * @apiSuccess {String} users.id User ID
         * @apiSuccess {String} users.userName Username of the user
@@ -76,7 +76,7 @@ namespace Voyage.Api.API.V1
         * @apiVersion 1.0.0
         * @apiName UpdateUserAsync
         * @apiGroup User
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
         * @apiPermission app.permission->update.user
         *
         * @apiUse AuthHeader
@@ -101,7 +101,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup User
         *
         * @apiPermission app.permission->delete.user
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
         * @apiUse AuthHeader
         *
         * @apiParam {String} userId User ID
@@ -149,6 +149,7 @@ namespace Voyage.Api.API.V1
         *          ]
         *       }
         *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users
         * @apiUse AuthHeader
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
@@ -196,7 +197,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup User
         *
         * @apiPermission app.permission->view.user
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
         * @apiUse AuthHeader
         *
         * @apiParam {String} userId User ID
@@ -244,7 +245,7 @@ namespace Voyage.Api.API.V1
         * @apiPermission app.permission->list.users
         *
         * @apiUse AuthHeader
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles
         * @apiParam {String} userId ID of the user
         *
         * @apiSuccess {Object[]} role List of roles
@@ -290,7 +291,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup User Claim
         *
         * @apiPermission app.permission->list.user-claims
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/claims
         * @apiUse AuthHeader
         *
         * @apiParam {String} userId Id of user
@@ -329,6 +330,8 @@ namespace Voyage.Api.API.V1
         * @apiName AssignRole
         * @apiGroup User Role
         *
+        * @apiGroup User
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles
         * @apiPermission app.permission->assign.role
         *
         * @apiUse AuthHeader
@@ -374,7 +377,7 @@ namespace Voyage.Api.API.V1
         * @apiPermission app.permission->view.role
         *
         * @apiUse AuthHeader
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles/:roleId
         * @apiParam {String} userId User ID
         * @apiParam {String} roleId Role ID
         *
@@ -419,6 +422,8 @@ namespace Voyage.Api.API.V1
         * @apiName RevokeRole
         * @apiGroup User Role
         *
+        * @apiGroup User
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles/:roleId
         * @apiPermission app.permission->revoke.role
         *
         * @apiUse AuthHeader

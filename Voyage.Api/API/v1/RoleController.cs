@@ -26,7 +26,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Role
         *
         * @apiPermission app.permission->view.role
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
@@ -72,7 +72,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Role
         *
         * @apiPermission app.permission->list.roles
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles
         * @apiUse AuthHeader
         *
         * @apiSuccess {Object[]} roles List of roles
@@ -126,6 +126,7 @@ namespace Voyage.Api.API.V1
         *     "description": "Billing Department"
         *   }
         *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles
         * @apiUse AuthHeader
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
@@ -177,7 +178,7 @@ namespace Voyage.Api.API.V1
         *   }
         *
         * @apiUse AuthHeader
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims
         * @apiParam {string} roleId Role ID
         * @apiParam {Object} claim Claim
         * @apiParam {String} claim.claimType Type of the claim
@@ -224,7 +225,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Role Claim
         *
         * @apiPermission app.permission->view.claim
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
@@ -261,7 +262,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Role Claim
         *
         * @apiPermission app.permission->delete.role-claim
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
@@ -289,7 +290,7 @@ namespace Voyage.Api.API.V1
         * @apiGroup Role Claim
         *
         * @apiPermission app.permission->list.role-claims
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims
         * @apiParam {String} roleId Role ID
         *
         * @apiUse AuthHeader
@@ -324,7 +325,7 @@ namespace Voyage.Api.API.V1
         * @apiVersion 1.0.0
         * @apiName RemoveRole
         * @apiGroup Role
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId
         *
         * @apiPermission app.permission->delete.role
         *
