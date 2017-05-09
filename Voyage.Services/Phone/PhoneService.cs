@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNet.Identity;
 using AutoMapper;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
@@ -77,7 +80,29 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
-            await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+                await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+        }
+
+        public async Task SendSecurityCodeToUser(string userName)
+        {
+            string securityCode = GenerateSecurityCode();
+            var user = await GetUserAsync("aa1aab77-570e-41fc-9c2d-ae8fd843f046");
+
+            // Limit the number of phones that can receive a verification code to 5. This prevents an attacker from overloading
+            // the list of phone numbers for a user and spamming an infinite number of phones with security codes.
+            var phones = user.Phones.Where(userPhone => userPhone.PhoneType == Models.Enum.PhoneType.Mobile)
+                .Select(mobilePhone => mobilePhone.PhoneNumber).Take(5).ToList();
+        if (!phones.Any())
+            throw new BadRequestException("The verification phone number is invalid. Please contact technical support for assistance");
+
+        user.IsVerifyRequired = true;
+
+        foreach (var phone in phones)
+        {
+               await SendSecurityCode(phone, securityCode);
+        }
+
+            // throw new exception    Failure sending text message. Please contact support.'
         }
 
         /// <summary>

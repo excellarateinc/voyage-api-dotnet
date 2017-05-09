@@ -43,11 +43,9 @@ namespace Voyage.Models.Validators
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Last name is a required field");
 
-            RuleFor(_ => _.PhoneNumber)
+            RuleFor(_ => _.PhoneNumbers)
                 .NotEmpty()
-                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is a required field")
-                .Matches(@"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}")
-                .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPhoneNumber, "Invalid Phone number");
+                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is a required field");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Voyage.Api.Filters;
 using Voyage.Core;
@@ -41,6 +42,15 @@ namespace Voyage.Api.API.v1
         *
         * @apiUse UnauthorizedError
         **/
-       
+        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewUser)]
+        [HttpGet]
+        [Route("verify/send")]
+        public async Task<IHttpActionResult> SendVerificationCode()
+        {
+            _phoneService.SendSecurityCodeToUser(User.Identity.Name.ToString());
+            string securityCode = _phoneService.GenerateSecurityCode();
+            await _phoneService.SendSecurityCode("", securityCode);
+            return BadRequest();
+        }
     }
 }
