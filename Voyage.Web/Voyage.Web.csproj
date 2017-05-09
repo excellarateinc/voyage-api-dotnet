@@ -16,7 +16,7 @@
     <RootNamespace>Voyage.Web</RootNamespace>
     <AssemblyName>Voyage.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -149,6 +149,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.40306.1554, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.4.403061554\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -270,6 +271,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AuthProviders\ADAuthenticationProvider.cs" />
     <Compile Include="AuthProviders\ApplicationJwtProvider.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />

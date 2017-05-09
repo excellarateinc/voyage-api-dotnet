@@ -11,6 +11,7 @@ using Microsoft.Owin.Security.OAuth;
 using Voyage.Core.Exceptions;
 using Voyage.Services.User;
 using Voyage.Web.Models;
+using System.DirectoryServices.AccountManagement;
 
 namespace Voyage.Web.Controllers
 {
@@ -29,12 +30,26 @@ namespace Voyage.Web.Controllers
                     var userService = context.Resolve<IUserService>();
                     try
                     {
+                        ClaimsIdentity identity = null;
                         var isValidCredential = await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
                         if (!isValidCredential)
-                            throw new NotFoundException();
+                        {
+
+                            // In case the user enters the windows credentials. Not Found execption will be thrown if that also fails.
+                            using (var adContext = new PrincipalContext(ContextType.Machine))
+                            {
+                               if (!adContext.ValidateCredentials(Request.Form["username"], Request.Form["password"]))
+                                    throw new NotFoundException();
+                               else
+                                    identity = userService.CreateClientClaimsIdentityAsync(HttpUtility.ParseQueryString(Request.Params["ReturnUrl"])[0]);
+                            }
+                        }
+                        else
+                        {
+                            identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
+                        }
 
                         var authentication = HttpContext.GetOwinContext().Authentication;
-                        ClaimsIdentity identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);
                         authentication.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, new ClaimsIdentity(identity.Claims, "Application"));
                     }
                     catch (NotFoundException notFoundException)
