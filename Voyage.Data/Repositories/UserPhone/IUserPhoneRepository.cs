@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Amazon.SimpleNotificationService.Model;
 
 namespace Voyage.Data.Repositories.UserPhone
 {
@@ -8,6 +9,6 @@ namespace Voyage.Data.Repositories.UserPhone
 
         string GetE164Format(string phoneNumber);
 
-        Task SendSecurityCode(string phoneNumber, string securityCode);
+        Task<PublishResponse> SendSecurityCode(string phoneNumber, string securityCode);
     }
 }

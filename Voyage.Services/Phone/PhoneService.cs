@@ -80,7 +80,7 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
-                await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+                var response = await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
         }
 
         public async Task SendSecurityCodeToUser(string userName)
