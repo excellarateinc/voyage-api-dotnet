@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentValidation.Attributes;
+using Newtonsoft.Json;
 using Voyage.Models.Validators;
 using Embarr.WebAPI.AntiXss;
 
@@ -16,6 +17,7 @@ namespace Voyage.Models
 
         public string Description { get; set; }
 
+        [JsonProperty("Permissions")]
         public IEnumerable<ClaimModel> Claims { get; set; }
     }
 }

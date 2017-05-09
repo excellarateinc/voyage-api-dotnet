@@ -7,6 +7,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 using FluentAssertions;
 using Moq;
+using Voyage.Models;
 using Voyage.Web.Filters;
 using Voyage.Web.UnitTests.Common;
 using Xunit;
@@ -18,7 +19,7 @@ namespace Voyage.Web.UnitTests.Filters
         [Fact]
         public void ClaimType_Should_Default_To_Constant_Value()
         {
-            new ClaimAuthorizeAttribute().ClaimType.Should().Be(Constants.AppClaims.Type);
+            new ClaimAuthorizeAttribute().ClaimType.Should().Be(AppClaims.Type);
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace Voyage.Web.UnitTests.Filters
         {
             var attribute = new ClaimAuthorizeAttribute { ClaimValue = "list.test" };
 
-            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("app.permission", "list.test") }, "Password");
+            var claimsIdentity = new ClaimsIdentity(new[] { new Claim("authorities", "list.test") }, "Password");
 
             var controllerContext = new HttpControllerContext
             {

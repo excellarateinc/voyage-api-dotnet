@@ -24,7 +24,7 @@ namespace Voyage.Api.Filters
 
         public ClaimAuthorizeAttribute()
         {
-            ClaimType = Constants.AppClaims.Type;
+            ClaimType = AppClaims.Type;
         }
 
         public override void OnAuthorization(HttpActionContext actionContext)

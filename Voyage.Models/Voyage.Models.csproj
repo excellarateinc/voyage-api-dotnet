@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppClaims.cs" />
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />

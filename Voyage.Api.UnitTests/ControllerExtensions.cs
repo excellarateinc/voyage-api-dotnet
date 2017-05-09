@@ -4,6 +4,7 @@ using System.Web.Http;
 using FluentAssertions;
 using Voyage.Api.Filters;
 using Voyage.Api.UnitTests.Common;
+using Voyage.Models;
 
 namespace Voyage.Api.UnitTests
 {
@@ -13,7 +14,7 @@ namespace Voyage.Api.UnitTests
             this TType controller,
             Expression<Action<TType>> expression,
             string claimValue,
-            string claimType = Constants.AppClaims.Type) where TType : ApiController
+            string claimType = AppClaims.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
                 .Should()
