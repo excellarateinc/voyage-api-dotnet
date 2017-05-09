@@ -25,7 +25,7 @@ namespace Voyage.Api.API.V1
         * @apiName GetUsers
         * @apiGroup User
         *
-        * @apiPermission app.permission->list.users
+        * @apiPermission api.users.list
         *
         * @apiUse AuthHeader
         *
@@ -62,7 +62,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ListUsers)]
         [HttpGet]
         [Route("users")]
         public IHttpActionResult GetUsers()
@@ -77,7 +77,7 @@ namespace Voyage.Api.API.V1
         * @apiName UpdateUserAsync
         * @apiGroup User
         *
-        * @apiPermission app.permission->update.user
+        * @apiPermission api.users.update
         *
         * @apiUse AuthHeader
         *
@@ -85,7 +85,7 @@ namespace Voyage.Api.API.V1
         * @apiUse UserSuccessModel
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.UpdateUser)]
+        [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
@@ -100,7 +100,7 @@ namespace Voyage.Api.API.V1
         * @apiName DeleteUserAsync
         * @apiGroup User
         *
-        * @apiPermission app.permission->delete.user
+        * @apiPermission api.users.delete
         *
         * @apiUse AuthHeader
         *
@@ -114,7 +114,7 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteUser)]
+        [ClaimAuthorize(ClaimValue = AppClaims.DeleteUser)]
         [HttpDelete]
         [Route("users/{userId}")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
@@ -132,7 +132,7 @@ namespace Voyage.Api.API.V1
         * @apiName CreateUser
         * @apiGroup User
         *
-        * @apiPermission app.permission->create.user
+        * @apiPermission api.users.create
         * 
         * @apiParamExample {json} Request-Example:
         *      {
@@ -180,7 +180,7 @@ namespace Voyage.Api.API.V1
         *   ]
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateUser)]
+        [ClaimAuthorize(ClaimValue = AppClaims.CreateUser)]
         [HttpPost]
         [Route("users")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
@@ -195,7 +195,7 @@ namespace Voyage.Api.API.V1
         * @apiName GetUserAsync
         * @apiGroup User
         *
-        * @apiPermission app.permission->view.user
+        * @apiPermission api.users.get
         *
         * @apiUse AuthHeader
         *
@@ -226,7 +226,7 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewUser)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ViewUser)]
         [HttpGet]
         [Route("users/{userId}", Name = "GetUserAsync")]
         public async Task<IHttpActionResult> GetUser(string userId)
@@ -241,7 +241,7 @@ namespace Voyage.Api.API.V1
         * @apiName User
         * @apiGroup User Role
         *
-        * @apiPermission app.permission->list.users
+        * @apiPermission api.users.roles.list
         *
         * @apiUse AuthHeader
         *
@@ -250,9 +250,9 @@ namespace Voyage.Api.API.V1
         * @apiSuccess {Object[]} role List of roles
         * @apiSuccess {String} role.id Role ID
         * @apiSuccess {String} role.name Name of the role
-        * @apiSuccess {Object[]} claims List of claims
-        * @apiSuccess {String} claims.claimType Type of claim
-        * @apiSuccess {String} claims.claimValue Value of claim
+        * @apiSuccess {Object[]} permissions List of permissions
+        * @apiSuccess {String} permissions.permissionType Type of permission
+        * @apiSuccess {String} permissions.permissionValue Value of permission
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -260,21 +260,21 @@ namespace Voyage.Api.API.V1
         *       {
         *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
         *           "name": "Basic",
-        *           "claims": [
+        *           "permissions": [
         *               {
-        *                   "claimType": "app.permission",
-        *                   "claimValue": "login"
+        *                   "permissionType": "authorities",
+        *                   "permissionValue": "api.roles.get"
         *               },
         *               {
-        *                   "claimType": "app.permission",
-        *                   "claimValue": "list.user-claims"
+        *                   "permissionType": "authorities",
+        *                   "permissionValue": "api.permission.get"
         *               }
         *   ]
         *
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUsers)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ListUserRole)]
         [Route("users/{userId}/roles")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
@@ -284,39 +284,39 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {get} /v1/users/:userId/claims Get user claims
+        * @api {get} /v1/users/:userId/permissions Get user permissions
         * @apiVersion 1.0.0
         * @apiName Claims
-        * @apiGroup User Claim
+        * @apiGroup User Permission
         *
-        * @apiPermission app.permission->list.user-claims
+        * @apiPermission api.users.permissions.list
         *
         * @apiUse AuthHeader
         *
         * @apiParam {String} userId Id of user
         *
-        * @apiSuccess {Object[]} claims List of user claims
-        * @apiSuccess {String} claims.claimType Type of the claim
-        * @apiSuccess {String} claims.claimValue Value of the claim
+        * @apiSuccess {Object[]} permissions List of user permissions
+        * @apiSuccess {String} permissions.permissionType Type of the permission
+        * @apiSuccess {String} permissions.permissionValue Value of the permission
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
         *       {
-        *           "claimType": "app.permission",
-        *           "claimValue": "login"
+        *           "permissionType": "authorities",
+        *           "permissionValue": "api.users.create"
         *       },
         *       {
-        *           "claimType": "app.permission",
-        *           "claimValue": "list.user-claims"
+        *           "permissionType": "authorities",
+        *           "permissionValue": "api.users.list"
         *       }
         *   ]
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListUserClaims)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ListUserPermissions)]
         [HttpGet]
-        [Route("users/{userId}/claims")]
+        [Route("users/{userId}/permissions")]
         public async Task<IHttpActionResult> GetClaims(string userId)
         {
             var result = await _userService.GetUserClaimsAsync(userId);
@@ -329,7 +329,7 @@ namespace Voyage.Api.API.V1
         * @apiName AssignRole
         * @apiGroup User Role
         *
-        * @apiPermission app.permission->assign.role
+        * @apiPermission api.users.roles.assign
         *
         * @apiUse AuthHeader
         *
@@ -356,7 +356,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.AssignRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.AssignUserRole)]
         [HttpPost]
         [Route("users/{userId}/roles")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
@@ -371,7 +371,7 @@ namespace Voyage.Api.API.V1
         * @apiName GetUserRoleById
         * @apiGroup User Role
         *
-        * @apiPermission app.permission->view.role
+        * @apiPermission api.users.roles.get
         *
         * @apiUse AuthHeader
         *
@@ -404,7 +404,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ViewUserRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
@@ -419,7 +419,7 @@ namespace Voyage.Api.API.V1
         * @apiName RevokeRole
         * @apiGroup User Role
         *
-        * @apiPermission app.permission->revoke.role
+        * @apiPermission api.users.roles.delete
         *
         * @apiUse AuthHeader
         *
@@ -433,7 +433,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.RevokeRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.DeleteUserRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)

@@ -2,7 +2,7 @@
 using Voyage.Web.UnitTests.Common;
 using Xunit;
 
-namespace Voyage.Web.UnitTests.Web
+namespace Voyage.Web.UnitTests
 {
     /// <summary>
     /// The route prefixes are critical to web api routing, let's test the constants so that
@@ -13,7 +13,7 @@ namespace Voyage.Web.UnitTests.Web
         [Fact]
         public void ApplicationName_Should_Return_Known_Value()
         {
-            Constants.ApplicationName.Should().Be("Voyage .Net API");
+            Constants.ApplicationName.Should().Be("Voyage .Net Authorize");
         }
 
         [Fact]

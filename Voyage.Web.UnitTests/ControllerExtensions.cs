@@ -2,10 +2,11 @@
 using System.Linq.Expressions;
 using System.Web.Http;
 using FluentAssertions;
+using Voyage.Models;
 using Voyage.Web.Filters;
 using Voyage.Web.UnitTests.Common;
 
-namespace Voyage.Web.UnitTests.Web
+namespace Voyage.Web.UnitTests
 {
     public static class ControllerExtensions
     {
@@ -13,7 +14,7 @@ namespace Voyage.Web.UnitTests.Web
             this TType controller,
             Expression<Action<TType>> expression,
             string claimValue,
-            string claimType = Constants.AppClaims.Type) where TType : ApiController
+            string claimType = AppClaims.Type) where TType : ApiController
         {
             ReflectionHelper.GetMethod(expression)
                 .Should()

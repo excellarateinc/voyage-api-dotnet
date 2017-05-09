@@ -21,7 +21,7 @@ namespace Voyage.Web.AuthProviders
             var scope = context.OwinContext.GetAutofacLifetimeScope();
             var userService = scope.Resolve<IUserService>();
 
-            ClaimsIdentity addionaloAuthIdentity = userService.CreateClientClaimsIdentityAsync(context.ClientId);
+            ClaimsIdentity addionaloAuthIdentity = await userService.CreateClientClaimsIdentityAsync(context.ClientId);
             var oAuthIdentity = new ClaimsIdentity(context.Options.AuthenticationType);
             oAuthIdentity.AddClaims(addionaloAuthIdentity.Claims);
             var ticket = new AuthenticationTicket(oAuthIdentity, new AuthenticationProperties());
