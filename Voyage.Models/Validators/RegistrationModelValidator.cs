@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+s﻿using FluentValidation;
 using Voyage.Core;
 
 namespace Voyage.Models.Validators
@@ -45,9 +45,7 @@ namespace Voyage.Models.Validators
 
             RuleFor(_ => _.PhoneNumber)
                 .NotEmpty()
-                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is a required field")
-                .Matches(@"\(?\d{3}\)?-? *\d{3}-? *-?\d{4}")
-                .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPhoneNumber, "Invalid Phone number");
+                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is a required field");
         }
     }
 }
