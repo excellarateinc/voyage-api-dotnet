@@ -842,10 +842,21 @@ namespace Voyage.Services.UnitTests
                 .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
+                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                {
+                    new UserPhoneModel
+                    {
+                        PhoneNumber = "(202) 555-0100",
+                        PhoneType = Voyage.Models.Enum.PhoneType.Mobile
+                    }
+                })
                 .Create();
 
             _mockStore.Setup(_ => _.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new ApplicationUser { UserName = "testUserName" });
+
+            _mockPhoneRepository.Setup(c => c.GetE164Format(It.IsAny<string>())).Returns("(202) 555-0100");
+
 
             // ACT
             var ex = Assert.ThrowsAsync<BadRequestException>(async () => await _userService.RegisterAsync(model));

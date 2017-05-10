@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Attributes;
+using System.Collections.Generic;
 using Voyage.Models.Validators;
 
 namespace Voyage.Models
@@ -18,6 +19,6 @@ namespace Voyage.Models
 
         public string LastName { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public List<UserPhoneModel> PhoneNumbers { get; set; }
     }
 }
