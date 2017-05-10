@@ -39,7 +39,7 @@ namespace Voyage.Models.UnitTests.Validators
         {
             _validator.ShouldHaveValidationErrorFor(model => model.Password, "Hellooo");
         }
-
+s
         [Fact]
         public void Should_Have_Error_When_Password_Has_No_Uppercase_Letter()
         {
@@ -76,7 +76,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "notpassword!!",
-                    PhoneNumber = new List<UserPhoneModel>
+                    PhoneNumbers = new List<UserPhoneModel>
                                     {
                                         new UserPhoneModel
                                         {
@@ -98,7 +98,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "password!!!",
-                    PhoneNumber = new List<UserPhoneModel>
+                    PhoneNumbers = new List<UserPhoneModel>
                                     {
                                         new UserPhoneModel
                                         {
