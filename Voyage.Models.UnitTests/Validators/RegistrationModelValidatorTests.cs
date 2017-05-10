@@ -137,27 +137,5 @@ namespace Voyage.Models.UnitTests.Validators
         {
             _validator.ShouldHaveValidationErrorFor(model => model.UserName, null as string);
         }
-
-        //[Fact]
-        //public void Should_Have_Error_When_PhoneNumber_Is_Not_In_Valid_Format()
-        //{
-        //    _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumber, "123abc4567");
-        //}
-
-        //[Fact]
-        //public void Should_Not_Have_Error_When_PhoneNumber_Is_In_Valid_Format()
-        //{
-        //    List<string> phoneNumbers = new List<string>();
-
-        //    phoneNumbers.Add("3087774825");
-        //    phoneNumbers.Add("(281)388-0388");
-        //    phoneNumbers.Add("(979) 778-0978");
-        //    phoneNumbers.Add("281-342-2452");
-
-        //    foreach (string phoneNumber in phoneNumbers)
-        //    {
-        //        _validator.ShouldNotHaveValidationErrorFor(model => model.PhoneNumber, phoneNumber);
-        //    }
-        //}
     }
 }
