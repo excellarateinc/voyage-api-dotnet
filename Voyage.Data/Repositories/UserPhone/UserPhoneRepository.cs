@@ -64,7 +64,7 @@ namespace Voyage.Data.Repositories.UserPhone
         public bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber)
         {
             var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-            var phone = phoneNumberUtil.Parse(phoneNumber, "IN");
+            var phone = phoneNumberUtil.Parse(phoneNumber, "US");
             formatedPhoneNumber = phoneNumberUtil.Format(phone, PhoneNumberFormat.E164);
 
             return phoneNumberUtil.IsValidNumber(phone);
