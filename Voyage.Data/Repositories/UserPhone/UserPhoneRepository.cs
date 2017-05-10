@@ -64,7 +64,7 @@ namespace Voyage.Data.Repositories.UserPhone
         public bool IsValidPhoneNumber(string phoneNumber, out string formatedPhoneNumber)
         {
             var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-            var phone = phoneNumberUtil.Parse(phoneNumber, "US");
+            var phone = phoneNumberUtil.Parse(phoneNumber, "IN");
             formatedPhoneNumber = phoneNumberUtil.Format(phone, PhoneNumberFormat.E164);
 
             return phoneNumberUtil.IsValidNumber(phone);
@@ -94,6 +94,7 @@ namespace Voyage.Data.Repositories.UserPhone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
+            PublishResponse publishResponse = new PublishResponse();
             var formatedPhoneNumber = string.Empty;
             if (IsValidPhoneNumber(phoneNumber, out formatedPhoneNumber))
             {
@@ -103,7 +104,7 @@ namespace Voyage.Data.Repositories.UserPhone
                 var publishRequest = new PublishRequest
                 {
                     Message = "Security Code: " + securityCode,
-                    PhoneNumber = formatedPhoneNumber
+                    PhoneNumber = formatedPhoneNumber,
                 };
 
                 await client.PublishAsync(publishRequest);
