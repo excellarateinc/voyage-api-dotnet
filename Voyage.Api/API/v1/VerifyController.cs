@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,7 +34,7 @@ namespace Voyage.Api.API.v1
         * @apiName GetUsers
         * @apiGroup User
         *
-        * @apiPermission authenticated
+        * @apiPermission authorized
         *
         * @apiUse AuthHeader
         *
@@ -42,15 +43,13 @@ namespace Voyage.Api.API.v1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewUser)]
+        [Authorize]
         [HttpGet]
         [Route("verify/send")]
         public async Task<IHttpActionResult> SendVerificationCode()
         {
-            _phoneService.SendSecurityCodeToUser(User.Identity.Name.ToString());
-            string securityCode = _phoneService.GenerateSecurityCode();
-            await _phoneService.SendSecurityCode("", securityCode);
-            return BadRequest();
+            await _phoneService.SendSecurityCodeToUserPhoneNumber(User.Identity.Name); 
+            return Ok();
         }
     }
 }

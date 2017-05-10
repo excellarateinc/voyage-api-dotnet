@@ -92,7 +92,7 @@ namespace Voyage.Data.Repositories.UserPhone
         /// <param name="phoneNumber"></param>
         /// <param name="securityCode"></param>
         /// <returns></returns>
-        public async Task<PublishResponse> SendSecurityCode(string phoneNumber, string securityCode)
+        public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
             PublishResponse publishResponse = new PublishResponse();
             var formatedPhoneNumber = string.Empty;
@@ -101,17 +101,14 @@ namespace Voyage.Data.Repositories.UserPhone
                 var credential = new BasicAWSCredentials(ConfigurationManager.AppSettings.Get("AwsAccessKey"), ConfigurationManager.AppSettings.Get("AwsSecretKey"));
                 var client = new AmazonSimpleNotificationServiceClient(credential, RegionEndpoint.USEast1);
 
-                // USEast1 APSouth1
                 var publishRequest = new PublishRequest
                 {
                     Message = "Security Code: " + securityCode,
                     PhoneNumber = formatedPhoneNumber,
                 };
 
-                publishResponse = await client.PublishAsync(publishRequest);
+                await client.PublishAsync(publishRequest);
             }
-
-            return publishResponse;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Voyage.Data.Repositories.UserPhone
 
         string GetE164Format(string phoneNumber);
 
-        Task<PublishResponse> SendSecurityCode(string phoneNumber, string securityCode);
+        Task SendSecurityCode(string phoneNumber, string securityCode);
     }
 }

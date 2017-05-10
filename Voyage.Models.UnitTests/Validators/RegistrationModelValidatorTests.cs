@@ -76,7 +76,13 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "notpassword!!",
-                    PhoneNumbers = "1234567890"
+                    PhoneNumbers = new List<UserPhoneModel>
+                                    {
+                        new UserPhoneModel
+                        {
+                            PhoneNumber = string.Empty
+                        }
+                    }
                 });
         }
 
@@ -92,7 +98,13 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "password!!!",
-                    PhoneNumbers = "1234567890"
+                    PhoneNumbers = new List<UserPhoneModel>
+                                    {
+                        new UserPhoneModel
+                        {
+                            PhoneNumber = string.Empty
+                        }
+                    }
                 });
         }
 

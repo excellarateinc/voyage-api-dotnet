@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using AutoMapper;
+using Amazon.SimpleNotificationService.Model;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
@@ -80,29 +81,40 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
-                var response = await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+                await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
         }
 
-        public async Task SendSecurityCodeToUser(string userName)
+        /// <summary>
+        /// get the phone numbers of the logged in user
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task SendSecurityCodeToUserPhoneNumber(string userName)
         {
-            string securityCode = GenerateSecurityCode();
-            var user = await GetUserAsync("aa1aab77-570e-41fc-9c2d-ae8fd843f046");
+            try
+            {
+                string securityCode = GenerateSecurityCode();
+                var user = await _userManager.FindByNameAsync(userName);
 
-            // Limit the number of phones that can receive a verification code to 5. This prevents an attacker from overloading
-            // the list of phone numbers for a user and spamming an infinite number of phones with security codes.
-            var phones = user.Phones.Where(userPhone => userPhone.PhoneType == Models.Enum.PhoneType.Mobile)
-                .Select(mobilePhone => mobilePhone.PhoneNumber).Take(5).ToList();
-        if (!phones.Any())
-            throw new BadRequestException("The verification phone number is invalid. Please contact technical support for assistance");
+                // Limit the number of phones that can receive a verification code to 5. This prevents an attacker from overloading
+                // the list of phone numbers for a user and spamming an infinite number of phones with security codes.
+                var phones = user.Phones.Where(userPhone => userPhone.PhoneType == Models.Enum.PhoneType.Mobile)
+                    .Take(5).ToList();
 
-        user.IsVerifyRequired = true;
+                if (!phones.Any())
+                    throw new BadRequestException("The verification phone number is invalid. Please contact technical support for assistance");
 
-        foreach (var phone in phones)
-        {
-               await SendSecurityCode(phone, securityCode);
-        }
-
-            // throw new exception    Failure sending text message. Please contact support.'
+                // send the security code to the phone number and save the security code to the database
+                foreach (var phone in phones)
+                {
+                    await SendSecurityCode(phone.PhoneNumber, securityCode);
+                    InsertSecurityCode(phone.Id, securityCode);
+                }
+            }
+            catch (Exception)
+            {
+                throw new BadRequestException(HttpStatusCode.InternalServerError.ToString(), "Failure sending text message. Please contact support.");
+            }
         }
 
         /// <summary>
