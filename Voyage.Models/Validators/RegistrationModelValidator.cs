@@ -1,4 +1,4 @@
-ss﻿using FluentValidation;
+﻿﻿using FluentValidation;
 using Voyage.Core;
 
 namespace Voyage.Models.Validators
