@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Voyage.Core;
 using Voyage.Services.User;
+using Voyage.Core.Exceptions;
 
 namespace Voyage.Web.AuthProviders
 {
@@ -38,17 +39,34 @@ namespace Voyage.Web.AuthProviders
             // TODO Your application will need to verify client id and client secret from you database
             string clientId;
             string clientSecret;
-            if (context.TryGetBasicCredentials(out clientId, out clientSecret) ||
-                context.TryGetFormCredentials(out clientId, out clientSecret))
+            string grantType = context.Parameters.Get("grant_type");
+            if (string.IsNullOrEmpty(grantType))
             {
-                if (clientId == Clients.Client1.Id && clientSecret == Clients.Client1.Secret)
+                throw new BadRequestException("Unsupported_grant_type");
+            }
+
+            if (grantType.Equals("client_credentials"))
+            {
+                if (context.TryGetBasicCredentials(out clientId, out clientSecret) ||
+                context.TryGetFormCredentials(out clientId, out clientSecret))
                 {
-                    context.Validated();
+                    if (clientId == Clients.Client1.Id && clientSecret == Clients.Client1.Secret)
+                    {
+                        context.Validated();
+                    }
+                    else if (clientId == Clients.Client2.Id && clientSecret == Clients.Client2.Secret)
+                    {
+                        context.Validated();
+                    }
                 }
-                else if (clientId == Clients.Client2.Id && clientSecret == Clients.Client2.Secret)
-                {
-                    context.Validated();
-                }
+            }
+            else if (grantType.Equals("password"))
+            {
+                context.Validated();
+            }
+            else
+            {
+                context.Rejected();
             }
 
             return Task.FromResult<object>(null);
@@ -69,6 +87,10 @@ namespace Voyage.Web.AuthProviders
             else if (context.ClientId == Clients.Client2.Id)
             {
                 context.Validated(Clients.Client2.RedirectUrl);
+            }
+            else
+            {
+                context.Rejected();
             }
 
             return Task.FromResult(0);

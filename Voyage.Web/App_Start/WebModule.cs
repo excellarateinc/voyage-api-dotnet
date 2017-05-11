@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Voyage.Models.Entities;
+using System;
 
 namespace Voyage.Web
 {
@@ -74,8 +75,13 @@ namespace Voyage.Web
                 .InstancePerRequest();
 
             builder.RegisterType<ApplicationJwtProvider>()
-                .AsSelf()
-                .SingleInstance();
+               .AsSelf()
+               .SingleInstance();
+
+            // Register all sub classes to ApplicationJwtProvider
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+                .Where(t => t.BaseType == typeof(ApplicationJwtProvider))
+                .As<ApplicationJwtProvider>();
 
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
