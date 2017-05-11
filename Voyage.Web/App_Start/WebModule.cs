@@ -75,8 +75,8 @@ namespace Voyage.Web
                 .InstancePerRequest();
 
             builder.RegisterType<ApplicationJwtProvider>()
-               .AsSelf()
-               .SingleInstance();
+                .AsSelf()
+                .SingleInstance();
 
             // Register all sub classes to ApplicationJwtProvider
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
