@@ -2,6 +2,7 @@
 using Autofac;
 using Voyage.Services.ApplicationInfo;
 using Voyage.Services.Audit;
+using Voyage.Services.Client;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.KeyContainer;
@@ -31,6 +32,10 @@ namespace Voyage.Services
 
             builder.RegisterType<UserService>()
                 .As<IUserService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<ClientService>()
+                .As<IClientService>()
                 .InstancePerRequest();
 
             builder.RegisterType<PhoneService>()
