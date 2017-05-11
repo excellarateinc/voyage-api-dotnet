@@ -1,4 +1,4 @@
-s﻿using FluentValidation;
+ss﻿using FluentValidation;
 using Voyage.Core;
 
 namespace Voyage.Models.Validators
@@ -43,7 +43,7 @@ namespace Voyage.Models.Validators
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Last name is a required field");
 
-            RuleFor(_ => _.PhoneNumber)
+            RuleFor(_ => _.PhoneNumbers)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone Number is a required field");
         }
