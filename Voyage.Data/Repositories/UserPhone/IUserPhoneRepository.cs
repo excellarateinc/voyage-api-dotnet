@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Amazon.SimpleNotificationService.Model;
 
 namespace Voyage.Data.Repositories.UserPhone
 {
