@@ -78,11 +78,11 @@ namespace Voyage.Models.UnitTests.Validators
                     ConfirmPassword = "notpassword!!",
                     PhoneNumbers = new List<UserPhoneModel>
                                     {
-                        new UserPhoneModel
-                        {
-                            PhoneNumber = string.Empty
-                        }
-                    }
+                                        new UserPhoneModel
+                                        {
+                                            PhoneNumber=string.Empty
+                                        }
+                                    }
                 });
         }
 
@@ -100,11 +100,11 @@ namespace Voyage.Models.UnitTests.Validators
                     ConfirmPassword = "password!!!",
                     PhoneNumbers = new List<UserPhoneModel>
                                     {
-                        new UserPhoneModel
-                        {
-                            PhoneNumber = string.Empty
-                        }
-                    }
+                                        new UserPhoneModel
+                                        {
+                                            PhoneNumber=string.Empty
+                                        }
+                                    }
                 });
         }
 

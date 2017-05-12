@@ -91,7 +91,7 @@ namespace Voyage.Services.User
 
         public async Task<UserModel> CreateUserAsync(UserModel model)
         {
-            var appUser = new ApplicationUser();
+            var appUser = new ApplicationUser { IsActive = true, IsVerifyRequired = true };
             _mapper.Map<UserModel, ApplicationUser>(model, appUser);
             IdentityResult result = await _userManager.CreateAsync(appUser, "Hello123!");
             if (!result.Succeeded)
@@ -119,7 +119,7 @@ namespace Voyage.Services.User
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
             if (appUser != null)
-                    throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
 
             var identityResult = await _userManager.CreateAsync(user, model.Password);
             if (!identityResult.Succeeded)
@@ -187,25 +187,28 @@ namespace Voyage.Services.User
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        public ClaimsIdentity CreateClientClaimsIdentityAsync(string clientId)
+        public async Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId)
         {
-            // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
-            var identity = new ClaimsIdentity("JWT");
-            if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
+            return await Task.Run(() =>
             {
-                // Add in role claims
-                var userRoles = new List<string> { "Administrator" };
-                var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                    .SelectMany(_ => _)
-                    .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-                identity.AddClaims(roleClaims);
+                // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
+                var identity = new ClaimsIdentity("JWT");
+                if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
+                {
+                    // Add in role claims
+                    var userRoles = new List<string> { "Administrator" };
+                    var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
+                        .SelectMany(_ => _)
+                        .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
+                    identity.AddClaims(roleClaims);
 
-                var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
-                identity.AddClaim(new Claim("client_id", client.Id));
-                identity.AddClaim(new Claim("client_secret", client.Secret));
-            }
+                    var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
+                    identity.AddClaim(new Claim("client_id", client.Id));
+                    identity.AddClaim(new Claim("client_secret", client.Secret));
+                }
 
-            return identity;
+                return identity;
+            });
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)

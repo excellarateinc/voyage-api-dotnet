@@ -1,4 +1,6 @@
-﻿using Voyage.Core;
+﻿using System.Net;
+using System.Net.Http;
+using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -19,12 +21,12 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles/:roleId Get a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoleById
         * @apiGroup Role
         *
-        * @apiPermission app.permission->view.role
-        *
+        * @apiPermission api.roles.get        
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
@@ -54,7 +56,7 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ViewRole)]
         [HttpGet]
         [Route("roles/{roleId}", Name = "GetRoleById")]
         public IHttpActionResult GetRoleById(string roleId)
@@ -65,12 +67,12 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {get} /v1/roles Get all roles
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName GetRoles
         * @apiGroup Role
         *
-        * @apiPermission app.permission->list.roles
-        *
+        * @apiPermission api.roles.list
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles
         * @apiUse AuthHeader
         *
         * @apiSuccess {Object[]} roles List of roles
@@ -101,7 +103,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoles)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ListRoles)]
         [HttpGet]
         [Route("roles")]
         public IHttpActionResult GetRoles()
@@ -112,12 +114,19 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {post} /v1/roles Create a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName CreateRole
         * @apiGroup Role
         *
-        * @apiPermission app.permission->create.role
+        * @apiPermission api.roles.create
+        * 
+        * @apiParamExample {json} Request-Example:
+        *   {
+        *     "name": "Billing"
+        *     "description": "Billing Department"
+        *   }
         *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles
         * @apiUse AuthHeader
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
@@ -127,15 +136,16 @@ namespace Voyage.Api.API.V1
         *       "Location": "http://localhost:52431/api/v1/roles/34d87057-fafa-4e5d-822b-cddb1700b507"
         *   }
         *
-        * @apiParam {Object} role Role
-        * @apiParam {String} role.id Role ID
+        * @apiParam {Object} role Role        
         * @apiParam {String} role.name Name of the role
+        * @apiParam {String} role.description Description for this role
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 CREATED
         *   {
         *       "id": "34d87057-fafa-4e5d-822b-cddb1700b507",
-        *       "name": "New Role 2",
+        *       "name": "Billing",
+        *       "description": "Billing Department"
         *       "claims": []
         *   }
         *
@@ -143,7 +153,7 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.CreateRole)]
         [HttpPost]
         [Route("roles")]
         public async Task<IHttpActionResult> CreateRole(RoleModel model)
@@ -153,37 +163,37 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {post} /v1/roles/:roleId/claims Create a role claim
-        * @apiVersion 0.1.0
-        * @apiName AddRoleClaim
-        * @apiGroup Role
+        * @api {post} /v1/roles/:roleId/permissions Create a role permission
+        * @apiVersion 1.0.0
+        * @apiName AddRolePermission
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->create.claim
+        * @apiPermission api.roles.permission.add
         *
         * @apiHeader (Response Headers) {String} location Location of the newly created resource
         *
         * @apiHeaderExample {json} Location-Example
         *   {
-        *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/claims/219"
+        *       "Location": "http://localhost:52431/api/v1/roles/6d1d5caf-d29d-4bf2-a581-0a35081a1240/permissions/219"
         *   }
         *
         * @apiUse AuthHeader
-        *
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims
         * @apiParam {string} roleId Role ID
-        * @apiParam {Object} claim Claim
-        * @apiParam {String} claim.claimType Type of the claim
-        * @apiParam {String} claim.claimValue Value of the claim
+        * @apiParam {Object} permission Permission
+        * @apiParam {String} permission.permissionType Type of the permission
+        * @apiParam {String} permission.permissionValue Value of the permission
         *
-        * @apiSuccess {Object} claim Claim
-        * @apiSuccess {Integer} claim.id Claim ID
-        * @apiSuccess {String} claim.claimType Type
-        * @apiSuccess {String} claim.claimValue Value
+        * @apiSuccess {Object} permission Permission
+        * @apiSuccess {Integer} permission.id Claim ID
+        * @apiSuccess {String} permission.permissionType Type
+        * @apiSuccess {String} permission.permissionValue Value
         *
         *  @apiSuccessExample Success-Response:
         *   HTTP/1.1 201 Created
         *   {
-        *       "claimType": "app.permission",
-        *       "claimValue": "list.newClaim",
+        *       "permissionType": "app.permission",
+        *       "permissionValue": "list.newPermission",
         *       "id": 219
         *   }
         *
@@ -191,12 +201,12 @@ namespace Voyage.Api.API.V1
         *
         * @apiUse BadRequestError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.CreateClaim)]
-        [Route("roles/{roleId}/claims")]
+        [ClaimAuthorize(ClaimValue = AppClaims.AddRolePermission)]
+        [Route("roles/{roleId}/permissions")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel claim)
+        public async Task<IHttpActionResult> AddClaim([FromUri] string roleId, ClaimModel permission)
         {
-            var result = await _roleService.AddClaimAsync(roleId, claim);
+            var result = await _roleService.AddClaimAsync(roleId, permission);
             var actionResult = CreatedAtRoute(
                 "GetClaimById",
                 new
@@ -209,54 +219,54 @@ namespace Voyage.Api.API.V1
         }
 
         /**
-        * @api {get} /v1/roles/:roleId/claims/:claimId Get a claim
-        * @apiVersion 0.1.0
-        * @apiName GetClaimById
-        * @apiGroup Role
+        * @api {get} /v1/roles/:roleId/permissions/:permissionId Get a permission
+        * @apiVersion 1.0.0
+        * @apiName GetPermissionById
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->view.claim
-        *
+        * @apiPermission api.roles.permission.get
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
-        * @apiParam {String} claimId Claim ID
+        * @apiParam {String} permissionId Permission ID
         *
-        * @apiSuccess {Object} claim Claim
-        * @apiSuccess {Integer} claim.id Claim ID
-        * @apiSuccess {String} claim.claimType Type
-        * @apiSuccess {String} claim.claimValue Value
+        * @apiSuccess {Object} permission Permission
+        * @apiSuccess {Integer} permission.id Permission ID
+        * @apiSuccess {String} permission.permissionType Type
+        * @apiSuccess {String} permission.permissionValue Value
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   {
-        *       "claimType": "app.permission",
-        *       "claimValue": "list.newClaim",
+        *       "permissionType": "app.permission",
+        *       "permissionValue": "list.newPermission",
         *       "id": 219
         *   }
         * @apiUse UnauthorizedError
         * @apiUse NotFoundError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ViewClaim)]
-        [Route("roles/{roleId}/claims/{claimId}", Name = "GetClaimById")]
+        [ClaimAuthorize(ClaimValue = AppClaims.GetRolePermission)]
+        [Route("roles/{roleId}/permissions/{permissionId}", Name = "GetPermissionById")]
         [HttpGet]
-        public IHttpActionResult GetClaimById(string roleId, int claimId)
+        public IHttpActionResult GetClaimById(string roleId, int permissionId)
         {
-            var result = _roleService.GetClaimById(roleId, claimId);
+            var result = _roleService.GetClaimById(roleId, permissionId);
             return Ok(result);
         }
 
         /**
-        * @api {delete} /v1/roles/:roleId/claims/:claimId Remove a role claim
-        * @apiVersion 0.1.0
-        * @apiName RemoveRoleClaim
-        * @apiGroup Role
+        * @api {delete} /v1/roles/:roleId/permissions/:permissionId Remove a role permission
+        * @apiVersion 1.0.0
+        * @apiName RemoveRolePermission
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->delete.role-claim
-        *
+        * @apiPermission api.roles.permission.delete
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims/:claimId
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
-        * @apiParam {Integer} claimId Claim ID
+        * @apiParam {Integer} permissionId Permission ID
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
@@ -264,46 +274,46 @@ namespace Voyage.Api.API.V1
         * @apiUse UnauthorizedError
         *
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRoleClaim)]
+        [ClaimAuthorize(ClaimValue = AppClaims.DeleteRolePermission)]
         [HttpDelete]
-        [Route("roles/{roleId}/claims/{claimId}")]
-        public IHttpActionResult RemoveClaim(string roleId, int claimId)
+        [Route("roles/{roleId}/permissions/{permissionId}")]
+        public IHttpActionResult RemoveClaim(string roleId, int permissionId)
         {
-            _roleService.RemoveClaim(roleId, claimId);
+            _roleService.RemoveClaim(roleId, permissionId);
             return Ok();
         }
 
         /**
-        * @api {get} /v1/roles/:roleId/claims Get role claims
-        * @apiVersion 0.1.0
-        * @apiName GetRoleClaims
-        * @apiGroup Role
+        * @api {get} /v1/roles/:roleId/permissions Get role permissions
+        * @apiVersion 1.0.0
+        * @apiName GetRolePermissions
+        * @apiGroup Role Permission
         *
-        * @apiPermission app.permission->list.role-claims
-        *
+        * @apiPermission api.roles.permission.list
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId/claims
         * @apiParam {String} roleId Role ID
         *
         * @apiUse AuthHeader
         *
-        * @apiSuccess {Object[]} claims Claims associated to the role
-        * @apiSuccess {String} claims.claimType Type of the claim
-        * @apiSuccess {String} claims.claimValue Value of the claim
+        * @apiSuccess {Object[]} permissions Permissions associated to the role
+        * @apiSuccess {String} permissions.permissionType Type of the claim
+        * @apiSuccess {String} permissions.permissionValue Value of the claim
         *
         * @apiSuccessExample Success-Response:
         *   HTTP/1.1 200 OK
         *   [
         *       {
-        *           "claimType": "app.permission",
-        *           "claimValue": "list.newClaim",
+        *           "permissionType": "app.permission",
+        *           "permissionValue": "list.newPermission",
         *           "id": 17
         *       }
         *   ]
         *
         * @apiUse UnauthorizedError
         **/
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.ListRoleClaims)]
+        [ClaimAuthorize(ClaimValue = AppClaims.ListRolePermission)]
         [HttpGet]
-        [Route("roles/{roleId}/claims")]
+        [Route("roles/{roleId}/permissions")]
         public IHttpActionResult GetClaims(string roleId)
         {
             var result = _roleService.GetRoleClaimsByRoleId(roleId);
@@ -312,31 +322,31 @@ namespace Voyage.Api.API.V1
 
         /**
         * @api {delete} /v1/roles/:roleId Delete a role
-        * @apiVersion 0.1.0
+        * @apiVersion 1.0.0
         * @apiName RemoveRole
         * @apiGroup Role
+        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/roles/:roleId
         *
-        *
-        * @apiPermission app.permission->delete.role
+        * @apiPermission api.roles.delete
         *
         * @apiUse AuthHeader
         *
         * @apiParam {String} roleId Role ID
         *
         * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
+        *   HTTP/1.1 204 NO CONTENT
         *
         * @apiUse UnauthorizedError
         *
         * @apiUse NotFoundError
         **/
         [HttpDelete]
-        [ClaimAuthorize(ClaimValue = Constants.AppClaims.DeleteRole)]
+        [ClaimAuthorize(ClaimValue = AppClaims.DeleteRole)]
         [Route("roles/{roleId}")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
-            var result = await _roleService.RemoveRoleAsync(roleId);
-            return Ok(result);
+            await _roleService.RemoveRoleAsync(roleId);
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
         }
     }
 }
