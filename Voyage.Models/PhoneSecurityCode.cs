@@ -5,8 +5,8 @@ using Voyage.Models.Validators;
 
 namespace Voyage.Models
 {
-    [Validator(typeof(CodeValidator))]
-    public class CodeModel
+    [Validator(typeof(PhoneSecurityCodeValidator))]
+    public class PhoneSecurityCode
     {
         [AntiXss]
         public string Code { get; set; }

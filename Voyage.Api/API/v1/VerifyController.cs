@@ -69,11 +69,10 @@ namespace Voyage.Api.API.v1
         [Authorize]
         [HttpPost]
         [Route("verify")]
-        public async Task<IHttpActionResult> Verify([FromBody] CodeModel codeModel)
+        public async Task<IHttpActionResult> Verify([FromBody] PhoneSecurityCode phoneSecurityCode)
         {
             var userName = await _userService.GetUserByNameAsync(User.Identity.Name);
-
-            await _phoneService.IsValidSecurityCode(userName.Id, codeModel.Code);
+            await _phoneService.IsValidSecurityCode(userName.Id, phoneSecurityCode.Code);
 
             return Ok();
         }

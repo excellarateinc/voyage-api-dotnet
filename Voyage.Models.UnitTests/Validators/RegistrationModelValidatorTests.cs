@@ -76,7 +76,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "notpassword!!",
-                    PhoneNumber = "1234567890"
+                    PhoneNumbers = "1234567890"
                 });
         }
 
@@ -92,7 +92,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "password!!!",
-                    PhoneNumber = "1234567890"
+                    PhoneNumbers = "1234567890"
                 });
         }
 
@@ -129,7 +129,7 @@ namespace Voyage.Models.UnitTests.Validators
         [Fact]
         public void Should_Have_Error_When_PhoneNumber_Is_Not_In_Valid_Format()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumber, "123abc4567");
+            _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumbers, "123abc4567");
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Voyage.Models.UnitTests.Validators
 
             foreach (string phoneNumber in phoneNumbers)
             {
-                _validator.ShouldNotHaveValidationErrorFor(model => model.PhoneNumber, phoneNumber);
+                _validator.ShouldNotHaveValidationErrorFor(model => model.PhoneNumbers, phoneNumber);
             }
         }
     }

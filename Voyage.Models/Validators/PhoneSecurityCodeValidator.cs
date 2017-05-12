@@ -3,9 +3,9 @@ using Voyage.Core;
 
 namespace Voyage.Models.Validators
 {
-    public class CodeValidator : AbstractValidator<CodeModel>
+    public class PhoneSecurityCodeValidator : AbstractValidator<PhoneSecurityCode>
     {
-        public CodeValidator()
+        public PhoneSecurityCodeValidator()
         {
             RuleFor(_ => _.Code)
                 .Length(6)
