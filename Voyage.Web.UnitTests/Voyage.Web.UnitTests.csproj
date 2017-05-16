@@ -187,8 +187,6 @@
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperCollection.cs" />
     <Compile Include="Common\AutoMapperFixture\AutoMapperFixture.cs" />
-    <Compile Include="AuthProviders\ApplicationJwtProviderTests.cs" />
-    <Compile Include="AuthProviders\IdentityProviderTests.cs" />
     <Compile Include="ConstantsTests.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Extensions\ModelErrorExtensionsTests.cs" />
@@ -231,6 +229,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AuthProviders\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>

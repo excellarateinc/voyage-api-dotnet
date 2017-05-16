@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -9,10 +8,10 @@ using Autofac.Integration.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Voyage.Core.Exceptions;
+using Voyage.Security.Oauth2.Models;
 using Voyage.Services.User;
-using Voyage.Web.Models;
 
-namespace Voyage.Web.Controllers
+namespace Voyage.Security.Oauth2.Controllers
 {
     public class AccountController : Controller
     {
@@ -40,19 +39,14 @@ namespace Voyage.Web.Controllers
                     catch (NotFoundException notFoundException)
                     {
                         loginModel.NotFoundException = notFoundException;
-                        return View(loginModel);
+                        return View("VoyageLogin", loginModel);
                     }
                 }
             }
 
-            return View(loginModel);
+            return View("VoyageLogin", loginModel);
         }
-
-        public ActionResult Logout()
-        {
-            return View();
-        }
-
+        
         private LoginModel GetModel()
         {
             var loginModel = new LoginModel();

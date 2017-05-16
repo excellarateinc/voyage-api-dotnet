@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -8,11 +7,11 @@ using Autofac.Integration.Owin;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
+using Voyage.Security.Oauth2.Filters;
 using Voyage.Services.PasswordRecovery;
-using Voyage.Web.Filters;
 using Voyage.Web.Models;
 
-namespace Voyage.Web.Controllers
+namespace Voyage.Security.Oauth2.Controllers
 {
     public class ForgotpasswordController : Controller
     {

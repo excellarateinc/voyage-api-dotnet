@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using Voyage.Core;
 
-namespace Voyage.Web.Controllers
+namespace Voyage.Security.Oauth2.Controllers
 {
     public class OAuthController : Controller
     {

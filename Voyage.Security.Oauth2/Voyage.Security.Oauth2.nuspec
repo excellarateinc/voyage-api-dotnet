@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VoyageSecurity</id>
+    <version>1.0.3</version>
+    <title>Security</title>
+    <authors>Voyage</authors>
+    <owners>Voyage Author</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Oauth2 Security</description>
+    <releaseNotes>This is testing nuget packaging.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Voyage Oauth2</tags>
+  </metadata>
+</package>

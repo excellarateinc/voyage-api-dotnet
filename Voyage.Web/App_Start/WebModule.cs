@@ -2,7 +2,6 @@
 using Autofac.Integration.WebApi;
 using Voyage.Core;
 using Voyage.Services.IdentityManagers;
-using Voyage.Web.AuthProviders;
 using Voyage.Web.Middleware;
 using Voyage.Web.Middleware.Processors;
 using Microsoft.AspNet.Identity;
@@ -66,16 +65,6 @@ namespace Voyage.Web
             builder.Register(c => c.Resolve<HttpRequestMessage>().GetOwinContext())
                 .As<IOwinContext>()
                 .InstancePerRequest();
-
-            // Configure the concrete implementation of the
-            // IdentityProvider.
-            builder.RegisterType<IdentityProvider>()
-                .AsImplementedInterfaces()
-                .InstancePerRequest();
-
-            builder.RegisterType<ApplicationJwtProvider>()
-                .AsSelf()
-                .SingleInstance();
 
             // Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>

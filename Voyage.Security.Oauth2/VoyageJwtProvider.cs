@@ -4,12 +4,12 @@ using Autofac;
 using Autofac.Integration.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using Voyage.Core;
+using Voyage.Services.Client;
 using Voyage.Services.User;
 
-namespace Voyage.Web.AuthProviders
+namespace Voyage.Security.Oauth2
 {
-    public class ApplicationJwtProvider : OAuthAuthorizationServerProvider
+    public class VoyageJwtProvider : OAuthAuthorizationServerProvider
     {
         /// <summary>
         /// Client credentials is used primary server to server authentication
@@ -33,7 +33,7 @@ namespace Voyage.Web.AuthProviders
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             // TODO Your application will need to verify client id and client secret from you database
             string clientId;
@@ -41,17 +41,14 @@ namespace Voyage.Web.AuthProviders
             if (context.TryGetBasicCredentials(out clientId, out clientSecret) ||
                 context.TryGetFormCredentials(out clientId, out clientSecret))
             {
-                if (clientId == Clients.Client1.Id && clientSecret == Clients.Client1.Secret)
-                {
-                    context.Validated();
-                }
-                else if (clientId == Clients.Client2.Id && clientSecret == Clients.Client2.Secret)
+                var scope = context.OwinContext.GetAutofacLifetimeScope();
+                var clientService = scope.Resolve<IClientService>();
+
+                if (await clientService.IsValidClientAsync(clientId, clientSecret))
                 {
                     context.Validated();
                 }
             }
-
-            return Task.FromResult<object>(null);
         }
 
         /// <summary>
@@ -59,19 +56,16 @@ namespace Voyage.Web.AuthProviders
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
+        public override async Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            // TODO Implement client id and redirect url against your application database
-            if (context.ClientId == Clients.Client1.Id)
-            {
-                context.Validated(Clients.Client1.RedirectUrl);
-            }
-            else if (context.ClientId == Clients.Client2.Id)
-            {
-                context.Validated(Clients.Client2.RedirectUrl);
-            }
+            var scope = context.OwinContext.GetAutofacLifetimeScope();
+            var clientService = scope.Resolve<IClientService>();
+            var client = await clientService.GetClientAsync(context.ClientId);
 
-            return Task.FromResult(0);
+            if (client != null)
+            {
+                context.Validated(client.RedirectUrl);
+            }
         }
     }
 }

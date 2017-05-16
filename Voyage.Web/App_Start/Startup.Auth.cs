@@ -1,20 +1,10 @@
-﻿using Autofac;
+﻿using System.Configuration;
 using FluentValidation.WebApi;
-using Voyage.Web.AuthProviders;
 using Voyage.Web.Middleware;
-using Microsoft.Owin;
 using Microsoft.Owin.Cors;
-using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Configuration;
 using System.Web.Http;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Jwt;
-using Voyage.Core;
-using Voyage.Services.KeyContainer;
-using Voyage.Web.Formats;
+using Voyage.Security.Oauth2;
 
 namespace Voyage.Web
 {
@@ -26,9 +16,6 @@ namespace Voyage.Web
 
             // Build the container
             ContainerConfig.Register(httpConfig);
-
-            // Configure API
-            // WebApiConfig.Register(httpConfig);
 
             // configure FluentValidation model validator provider
             FluentValidationModelValidatorProvider.Configure(httpConfig);
@@ -45,49 +32,11 @@ namespace Voyage.Web
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
-            // 5. Configure OAuth.
-            // Enable Application Sign In Cookie
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            app.UseVoyageOauth2(new VoyageOauth2Configuration
             {
-                AuthenticationType = "Application",
-                AuthenticationMode = AuthenticationMode.Passive,
-                LoginPath = new PathString(Paths.LoginPath),
-                LogoutPath = new PathString(Paths.LogoutPath),
-            });
-
-            // Enable External Sign In Cookie
-            app.SetDefaultSignInAsAuthenticationType("External");
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = "External",
-                AuthenticationMode = AuthenticationMode.Passive,
-                CookieName = CookieAuthenticationDefaults.CookiePrefix + "External",
-                ExpireTimeSpan = TimeSpan.FromMinutes(5),
-            });
-
-            // Setup Authorization Server
-            app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
-            {
-                // Authorize path
-                AuthorizeEndpointPath = new PathString(Paths.AuthorizePath),
-
-                // Token path
-                TokenEndpointPath = new PathString(Paths.TokenPath),
-
-                // Show error
-                ApplicationCanDisplayErrors = true,
-
-                // If the config is wrong, let the application crash
-                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"])),
-
-                // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
-
-                // Authorization server provider which controls the lifecycle of Authorization Server
-                Provider = ContainerConfig.Container.Resolve<ApplicationJwtProvider>(),
-
-                // Jwt custom format
-                AccessTokenFormat = new CustomJwtFormat()
+                Container = ContainerConfig.Container,
+                TokenExpireSeconds = ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"],
+                AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"])
             });
         }
     }
