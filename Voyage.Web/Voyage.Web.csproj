@@ -256,6 +256,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
+    <Compile Include="AuthProviders\IdentityProvider.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\ModelErrorExtensions.cs" />

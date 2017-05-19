@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Voyage.Models.Entities;
+using Voyage.Web.AuthProviders;
 
 namespace Voyage.Web
 {
@@ -64,6 +65,10 @@ namespace Voyage.Web
             // access to the hosting
             builder.Register(c => c.Resolve<HttpRequestMessage>().GetOwinContext())
                 .As<IOwinContext>()
+                .InstancePerRequest();
+
+            builder.RegisterType<IdentityProvider>()
+                .AsImplementedInterfaces()
                 .InstancePerRequest();
 
             // Options
