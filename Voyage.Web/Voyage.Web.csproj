@@ -219,6 +219,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TrackerEnabledDbContext.Identity.3.6.1\lib\net45\TrackerEnabledDbContext.Identity.dll</HintPath>
     </Reference>
+    <Reference Include="Voyage.Security.Oauth2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageSecurity.1.0.3\lib\net461\Voyage.Security.Oauth2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -239,11 +243,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-material-design.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\voyage-logo-horiz.svg" />
+    <Content Include="Content\Images\voyage-logo-vert.svg" />
+    <Content Include="Content\ripples.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="FILE.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap-material-design.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\ripples.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -288,6 +311,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\OAuth\AuthorizeError.cshtml" />
+    <Content Include="Views\OAuth\Authorize.cshtml" />
+    <Content Include="Views\ForgotPassword\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -310,10 +337,6 @@
     <ProjectReference Include="..\Voyage.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
       <Name>Voyage.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Voyage.Security.Oauth2\Voyage.Security.Oauth2.csproj">
-      <Project>{120b86b5-34b8-4304-a826-89e938e4319a}</Project>
-      <Name>Voyage.Security.Oauth2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Voyage.Services\Voyage.Services.csproj">
       <Project>{550DBB13-A473-4348-B530-64A6A5177AB1}</Project>

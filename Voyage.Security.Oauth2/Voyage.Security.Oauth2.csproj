@@ -211,7 +211,7 @@
     <Content Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\VoyageLogin.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\OAuth\Authorize.cshtml" />
