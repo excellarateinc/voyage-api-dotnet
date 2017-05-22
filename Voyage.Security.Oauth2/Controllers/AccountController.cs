@@ -39,12 +39,12 @@ namespace Voyage.Security.Oauth2.Controllers
                     catch (NotFoundException notFoundException)
                     {
                         loginModel.NotFoundException = notFoundException;
-                        return View("VoyageLogin", loginModel);
+                        return View("Login", loginModel);
                     }
                 }
             }
 
-            return View("VoyageLogin", loginModel);
+            return View("Login", loginModel);
         }
         
         private LoginModel GetModel()
