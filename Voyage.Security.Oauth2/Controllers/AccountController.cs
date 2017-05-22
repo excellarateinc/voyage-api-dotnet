@@ -28,6 +28,9 @@ namespace Voyage.Security.Oauth2.Controllers
                     var userService = context.Resolve<IUserService>();
                     try
                     {
+                        // check if user is disabled
+                        // if yes throw
+
                         var isValidCredential = await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
                         if (!isValidCredential)
                             throw new NotFoundException();
@@ -38,7 +41,7 @@ namespace Voyage.Security.Oauth2.Controllers
                     }
                     catch (NotFoundException notFoundException)
                     {
-                        loginModel.NotFoundException = notFoundException;
+                        loginModel.NotFoundException = notFoundException;                        
                         return View("Login", loginModel);
                     }
                 }
