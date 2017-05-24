@@ -4,12 +4,12 @@ using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Voyage.Api.Filters;
+using Voyage.Api.UserManager.Filters;
 using Voyage.Services.User;
 
-namespace Voyage.Api.API.V1
+namespace Voyage.Api.UserManager.API.V1
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
+    [RoutePrefix(RoutePrefixConstants.RoutePrefixes.V1)]
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
