@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[RoleClaim] (
-    [Id]         INT            IDENTITY (1, 1) NOT NULL,
-    [RoleId]     NVARCHAR (128) NOT NULL,
+    [Id]         uniqueidentifier NOT NULL,
+    [RoleId]     uniqueidentifier NOT NULL,
     [ClaimType]  NVARCHAR (MAX) NULL,
     [ClaimValue] NVARCHAR (MAX) NULL,
     CONSTRAINT [PK_dbo.RoleClaims] PRIMARY KEY CLUSTERED ([Id] ASC),
