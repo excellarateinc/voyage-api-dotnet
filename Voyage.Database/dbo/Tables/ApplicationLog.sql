@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[ApplicationLog] (
-    [Id]              UNIQUEIDENTIFIER  NOT NULL,
+    [Id]              INT            IDENTITY (1, 1) NOT NULL,
     [Message]         NVARCHAR (MAX) NULL,
     [MessageTemplate] NVARCHAR (MAX) NULL,
     [Level]           NVARCHAR (128) NULL,
