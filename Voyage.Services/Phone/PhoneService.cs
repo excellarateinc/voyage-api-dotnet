@@ -126,7 +126,18 @@ namespace Voyage.Services.Phone
         public async Task<bool> IsValidSecurityCode(string userId, string securityCode)
         {
             var user = await GetUserAsync(userId);
+            var appuser = _userManager.FindById(userId);
             var phone = user.Phones.FirstOrDefault(c => c.VerificationCode == securityCode);
+
+            if (phone == null)
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "The verification code provided is invalid.");
+
+            // TODO: Throw an exception when verification code expires
+            // TODO: Need to create column IsValidated and VerifyCodeExpiresOn in UserPhone table and update IsValidated to true in the DB
+            appuser.IsVerifyRequired = false;
+
+            // update the user
+            await _userManager.UpdateAsync(appuser);
             return phone != null;
         }
 

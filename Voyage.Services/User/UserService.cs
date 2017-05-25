@@ -119,7 +119,10 @@ namespace Voyage.Services.User
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
             if (appUser != null)
-                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
+            {
+                if (appUser.UserName == user.UserName)
+                    throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "User already exists with the username. Please choose a different username");
+            }
 
             var identityResult = await _userManager.CreateAsync(user, model.Password);
             if (!identityResult.Succeeded)
