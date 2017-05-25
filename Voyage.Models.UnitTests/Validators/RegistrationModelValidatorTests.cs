@@ -80,7 +80,7 @@ namespace Voyage.Models.UnitTests.Validators
                                     {
                                         new UserPhoneModel
                                         {
-                                            PhoneNumber=string.Empty
+                                            PhoneNumber = string.Empty
                                         }
                                     }
                 });
@@ -102,7 +102,7 @@ namespace Voyage.Models.UnitTests.Validators
                                     {
                                         new UserPhoneModel
                                         {
-                                            PhoneNumber=string.Empty
+                                            PhoneNumber = string.Empty
                                         }
                                     }
                 });
