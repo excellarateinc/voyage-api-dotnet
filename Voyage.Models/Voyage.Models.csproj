@@ -86,6 +86,7 @@
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
+    <Compile Include="PhoneSecurityCodeModel.cs" />
     <Compile Include="ResponseErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
     <Compile Include="Entities\ActivityAudit.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="UserApplicationSession.cs" />
+    <Compile Include="Validators\PhoneSecurityCodeModelValidator.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
     <Compile Include="ISoftDeleteable.cs" />
     <Compile Include="Map\AutoMapperModule.cs" />

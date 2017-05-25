@@ -173,7 +173,6 @@
     <Content Include="Views\ForgotPassword\Index.cshtml" />
     <Content Include="Voyage.Security.Oauth2.nuspec" />
     <Content Include="web.config" />
-    <Content Include="VoyageSecurity.1.0.3.nupkg" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

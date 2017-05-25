@@ -220,7 +220,7 @@
       <HintPath>..\packages\TrackerEnabledDbContext.Identity.3.6.1\lib\net45\TrackerEnabledDbContext.Identity.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Security.Oauth2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageSecurity.1.0.3\lib\net461\Voyage.Security.Oauth2.dll</HintPath>
+      <HintPath>..\packages\VoyageSecurityOAuth2.1.0.0\lib\net461\Voyage.Security.Oauth2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
