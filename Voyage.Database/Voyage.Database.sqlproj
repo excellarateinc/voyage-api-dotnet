@@ -79,6 +79,14 @@
     <Build Include="dbo\Tables\LogMetadata.sql" />
     <None Include="Scripts\Seed\User.sql" />
     <PostDeploy Include="Scripts\Post-Deployment.sql" />
+    <Build Include="dbo\Tables\Client.sql" />
+    <Build Include="dbo\Tables\ClientRole.sql" />
+    <Build Include="dbo\Tables\ClientScope.sql" />
+    <Build Include="dbo\Tables\ClientScopeType.sql" />
+    <None Include="Scripts\Seed\Client.sql" />
+    <None Include="Scripts\Seed\ClientRole.sql" />
+    <None Include="Scripts\Seed\ClientScope.sql" />
+    <None Include="Scripts\Seed\ClientScopeType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Seed\RoleClaim.sql" />
