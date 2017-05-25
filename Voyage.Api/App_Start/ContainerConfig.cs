@@ -35,7 +35,7 @@ namespace Voyage.Api
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
 
             // Register the Web API controllers in external assemblies (extensions)
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assembly.FullName.Contains("Voyage.Api.UserManager")).ToArray();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
             builder.RegisterApiControllers(assemblies).InstancePerRequest();
 
             // OPTIONAL: Register the Autofac filter provider.
