@@ -14,8 +14,4 @@ Post-Deployment Script Template
 :r .\Seed\RoleClaim.sql
 :r .\Seed\UserPhone.sql
 :r .\Seed\UserRole.sql
-:r .\Seed\Client.sql
-:r .\Seed\ClientScopeType.sql
-:r .\Seed\ClientRole.sql
-:r .\Seed\ClientScope.sql
 

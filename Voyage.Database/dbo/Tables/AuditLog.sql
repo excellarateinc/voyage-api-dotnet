@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[AuditLog] (
-    [AuditLogId]   uniqueidentifier NOT NULL,
+    [AuditLogId]   BIGINT         IDENTITY (1, 1) NOT NULL,
     [UserName]     NVARCHAR (MAX) NULL,
     [EventDateUTC] DATETIME       NOT NULL,
     [EventType]    INT            NOT NULL,

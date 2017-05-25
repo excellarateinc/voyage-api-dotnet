@@ -2,9 +2,9 @@
 AS (
 	SELECT *
 	FROM (
-		VALUES
-			 (CONVERT(uniqueidentifier, '1cd39193-1f83-4d44-ab45-68c85be2acc8'), N'Administrator')
-			,(CONVERT(uniqueidentifier, '927fe4a9-4e27-4635-a208-eb5afc953294'), N'Basic')			 
+		VALUES 
+			 (N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'Administrator')
+			,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'Basic')			 
 		) AS RoleSeed([Id], [RoleName])
 	)
 -- Reference Data for Role 

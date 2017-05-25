@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[UserPhone] (
-    [Id]          uniqueidentifier NOT NULL,
-    [UserId]     uniqueidentifier NOT NULL,
+    [Id]          INT            IDENTITY (1, 1) NOT NULL,
+    [UserId]      NVARCHAR (128) NOT NULL,
     [PhoneNumber] NVARCHAR (15)  NOT NULL,
     [PhoneType]   INT            NOT NULL,
     [VerificationCode] NVARCHAR(50) NULL, 

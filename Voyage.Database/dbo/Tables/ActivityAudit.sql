@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[ActivityAudit] (
-    [Id]         UNIQUEIDENTIFIER  NOT NULL,
+    [Id]         INT            IDENTITY (1, 1) NOT NULL,
     [RequestId]  NVARCHAR (64)  NULL,
     [Method]     NVARCHAR (32)  NULL,
     [Path]       NVARCHAR (128) NULL,
