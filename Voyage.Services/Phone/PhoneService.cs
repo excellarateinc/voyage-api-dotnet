@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using AutoMapper;
-using Amazon.SimpleNotificationService.Model;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
@@ -52,6 +49,14 @@ namespace Voyage.Services.Phone
             _phoneRepository.SaveChanges();
         }
 
+        public async Task InsertSecurityCodeAsync(int phoneId, string code)
+        {
+            await Task.Run(() =>
+            {
+                InsertSecurityCode(phoneId, code);
+            });
+        }
+
         /// <summary>
         /// check if given phone number is valid format e.g E.164
         /// </summary>
@@ -79,7 +84,7 @@ namespace Voyage.Services.Phone
         /// <param name="phoneNumber"></param>
         /// <param name="securityCode"></param>
         /// <returns></returns>
-        public async Task SendSecurityCode(string phoneNumber, string securityCode)
+        public async Task SendSecurityCodeAsync(string phoneNumber, string securityCode)
         {
              await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
         }
@@ -107,8 +112,8 @@ namespace Voyage.Services.Phone
                 // send the security code to the phone number and save the security code to the database
                 foreach (var phone in phones)
                 {
-                    await SendSecurityCode(phone.PhoneNumber, securityCode);
-                    InsertSecurityCode(phone.Id, securityCode);
+                    await SendSecurityCodeAsync(phone.PhoneNumber, securityCode);
+                    await InsertSecurityCodeAsync(phone.Id, securityCode);
                 }
             }
             catch (Exception)
@@ -123,7 +128,7 @@ namespace Voyage.Services.Phone
         /// <param name="userId"></param>
         /// <param name="securityCode"></param>
         /// <returns></returns>
-        public async Task<bool> IsValidSecurityCode(string userId, string securityCode)
+        public async Task<bool> IsValidSecurityCodeAsync(string userId, string securityCode)
         {
             var user = await GetUserAsync(userId);
             var appuser = _userManager.FindById(userId);
@@ -146,7 +151,7 @@ namespace Voyage.Services.Phone
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task ClearUserPhoneSecurityCode(string userId)
+        public async Task ClearUserPhoneSecurityCodeAsync(string userId)
         {
             var user = await GetUserAsync(userId);
             foreach (var userPhone in user.Phones)

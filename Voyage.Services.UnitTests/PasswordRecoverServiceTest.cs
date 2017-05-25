@@ -122,7 +122,7 @@ namespace Voyage.Services.UnitTests
             _userServiceMock.Setup(c => c.UpdateUserAsync(userId, It.IsAny<UserModel>())).ReturnsAsync(new UserModel());
             _phoneServiceMock.Setup(c => c.GenerateSecurityCode()).Returns(securityCode);
             _phoneServiceMock.Setup(c => c.InsertSecurityCode(It.IsAny<int>(), securityCode));
-            _phoneServiceMock.Setup(c => c.SendSecurityCode(It.IsAny<string>(), securityCode)).Returns(Task.Delay(0));
+            _phoneServiceMock.Setup(c => c.SendSecurityCodeAsync(It.IsAny<string>(), securityCode)).Returns(Task.Delay(0));
 
             var model = await GetPasswordRecoverService().ValidateUserInfoAsync(userName, phoneNum);
 
@@ -153,7 +153,7 @@ namespace Voyage.Services.UnitTests
                 UserId = userId,
                 PasswordRecoveryToken = "RecoveryToken"
             };
-            _phoneServiceMock.Setup(c => c.IsValidSecurityCode(userId, securityCode)).ReturnsAsync(false);
+            _phoneServiceMock.Setup(c => c.IsValidSecurityCodeAsync(userId, securityCode)).ReturnsAsync(false);
 
             var exceptionObj = Assert.ThrowsAsync<PasswordRecoverException>(async () => await GetPasswordRecoverService().VerifyCodeAsync(appUser, "NotValidCode"));
 
@@ -173,8 +173,8 @@ namespace Voyage.Services.UnitTests
                 UserId = userId,
                 PasswordRecoveryToken = "RecoveryToken"
             };
-            _phoneServiceMock.Setup(c => c.IsValidSecurityCode(userId, securityCode)).ReturnsAsync(true);
-            _phoneServiceMock.Setup(c => c.ClearUserPhoneSecurityCode(It.IsAny<string>())).Returns(Task.Delay(0));
+            _phoneServiceMock.Setup(c => c.IsValidSecurityCodeAsync(userId, securityCode)).ReturnsAsync(true);
+            _phoneServiceMock.Setup(c => c.ClearUserPhoneSecurityCodeAsync(It.IsAny<string>())).Returns(Task.Delay(0));
 
             var model = await GetPasswordRecoverService().VerifyCodeAsync(appUser, securityCode);
 

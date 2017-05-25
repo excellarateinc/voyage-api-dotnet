@@ -72,7 +72,7 @@ namespace Voyage.Api.API.v1
         public async Task<IHttpActionResult> Verify([FromBody] PhoneSecurityCodeModel phoneSecurityCodeModel)
         {
             var userName = await _userService.GetUserByNameAsync(User.Identity.Name);
-            await _phoneService.IsValidSecurityCode(userName.Id, phoneSecurityCodeModel.Code);
+            await _phoneService.IsValidSecurityCodeAsync(userName.Id, phoneSecurityCodeModel.Code);
 
             return Ok();
         }

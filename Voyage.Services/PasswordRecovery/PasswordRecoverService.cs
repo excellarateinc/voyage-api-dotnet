@@ -74,7 +74,7 @@ namespace Voyage.Services.PasswordRecovery
                     _phoneService.InsertSecurityCode(userPhoneNumber.Id, securityCode);
 
                     // send text to user using amazon SNS
-                    await _phoneService.SendSecurityCode(formatedPhoneNumber, securityCode);
+                    await _phoneService.SendSecurityCodeAsync(formatedPhoneNumber, securityCode);
 
                     // set user id and password recover token in model for session use
                     model.UserId = user.Id;
@@ -103,9 +103,9 @@ namespace Voyage.Services.PasswordRecovery
                 throw new PasswordRecoverException(model.ForgotPasswordStep, "Security code is a required field.");
             }
 
-            if (await _phoneService.IsValidSecurityCode(appUser.UserId, code))
+            if (await _phoneService.IsValidSecurityCodeAsync(appUser.UserId, code))
             {
-                await _phoneService.ClearUserPhoneSecurityCode(appUser.UserId);
+                await _phoneService.ClearUserPhoneSecurityCodeAsync(appUser.UserId);
 
                 // set next step to verify answers
                 // TODO bypass security questions/answers for now
