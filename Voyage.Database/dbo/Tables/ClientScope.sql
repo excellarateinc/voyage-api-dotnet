@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[ClientScope]
 (
-	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL, 
-	[ClientId] UNIQUEIDENTIFIER NOT NULL,
-    [ClientScopeTypeId] UNIQUEIDENTIFIER NOT NULL,
+	[Id] nvarchar(128) PRIMARY KEY NOT NULL, 
+	[ClientId] nvarchar(128) NOT NULL,
+    [ClientScopeTypeId] nvarchar(128) NOT NULL,
 	[CreatedBy] nvarchar(255) NOT NULL,
 	[CreatedDate] datetime NOT NULL,
 	[LastModifiedBy] nvarchar(255) NOT NULL,

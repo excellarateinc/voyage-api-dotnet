@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Client]
 (
-	[Id] UNIQUEIDENTIFIER PRIMARY KEY NOT NULL,
+	[Id] nvarchar(128) PRIMARY KEY NOT NULL,
 	[Name] nvarchar(500) NOT NULL, 
 	[ClinetIdentifier] nvarchar(500) NOT NULL, 
     [ClientSecret] nvarchar(1000) NOT NULL, 
@@ -17,5 +17,5 @@
 	[CreatedDate] datetime NOT NULL,
 	[LastModifiedBy] nvarchar(255) NOT NULL,
 	[LastModifiedDate] datetime NOT NULL, 
-    [IsDeleted] BIT NOT NULL,
+    [IsDeleted] BIT NOT NULL 
 )

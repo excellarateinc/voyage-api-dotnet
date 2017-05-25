@@ -3,7 +3,7 @@ AS (
 	SELECT *
 	FROM (
 		VALUES (
-			CONVERT(uniqueidentifier, '2885FDDD-9F03-48EB-8762-9BD176EBB496')
+			N'2885FDDD-9F03-48EB-8762-9BD176EBB496'
 			,N'Client1'
 			,N'123456'
 			,N'abcdef'
@@ -20,8 +20,8 @@ AS (
 			,'Jan 1 2017 1:29PM'
 			,N'FirstName3@app.com'
 			,'Jan 1 2017 1:29PM'
-			,0),
-			(CONVERT(uniqueidentifier, '26C092FC-64DB-4334-87B5-09428F025C9C')
+			,0)
+			,(N'26C092FC-64DB-4334-87B5-09428F025C9C'
 			,N'Client2'
 			,N'client-super'
 			,N'secret'

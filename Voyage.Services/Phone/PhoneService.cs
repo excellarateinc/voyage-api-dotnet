@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNet.Identity;
 using AutoMapper;
+using Amazon.SimpleNotificationService.Model;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
@@ -77,7 +81,40 @@ namespace Voyage.Services.Phone
         /// <returns></returns>
         public async Task SendSecurityCode(string phoneNumber, string securityCode)
         {
-            await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+             await _phoneRepository.SendSecurityCode(phoneNumber, securityCode);
+        }
+
+        /// <summary>
+        /// get the phone numbers of the logged in user
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task SendSecurityCodeToUserPhoneNumber(string userName)
+        {
+            try
+            {
+                string securityCode = GenerateSecurityCode();
+                var user = await _userManager.FindByNameAsync(userName);
+
+                // Limit the number of phones that can receive a verification code to 5. This prevents an attacker from overloading
+                // the list of phone numbers for a user and spamming an infinite number of phones with security codes.
+                var phones = user.Phones.Where(userPhone => userPhone.PhoneType == Models.Enum.PhoneType.Mobile)
+                    .Take(5).ToList();
+
+                if (!phones.Any())
+                    throw new BadRequestException("The verification phone number is invalid. Please contact technical support for assistance");
+
+                // send the security code to the phone number and save the security code to the database
+                foreach (var phone in phones)
+                {
+                    await SendSecurityCode(phone.PhoneNumber, securityCode);
+                    InsertSecurityCode(phone.Id, securityCode);
+                }
+            }
+            catch (Exception)
+            {
+                throw new BadRequestException(HttpStatusCode.InternalServerError.ToString(), "Failure sending text message. Please contact support.");
+            }
         }
 
         /// <summary>
@@ -89,7 +126,18 @@ namespace Voyage.Services.Phone
         public async Task<bool> IsValidSecurityCode(string userId, string securityCode)
         {
             var user = await GetUserAsync(userId);
+            var appuser = _userManager.FindById(userId);
             var phone = user.Phones.FirstOrDefault(c => c.VerificationCode == securityCode);
+
+            if (phone == null)
+                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "The verification code provided is invalid.");
+
+            // TODO: Throw an exception when verification code expires
+            // TODO: Need to create column IsValidated and VerifyCodeExpiresOn in UserPhone table and update IsValidated to true in the DB
+            appuser.IsVerifyRequired = false;
+
+            // update the user
+            await _userManager.UpdateAsync(appuser);
             return phone != null;
         }
 

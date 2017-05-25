@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[LogMetadata] (
-    [Id]         uniqueidentifier NOT NULL,
-    [AuditLogId] uniqueidentifier         NOT NULL,
+    [Id]         BIGINT         IDENTITY (1, 1) NOT NULL,
+    [AuditLogId] BIGINT         NOT NULL,
     [Key]        NVARCHAR (MAX) NULL,
     [Value]      NVARCHAR (MAX) NULL,
     CONSTRAINT [PK_dbo.LogMetadata] PRIMARY KEY CLUSTERED ([Id] ASC),
