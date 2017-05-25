@@ -11,12 +11,13 @@ using FluentAssertions;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
-using Voyage.Api.API.V1;
+using Voyage.Api.UserManager.API.V1;
 using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
 using Xunit;
+using Voyage.Api.UserManager;
 
 namespace Voyage.Api.UnitTests.API.V1
 {
@@ -151,7 +152,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var result = await _userController.DeleteUser(id);
 
             var message = await result.ExecuteAsync(CreateCancelToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]
@@ -416,7 +417,7 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             typeof(UserController).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
-                _ => _.Prefix.Equals(Constants.RoutePrefixes.V1));
+                _ => _.Prefix.Equals(RoutePrefixConstants.RoutePrefixes.V1));
         }
 
         [Fact]

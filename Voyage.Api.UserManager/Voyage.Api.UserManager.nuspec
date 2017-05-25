@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VoyageResourceServer</id>
+    <version>1.0.0</version>
+    <title>Resource Server Plugin</title>
+    <authors>Voyage</authors>
+    <owners>LSS Inc.</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Plugin for Voyage to manage Users</description>
+    <releaseNotes>Plugin for Voyage to manage Users</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+  </metadata>
+</package>
