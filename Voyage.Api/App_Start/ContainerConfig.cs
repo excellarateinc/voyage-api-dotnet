@@ -1,6 +1,4 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
+﻿using System.Configuration;
 using System.Reflection;
 using System.Web.Http;
 using Autofac;
@@ -8,7 +6,6 @@ using Autofac.Integration.WebApi;
 using Voyage.Data;
 using Voyage.Models.Map;
 using Voyage.Services;
-
 
 namespace Voyage.Api
 {
@@ -33,10 +30,6 @@ namespace Voyage.Api
 
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
-
-            // Register the Web API controllers in external assemblies (extensions)
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
-            builder.RegisterApiControllers(assemblies).InstancePerRequest();
 
             // OPTIONAL: Register the Autofac filter provider.
             builder.RegisterWebApiFilterProvider(httpConfig);
