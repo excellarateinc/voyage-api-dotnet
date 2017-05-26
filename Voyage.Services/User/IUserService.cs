@@ -50,5 +50,7 @@ namespace Voyage.Services.User
         Task ResetAccessFailedCountAsync(string userId);
 
         Task<bool> IsLockedOutAsync(string userId);
+
+        Task SetLockoutEndDateAsync(string userId);
     }
 }

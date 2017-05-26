@@ -74,7 +74,7 @@
 
                             @if (Model.NotFoundException != null)
                             {
-                                <div class="col-xs-12" style="color: lightcoral">Login Failed</div>
+                                <div class="col-xs-12" style="color: lightcoral">@Model.NotFoundException.Message</div>
                             }
                         </fieldset>
                     </form>

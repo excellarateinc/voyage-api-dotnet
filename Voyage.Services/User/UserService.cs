@@ -14,6 +14,7 @@ using Voyage.Models.Entities;
 using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
+using System.Configuration;
 
 namespace Voyage.Services.User
 {
@@ -30,7 +31,9 @@ namespace Voyage.Services.User
             _mapper = mapper.ThrowIfNull(nameof(mapper));
             _roleService = roleService.ThrowIfNull(nameof(roleService));
             _phoneRepository = phoneRepository.ThrowIfNull(nameof(phoneRepository));
-
+            _userManager.DefaultAccountLockoutTimeSpan = TimeSpan.FromDays(Convert.ToDouble(ConfigurationManager.AppSettings["DefaultAccountLockoutTimeSpan"]));
+            _userManager.MaxFailedAccessAttemptsBeforeLockout = Convert.ToInt16(ConfigurationManager.AppSettings["MaxFailedAccessAttemptsBeforeLockout"]);
+            _userManager.UserLockoutEnabledByDefault = Convert.ToBoolean(ConfigurationManager.AppSettings["UserLockoutEnabledByDefault"]);
         }
 
         public async Task<UserModel> UpdateUserAsync(string userId, UserModel model)
@@ -305,9 +308,12 @@ namespace Voyage.Services.User
 
         public async Task<bool> IsLockedOutAsync(string userId)
         {
-            // var lockOutDateTime = await _userManager.GetLockoutEndDateAsync(userId);
-            // return DateTime.Now > lockOutDateTime ? false : true;
-            return await IsLockedOutAsync(userId);
+            return await _userManager.IsLockedOutAsync(userId);
+        }
+
+        public async Task SetLockoutEndDateAsync(string userId)
+        {
+            await _userManager.SetLockoutEndDateAsync(userId, DateTime.UtcNow);
         }
     }
 }
