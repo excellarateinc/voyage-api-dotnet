@@ -30,6 +30,7 @@ namespace Voyage.Services.User
             _mapper = mapper.ThrowIfNull(nameof(mapper));
             _roleService = roleService.ThrowIfNull(nameof(roleService));
             _phoneRepository = phoneRepository.ThrowIfNull(nameof(phoneRepository));
+
         }
 
         public async Task<UserModel> UpdateUserAsync(string userId, UserModel model)
@@ -290,6 +291,23 @@ namespace Voyage.Services.User
             }
 
             return isValidPhoneNumbers;
+        }
+
+        public async Task AccessFailedAsync(string userId)
+        {
+            await _userManager.AccessFailedAsync(userId);
+        }
+
+        public async Task ResetAccessFailedCountAsync(string userId)
+        {
+            await _userManager.ResetAccessFailedCountAsync(userId);
+        }
+
+        public async Task<bool> IsLockedOutAsync(string userId)
+        {
+            // var lockOutDateTime = await _userManager.GetLockoutEndDateAsync(userId);
+            // return DateTime.Now > lockOutDateTime ? false : true;
+            return await IsLockedOutAsync(userId);
         }
     }
 }

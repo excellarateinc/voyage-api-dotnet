@@ -28,12 +28,24 @@ namespace Voyage.Security.Oauth2.Controllers
                     var userService = context.Resolve<IUserService>();
                     try
                     {
-                        // check if user is disabled
-                        // if yes throw
+                        // check if user exits. if not throw exeception
+                        var user = await userService.GetUserByNameAsync(Request.Form["username"]);
+
+                        // Check if locked out
+                        if (await userService.IsLockedOutAsync(user.Id))
+                        {
+                            throw new NotFoundException("User Locked Out");
+                        }
 
                         var isValidCredential = await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
                         if (!isValidCredential)
-                            throw new NotFoundException();
+                        {
+                            await userService.AccessFailedAsync(user.Id);
+                            throw new NotFoundException("Invalid Credentials");
+                        }
+
+                        // ResetAccess
+                        await userService.ResetAccessFailedCountAsync(user.Id);
 
                         var authentication = HttpContext.GetOwinContext().Authentication;
                         ClaimsIdentity identity = await userService.CreateClaimsIdentityAsync(Request.Form["username"], OAuthDefaults.AuthenticationType);

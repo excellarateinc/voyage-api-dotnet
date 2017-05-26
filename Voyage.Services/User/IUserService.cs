@@ -44,5 +44,11 @@ namespace Voyage.Services.User
         Task<IdentityResult> ChangePassword(string userId, string token, string newPassword);
 
         Task<string> GeneratePasswordResetTokenAsync(string userName);
+
+        Task AccessFailedAsync(string userId);
+
+        Task ResetAccessFailedCountAsync(string userId);
+
+        Task<bool> IsLockedOutAsync(string userId);
     }
 }
