@@ -12,12 +12,14 @@ namespace Voyage.Services.Phone
 
         string GetE164Format(string phoneNumber);
 
-        Task SendSecurityCode(string phoneNumber, string securityCode);
+        Task InsertSecurityCodeAsync(int phoneId, string code);
+
+        Task SendSecurityCodeAsync(string phoneNumber, string securityCode);
 
         Task SendSecurityCodeToUserPhoneNumber(string userName);
 
-        Task<bool> IsValidSecurityCode(string userId, string securityCode);
+        Task<bool> IsValidSecurityCodeAsync(string userId, string securityCode);
 
-        Task ClearUserPhoneSecurityCode(string userId);
+        Task ClearUserPhoneSecurityCodeAsync(string userId);
     }
 }
