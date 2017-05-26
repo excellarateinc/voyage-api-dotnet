@@ -47,7 +47,7 @@ namespace Voyage.Security.Oauth2.Controllers
                 }
             }
 
-            return View("Login", loginModel);
+            return View("VoyageLogin", loginModel);
         }
         
         private LoginModel GetModel()
