@@ -43,6 +43,14 @@ namespace Voyage.Data
 
         public IDbSet<UserPhone> UserPhones { get; set; }
 
+        public IDbSet<Models.Entities.Client> Clients { get; set; }
+
+        public IDbSet<ClientRole> ClientRoles { get; set; }
+
+        public IDbSet<ClientScope> ClientScopes { get; set; }
+
+        public IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
+
         public override async Task<int> SaveChangesAsync()
         {
             try
@@ -115,6 +123,20 @@ namespace Voyage.Data
 
             var role = modelBuilder.Entity<ApplicationRole>()
                 .ToTable("Role");
+
+            modelBuilder.Entity<Models.Entities.Client>()
+                .HasKey(l => new { l.Id })
+                .ToTable("Client");
+
+            modelBuilder.Entity<ClientRole>()
+                .HasKey(l => new { l.RoleId, l.ClientId })
+                .ToTable("ClientRole");
+
+            modelBuilder.Entity<ClientScope>()
+                .ToTable("ClientScope");
+
+            modelBuilder.Entity<ClientScopeType>()
+                .ToTable("ClientScopeType");
 
             role.Property(r => r.Name)
                 .IsRequired()

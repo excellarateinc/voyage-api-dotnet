@@ -4,10 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Web", "Voyage.Web\Voyage.Web.csproj", "{6EC214FC-93EA-40B0-B74D-B147BA640DD4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C3B0291D-5400-4339-8D36-62EF3C5182A9} = {C3B0291D-5400-4339-8D36-62EF3C5182A9}
-		{120B86B5-34B8-4304-A826-89E938E4319A} = {120B86B5-34B8-4304-A826-89E938E4319A}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voyage.Services", "Voyage.Services\Voyage.Services.csproj", "{550DBB13-A473-4348-B530-64A6A5177AB1}"
 EndProject

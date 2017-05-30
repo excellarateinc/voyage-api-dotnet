@@ -15,6 +15,14 @@ namespace Voyage.Data
 
         IDbSet<UserPhone> UserPhones { get; set; }
 
+        IDbSet<Client> Clients { get; set; }
+
+        IDbSet<ClientRole> ClientRoles { get; set; }
+
+        IDbSet<ClientScope> ClientScopes { get; set; }
+
+        IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
+
         int SaveChanges();
     }
 }

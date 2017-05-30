@@ -85,6 +85,11 @@
     <Compile Include="AppClaims.cs" />
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
+    <Compile Include="ClientModel.cs" />
+    <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\ClientRole.cs" />
+    <Compile Include="Entities\ClientScope.cs" />
+    <Compile Include="Entities\ClientScopeType.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="PhoneSecurityCodeModel.cs" />
     <Compile Include="ResponseErrorModel.cs" />

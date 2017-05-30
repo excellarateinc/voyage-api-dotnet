@@ -119,7 +119,8 @@ namespace Voyage.Services.User
                     UserId = new ApplicationUser().Id
                 }).ToList(),
                 IsActive = true,
-                IsVerifyRequired = true
+                IsVerifyRequired = true,
+                LockoutEnabled = true
             };
             var appUser = await _userManager.FindByNameAsync(user.UserName);
             if (appUser != null)
