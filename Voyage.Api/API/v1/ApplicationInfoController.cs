@@ -1,5 +1,5 @@
-﻿using Voyage.Core;
-using System.Web.Http;
+﻿using System.Web.Http;
+using Voyage.Core;
 using Voyage.Services.ApplicationInfo;
 
 namespace Voyage.Api.API.V1
