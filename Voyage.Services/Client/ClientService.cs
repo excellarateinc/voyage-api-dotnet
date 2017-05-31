@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 using Voyage.Core;
@@ -23,7 +24,6 @@ namespace Voyage.Services.Client
 
         public async Task<bool> IsValidClientAsync(string clientId, string clientSecret)
         {
-            // TODO: Your domain implementation for client validation goes here
             return await Task.Run(() =>
             {
                 return _clientRepository.ValidateClient(clientId, clientSecret);
@@ -32,17 +32,20 @@ namespace Voyage.Services.Client
 
         public async Task<ClientModel> GetClientAsync(string clientId)
         {
-            // TODO: Your domain implementation for client validation goes here
             return await Task.Run(() =>
             {
                 var client = _clientRepository.GetByName(clientId);
-                var scope = _clientScopeRepository.GetClientScopesByClientId(client.Id);
+                var allowedScopes = new List<string>();
+                foreach (var scope in client.ClientScopes)
+                {
+                    allowedScopes.Add(scope.ClientScopeType.Name);
+                }
                 return new ClientModel
                 {
                     Id = client.ClientIdentifier,
                     Secret = client.ClientSecret,
                     RedirectUrl = client.RedirectUri,
-                    AllowedScopes = _clientScopeTypeRepository.GetScopeNamesByScopes(scope)
+                    AllowedScopes = allowedScopes
                 };
             });
         }

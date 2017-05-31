@@ -25,8 +25,12 @@ namespace Voyage.Data.Repositories.Client
 
         public override void Delete(object id)
         {
-            var entity = Context.ClientRoles.Find(id);
-            Context.ClientRoles.Remove(entity);
+            var entity = Get(id);
+            if (entity != null)
+            {
+                Context.ClientRoles.Remove(entity);
+                Context.SaveChanges();
+            }
         }
 
         public override ClientRole Get(object id)

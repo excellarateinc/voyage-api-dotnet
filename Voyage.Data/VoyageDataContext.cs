@@ -124,20 +124,6 @@ namespace Voyage.Data
             var role = modelBuilder.Entity<ApplicationRole>()
                 .ToTable("Role");
 
-            modelBuilder.Entity<Models.Entities.Client>()
-                .HasKey(l => new { l.Id })
-                .ToTable("Client");
-
-            modelBuilder.Entity<ClientRole>()
-                .HasKey(l => new { l.RoleId, l.ClientId })
-                .ToTable("ClientRole");
-
-            modelBuilder.Entity<ClientScope>()
-                .ToTable("ClientScope");
-
-            modelBuilder.Entity<ClientScopeType>()
-                .ToTable("ClientScopeType");
-
             role.Property(r => r.Name)
                 .IsRequired()
                 .HasMaxLength(256)

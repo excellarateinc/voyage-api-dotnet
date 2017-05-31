@@ -25,8 +25,12 @@ namespace Voyage.Data.Repositories.Client
 
         public override void Delete(object id)
         {
-            var entity = Context.ClientScopes.Find(id);
-            Context.ClientScopes.Remove(entity);
+            var entity = Get(id);
+            if (entity != null)
+            {
+                Context.ClientScopes.Remove(entity);
+                Context.SaveChanges();
+            }
         }
 
         public override ClientScope Get(object id)

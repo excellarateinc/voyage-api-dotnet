@@ -59,7 +59,7 @@ namespace Voyage.Security.Oauth2
                 }
                 else
                 {
-                    await clientService.UpdateFailedLoginAttemptsAsync(client.Id, true);
+                    await clientService.UpdateFailedLoginAttemptsAsync(client.Id);
                     throw new NotFoundException("Invalid Credentials");
                 }
             }

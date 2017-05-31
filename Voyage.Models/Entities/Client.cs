@@ -1,5 +1,6 @@
 ﻿using Embarr.WebAPI.AntiXss;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Voyage.Models.Entities
 {
+    [Table("Client")]
     public class Client
     {
         [AntiXss]
@@ -74,5 +76,9 @@ namespace Voyage.Models.Entities
 
         [Required]
         public bool IsDeleted { get; set; }
+
+        public virtual ICollection<ClientRole> ClientRoles { get; set; }
+
+        public virtual ICollection<ClientScope> ClientScopes { get; set; }
     }
 }

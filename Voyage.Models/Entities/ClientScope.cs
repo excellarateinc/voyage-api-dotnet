@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Voyage.Models.Entities
 {
+    [Table("ClientScope")]
     public class ClientScope
     {
         [AntiXss]
@@ -40,5 +41,7 @@ namespace Voyage.Models.Entities
 
         [Required]
         public bool IsDeleted { get; set; }
+
+        public virtual ClientScopeType ClientScopeType { get; set; }
     }
 }

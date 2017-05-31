@@ -11,7 +11,7 @@ namespace Voyage.Services.Client
 
         Task<bool> IsLockedOutAsync(string clientId);
 
-        Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement);
+        Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement = true);
 
         Task UnlockClientAsync(string clientId);
     }

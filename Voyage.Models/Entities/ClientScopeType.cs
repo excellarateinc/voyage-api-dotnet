@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Voyage.Models.Entities
 {
+    [Table("ClientScopeType")]
     public class ClientScopeType
     {
         [AntiXss]
