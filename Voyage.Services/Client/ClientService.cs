@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Voyage.Core;
-using Voyage.Data.Repositories;
 using Voyage.Data.Repositories.Client;
 using Voyage.Models;
 
@@ -12,23 +7,16 @@ namespace Voyage.Services.Client
 {
     public class ClientService : IClientService
     {
-        private IClientRepository _clientRepository;
-        private IClientScopeRepository _clientScopeRepository;
-        private IClientScopeTypeRepository _clientScopeTypeRepository;
+        private readonly IClientRepository _clientRepository;
 
-        public ClientService(IClientRepository clientRepository, IClientScopeRepository clientScopeRepository, IClientScopeTypeRepository clientScopeTypeRepository)
+        public ClientService(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
-            _clientScopeRepository = clientScopeRepository;
-            _clientScopeTypeRepository = clientScopeTypeRepository;
         }
 
         public async Task<bool> IsValidClientAsync(string clientId, string clientSecret)
         {
-            return await Task.Run(() =>
-            {
-                return _clientRepository.ValidateClient(clientId, clientSecret);
-            });
+            return await Task.Run(() => _clientRepository.ValidateClient(clientId, clientSecret));
         }
 
         public async Task<ClientModel> GetClientAsync(string clientId)
@@ -48,10 +36,7 @@ namespace Voyage.Services.Client
 
         public async Task<bool> IsLockedOutAsync(string clientId)
         {
-            return await Task.Run(() =>
-            {
-                return _clientRepository.IsLockedOut(clientId);
-            });
+            return await Task.Run(() => _clientRepository.IsLockedOut(clientId));
         }
 
         public async Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement)

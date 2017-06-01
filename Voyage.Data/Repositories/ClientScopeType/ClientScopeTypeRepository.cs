@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
+﻿using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Voyage.Models;
-using Voyage.Models.Entities;
 
-namespace Voyage.Data.Repositories.Client
+namespace Voyage.Data.Repositories.ClientScopeType
 {
     public class ClientScopeTypeRepository : BaseRepository<Models.Entities.ClientScopeType>, IClientScopeTypeRepository
     {
@@ -16,7 +10,7 @@ namespace Voyage.Data.Repositories.Client
         {
         }
 
-        public override ClientScopeType Add(ClientScopeType model)
+        public override Models.Entities.ClientScopeType Add(Models.Entities.ClientScopeType model)
         {
             Context.ClientScopeTypes.Add(model);
             Context.SaveChanges();
@@ -26,39 +20,24 @@ namespace Voyage.Data.Repositories.Client
         public override void Delete(object id)
         {
             var entity = Get(id);
-            if (entity != null)
-            {
-                Context.ClientScopeTypes.Remove(entity);
-                Context.SaveChanges();
-            }
+            if (entity == null)
+                return;
+
+            Context.ClientScopeTypes.Remove(entity);
+            Context.SaveChanges();
         }
 
-        public override ClientScopeType Get(object id)
+        public override Models.Entities.ClientScopeType Get(object id)
         {
             return Context.ClientScopeTypes.Find(id);
         }
 
-        public override IQueryable<ClientScopeType> GetAll()
+        public override IQueryable<Models.Entities.ClientScopeType> GetAll()
         {
             return Context.ClientScopeTypes;
         }
 
-        public List<string> GetScopeNamesByScopes(List<ClientScope> list)
-        {
-            var scopes = new List<string>();
-            for (int i = 0; i < list.Count; i++)
-            {
-                var scopeType = Get(list[i].Id);
-                if (scopeType != null && !string.IsNullOrEmpty(scopeType.Name))
-                {
-                    scopes.Add(scopeType.Name);
-                }
-            }
-
-            return scopes;
-        }
-
-        public override ClientScopeType Update(ClientScopeType model)
+        public override Models.Entities.ClientScopeType Update(Models.Entities.ClientScopeType model)
         {
             Context.ClientScopeTypes.AddOrUpdate(model);
             Context.SaveChanges();

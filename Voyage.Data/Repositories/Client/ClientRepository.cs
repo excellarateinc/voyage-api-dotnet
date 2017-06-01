@@ -22,11 +22,11 @@ namespace Voyage.Data.Repositories.Client
         public override void Delete(object id)
         {
             var entity = Get(id);
-            if (entity != null)
-            {
-                Context.Clients.Remove(entity);
-                Context.SaveChanges();
-            }
+            if (entity == null)
+                return;
+
+            Context.Clients.Remove(entity);
+            Context.SaveChanges();
         }
 
         public override Models.Entities.Client Get(object id)
@@ -69,7 +69,7 @@ namespace Voyage.Data.Repositories.Client
                 throw new NotFoundException();
 
             // Get the maxFailedAttempts from the config file. In case the MaxFailedAccessAttemptsBeforeLockout is not a number, this will throw an error and fail.
-            int maxFailedLoginAttempts = int.Parse(ConfigurationManager.AppSettings["MaxFailedAccessAttemptsBeforeLockout"]);
+            var maxFailedLoginAttempts = int.Parse(ConfigurationManager.AppSettings["MaxFailedAccessAttemptsBeforeLockout"]);
 
             // in case of incorrect attempt
             if (isIncrement)
@@ -118,10 +118,10 @@ namespace Voyage.Data.Repositories.Client
         {
             var client = Get(id);
             if (client == null)
-            {
-                client.IsAccountLocked = true;
-                Update(client);
-            }
+                return;
+
+            client.IsAccountLocked = true;
+            Update(client);
         }
     }
 }
