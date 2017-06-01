@@ -255,4 +255,5 @@ Launchpad.Web/apidoc
 *.jfm
 /xunit-integration-results.xml
 /ResharperSettings.DotSettings
+/Voyage.Api.UserManager/VoyageResourceServer.1.0.0.rar
 *.exe

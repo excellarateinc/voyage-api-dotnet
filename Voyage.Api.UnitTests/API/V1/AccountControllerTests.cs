@@ -11,13 +11,12 @@ using FluentAssertions;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
-using Voyage.Api.UserManager.API.V1;
+using Voyage.Api.API.V1;
 using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
 using Xunit;
-using Voyage.Api.UserManager;
 
 namespace Voyage.Api.UnitTests.API.V1
 {
@@ -99,7 +98,7 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             typeof(AccountController).Should()
                 .BeDecoratedWith<RoutePrefixAttribute>(
-                _ => _.Prefix.Equals(RoutePrefixConstants.RoutePrefixes.V1));
+                _ => _.Prefix.Equals(Constants.RoutePrefixes.V1));
         }
 
         [Fact]
