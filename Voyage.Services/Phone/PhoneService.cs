@@ -27,13 +27,13 @@ namespace Voyage.Services.Phone
         }
 
         /// <summary>
-        /// generate security code from random set of number between 000000 to 999999
+        /// generate security code from random set of number between 100000 to 999999
         /// </summary>
         /// <returns></returns>
         public string GenerateSecurityCode()
         {
             var random = new Random();
-            return random.Next(000000, 999999).ToString();
+            return random.Next(100000, 999999).ToString();
         }
 
         /// <summary>

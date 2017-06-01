@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Voyage.Models;
 
 namespace Voyage.Services.Client
 {
@@ -6,6 +7,12 @@ namespace Voyage.Services.Client
     {
         Task<bool> IsValidClientAsync(string clientId, string clientSecret);
 
-        Task<Core.Client> GetClientAsync(string clientId);
+        Task<ClientModel> GetClientAsync(string clientId);
+
+        Task<bool> IsLockedOutAsync(string clientId);
+
+        Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement = true);
+
+        Task UnlockClientAsync(string clientId);
     }
 }

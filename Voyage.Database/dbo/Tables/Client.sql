@@ -2,8 +2,9 @@
 (
 	[Id] nvarchar(128) PRIMARY KEY NOT NULL,
 	[Name] nvarchar(500) NOT NULL, 
-	[ClinetIdentifier] nvarchar(500) NOT NULL, 
+	[ClientIdentifier] nvarchar(500) NOT NULL, 
     [ClientSecret] nvarchar(1000) NOT NULL, 
+	[RedirectUri] nvarchar(500) NOT NULL, 
 	[IsSecretRequired] bit NOT NULL, 
 	[IsScoped] bit NOT NULL, 
 	[IsAutoApprove] bit NOT NULL, 

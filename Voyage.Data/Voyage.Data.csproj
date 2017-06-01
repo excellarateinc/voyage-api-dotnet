@@ -101,6 +101,14 @@
     <Compile Include="Repositories\ActivityAudit\IActivityAuditRepository.cs" />
     <Compile Include="IVoyageDataContext.cs" />
     <Compile Include="Repositories\ApplicationLog\IApplicationLogRepository.cs" />
+    <Compile Include="Repositories\ClientRole\ClientRoleRepository.cs" />
+    <Compile Include="Repositories\ClientRole\IClientRoleRepository.cs" />
+    <Compile Include="Repositories\ClientScopeType\ClientScopeTypeRepository.cs" />
+    <Compile Include="Repositories\ClientScopeType\IClientScopeTypeRepository.cs" />
+    <Compile Include="Repositories\ClientScope\ClientScopeRepository.cs" />
+    <Compile Include="Repositories\ClientScope\IClientScopeRepository.cs" />
+    <Compile Include="Repositories\Client\ClientRepository.cs" />
+    <Compile Include="Repositories\Client\IClientRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\RoleClaim\IRoleClaimRepository.cs" />
     <Compile Include="Repositories\UserPhone\IUserPhoneRepository.cs" />

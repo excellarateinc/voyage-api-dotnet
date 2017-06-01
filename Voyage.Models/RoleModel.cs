@@ -15,6 +15,7 @@ namespace Voyage.Models
         [AntiXss]
         public string Name { get; set; }
 
+        [AntiXss]
         public string Description { get; set; }
 
         [JsonProperty("Permissions")]

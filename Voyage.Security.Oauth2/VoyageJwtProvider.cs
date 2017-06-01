@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Voyage.Services.Client;
 using Voyage.Services.User;
+using Voyage.Core.Exceptions;
 
 namespace Voyage.Security.Oauth2
 {
@@ -43,10 +44,23 @@ namespace Voyage.Security.Oauth2
             {
                 var scope = context.OwinContext.GetAutofacLifetimeScope();
                 var clientService = scope.Resolve<IClientService>();
+                var client = await clientService.GetClientAsync(clientId);
 
+                // Check if locked out
+                if (await clientService.IsLockedOutAsync(client.Id))
+                {
+                    throw new NotFoundException("User Locked Out");
+                }
                 if (await clientService.IsValidClientAsync(clientId, clientSecret))
                 {
+                    // ResetAccess
+                    await clientService.UpdateFailedLoginAttemptsAsync(client.Id, false);
                     context.Validated();
+                }
+                else
+                {
+                    await clientService.UpdateFailedLoginAttemptsAsync(client.Id);
+                    throw new NotFoundException("Invalid Credentials");
                 }
             }
         }
