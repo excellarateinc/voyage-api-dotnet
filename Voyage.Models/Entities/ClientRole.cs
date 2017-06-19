@@ -8,6 +8,11 @@ namespace Voyage.Models.Entities
     public class ClientRole
     {
         [AntiXss]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
+
+        [AntiXss]
         [Required]
         public string ClientId { get; set; }
 
