@@ -41,14 +41,14 @@ namespace Voyage.Models.Entities
         public bool IsAutoApprove { get; set; }
 
         [Required]
-        public long AccessValidityInSeconds { get; set; }
+        public int AccessTokenValiditySeconds { get; set; }
 
         [Required]
-        public long RefreshTokenValiditySeconds { get; set; }
+        public int RefreshTokenValiditySeconds { get; set; }
 
-        public int FailedLoginAttempts { get; set; }
+        public int? FailedLoginAttempts { get; set; }
 
-        public DateTime ForceTokenExpireDate { get; set; }
+        public DateTime? ForceTokenExpireDate { get; set; }
 
         [Required]
         public bool IsEnabled { get; set; }
@@ -68,7 +68,7 @@ namespace Voyage.Models.Entities
         public DateTime LastModifiedDate { get; set; }
 
         [Required]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

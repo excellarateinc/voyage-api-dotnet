@@ -33,7 +33,7 @@ namespace Voyage.Models.Entities
         public DateTime LastModifiedDate { get; set; }
 
         [Required]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

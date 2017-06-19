@@ -16,7 +16,7 @@
     <RootNamespace>Voyage.Web</RootNamespace>
     <AssemblyName>Voyage.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -219,10 +219,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TrackerEnabledDbContext.Identity.3.6.1\lib\net45\TrackerEnabledDbContext.Identity.dll</HintPath>
     </Reference>
-    <Reference Include="Voyage.Security.Oauth2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageSecurityOAuth2.1.0.0\lib\net461\Voyage.Security.Oauth2.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -337,6 +333,10 @@
     <ProjectReference Include="..\Voyage.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
       <Name>Voyage.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Voyage.Security.Oauth2\Voyage.Security.Oauth2.csproj">
+      <Project>{120b86b5-34b8-4304-a826-89e938e4319a}</Project>
+      <Name>Voyage.Security.Oauth2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Voyage.Services\Voyage.Services.csproj">
       <Project>{550DBB13-A473-4348-B530-64A6A5177AB1}</Project>
