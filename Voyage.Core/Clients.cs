@@ -21,7 +21,7 @@ namespace Voyage.Core
         {
             Id = "client-super",
             Secret = "secret",
-            RedirectUrl = "http://localhost:3000",
+            RedirectUrl = "http://localhost:3000/dashboard",
             AllowedScopes = new List<string>
             {
                 "profile",

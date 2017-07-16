@@ -257,3 +257,4 @@ Launchpad.Web/apidoc
 /ResharperSettings.DotSettings
 /Voyage.Api.UserManager/VoyageResourceServer.1.0.0.rar
 *.exe
+/Launchpad.API.sln.DotSettings

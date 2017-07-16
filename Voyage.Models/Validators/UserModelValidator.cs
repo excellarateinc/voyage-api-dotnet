@@ -22,10 +22,6 @@ namespace Voyage.Models.Validators
             RuleFor(_ => _.Email)
                 .EmailAddress()
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidEmail, "Email is invalid");
-
-            RuleFor(_ => _.Username)
-                .NotEmpty()
-                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Username is a required field");
         }
     }
 }

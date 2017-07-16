@@ -26,7 +26,7 @@ AS (
 			,N'Client2'
 			,N'client-super'
 			,N'secret'
-			,N'http://localhost:3000'
+			,N'http://localhost:3000/dashboard'
 			,1
 			,1
 			,1
