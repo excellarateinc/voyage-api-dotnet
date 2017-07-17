@@ -19,7 +19,6 @@ namespace Voyage.Services.Notification
 
         public IEnumerable<Models.NotificationModel> GetNotifications(string userId)
         {
-            // TODO: Get the real user id.
             var notifications = _notificationRepository.GetAll()
                 .Where(_ => _.AssignedToUserId == userId);
 
