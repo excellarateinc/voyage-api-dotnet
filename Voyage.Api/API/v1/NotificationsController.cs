@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IdentityModel.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Routing;
+using Microsoft.Owin.Security;
 using Voyage.Api.Filters;
 using Voyage.Core;
 using Voyage.Models;
@@ -14,10 +16,12 @@ namespace Voyage.Api.API.v1
     public class NotificationsController : ApiController
     {
         private readonly INotificationService _notificationService;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        public NotificationsController(INotificationService notificationService)
+        public NotificationsController(INotificationService notificationService, IAuthenticationManager authenticationManager)
         {
             _notificationService = notificationService.ThrowIfNull(nameof(notificationService));
+            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
         }
 
         /**
@@ -39,9 +43,11 @@ namespace Voyage.Api.API.v1
         [ClaimAuthorize(ClaimValue = AppClaims.ListNotifications)]
         [HttpGet]
         [Route("notifications")]
-        public async Task<IHttpActionResult> GetNotifications()
+        public IHttpActionResult GetNotifications()
         {
-            return Ok();
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var notifications = _notificationService.GetNotifications(userId);
+            return Ok(notifications);
         }
 
     }
