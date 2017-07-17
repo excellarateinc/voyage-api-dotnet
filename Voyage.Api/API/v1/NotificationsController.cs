@@ -50,5 +50,23 @@ namespace Voyage.Api.API.v1
             return Ok(notifications);
         }
 
+        [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
+        [HttpPut]
+        [Route("notifications/{id}")]
+        public IHttpActionResult MarkNotificationAsRead(int id)
+        {
+            _notificationService.MarkNotificationAsRead(id);
+            return Ok();
+        }
+
+        [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
+        [HttpPut]
+        [Route("notifications")]
+        public IHttpActionResult MarkAllNotificationsAsRead()
+        {
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            _notificationService.MarkAllNotificationsAsRead(userId);
+            return Ok();
+        }
     }
 }

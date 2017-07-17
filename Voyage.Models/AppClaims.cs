@@ -35,5 +35,6 @@
         public const string CreateUser = "api.users.create";
 
         public const string ListNotifications = "api.notifications.list";
+        public const string MarkNotificationsAsRead = "api.notifications.mark.read";
     }
 }

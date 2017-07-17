@@ -3,8 +3,8 @@ AS (
 	SELECT *
 	FROM (
 		VALUES 
-			  (1,'Test Notification', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
-		) AS NotificationSeed([Id], [Text], [AssignedToUserId], [IsRead], [CreatedBy], [CreatedDate])
+			  (1, 'Test Notification', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
+		) AS NotificationSeed([Id],[Text], [AssignedToUserId], [IsRead], [CreatedBy], [CreatedDate])
 	)
 
 -- Reference Data for Notification
