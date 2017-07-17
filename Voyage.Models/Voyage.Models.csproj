@@ -90,6 +90,7 @@
     <Compile Include="Entities\ClientRole.cs" />
     <Compile Include="Entities\ClientScope.cs" />
     <Compile Include="Entities\ClientScopeType.cs" />
+    <Compile Include="Entities\Notification.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="PhoneSecurityCodeModel.cs" />
     <Compile Include="ResponseErrorModel.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Entities\RoleClaim.cs" />
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
+    <Compile Include="NotificationModel.cs" />
     <Compile Include="UserApplicationSession.cs" />
     <Compile Include="Validators\PhoneSecurityCodeModelValidator.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />

@@ -23,6 +23,8 @@ namespace Voyage.Data
 
         IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
 
+        IDbSet<Notification> Notifications { get; set; }
+
         int SaveChanges();
     }
 }
