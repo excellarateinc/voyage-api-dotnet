@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IdentityModel.Claims;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Claims;
 using System.Web.Http;
-using System.Web.Routing;
 using Microsoft.Owin.Security;
 using Voyage.Api.Filters;
 using Voyage.Core;
 using Voyage.Models;
 using Voyage.Services.Notification;
-using Voyage.Services.User;
 
 namespace Voyage.Api.API.v1
 {
