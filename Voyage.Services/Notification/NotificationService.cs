@@ -4,6 +4,7 @@ using AutoMapper;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.Notification;
+using Voyage.Models;
 
 namespace Voyage.Services.Notification
 {
@@ -25,6 +26,12 @@ namespace Voyage.Services.Notification
                 .OrderByDescending(_ => _.CreatedDate);
 
             return _mapper.Map<IEnumerable<Models.NotificationModel>>(notifications);
+        }
+
+        public NotificationModel CreateNotification(NotificationModel notification)
+        {
+            var notificationEntity = _mapper.Map<Models.Entities.Notification>(notification);
+            return _mapper.Map<Models.NotificationModel>(_notificationRepository.Add(notificationEntity));
         }
 
         public void MarkNotificationAsRead(string userId, int notificationId)

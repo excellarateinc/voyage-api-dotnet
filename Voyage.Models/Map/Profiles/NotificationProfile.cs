@@ -7,7 +7,7 @@ namespace Voyage.Models.Map.Profiles
     {
         public NotificationProfile()
         {
-            CreateMap<Notification, NotificationModel>();
+            CreateMap<Notification, NotificationModel>().ReverseMap();
         }
     }
 }

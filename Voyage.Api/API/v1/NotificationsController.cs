@@ -65,5 +65,14 @@ namespace Voyage.Api.API.v1
             _notificationService.MarkAllNotificationsAsRead(userId);
             return Ok(new { });
         }
+
+        [ClaimAuthorize(ClaimValue = AppClaims.CreateNotification)]
+        [HttpPost]
+        [Route("notifications")]
+        public IHttpActionResult CreateNotification(NotificationModel notification)
+        {
+            var createdNotification = _notificationService.CreateNotification(notification);
+            return Ok(createdNotification);
+        }
     }
 }
