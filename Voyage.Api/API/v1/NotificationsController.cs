@@ -53,7 +53,7 @@ namespace Voyage.Api.API.v1
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             _notificationService.MarkNotificationAsRead(userId, id);
-            return Ok();
+            return Ok(new { });
         }
 
         [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
@@ -63,7 +63,7 @@ namespace Voyage.Api.API.v1
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             _notificationService.MarkAllNotificationsAsRead(userId);
-            return Ok();
+            return Ok(new { });
         }
     }
 }
