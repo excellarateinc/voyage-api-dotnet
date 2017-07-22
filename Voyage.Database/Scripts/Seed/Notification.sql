@@ -3,9 +3,9 @@ AS (
 	SELECT *
 	FROM (
 		VALUES 
-			  (1, 'Test Notification', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
-			 ,(2, 'Meeting Reminder for 2 PM. Meeting with potential client about a potential big deal.', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
-		) AS NotificationSeed([Id],[Text], [AssignedToUserId], [IsRead], [CreatedBy], [CreatedDate])
+			  (1, 'Test Notification', 'This is a test for notifications', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
+			 ,(2, 'Meeting Coming Up', 'Meeting Reminder for 2 PM. Meeting with potential client about a potential big deal.', 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', 0, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', GETDATE())
+		) AS NotificationSeed([Id], [Subject], [Description], [AssignedToUserId], [IsRead], [CreatedBy], [CreatedDate])
 	)
 
 -- Reference Data for Notification
@@ -15,14 +15,16 @@ USING Notification_CTE AS [Source]
 WHEN NOT MATCHED BY TARGET
 	THEN
 		INSERT (
-		    [Text]
+			[Subject],
+		    [Description]
 		   ,[AssignedToUserId]
 		   ,[IsRead]
 		   ,[CreatedBy]
 		   ,[CreatedDate]
 			)
 		VALUES (
-		    [Source].[Text]
+			[Source].[Subject]
+		   ,[Source].[Description]
 		   ,[Source].[AssignedToUserId]
 		   ,[Source].[IsRead]
 		   ,[Source].[CreatedBy]
@@ -31,7 +33,8 @@ WHEN NOT MATCHED BY TARGET
 WHEN MATCHED 
 	THEN
 		UPDATE SET 	
-			[Target].[Text] = [Source].[Text]
+			[Target].[Subject] = [Source].[Subject]
+		   ,[Target].[Description] = [Source].[Description]
 		   ,[Target].[AssignedToUserId] = [Source].[AssignedToUserId]
 		   ,[Target].[IsRead] = [Source].[IsRead]
 		   ,[Target].[CreatedBy] = [Source].[CreatedBy]

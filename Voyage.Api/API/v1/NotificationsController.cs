@@ -51,7 +51,8 @@ namespace Voyage.Api.API.v1
         [Route("notifications/{id}")]
         public IHttpActionResult MarkNotificationAsRead(int id)
         {
-            _notificationService.MarkNotificationAsRead(id);
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            _notificationService.MarkNotificationAsRead(userId, id);
             return Ok();
         }
 

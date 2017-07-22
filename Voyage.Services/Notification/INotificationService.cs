@@ -6,7 +6,7 @@ namespace Voyage.Services.Notification
     {
         IEnumerable<Models.NotificationModel> GetNotifications(string userId);
 
-        void MarkNotificationAsRead(int notificationId);
+        void MarkNotificationAsRead(string userId, int notificationId);
 
         void MarkAllNotificationsAsRead(string userId);
     }

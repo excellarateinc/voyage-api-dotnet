@@ -11,7 +11,9 @@ namespace Voyage.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Text { get; set; }
+        public string Subject { get; set; }
+
+        public string Description { get; set; }
 
         public string AssignedToUserId { get; set; }
 
