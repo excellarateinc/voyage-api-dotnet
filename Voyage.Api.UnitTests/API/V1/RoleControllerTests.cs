@@ -9,7 +9,8 @@ using FluentAssertions;
 using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
-using Voyage.Api.API.V1;
+using Voyage.Api.UserManager;
+using Voyage.Api.UserManager.API.V1;
 using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
@@ -231,7 +232,7 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             typeof(RoleController)
                 .Should()
-                .BeDecoratedWith<RoutePrefixAttribute>(value => value.Prefix == Constants.RoutePrefixes.V1);
+                .BeDecoratedWith<RoutePrefixAttribute>(value => value.Prefix == RoutePrefixConstants.RoutePrefixes.V1);
         }
 
         [Fact]
@@ -451,7 +452,7 @@ namespace Voyage.Api.UnitTests.API.V1
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
             Mock.VerifyAll();
         }
     }
