@@ -6,6 +6,7 @@ using Voyage.Services.Client;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.KeyContainer;
+using Voyage.Services.Notification;
 using Voyage.Services.PasswordRecovery;
 using Voyage.Services.Phone;
 using Voyage.Services.Role;
@@ -64,6 +65,10 @@ namespace Voyage.Services
 
             builder.RegisterType<AuditService>()
                 .As<IAuditService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<NotificationService>()
+                .As<INotificationService>()
                 .InstancePerRequest();
         }
     }

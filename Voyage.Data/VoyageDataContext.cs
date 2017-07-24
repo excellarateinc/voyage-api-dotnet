@@ -51,6 +51,8 @@ namespace Voyage.Data
 
         public IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
 
+        public IDbSet<Notification> Notifications { get; set; }
+
         public override async Task<int> SaveChangesAsync()
         {
             try

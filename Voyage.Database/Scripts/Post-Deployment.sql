@@ -18,4 +18,5 @@ Post-Deployment Script Template
 :r .\Seed\ClientRole.sql
 :r .\Seed\ClientScopeType.sql
 :r .\Seed\ClientScope.sql
+:r .\Seed\Notification.sql
 
