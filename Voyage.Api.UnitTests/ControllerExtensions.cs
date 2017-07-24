@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Web.Http;
 using FluentAssertions;
-using Voyage.Api.UserManager.Filters;
+using Voyage.Api.Filters;
 using Voyage.Api.UnitTests.Common;
 using Voyage.Models;
 

@@ -7,6 +7,7 @@ AS (
 			,N'Client1'
 			,N'123456'
 			,N'abcdef'
+			,N'http://localhost:52431/Home/Index'
 			,1
 			,1
 			,1
@@ -25,6 +26,7 @@ AS (
 			,N'Client2'
 			,N'client-super'
 			,N'secret'
+			,N'http://localhost:3000/dashboard'
 			,1
 			,1
 			,1
@@ -42,8 +44,9 @@ AS (
 		) AS ClientSeed(
 			[Id]
            ,[Name]
-           ,[ClinetIdentifier]
+           ,[ClientIdentifier]
            ,[ClientSecret]
+		   ,[RedirectUri]
            ,[IsSecretRequired]
            ,[IsScoped]
            ,[IsAutoApprove]
@@ -69,8 +72,9 @@ WHEN NOT MATCHED BY TARGET
 		INSERT (
 			[Id]
            ,[Name]
-           ,[ClinetIdentifier]
+           ,[ClientIdentifier]
            ,[ClientSecret]
+		   ,[RedirectUri]
            ,[IsSecretRequired]
            ,[IsScoped]
            ,[IsAutoApprove]
@@ -89,8 +93,9 @@ WHEN NOT MATCHED BY TARGET
 		VALUES (
 			 [Source].[Id]
            ,[Source].[Name]
-           ,[Source].[ClinetIdentifier]
+           ,[Source].[ClientIdentifier]
            ,[Source].[ClientSecret]
+		   ,[Source].[RedirectUri]
            ,[Source].[IsSecretRequired]
            ,[Source].[IsScoped]
            ,[Source].[IsAutoApprove]

@@ -18,7 +18,7 @@ If you are extending this API to build a new app, then replace this section with
   - Lightweight JSON requests and responses
   - See our [Web Service Standards](readme_docs/STANDARDS-WEB-SERVICES.md)
 * __Public API Status Service__
-  - Web serbice that provides general status of the API to the public
+  - Web service that provides general status of the API to the public
   - Helpful endpiont for automated monitoring
 * __User Administration Services__
   - Full suite of user administration web services (list, get, create, update, delete)

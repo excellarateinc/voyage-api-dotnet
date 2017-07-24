@@ -2,7 +2,8 @@
 (
 	[ClientId] nvarchar(128) NOT NULL, 
     [RoleId] nvarchar(128) NOT NULL,
-	CONSTRAINT [PK_dbo.ClientRoles] PRIMARY KEY CLUSTERED ([ClientId] ASC, [RoleId] ASC),
+	[Id] NVARCHAR(128) NOT NULL, 
+    CONSTRAINT [PK_dbo.ClientRoles] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_dbo.ClientRoles_dbo.Roles_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[Role] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_dbo.ClientRoles_dbo.Clients_Id] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Client] ([Id])
 );

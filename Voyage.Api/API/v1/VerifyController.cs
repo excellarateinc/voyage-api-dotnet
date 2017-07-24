@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Voyage.Api.UserManager;
+using Voyage.Api.Filters;
 using Voyage.Core;
 using Voyage.Models;
 using Voyage.Services.Phone;
@@ -14,7 +14,7 @@ using Voyage.Services.User;
 
 namespace Voyage.Api.API.v1
 {
-    [RoutePrefix(RoutePrefixConstants.RoutePrefixes.V1)]
+    [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class VerifyController : ApiController
     {
         private readonly IPhoneService _phoneService;

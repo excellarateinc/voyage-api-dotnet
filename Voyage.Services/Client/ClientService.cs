@@ -1,45 +1,57 @@
-﻿using System.Threading.Tasks;
-using Voyage.Core;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Voyage.Data.Repositories.Client;
+using Voyage.Models;
 
 namespace Voyage.Services.Client
 {
     public class ClientService : IClientService
     {
+        private readonly IClientRepository _clientRepository;
+
+        public ClientService(IClientRepository clientRepository)
+        {
+            _clientRepository = clientRepository;
+        }
+
         public async Task<bool> IsValidClientAsync(string clientId, string clientSecret)
         {
-            // TODO: Your domain implementation for client validation goes here
+            return await Task.Run(() => _clientRepository.ValidateClient(clientId, clientSecret));
+        }
+
+        public async Task<ClientModel> GetClientAsync(string clientId)
+        {
             return await Task.Run(() =>
             {
-                var isValidClient = false;
-                if (clientId == Clients.Client1.Id && clientSecret == Clients.Client1.Secret)
+                var client = _clientRepository.GetByName(clientId);
+                return new ClientModel
                 {
-                    isValidClient = true;
-                }
-                else if (clientId == Clients.Client2.Id && clientSecret == Clients.Client2.Secret)
-                {
-                    isValidClient = true;
-                }
-
-                return isValidClient;
+                    Id = client.ClientIdentifier,
+                    Secret = client.ClientSecret,
+                    RedirectUrl = client.RedirectUri,
+                    AllowedScopes = client.ClientScopes.Select(c => c.ClientScopeType.Name).ToList()
+                };
             });
         }
 
-        public async Task<Core.Client> GetClientAsync(string clientId)
+        public async Task<bool> IsLockedOutAsync(string clientId)
         {
-            // TODO: Your domain implementation for client validation goes here
-            return await Task.Run(() =>
-            {
-                Core.Client client = null;
-                if (clientId == Clients.Client1.Id)
-                {
-                    client = Clients.Client1;
-                }
-                else if (clientId == Clients.Client2.Id)
-                {
-                    client = Clients.Client2;
-                }
+            return await Task.Run(() => _clientRepository.IsLockedOut(clientId));
+        }
 
-                return client;
+        public async Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement)
+        {
+            await Task.Run(() =>
+            {
+                _clientRepository.UpdateFailedLoginAttempts(clientId, isIncrement);
+            });
+        }
+
+        public async Task UnlockClientAsync(string clientId)
+        {
+            await Task.Run(() =>
+            {
+                _clientRepository.UnlockClient(clientId);
             });
         }
     }

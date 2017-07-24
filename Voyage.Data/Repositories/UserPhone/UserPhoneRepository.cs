@@ -29,8 +29,12 @@ namespace Voyage.Data.Repositories.UserPhone
         /// <param name="id">Phone number ID</param>
         public override void Delete(object id)
         {
-            var entity = Context.UserPhones.Find(id);
-            Context.UserPhones.Remove(entity);
+            var entity = Get(id);
+            if (entity != null)
+            {
+                Context.UserPhones.Remove(entity);
+                Context.SaveChanges();
+            }
         }
 
         /// <summary>
