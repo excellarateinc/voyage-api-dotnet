@@ -247,6 +247,26 @@
       <HintPath>..\packages\TrackerEnabledDbContext.Identity.3.6.1\lib\net45\TrackerEnabledDbContext.Identity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Voyage.Api.UserManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Api.UserManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Voyage.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Voyage.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Voyage.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Voyage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Services.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Formatting">
@@ -319,24 +339,6 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.3.0.14\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Voyage.Core\Voyage.Core.csproj">
-      <Project>{ab3dab8e-c44a-40b3-9a61-031d34a6f71b}</Project>
-      <Name>Voyage.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Voyage.Data\Voyage.Data.csproj">
-      <Project>{7acf3840-25cc-4a96-824a-8ab6b28781fd}</Project>
-      <Name>Voyage.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Voyage.Models\Voyage.Models.csproj">
-      <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
-      <Name>Voyage.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Voyage.Services\Voyage.Services.csproj">
-      <Project>{550dbb13-a473-4348-b530-64a6a5177ab1}</Project>
-      <Name>Voyage.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
