@@ -248,8 +248,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Voyage.Api.UserManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Api.UserManager.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Voyage.Api.UserManager\bin\Debug\Voyage.Api.UserManager.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Core.dll</HintPath>
