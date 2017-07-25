@@ -91,6 +91,8 @@
     <Compile Include="Identity\IdentityResultResponse.cs" />
     <Compile Include="KeyContainer\IRsaKeyContainerService.cs" />
     <Compile Include="KeyContainer\RsaKeyContainerService.cs" />
+    <Compile Include="Notification\NotificationService.cs" />
+    <Compile Include="Notification\INotificationService.cs" />
     <Compile Include="PasswordRecovery\IPasswordRecoverService.cs" />
     <Compile Include="PasswordRecovery\PasswordRecoverService.cs" />
     <Compile Include="Phone\IPhoneService.cs" />

@@ -33,5 +33,9 @@
         public const string UpdateUser = "api.users.update";
         public const string DeleteUser = "api.users.delete";
         public const string CreateUser = "api.users.create";
+
+        public const string ListNotifications = "api.notifications.list";
+        public const string MarkNotificationsAsRead = "api.notifications.mark.read";
+        public const string CreateNotification = "api.notifications.create";
     }
 }
