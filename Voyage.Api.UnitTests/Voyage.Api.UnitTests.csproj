@@ -186,21 +186,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Voyage.Api.UserManager\bin\Debug\Voyage.Api.UserManager.dll</HintPath>
     </Reference>
-    <Reference Include="Voyage.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Voyage.Core">
+      <HintPath>..\Voyage.Core\bin\Debug\Voyage.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Voyage.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Voyage.Data">
+      <HintPath>..\Voyage.Data\bin\Debug\Voyage.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Voyage.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Models.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Voyage.Models">
+      <HintPath>..\Voyage.Models\bin\Debug\Voyage.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Voyage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Services.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Voyage.Services">
+      <HintPath>..\Voyage.Services\bin\Debug\Voyage.Services.dll</HintPath>
     </Reference>
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>

@@ -252,20 +252,20 @@
       <HintPath>..\Voyage.Api.UserManager\bin\Debug\Voyage.Api.UserManager.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Core.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Voyage.Core\bin\Debug\Voyage.Core.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Data.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Voyage.Data\bin\Debug\Voyage.Data.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Models.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Voyage.Models\bin\Debug\Voyage.Models.dll</HintPath>
     </Reference>
     <Reference Include="Voyage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VoyageResourceServer.1.0.0\lib\net461\Voyage.Services.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Voyage.Services\bin\Debug\Voyage.Services.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -286,7 +286,6 @@
   <ItemGroup>
     <Compile Include="API\v1\ApplicationInfoController.cs" />
     <Compile Include="API\v1\NotificationsController.cs" />
-
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
