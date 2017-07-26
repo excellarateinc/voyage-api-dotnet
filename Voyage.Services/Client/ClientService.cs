@@ -26,7 +26,8 @@ namespace Voyage.Services.Client
                 var client = _clientRepository.GetByName(clientId);
                 return new ClientModel
                 {
-                    Id = client.ClientIdentifier,
+                    Id = client.Id,
+                    Identifier = client.ClientIdentifier,
                     Secret = client.ClientSecret,
                     RedirectUrl = client.RedirectUri,
                     AllowedScopes = client.ClientScopes.Select(c => c.ClientScopeType.Name).ToList()
