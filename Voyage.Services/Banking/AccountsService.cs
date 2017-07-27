@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Voyage.Core;
 using Voyage.Data.Repositories.Banking;
@@ -24,7 +25,10 @@ namespace Voyage.Services.Banking
 
         public IEnumerable<AccountModel> GetAccounts(string userId)
         {
-            throw new System.NotImplementedException();
+            var accounts = _accountsRepository.GetAll()
+                .Where(_ => _.UserId == userId).ToList();
+
+            return _mapper.Map<IEnumerable<AccountModel>>(accounts);
         }
 
         public IEnumerable<TransactionHistoryModel> GetTransactionHistory(string userId)

@@ -1,41 +1,47 @@
-﻿using Voyage.Core;
+﻿using System.IdentityModel.Claims;
+using Voyage.Core;
 using System.Web.Http;
-using Voyage.Services.ApplicationInfo;
+using Microsoft.Owin.Security;
+using Voyage.Api.Filters;
+using Voyage.Models;
+using Voyage.Services.Banking;
 
 namespace Voyage.Api.API.V1.Banking
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
-    [AllowAnonymous]
+    [RoutePrefix(Constants.RoutePrefixes.V1)]    
     public class AccountsController : ApiController
     {
-        private readonly IApplicationInfoService _applicationInfoService;
+        private readonly IAccountsService _accountsService;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        public AccountsController(IApplicationInfoService applicationInfoService)
+        public AccountsController(IAccountsService accountsService, IAuthenticationManager authenticationManager)
         {
-            _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
+            _accountsService = accountsService.ThrowIfNull(nameof(accountsService));
+            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
         }
 
         [HttpGet]
         [Route("banking/accounts")]
+        [ClaimAuthorize(ClaimValue = AppClaims.GetAccounts)]
         public IHttpActionResult GetAccounts()
         {
-            return Ok("GetAccounts() works!");
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var accounts = _accountsService.GetAccounts(userId);
+            return Ok(accounts);
         }
 
         [HttpGet]
         [Route("banking/accounts/transactions")]
         public IHttpActionResult GetTransactionHistory()
         {
-            var appInfo = _applicationInfoService.GetApplicationInfo();
-            return Ok(appInfo);
+            return Ok();
         }
 
         [HttpPost]
         [Route("banking/accounts/transfers")]
         public IHttpActionResult Transfer()
         {
-            var appInfo = _applicationInfoService.GetApplicationInfo();
-            return Ok(appInfo);
+            return Ok();
         }
     }
 }

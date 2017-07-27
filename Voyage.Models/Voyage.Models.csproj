@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Map\Profiles\BankingProfile.cs" />
     <Compile Include="TransactionHistoryModel.cs" />
     <Compile Include="TransactionModel.cs" />
     <Compile Include="AppClaims.cs" />

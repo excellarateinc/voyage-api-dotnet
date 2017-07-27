@@ -63,6 +63,8 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Seed" />
+    <Folder Include="dbo\Tables\Banking" />
+    <Folder Include="Scripts\Seed\Banking" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ApplicationLog.sql" />
@@ -88,6 +90,10 @@
     <None Include="Scripts\Seed\ClientScope.sql" />
     <None Include="Scripts\Seed\ClientScopeType.sql" />
     <Build Include="dbo\Tables\Notification.sql" />
+    <Build Include="dbo\Tables\Banking\Account.sql" />
+    <Build Include="dbo\Tables\Banking\Transaction.sql" />
+    <None Include="Scripts\Seed\Banking\Account.sql" />
+    <None Include="Scripts\Seed\Banking\Transaction.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Seed\RoleClaim.sql" />

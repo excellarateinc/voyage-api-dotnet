@@ -7,6 +7,8 @@ namespace Voyage.Models
     {
         public int AccountId { get; set; }
 
+        public string UserId { get; set; }
+
         [AntiXss]
         public string AccountNumber { get; set; }
 

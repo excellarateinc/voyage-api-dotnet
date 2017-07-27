@@ -19,4 +19,6 @@ Post-Deployment Script Template
 :r .\Seed\ClientScopeType.sql
 :r .\Seed\ClientScope.sql
 :r .\Seed\Notification.sql
+:r .\Seed\Banking\Account.sql
+:r .\Seed\Banking\Transaction.sql
 

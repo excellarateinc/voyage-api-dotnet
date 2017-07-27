@@ -35,7 +35,9 @@ AS (
 			 ,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'authorities', N'api.notifications.mark.read')	
 			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'authorities', N'api.notifications.mark.read')
 			 ,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'authorities', N'api.notifications.create')
-			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'authorities', N'api.notifications.create')		 	 
+			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'authorities', N'api.notifications.create')
+			 ,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'authorities', N'api.accounts.list')
+			 ,(N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'authorities', N'api.accounts.list')			 	 	 
 		) AS RoleClaimSeed([RoleId], [ClaimType], [ClaimValue])
 	)
 

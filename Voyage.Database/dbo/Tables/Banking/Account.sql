@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Account]
+(
+	[AccountId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
+	[UserId] NVARCHAR(128) NOT NULL,
+    [AccountNumber] NVARCHAR(128) NOT NULL, 
+	[Name] NVARCHAR(128) NOT NULL, 
+    [Type] INT NOT NULL,
+	[Balance] DECIMAL(18, 2) NOT NULL ,
+    [CreatedDate] DATETIME2 NOT NULL DEFAULT GETDATE()
+)
