@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Serilog;
 using TrackerEnabledDbContext.Common.Models;
 using TrackerEnabledDbContext.Identity;
+using Voyage.Models.Entities.Banking;
 
 namespace Voyage.Data
 {
@@ -52,6 +53,10 @@ namespace Voyage.Data
         public IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
 
         public IDbSet<Notification> Notifications { get; set; }
+
+        public IDbSet<Account> Accounts { get; set; }
+
+        public IDbSet<Transaction> Transactions { get; set; }
 
         public override async Task<int> SaveChangesAsync()
         {

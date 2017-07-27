@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using Voyage.Models.Entities;
+using Voyage.Models.Entities.Banking;
 
 namespace Voyage.Data
 {
@@ -24,6 +25,10 @@ namespace Voyage.Data
         IDbSet<ClientScopeType> ClientScopeTypes { get; set; }
 
         IDbSet<Notification> Notifications { get; set; }
+
+        IDbSet<Account> Accounts { get; set; }
+
+        IDbSet<Transaction> Transactions { get; set; }
 
         int SaveChanges();
     }

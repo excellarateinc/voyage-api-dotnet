@@ -82,10 +82,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TransactionHistoryModel.cs" />
+    <Compile Include="TransactionModel.cs" />
     <Compile Include="AppClaims.cs" />
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ClientModel.cs" />
+    <Compile Include="Entities\Banking\Account.cs" />
+    <Compile Include="Entities\Banking\Transaction.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClientRole.cs" />
     <Compile Include="Entities\ClientScope.cs" />
@@ -93,6 +97,7 @@
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="Map\Profiles\NotificationProfile.cs" />
+    <Compile Include="AccountModel.cs" />
     <Compile Include="PhoneSecurityCodeModel.cs" />
     <Compile Include="ResponseErrorModel.cs" />
     <Compile Include="ClaimModel.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Enum\MonitorType.cs" />
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="NotificationModel.cs" />
+    <Compile Include="TransferModel.cs" />
     <Compile Include="UserApplicationSession.cs" />
     <Compile Include="Validators\PhoneSecurityCodeModelValidator.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
