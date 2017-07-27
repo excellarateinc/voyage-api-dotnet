@@ -34,13 +34,16 @@ namespace Voyage.Api.API.V1.Banking
         [Route("banking/accounts/transactions")]
         public IHttpActionResult GetTransactionHistory()
         {
-            return Ok();
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var transactionHistory = _accountsService.GetTransactionHistory(userId);
+            return Ok(transactionHistory);
         }
 
         [HttpPost]
         [Route("banking/accounts/transfers")]
-        public IHttpActionResult Transfer()
+        public IHttpActionResult Transfer(TransferModel transfer)
         {
+            _accountsService.Transfer(transfer);
             return Ok();
         }
     }

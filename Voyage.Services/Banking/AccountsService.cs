@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.Banking;
 using Voyage.Models;
+using Voyage.Models.Entities.Banking;
 
 namespace Voyage.Services.Banking
 {
@@ -33,12 +36,71 @@ namespace Voyage.Services.Banking
 
         public IEnumerable<TransactionHistoryModel> GetTransactionHistory(string userId)
         {
-            throw new System.NotImplementedException();
+            var accountsQueryable = _accountsRepository.GetAll()
+                .Where(_ => _.UserId == userId);
+
+            var transactionQueryable = _transactionsRepository.GetAll();
+
+            var transactions = (from account in accountsQueryable
+                               select new
+                               {
+                                   account.AccountId,
+                                   AccountName = account.Name,
+                                   Transactions = transactionQueryable.Where(_ => _.AccountId == account.AccountId)
+                               }).ToList();
+
+            return transactions.Select(_ => new TransactionHistoryModel
+            {
+                AccountId = _.AccountId,
+                AccountName = _.AccountName,
+                Transactions = _mapper.Map<IEnumerable<TransactionModel>>(_.Transactions)
+            });
         }
 
         public void Transfer(TransferModel transfer)
         {
-            throw new System.NotImplementedException();
+            var fromAccount = _accountsRepository.Get(transfer.FromAccountId);
+            var toAccount = _accountsRepository.Get(transfer.ToAccountId);
+
+            if (fromAccount == null || toAccount == null)
+            {
+                throw new BadRequestException("Accounts not valid for transfer");
+            }
+
+            if (fromAccount.AccountId == toAccount.AccountId)
+            {
+                throw new BadRequestException("Can't transfer to the same account");
+            }
+
+            if (fromAccount.Balance < transfer.Amount)
+            {
+                throw new BadRequestException("Funds insufficient for transfer");
+            }
+
+            fromAccount.Balance -= transfer.Amount;
+            toAccount.Balance += transfer.Amount;
+
+            _accountsRepository.SaveChanges();
+
+            _transactionsRepository.Add(new Transaction
+            {
+                AccountId = fromAccount.AccountId,
+                Amount = transfer.Amount,
+                Balance = fromAccount.Balance,
+                Type = 2, // Transfer Type
+                Date = DateTime.Now,
+                Description = $"Transfer to {toAccount.Name}"
+            });
+
+            _transactionsRepository.Add(new Transaction
+            {
+                AccountId = toAccount.AccountId,
+                Amount = transfer.Amount,
+                Balance = toAccount.Balance,
+                Type = 2, // Transfer Type
+                Date = DateTime.Now,
+                Description = $"Transfer from {fromAccount.Name}"
+            });
         }
     }
 }
