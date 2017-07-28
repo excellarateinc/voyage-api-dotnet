@@ -87,7 +87,7 @@ namespace Voyage.Services.Banking
                 AccountId = fromAccount.AccountId,
                 Amount = transfer.Amount,
                 Balance = fromAccount.Balance,
-                Type = 2, // Transfer Type
+                Type = 0, // Transfer Type
                 Date = DateTime.Now,
                 Description = $"Transfer to {toAccount.Name}"
             });
@@ -97,7 +97,7 @@ namespace Voyage.Services.Banking
                 AccountId = toAccount.AccountId,
                 Amount = transfer.Amount,
                 Balance = toAccount.Balance,
-                Type = 2, // Transfer Type
+                Type = 1, // Transfer Type
                 Date = DateTime.Now,
                 Description = $"Transfer from {fromAccount.Name}"
             });
