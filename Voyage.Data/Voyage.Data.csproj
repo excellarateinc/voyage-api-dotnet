@@ -96,6 +96,10 @@
   <ItemGroup>
     <Compile Include="Repositories\ActivityAudit\ActivityAuditRepository.cs" />
     <Compile Include="BaseAuditConfiguration.cs" />
+    <Compile Include="Repositories\Banking\TransactionsRepository.cs" />
+    <Compile Include="Repositories\Banking\ITransactionsRepository.cs" />
+    <Compile Include="Repositories\Banking\IAccountsRepository.cs" />
+    <Compile Include="Repositories\Banking\AccountsRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="DataModule.cs" />
     <Compile Include="Repositories\ActivityAudit\IActivityAuditRepository.cs" />

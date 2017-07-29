@@ -2,6 +2,7 @@
 using Autofac;
 using Voyage.Services.ApplicationInfo;
 using Voyage.Services.Audit;
+using Voyage.Services.Banking;
 using Voyage.Services.Client;
 using Voyage.Services.FileReader;
 using Voyage.Services.IdentityManagers;
@@ -69,6 +70,10 @@ namespace Voyage.Services
 
             builder.RegisterType<NotificationService>()
                 .As<INotificationService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<AccountsService>()
+                .As<IAccountsService>()
                 .InstancePerRequest();
         }
     }

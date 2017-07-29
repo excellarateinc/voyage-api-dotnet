@@ -37,5 +37,8 @@
         public const string ListNotifications = "api.notifications.list";
         public const string MarkNotificationsAsRead = "api.notifications.mark.read";
         public const string CreateNotification = "api.notifications.create";
+
+        // Banking
+        public const string GetAccounts = "api.accounts.list";
     }
 }
