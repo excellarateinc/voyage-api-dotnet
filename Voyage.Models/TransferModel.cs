@@ -1,5 +1,9 @@
-﻿namespace Voyage.Models
+﻿using FluentValidation.Attributes;
+using Voyage.Models.Validators;
+
+namespace Voyage.Models
 {
+    [Validator(typeof(TransferModelValidator))]
     public class TransferModel
     {
         public int FromAccountId { get; set; }

@@ -3,8 +3,8 @@ AS (
 	SELECT *
 	FROM (
 		VALUES 
-			  (1, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', '0023287854', 'My Checking Acct', 0, 1450.25, GETDATE())
-			 ,(2, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', '2308287468', 'Personal Savings Acct', 1, 4520.88, GETDATE())
+			  (1, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', '0023287854', 'My Checking Acct', 0, 1000.00, GETDATE())
+			 ,(2, 'fb9f65d2-699c-4f08-a2e4-8e6c28190a84', '2308287468', 'Personal Savings Acct', 1, 4000.00, GETDATE())
 		) AS AccountSeed([AccountId], [UserId], [AccountNumber], [Name], [Type], [Balance], [CreatedDate])
 	)
 

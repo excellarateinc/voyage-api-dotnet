@@ -3,8 +3,8 @@ AS (
 	SELECT *
 	FROM (
 		VALUES 
-			  (1, 1, GETDATE(), 0, 'description', 50.00, 1100.34, GETDATE())
-			 ,(2, 1, GETDATE(), 1, 'other thingy', 25.00, 4433.00, GETDATE())
+			  (1, 1, GETDATE(), 0, 'ACH Payment', 50.00, 950.00, GETDATE())
+			 ,(2, 2, GETDATE(), 1, 'Paycheck', 250.00, 4250.00, GETDATE())
 		) AS TransactionSeed([TransactionId], [AccountId], [Date], [Type], [Description], [Amount], [Balance], [CreatedDate])
 	)
 
@@ -32,6 +32,8 @@ WHEN NOT MATCHED BY TARGET
 		   ,[Source].[Balance]
 		   ,[Source].[CreatedDate]
 			)
+WHEN NOT MATCHED BY SOURCE
+	THEN DELETE
 WHEN MATCHED 
 	THEN
 		UPDATE SET 	

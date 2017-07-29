@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\TransactionType.cs" />
     <Compile Include="Map\Profiles\BankingProfile.cs" />
     <Compile Include="TransactionHistoryModel.cs" />
     <Compile Include="TransactionModel.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="NotificationModel.cs" />
     <Compile Include="TransferModel.cs" />
     <Compile Include="UserApplicationSession.cs" />
+    <Compile Include="Validators\TransferModelValidator.cs" />
     <Compile Include="Validators\PhoneSecurityCodeModelValidator.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
     <Compile Include="ISoftDeleteable.cs" />

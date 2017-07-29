@@ -7,6 +7,7 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.Banking;
 using Voyage.Models;
 using Voyage.Models.Entities.Banking;
+using Voyage.Models.Enum;
 
 namespace Voyage.Services.Banking
 {
@@ -46,7 +47,9 @@ namespace Voyage.Services.Banking
                                {
                                    account.AccountId,
                                    AccountName = account.Name,
-                                   Transactions = transactionQueryable.Where(_ => _.AccountId == account.AccountId)
+                                   Transactions = transactionQueryable
+                                        .Where(_ => _.AccountId == account.AccountId)
+                                        .OrderByDescending(_ => _.Date)
                                }).ToList();
 
             return transactions.Select(_ => new TransactionHistoryModel
@@ -87,7 +90,7 @@ namespace Voyage.Services.Banking
                 AccountId = fromAccount.AccountId,
                 Amount = transfer.Amount,
                 Balance = fromAccount.Balance,
-                Type = 0, // Transfer Type
+                Type = (int)TransactionType.Withdrawal,
                 Date = DateTime.Now,
                 Description = $"Transfer to {toAccount.Name}"
             });
@@ -97,7 +100,7 @@ namespace Voyage.Services.Banking
                 AccountId = toAccount.AccountId,
                 Amount = transfer.Amount,
                 Balance = toAccount.Balance,
-                Type = 1, // Transfer Type
+                Type = (int)TransactionType.Deposit,
                 Date = DateTime.Now,
                 Description = $"Transfer from {fromAccount.Name}"
             });
