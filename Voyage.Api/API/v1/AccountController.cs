@@ -1,12 +1,12 @@
 ﻿using System;
+using System.IdentityModel.Claims;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using Autofac;
-using Autofac.Integration.Owin;
+using Microsoft.Owin.Security;
 using Voyage.Services.User;
+using Voyage.Services.Verification;
 
 namespace Voyage.Api.API.V1
 {
@@ -14,12 +14,16 @@ namespace Voyage.Api.API.V1
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
+        private readonly IVerificationService _verificationService;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        public AccountController() : this(HttpContext.Current.GetOwinContext().GetAutofacLifetimeScope().Resolve<IUserService>()) { }
+       // public AccountController() : this(HttpContext.Current.GetOwinContext().GetAutofacLifetimeScope().Resolve<IUserService>()) { }
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IVerificationService verificationService, IAuthenticationManager authenticationManager)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
+            _verificationService = verificationService.ThrowIfNull(nameof(verificationService));
+            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
         }
 
         /**
@@ -80,6 +84,25 @@ namespace Voyage.Api.API.V1
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [Route("verify/send")]
+        [HttpGet]
+        [Authorize]
+        public IHttpActionResult SendVerificationCode()
+        {
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            _verificationService.SendCode(userId);
+            return Ok();
+        }
+
+        [Route("verify")]
+        [HttpPost]
+        public async Task<IHttpActionResult> VerifyCode(VerifyModel model)
+        {
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            await _verificationService.VerifyCodeAsync(userId, model.Code);
+            return Ok();
         }
     }
 }
