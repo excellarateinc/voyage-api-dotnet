@@ -8,9 +8,13 @@ using Serilog.Sinks.MSSqlServer;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Voyage.Api.AuthProviders;
 using Voyage.Api.Middleware;
 using Voyage.Api.Middleware.Processors;
+using Voyage.Models.Entities;
+using Voyage.Services.IdentityManagers;
 
 namespace Voyage.Api
 {
@@ -74,23 +78,24 @@ namespace Voyage.Api
             //    .SingleInstance();
 
             //// Options
-            // builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
-            // {
-            //    DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(Constants.ApplicationName)
-            // });
+            builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
+            {
+                DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider(Constants.ApplicationName)
+            });
 
-            // builder.Register(c =>
-            // {
-            //    IUserTokenProvider<ApplicationUser, string> tokenProvider = null;
-            //    var options = c.Resolve<IdentityFactoryOptions<ApplicationUserManager>>();
-            //    var dataProtectionProvider = options.DataProtectionProvider;
-            //    if (options.DataProtectionProvider != null)
-            //    {
-            //        tokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
-            //    }
+            builder.Register(c =>
+            {
+                IUserTokenProvider<ApplicationUser, string> tokenProvider = null;
+                var options = c.Resolve<IdentityFactoryOptions<ApplicationUserManager>>();
+                var dataProtectionProvider = options.DataProtectionProvider;
+                if (options.DataProtectionProvider != null)
+                {
+                    tokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create(Constants.ApplicationName));
+                }
 
-            //    return tokenProvider;
-            // });
+                return tokenProvider;
+            });
+
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
         }
 

@@ -89,10 +89,10 @@ namespace Voyage.Api.API.V1
         [Route("verify/send")]
         [HttpGet]
         [Authorize]
-        public IHttpActionResult SendVerificationCode()
+        public async Task<IHttpActionResult> SendVerificationCode()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            _verificationService.SendCode(userId);
+            await _verificationService.SendCode(userId);
             return Ok();
         }
 
