@@ -8,9 +8,9 @@ using Microsoft.Owin.Security;
 using Voyage.Services.User;
 using Voyage.Services.Verification;
 
-namespace Voyage.Api.API.V1
+namespace Voyage.Api.UserManager.API.V1
 {
-    [RoutePrefix(Constants.RoutePrefixes.V1)]
+    [RoutePrefix(RoutePrefixConstants.RoutePrefixes.V1)]
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
