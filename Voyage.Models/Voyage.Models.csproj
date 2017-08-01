@@ -105,6 +105,7 @@
     <Compile Include="Enum\PhoneType.cs" />
     <Compile Include="NotificationModel.cs" />
     <Compile Include="UserApplicationSession.cs" />
+    <Compile Include="VerifyModel.cs" />
     <Compile Include="Validators\PhoneSecurityCodeModelValidator.cs" />
     <Compile Include="Validators\RuleBuilderExtensions.cs" />
     <Compile Include="ISoftDeleteable.cs" />
