@@ -18,9 +18,9 @@ namespace Voyage.Services.Verification
         }
 
         /// <summary>
-        /// Validate user name and phone number before sending security code
+        /// Send a code to the user's phone for verification.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">The user id of the user to send the code to.</param>
         /// <returns></returns>
         public async Task SendCode(string userId)
         {
@@ -46,9 +46,10 @@ namespace Voyage.Services.Verification
         }
 
         /// <summary>
-        /// validate security code before moving to next step
+        /// Validate security code.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">The user id of the user to verify.</param>
+        /// <param name="code">The code sent to the user's phone.</param>
         /// <returns></returns>
         public async Task VerifyCodeAsync(string userId, string code)
         {

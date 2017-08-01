@@ -87,6 +87,7 @@ namespace Voyage.Api.API.V1
             }
         }
 
+        // TODO: Add documentation
         [Route("verify/send")]
         [HttpGet]
         [Authorize]
@@ -97,6 +98,7 @@ namespace Voyage.Api.API.V1
             return Ok();
         }
 
+        // TODO: Add documentation
         [Route("verify")]
         [HttpPost]
         public async Task<IHttpActionResult> VerifyCode(VerifyModel model)

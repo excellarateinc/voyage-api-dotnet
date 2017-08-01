@@ -18,6 +18,7 @@
 //using Voyage.Services.User;
 //using Xunit;
 
+// TODO: Fix tests (We need to add mocks for the new services added to the controller)
 //namespace Voyage.Api.UnitTests.API.V1
 //{
 //    public class AccountControllerTests : BaseUnitTest
