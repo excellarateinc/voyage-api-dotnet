@@ -5,10 +5,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Results;
 using System.Web.Http.Routing;
 using FluentAssertions;
-using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.API.V1;
@@ -16,26 +15,32 @@ using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
+using Voyage.Services.Verification;
 using Xunit;
 
+// TODO: add tests for verification endpoints.
 namespace Voyage.Api.UnitTests.API.V1
 {
     public class AccountControllerTests : BaseUnitTest
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IVerificationService> _mockVerificationService;
+        private readonly Mock<IAuthenticationManager> _mockAuthenticationManager;
         private readonly Mock<UrlHelper> _mockUrlHelper;
 
         public AccountControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
+            _mockVerificationService = Mock.Create<IVerificationService>();
+            _mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _accountController = new AccountController(_mockUserService.Object)
+            _accountController = new AccountController(_mockUserService.Object, _mockVerificationService.Object, _mockAuthenticationManager.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration(),
                 Url = _mockUrlHelper.Object
-        };
+            };
         }
 
         [Fact]
@@ -55,9 +60,9 @@ namespace Voyage.Api.UnitTests.API.V1
 
             // ACT
             var result = await _accountController.Register(model);
-            
+
             var message = await result.ExecuteAsync(new CancellationToken());
-            
+
             message.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
@@ -70,7 +75,7 @@ namespace Voyage.Api.UnitTests.API.V1
                 .With(_ => _.Password, "cool1Password!!")
                 .Create();
 
-            _mockUserService.Setup(_ => _.RegisterAsync(model)).Throws(new BadRequestException());            
+            _mockUserService.Setup(_ => _.RegisterAsync(model)).Throws(new BadRequestException());
 
             // ACT
             var result = await _accountController.Register(model);
@@ -84,7 +89,7 @@ namespace Voyage.Api.UnitTests.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null);
+            Action throwAction = () => new AccountController(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

@@ -11,6 +11,7 @@ using Voyage.Services.PasswordRecovery;
 using Voyage.Services.Phone;
 using Voyage.Services.Role;
 using Voyage.Services.User;
+using Voyage.Services.Verification;
 
 namespace Voyage.Services
 {
@@ -69,6 +70,10 @@ namespace Voyage.Services
 
             builder.RegisterType<NotificationService>()
                 .As<INotificationService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<VerificationService>()
+                .As<IVerificationService>()
                 .InstancePerRequest();
         }
     }

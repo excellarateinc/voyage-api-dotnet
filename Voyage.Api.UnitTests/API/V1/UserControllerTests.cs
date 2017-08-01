@@ -402,7 +402,7 @@ namespace Voyage.Api.UnitTests.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null);
+            Action throwAction = () => new AccountController(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
