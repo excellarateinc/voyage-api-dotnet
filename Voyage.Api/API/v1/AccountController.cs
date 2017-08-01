@@ -17,9 +17,6 @@ namespace Voyage.Api.API.V1
         private readonly IVerificationService _verificationService;
         private readonly IAuthenticationManager _authenticationManager;
 
-        // TODO: Is this constructor needed? What does it do?
-       // public AccountController() : this(HttpContext.Current.GetOwinContext().GetAutofacLifetimeScope().Resolve<IUserService>()) { }
-
         public AccountController(IUserService userService, IVerificationService verificationService, IAuthenticationManager authenticationManager)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
