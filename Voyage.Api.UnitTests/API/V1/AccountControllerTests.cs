@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
-using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
@@ -16,27 +15,21 @@ using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
-using Voyage.Services.Verification;
 using Xunit;
 
-// TODO: add tests for verification endpoints.
 namespace Voyage.Api.UnitTests.API.V1
 {
     public class AccountControllerTests : BaseUnitTest
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
-        private readonly Mock<IVerificationService> _mockVerificationService;
-        private readonly Mock<IAuthenticationManager> _mockAuthenticationManager;
         private readonly Mock<UrlHelper> _mockUrlHelper;
 
         public AccountControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
-            _mockVerificationService = Mock.Create<IVerificationService>();
-            _mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _accountController = new AccountController(_mockUserService.Object, _mockVerificationService.Object, _mockAuthenticationManager.Object)
+            _accountController = new AccountController(_mockUserService.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration(),
@@ -90,7 +83,7 @@ namespace Voyage.Api.UnitTests.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null, null, null);
+            Action throwAction = () => new AccountController(null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

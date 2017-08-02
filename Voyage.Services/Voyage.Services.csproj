@@ -105,8 +105,6 @@
     <Compile Include="ServicesModule.cs" />
     <Compile Include="User\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Verification\IVerificationService.cs" />
-    <Compile Include="Verification\VerificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Voyage.Core\Voyage.Core.csproj">
