@@ -24,6 +24,11 @@
     background-color: #2196f3 !important;
 }
 
+.secondary-color {
+    background-color:white !important; 
+    color: black !important;
+}
+
 .full-width {
     width: 100% !important;
 }
