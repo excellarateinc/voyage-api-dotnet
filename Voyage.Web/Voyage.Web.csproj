@@ -242,6 +242,7 @@
     <Content Include="Content\bootstrap-material-design.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\voyage-logo-horiz.svg" />
     <Content Include="Content\Images\voyage-logo-vert.svg" />
     <Content Include="Content\ripples.css" />

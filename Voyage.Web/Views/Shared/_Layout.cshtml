@@ -2,36 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Voyage</title>
+    <link rel="icon" type="image/x-icon" href="../../Content/Images/favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="../../Content/bootstrap-material-design.css">
     <link rel="stylesheet" href="../../Content/ripples.css">
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color: #4285f4">
+    <div class="navbar navbar-inverse navbar-fixed-top primary-color" style="height: 56px;">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>                
-                <img src="../../Content/Images/voyage-logo-horiz.svg" alt="voyage-logo" width="130" height="40" style="margin-top: 5px; margin-left: 10px;"/>
+                <img src="../../Content/Images/voyage-logo-horiz.svg" alt="voyage-logo" width="120" style="margin-top: 10px; margin-left: 21px;" />
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
+                <ul class="nav navbar-nav"></ul>
             </div>
         </div>
     </div>
 
-    <div class="container body-content" style="margin-top: 15px;">
+    <div class="container" style="margin-top: 15px;">
         @RenderBody()
-        <hr />
-        <footer>            
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
