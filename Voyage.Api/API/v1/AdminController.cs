@@ -1,21 +1,20 @@
 ﻿using Voyage.Core;
 using System.Web.Http;
-using Voyage.Services.User;
 using Voyage.Models;
 using System.Threading.Tasks;
-using System;
 using Voyage.Api.Filters;
+using Voyage.Services.Admin;
 
 namespace Voyage.Api.API.V1
 {
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AdminController : ApiController
     {
-        private readonly IUserService _userService;
+        private readonly IAdminService _adminService;
 
-        public AdminController(IUserService userService)
+        public AdminController(IAdminService adminService)
         {
-            _userService = userService.ThrowIfNull(nameof(userService));
+            _adminService = adminService.ThrowIfNull(nameof(adminService));
         }
 
         /**
@@ -37,24 +36,12 @@ namespace Voyage.Api.API.V1
         * @apiUse BadRequestError
         **/
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
-        [HttpPost]
+        [HttpPut]
         [Route("users/{userId}/account-status")]
         public async Task<IHttpActionResult> ToggleAccountStatus([FromUri] string userId, [FromBody] ChangeAccountStatusModel changeAccountStatusModel)
         {
-            if (string.IsNullOrEmpty(userId))
-                return BadRequest();
-            try
-            {
-                var user = await _userService.GetUserAsync(userId);
-                user.IsActive = changeAccountStatusModel.IsActive == null ? user.IsActive : (bool)changeAccountStatusModel.IsActive;
-                user.IsVerifyRequired = changeAccountStatusModel.IsVerifyRequired == null ? user.IsVerifyRequired : (bool)changeAccountStatusModel.IsVerifyRequired;
-                var result = await _userService.UpdateUserAsync(userId, user);
-                return Ok(result);
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
+            var result = await _adminService.ToggleAccountStatus(userId, changeAccountStatusModel);
+            return Ok(result);
         }
     }
 }

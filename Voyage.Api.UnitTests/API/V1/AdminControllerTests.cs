@@ -4,6 +4,7 @@ using Ploeh.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ using Voyage.Api.API.V1;
 using Voyage.Api.UnitTests.Common;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
-using Voyage.Services.User;
+using Voyage.Services.Admin;
 using Xunit;
 
 namespace Voyage.Api.UnitTests.API.V1
@@ -20,12 +21,12 @@ namespace Voyage.Api.UnitTests.API.V1
     public class AdminControllerTests : BaseUnitTest
     {
         private readonly AdminController _controller;
-        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IAdminService> _mockAdminService;
         public AdminControllerTests()
         {
-            _mockUserService = Mock.Create<IUserService>();
+            _mockAdminService = Mock.Create<IAdminService>();
 
-            _controller = new AdminController(_mockUserService.Object)
+            _controller = new AdminController(_mockAdminService.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration()
@@ -44,28 +45,16 @@ namespace Voyage.Api.UnitTests.API.V1
         public async void AdminController_ToggleAccountStatus_ShouldCallServiceToChangeUserStatus()
         {
             var userModel = Fixture.Create<UserModel>();
-            var returnModel = Fixture.Create<UserModel>();
             var changeAccountStatusModel = Fixture.Create<ChangeAccountStatusModel>();
             var id = Fixture.Create<string>();
 
-            _mockUserService.Setup(_ => _.GetUserAsync(id)).ReturnsAsync(userModel);
-
-            _mockUserService.Setup(_ => _.UpdateUserAsync(id, userModel))
-                .ReturnsAsync(returnModel);
+            _mockAdminService.Setup(_ => _.ToggleAccountStatus(id, changeAccountStatusModel))
+                .ReturnsAsync(userModel);
             
             var result = await _controller.ToggleAccountStatus(id, changeAccountStatusModel);
             
             Mock.VerifyAll();
-        }
-
-        [Fact]
-        public void AdminController_ToggleAccountStatus_ShouldFailForEmptyStringId()
-        {
-            var changeAccountStatusModel = Fixture.Create<ChangeAccountStatusModel>();
-            var id = "";
-            
-            Assert.ThrowsAsync<BadRequestException>(async () => await _controller.ToggleAccountStatus(id, changeAccountStatusModel));
-        }
+        }  
 
     }
 }

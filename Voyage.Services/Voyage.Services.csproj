@@ -80,6 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AdminService.cs" />
+    <Compile Include="Admin\IAdminService.cs" />
     <Compile Include="ApplicationInfo\ApplicationInfoService.cs" />
     <Compile Include="Audit\AuditService.cs" />
     <Compile Include="Client\ClientService.cs" />
