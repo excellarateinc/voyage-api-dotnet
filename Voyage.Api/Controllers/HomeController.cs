@@ -8,7 +8,7 @@ namespace Voyage.Api.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return RedirectPermanent("~/docs");
+            return new RedirectResult("~/swagger/ui/index");
         }
     }
 }

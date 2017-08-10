@@ -1,8 +1,0 @@
-{
-  "version": "1.0.0",
-  "name": "voyage-app",
-  "private": true,
-  "scripts": {
-    "apidoc": "apidoc -o docs -i ..\\ -f \".cs$\" -f \".js$\" "
-  }
-}
