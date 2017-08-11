@@ -111,6 +111,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminServiceTests.cs" />
     <Compile Include="NotificationServiceTests.cs" />
     <Compile Include="ApplicationInfoServiceTests.cs" />
     <Compile Include="AuditServiceTests.cs" />

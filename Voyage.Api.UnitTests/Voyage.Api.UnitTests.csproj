@@ -217,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\V1\AccountControllerTests.cs" />
+    <Compile Include="API\V1\AdminControllerTests.cs" />
     <Compile Include="API\V1\NotificationsControllerTests.cs" />
     <Compile Include="API\V1\ApplicationInfoControllerTests.cs" />
     <Compile Include="API\V1\RoleControllerTests.cs" />

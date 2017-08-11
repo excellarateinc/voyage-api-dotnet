@@ -85,6 +85,7 @@
     <Compile Include="AppClaims.cs" />
     <Compile Include="ApplicationInfoModel.cs" />
     <Compile Include="ActivityAuditModel.cs" />
+    <Compile Include="ChangeAccountStatusModel.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClientRole.cs" />

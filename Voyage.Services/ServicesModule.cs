@@ -11,6 +11,7 @@ using Voyage.Services.PasswordRecovery;
 using Voyage.Services.Phone;
 using Voyage.Services.Role;
 using Voyage.Services.User;
+using Voyage.Services.Admin;
 
 namespace Voyage.Services
 {
@@ -33,6 +34,10 @@ namespace Voyage.Services
 
             builder.RegisterType<UserService>()
                 .As<IUserService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<AdminService>()
+                .As<IAdminService>()
                 .InstancePerRequest();
 
             builder.RegisterType<ClientService>()
