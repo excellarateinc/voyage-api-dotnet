@@ -1,14 +1,20 @@
-﻿using System.Security.Claims;
+﻿using Autofac;
+using Autofac.Integration.Owin;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using Voyage.Core;
+using Voyage.Services.Client;
 
 namespace Voyage.Security.Oauth2.Controllers
 {
     public class OAuthController : Controller
     {
+
         public ActionResult Authorize()
         {
+            var context = HttpContext.GetOwinContext().GetAutofacLifetimeScope();
+            var clientService = context.Resolve<IClientService>();
+
             if (Response.StatusCode != 200)
             {
                 return View("AuthorizeError");
@@ -24,7 +30,7 @@ namespace Voyage.Security.Oauth2.Controllers
             }
 
             // TODO: Get specific client's scopes.
-            var scopes = Clients.Client2.AllowedScopes;
+            var scopes = clientService.GetScopeListByClientId(Request.Params["client_id"]);
             ViewBag.Scopes = scopes;
 
             if (Request.HttpMethod != "POST")
