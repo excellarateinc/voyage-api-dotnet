@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
@@ -21,18 +20,17 @@ namespace Voyage.Services.Admin
         {
             if (string.IsNullOrEmpty(userId))
                 throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "Empty User Id");
-            try
-            {
-                var user = await _userService.GetUserAsync(userId);
-                user.IsActive = changeAccountStatusModel.IsActive == null ? user.IsActive : (bool)changeAccountStatusModel.IsActive;
-                user.IsVerifyRequired = changeAccountStatusModel.IsVerifyRequired == null ? user.IsVerifyRequired : (bool)changeAccountStatusModel.IsVerifyRequired;
-                var result = await _userService.UpdateUserAsync(userId, user);
-                return result;
-            }
-            catch (Exception)
-            {
-                throw new BadRequestException(HttpStatusCode.BadRequest.ToString(), "Invalid Request.");
-            }
+
+            var user = await _userService.GetUserAsync(userId);
+
+            if (changeAccountStatusModel.IsActive.HasValue)
+                user.IsActive = changeAccountStatusModel.IsActive.Value;
+
+            if (changeAccountStatusModel.IsVerifyRequired.HasValue)
+                user.IsVerifyRequired = changeAccountStatusModel.IsVerifyRequired.Value;
+
+            var result = await _userService.UpdateUserAsync(userId, user);
+            return result;
         }
     }
 }
