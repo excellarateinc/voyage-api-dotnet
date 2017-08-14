@@ -57,9 +57,10 @@ namespace Voyage.Services.Client
             });
         }
 
-        public IList<string> GetScopeListByClientId(string clientName)
+        public async Task<IList<string>> GetScopeListByClientId(string clientId)
         {
-            return Task.Run(() => GetClientAsync(clientName)).Result.AllowedScopes;
+            var client = await GetClientAsync(clientId);
+            return client.AllowedScopes;
         }
     }
 }

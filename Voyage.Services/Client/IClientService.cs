@@ -16,6 +16,6 @@ namespace Voyage.Services.Client
 
         Task UnlockClientAsync(string clientId);
 
-        IList<string> GetScopeListByClientId(string clientName);
+        Task<IList<string>> GetScopeListByClientId(string clientId);
     }
 }
