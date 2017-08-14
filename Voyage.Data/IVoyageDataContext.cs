@@ -25,6 +25,10 @@ namespace Voyage.Data
 
         IDbSet<Notification> Notifications { get; set; }
 
+        IDbSet<SecurityQuestion> SecurityQuestions { get; set; }
+
+        IDbSet<UserSecurityQuestion> UserSecurityQuestions { get; set; }
+
         int SaveChanges();
     }
 }

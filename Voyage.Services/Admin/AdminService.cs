@@ -17,6 +17,12 @@ namespace Voyage.Services.Admin
             _userService = userService.ThrowIfNull(nameof(userService));
         }
 
+        /// <summary>
+        /// To toggle the account status of the user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="changeAccountStatusModel"></param>
+        /// <returns>UserModel</returns>
         public async Task<UserModel> ToggleAccountStatus(string userId, ChangeAccountStatusModel changeAccountStatusModel)
         {
             if (string.IsNullOrEmpty(userId))

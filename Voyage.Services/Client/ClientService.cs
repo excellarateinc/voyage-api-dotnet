@@ -57,6 +57,11 @@ namespace Voyage.Services.Client
             });
         }
 
+        /// <summary>
+        /// Gets the scope list for the clientId.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <returns>IList<string></returns>
         public async Task<IList<string>> GetScopeListByClientId(string clientId)
         {
             var client = await GetClientAsync(clientId);
