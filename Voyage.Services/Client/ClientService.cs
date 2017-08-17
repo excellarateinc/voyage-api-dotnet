@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Voyage.Data.Repositories.Client;
 using Voyage.Models;
@@ -54,6 +55,12 @@ namespace Voyage.Services.Client
             {
                 _clientRepository.UnlockClient(clientId);
             });
+        }
+
+        public async Task<IList<string>> GetScopeListByClientId(string clientId)
+        {
+            var client = await GetClientAsync(clientId);
+            return client.AllowedScopes;
         }
     }
 }

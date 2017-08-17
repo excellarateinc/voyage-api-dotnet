@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Voyage.Models;
 
 namespace Voyage.Services.Client
@@ -14,5 +15,7 @@ namespace Voyage.Services.Client
         Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement = true);
 
         Task UnlockClientAsync(string clientId);
+
+        Task<IList<string>> GetScopeListByClientId(string clientId);
     }
 }
