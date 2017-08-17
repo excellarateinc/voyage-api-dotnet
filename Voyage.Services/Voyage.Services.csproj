@@ -91,6 +91,7 @@
     <Compile Include="ApplicationInfo\IApplicationInfoService.cs" />
     <Compile Include="Audit\IAuditService.cs" />
     <Compile Include="Identity\IdentityResultResponse.cs" />
+    <Compile Include="SecurityQuestion\ISecurityQuestionService.cs" />
     <Compile Include="KeyContainer\IRsaKeyContainerService.cs" />
     <Compile Include="KeyContainer\RsaKeyContainerService.cs" />
     <Compile Include="Notification\NotificationService.cs" />
@@ -101,6 +102,9 @@
     <Compile Include="Phone\PhoneService.cs" />
     <Compile Include="Role\IRoleService.cs" />
     <Compile Include="FileReader\IFileReaderService.cs" />
+    <Compile Include="SecurityQuestion\SecurityQuestionService.cs" />
+    <Compile Include="UserSecurityQuestion\IUserSecurityQuestionService.cs" />
+    <Compile Include="UserSecurityQuestion\UserSecurityQuestionService.cs" />
     <Compile Include="User\IUserService.cs" />
     <Compile Include="FileReader\FileReaderService.cs" />
     <Compile Include="Role\RoleService.cs" />

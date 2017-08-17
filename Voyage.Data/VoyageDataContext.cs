@@ -53,6 +53,10 @@ namespace Voyage.Data
 
         public IDbSet<Notification> Notifications { get; set; }
 
+        public IDbSet<SecurityQuestion> SecurityQuestions { get; set; }
+
+        public IDbSet<UserSecurityQuestion> UserSecurityQuestions { get; set; }
+
         public override async Task<int> SaveChangesAsync()
         {
             try
