@@ -11,7 +11,6 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;
-using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using System.Configuration;
@@ -276,13 +275,23 @@ namespace Voyage.Services.User
             return await _userManager.GeneratePasswordResetTokenAsync(userName);
         }
 
+        public async Task<UserModel> UpdateProfileAsync(string userId, ProfileModel model)
+        {
+            var userModel = await GetUserAsync(userId);
+            userModel.Email = model.Email;
+            userModel.FirstName = model.FirstName;
+            userModel.LastName = model.LastName;
+            userModel.Phones = model.Phones;
+            return await UpdateUserAsync(userId, userModel);
+        }
+
         private bool IsValidPhoneNumbers(UserModel userModel)
         {
             // validate user phone numbers
             var isValidPhoneNumbers = true;
             foreach (var phone in userModel.Phones)
             {
-                var formatedPhoneNumber = string.Empty;
+                string formatedPhoneNumber;
                 if (_phoneRepository.IsValidPhoneNumber(phone.PhoneNumber, out formatedPhoneNumber))
                 {
                     phone.PhoneNumber = formatedPhoneNumber;

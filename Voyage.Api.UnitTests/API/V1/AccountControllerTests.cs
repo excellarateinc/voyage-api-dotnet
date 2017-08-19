@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
+using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
 using Voyage.Api.UserManager.API.V1;
 using Voyage.Api.UnitTests.Common;
+using Voyage.Api.UnitTests.Common.AutoMapperFixture;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.User;
@@ -19,17 +21,22 @@ using Xunit;
 
 namespace Voyage.Api.UnitTests.API.V1
 {
+    [Collection(AutoMapperCollection.CollectionName)]
     public class AccountControllerTests : BaseUnitTest
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
+        private readonly AutoMapperFixture _mapperFixture;
+        private readonly Mock<IAuthenticationManager> _mockAuthenticationManager;
         private readonly Mock<UrlHelper> _mockUrlHelper;
 
-        public AccountControllerTests()
+        public AccountControllerTests(AutoMapperFixture mapperFixture)
         {
             _mockUserService = Mock.Create<IUserService>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _accountController = new AccountController(_mockUserService.Object)
+            _mapperFixture = mapperFixture;
+            _mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
+            _accountController = new AccountController(_mockUserService.Object, _mockAuthenticationManager.Object, _mapperFixture.MapperInstance)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration(),
@@ -83,7 +90,7 @@ namespace Voyage.Api.UnitTests.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null);
+            Action throwAction = () => new AccountController(null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

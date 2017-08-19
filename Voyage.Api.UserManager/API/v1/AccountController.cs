@@ -1,8 +1,13 @@
 ﻿using System;
+using System.IdentityModel.Claims;
+using System.Net;
+using System.Net.Http;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AutoMapper;
+using Microsoft.Owin.Security;
 using Voyage.Services.User;
 
 namespace Voyage.Api.UserManager.API.V1
@@ -11,10 +16,14 @@ namespace Voyage.Api.UserManager.API.V1
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
+        private readonly IAuthenticationManager _authenticationManager;
+        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IAuthenticationManager authenticationManager, IMapper mapper)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
+            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
+            _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
         /**
@@ -77,6 +86,21 @@ namespace Voyage.Api.UserManager.API.V1
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Updates the user's profile.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Route("profile")]
+        [Authorize]
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateProfile(ProfileModel model)
+        {
+            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
+            var result = await _userService.UpdateProfileAsync(userId, model);
+            return Ok(result);
         }
     }
 }
