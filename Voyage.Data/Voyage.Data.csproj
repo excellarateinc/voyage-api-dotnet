@@ -112,6 +112,8 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Notification\NotificationRepository.cs" />
     <Compile Include="Repositories\Notification\INotificationRepository.cs" />
+    <Compile Include="Repositories\ProfileImage\IProfileImageRepository.cs" />
+    <Compile Include="Repositories\ProfileImage\ProfileImageRepository.cs" />
     <Compile Include="Repositories\RoleClaim\IRoleClaimRepository.cs" />
     <Compile Include="Repositories\UserPhone\IUserPhoneRepository.cs" />
     <Compile Include="VoyageDataContext.cs" />

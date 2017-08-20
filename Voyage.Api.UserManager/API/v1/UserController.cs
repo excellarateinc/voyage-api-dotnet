@@ -460,6 +460,7 @@ namespace Voyage.Api.UserManager.API.V1
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             var user = await _userService.GetUserAsync(userId);
             var roles = await _userService.GetUserRolesAsync(userId);
+            var profileImage = _userService.GetProfileImage(userId);
             return Ok(new
             {
                 user.Id,
@@ -468,7 +469,8 @@ namespace Voyage.Api.UserManager.API.V1
                 user.FirstName,
                 user.LastName,
                 user.Phones,
-                Roles = roles.Select(_ => _.Name)
+                Roles = roles.Select(_ => _.Name),
+                profileImage
             });
         }
     }

@@ -21,12 +21,10 @@ using Xunit;
 
 namespace Voyage.Api.UnitTests.API.V1
 {
-    [Collection(AutoMapperCollection.CollectionName)]
     public class AccountControllerTests : BaseUnitTest
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
-        private readonly AutoMapperFixture _mapperFixture;
         private readonly Mock<IAuthenticationManager> _mockAuthenticationManager;
         private readonly Mock<UrlHelper> _mockUrlHelper;
 
@@ -34,9 +32,8 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             _mockUserService = Mock.Create<IUserService>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _mapperFixture = mapperFixture;
             _mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
-            _accountController = new AccountController(_mockUserService.Object, _mockAuthenticationManager.Object, _mapperFixture.MapperInstance)
+            _accountController = new AccountController(_mockUserService.Object, _mockAuthenticationManager.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration(),
@@ -90,7 +87,7 @@ namespace Voyage.Api.UnitTests.API.V1
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null, null, null);
+            Action throwAction = () => new AccountController(null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

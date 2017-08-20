@@ -47,6 +47,8 @@ namespace Voyage.Services.User
 
         Task<UserModel> UpdateProfileAsync(string userId, ProfileModel model);
 
+        string GetProfileImage(string userId);
+
         Task AccessFailedAsync(string userId);
 
         Task ResetAccessFailedCountAsync(string userId);

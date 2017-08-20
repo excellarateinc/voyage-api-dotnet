@@ -92,6 +92,7 @@
     <Compile Include="Entities\ClientScope.cs" />
     <Compile Include="Entities\ClientScopeType.cs" />
     <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\ProfileImage.cs" />
     <Compile Include="ForgotPasswordModel.cs" />
     <Compile Include="Map\Profiles\NotificationProfile.cs" />
     <Compile Include="PhoneSecurityCodeModel.cs" />

@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Claims;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using AutoMapper;
 using Microsoft.Owin.Security;
 using Voyage.Services.User;
@@ -17,13 +20,11 @@ namespace Voyage.Api.UserManager.API.V1
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationManager _authenticationManager;
-        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IAuthenticationManager authenticationManager, IMapper mapper)
+        public AccountController(IUserService userService, IAuthenticationManager authenticationManager)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
-            _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
         /**
