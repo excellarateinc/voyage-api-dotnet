@@ -283,7 +283,7 @@ namespace Voyage.Services.User
             return await _userManager.GeneratePasswordResetTokenAsync(userName);
         }
 
-        public async Task<UserModel> UpdateProfileAsync(string userId, ProfileModel model)
+        public async Task<CurrentUserModel> UpdateProfileAsync(string userId, ProfileModel model)
         {
             var userModel = await GetUserAsync(userId);
             userModel.Email = model.Email;
@@ -293,7 +293,7 @@ namespace Voyage.Services.User
             var user = await UpdateUserAsync(userId, userModel);
 
             if (string.IsNullOrEmpty(model.Image))
-                return user;
+                return await GetCurrentUser(userId);
 
             var currentImage = _profileImageRepository.GetAll()
                 .FirstOrDefault(_ => _.UserId == userId);
@@ -313,7 +313,7 @@ namespace Voyage.Services.User
 
             _profileImageRepository.Update(currentImage);
 
-            return user;
+            return await GetCurrentUser(userId);
         }
 
         public string GetProfileImage(string userId)
@@ -321,6 +321,24 @@ namespace Voyage.Services.User
             var currentImage = _profileImageRepository.GetAll()
                 .FirstOrDefault(_ => _.UserId == userId);
             return currentImage?.ImageData;
+        }
+
+        public async Task<CurrentUserModel> GetCurrentUser(string userId)
+        {
+            var user = await GetUserAsync(userId);
+            var roles = await GetUserRolesAsync(userId);
+            var profileImage = GetProfileImage(userId);
+            return new CurrentUserModel
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phones = user.Phones,
+                Roles = roles.Select(_ => _.Name),
+                ProfileImage = profileImage
+            };
         }
 
         private bool IsValidPhoneNumbers(UserModel userModel)

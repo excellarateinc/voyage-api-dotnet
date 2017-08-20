@@ -45,9 +45,11 @@ namespace Voyage.Services.User
 
         Task<string> GeneratePasswordResetTokenAsync(string userName);
 
-        Task<UserModel> UpdateProfileAsync(string userId, ProfileModel model);
+        Task<CurrentUserModel> UpdateProfileAsync(string userId, ProfileModel model);
 
         string GetProfileImage(string userId);
+
+        Task<CurrentUserModel> GetCurrentUser(string userId);
 
         Task AccessFailedAsync(string userId);
 

@@ -458,20 +458,8 @@ namespace Voyage.Api.UserManager.API.V1
         public async Task<IHttpActionResult> GetCurrentUser()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var user = await _userService.GetUserAsync(userId);
-            var roles = await _userService.GetUserRolesAsync(userId);
-            var profileImage = _userService.GetProfileImage(userId);
-            return Ok(new
-            {
-                user.Id,
-                user.Username,
-                user.Email,
-                user.FirstName,
-                user.LastName,
-                user.Phones,
-                Roles = roles.Select(_ => _.Name),
-                profileImage
-            });
+            var currentUser = await _userService.GetCurrentUser(userId);
+            return Ok(currentUser);
         }
     }
 }

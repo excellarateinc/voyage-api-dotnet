@@ -87,6 +87,7 @@
     <Compile Include="ActivityAuditModel.cs" />
     <Compile Include="ChangeAccountStatusModel.cs" />
     <Compile Include="ClientModel.cs" />
+    <Compile Include="CurrentUserModel.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClientRole.cs" />
     <Compile Include="Entities\ClientScope.cs" />
