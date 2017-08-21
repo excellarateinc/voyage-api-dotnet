@@ -11,7 +11,6 @@ using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;
-using Voyage.Services.Identity;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using System.Configuration;
@@ -25,7 +24,11 @@ namespace Voyage.Services.User
         private readonly ApplicationUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public UserService(ApplicationUserManager userManager, IMapper mapper, IRoleService roleService, IUserPhoneRepository phoneRepository)
+        public UserService(
+            ApplicationUserManager userManager,
+            IMapper mapper,
+            IRoleService roleService,
+            IUserPhoneRepository phoneRepository)
         {
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
@@ -282,7 +285,7 @@ namespace Voyage.Services.User
             var isValidPhoneNumbers = true;
             foreach (var phone in userModel.Phones)
             {
-                var formatedPhoneNumber = string.Empty;
+                string formatedPhoneNumber;
                 if (_phoneRepository.IsValidPhoneNumber(phone.PhoneNumber, out formatedPhoneNumber))
                 {
                     phone.PhoneNumber = formatedPhoneNumber;

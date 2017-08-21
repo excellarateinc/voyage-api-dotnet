@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Core.Exceptions;
+using Voyage.Data.Repositories.ProfileImage;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models;
 using Voyage.Models.Entities;

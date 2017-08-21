@@ -12,8 +12,10 @@ using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
 using Voyage.Api.UserManager.API.V1;
 using Voyage.Api.UnitTests.Common;
+using Voyage.Api.UnitTests.Common.AutoMapperFixture;
 using Voyage.Core.Exceptions;
 using Voyage.Models;
+using Voyage.Services.Profile;
 using Voyage.Services.User;
 using Xunit;
 
@@ -23,13 +25,15 @@ namespace Voyage.Api.UnitTests.API.V1
     {
         private readonly AccountController _accountController;
         private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IProfileService> _mockProfileService;
         private readonly Mock<UrlHelper> _mockUrlHelper;
 
         public AccountControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
-            _accountController = new AccountController(_mockUserService.Object)
+            _mockProfileService = Mock.Create<IProfileService>();
+            _accountController = new AccountController(_mockUserService.Object, _mockProfileService.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration(),
@@ -52,6 +56,9 @@ namespace Voyage.Api.UnitTests.API.V1
             _mockUrlHelper.Setup(_ => _.Link("GetUserAsync", It.IsAny<Dictionary<string, object>>()))
                 .Returns("http://testlink.com");
 
+            _mockProfileService.Setup(_ => _.GetInitialProfileImageAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(0));
+
             // ACT
             var result = await _accountController.Register(model);
 
@@ -61,29 +68,9 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public async Task Register_Should_Return_BadRequest_When_Model_Is_Invalid()
-        {
-            // ARRANGE
-            var model = Fixture.Build<RegistrationModel>()
-                .With(_ => _.Email, "testtestcom")
-                .With(_ => _.Password, "cool1Password!!")
-                .Create();
-
-            _mockUserService.Setup(_ => _.RegisterAsync(model)).Throws(new BadRequestException());
-
-            // ACT
-            var result = await _accountController.Register(model);
-
-            // ASSERT
-            var message = await result.ExecuteAsync(new CancellationToken());
-
-            message.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
-
-        [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
         {
-            Action throwAction = () => new AccountController(null);
+            Action throwAction = () => new AccountController(null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -107,7 +94,7 @@ namespace Voyage.Api.UnitTests.API.V1
             ReflectionHelper.GetMethod<AccountController>(_ => _.Register(new RegistrationModel()))
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 .Should()
-                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("profile"));
+                .BeDecoratedWith<RouteAttribute>(_ => _.Template.Equals("accounts"));
         }
     }
 }

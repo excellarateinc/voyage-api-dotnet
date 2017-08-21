@@ -12,6 +12,7 @@ using Voyage.Services.Phone;
 using Voyage.Services.Role;
 using Voyage.Services.User;
 using Voyage.Services.Admin;
+using Voyage.Services.Profile;
 
 namespace Voyage.Services
 {
@@ -74,6 +75,10 @@ namespace Voyage.Services
 
             builder.RegisterType<NotificationService>()
                 .As<INotificationService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<ProfileService>()
+                .As<IProfileService>()
                 .InstancePerRequest();
         }
     }

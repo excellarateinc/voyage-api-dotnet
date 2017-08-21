@@ -25,6 +25,8 @@ namespace Voyage.Data
 
         IDbSet<Notification> Notifications { get; set; }
 
+        IDbSet<ProfileImage> ProfileImages { get; set; }
+
         int SaveChanges();
     }
 }

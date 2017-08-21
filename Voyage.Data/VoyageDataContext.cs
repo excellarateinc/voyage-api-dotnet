@@ -53,6 +53,8 @@ namespace Voyage.Data
 
         public IDbSet<Notification> Notifications { get; set; }
 
+        public IDbSet<ProfileImage> ProfileImages { get; set; }
+
         public override async Task<int> SaveChangesAsync()
         {
             try
