@@ -9,7 +9,6 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
@@ -28,15 +27,13 @@ namespace Voyage.Api.UnitTests.API.V1
         private readonly UserController _userController;
         private readonly Mock<UrlHelper> _mockUrlHelper;
         private readonly Mock<IUserService> _mockUserService;
-        private readonly Mock<IAuthenticationManager> _mockAuthenticationManager;
 
         public UserControllerTests()
         {
             _mockUserService = Mock.Create<IUserService>();
-            _mockAuthenticationManager = Mock.Create<IAuthenticationManager>();
             _mockUrlHelper = Mock.Create<UrlHelper>();
 
-            _userController = new UserController(_mockUserService.Object, _mockAuthenticationManager.Object)
+            _userController = new UserController(_mockUserService.Object)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration()
@@ -155,7 +152,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var result = await _userController.DeleteUser(id);
 
             var message = await result.ExecuteAsync(CreateCancelToken());
-            message.StatusCode.Should().Be(HttpStatusCode.OK);
+            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]

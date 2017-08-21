@@ -14,7 +14,6 @@ using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using System.Configuration;
-using Voyage.Data.Repositories.ProfileImage;
 
 namespace Voyage.Services.User
 {
@@ -24,20 +23,17 @@ namespace Voyage.Services.User
         private readonly IRoleService _roleService;
         private readonly ApplicationUserManager _userManager;
         private readonly IMapper _mapper;
-        private readonly IProfileImageRepository _profileImageRepository;
 
         public UserService(
             ApplicationUserManager userManager,
             IMapper mapper,
             IRoleService roleService,
-            IUserPhoneRepository phoneRepository,
-            IProfileImageRepository profileImageRepository)
+            IUserPhoneRepository phoneRepository)
         {
             _userManager = userManager.ThrowIfNull(nameof(userManager));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
             _roleService = roleService.ThrowIfNull(nameof(roleService));
             _phoneRepository = phoneRepository.ThrowIfNull(nameof(phoneRepository));
-            _profileImageRepository = profileImageRepository.ThrowIfNull(nameof(profileImageRepository));
             _userManager.DefaultAccountLockoutTimeSpan = TimeSpan.FromDays(Convert.ToDouble(ConfigurationManager.AppSettings["DefaultAccountLockoutTimeSpan"]));
             _userManager.MaxFailedAccessAttemptsBeforeLockout = Convert.ToInt16(ConfigurationManager.AppSettings["MaxFailedAccessAttemptsBeforeLockout"]);
             _userManager.UserLockoutEnabledByDefault = Convert.ToBoolean(ConfigurationManager.AppSettings["UserLockoutEnabledByDefault"]);
@@ -281,64 +277,6 @@ namespace Voyage.Services.User
         public async Task<string> GeneratePasswordResetTokenAsync(string userName)
         {
             return await _userManager.GeneratePasswordResetTokenAsync(userName);
-        }
-
-        public async Task<CurrentUserModel> UpdateProfileAsync(string userId, ProfileModel model)
-        {
-            var userModel = await GetUserAsync(userId);
-            userModel.Email = model.Email;
-            userModel.FirstName = model.FirstName;
-            userModel.LastName = model.LastName;
-            userModel.Phones = model.Phones;
-            var user = await UpdateUserAsync(userId, userModel);
-
-            if (string.IsNullOrEmpty(model.Image))
-                return await GetCurrentUser(userId);
-
-            var currentImage = _profileImageRepository.GetAll()
-                .FirstOrDefault(_ => _.UserId == userId);
-
-            if (currentImage != null)
-            {
-                currentImage.ImageData = model.Image;
-            }
-            else
-            {
-                currentImage = new ProfileImage
-                {
-                    UserId = userId,
-                    ImageData = model.Image
-                };
-            }
-
-            _profileImageRepository.Update(currentImage);
-
-            return await GetCurrentUser(userId);
-        }
-
-        public string GetProfileImage(string userId)
-        {
-            var currentImage = _profileImageRepository.GetAll()
-                .FirstOrDefault(_ => _.UserId == userId);
-            return currentImage?.ImageData;
-        }
-
-        public async Task<CurrentUserModel> GetCurrentUser(string userId)
-        {
-            var user = await GetUserAsync(userId);
-            var roles = await GetUserRolesAsync(userId);
-            var profileImage = GetProfileImage(userId);
-            return new CurrentUserModel
-            {
-                Id = user.Id,
-                Username = user.Username,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Phones = user.Phones,
-                Roles = roles.Select(_ => _.Name),
-                ProfileImage = profileImage
-            };
         }
 
         private bool IsValidPhoneNumbers(UserModel userModel)

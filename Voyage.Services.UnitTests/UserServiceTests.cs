@@ -31,7 +31,6 @@ namespace Voyage.Services.UnitTests
         private readonly Mock<IUserStore<ApplicationUser>> _mockStore;
         private readonly Mock<IRoleService> _mockRoleService;
         private readonly Mock<IUserPhoneRepository> _mockPhoneRepository;
-        private readonly Mock<IProfileImageRepository> _mockProfileImageRepository;
         private readonly AutoMapperFixture _mapperFixture;
         private readonly Mock<ApplicationUserManager> _applicationUserManagerMock;
 
@@ -46,12 +45,11 @@ namespace Voyage.Services.UnitTests
             _applicationUserManagerMock = Mock.Create<ApplicationUserManager>();
             _mockRoleService = Mock.Create<IRoleService>();
             _mockPhoneRepository = Mock.Create<IUserPhoneRepository>();
-            _mockProfileImageRepository = Mock.Create<IProfileImageRepository>();
             _mapperFixture = mapperFixture;
 
             // Cannot moq the interface directly, consider creating a facade around the manager class
             _userManager = new ApplicationUserManager(_mockStore.Object);
-            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, _mockPhoneRepository.Object, _mockProfileImageRepository.Object);
+            _userService = new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, _mockPhoneRepository.Object);
         }
 
         [Fact]
@@ -744,7 +742,7 @@ namespace Voyage.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_UserManager_IsNull()
         {
-            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null, null);
+            Action throwAction = () => new UserService(null, _mapperFixture.MapperInstance, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -757,7 +755,7 @@ namespace Voyage.Services.UnitTests
         public void Ctor_Should_Throw_ArgumentNullException_When_UserPhoneRepository_IsNull()
         {
             Action throwAction =
-                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null, null);
+                () => new UserService(_userManager, _mapperFixture.MapperInstance, _mockRoleService.Object, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -769,7 +767,7 @@ namespace Voyage.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_Mapper_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, null, null, null, null);
+            Action throwAction = () => new UserService(_userManager, null, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And
@@ -781,7 +779,7 @@ namespace Voyage.Services.UnitTests
         [Fact]
         public void Ctor_Should_Throw_ArgumentNullException_When_RoleService_IsNull()
         {
-            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null, null);
+            Action throwAction = () => new UserService(_userManager, _mapperFixture.MapperInstance, null, null);
 
             throwAction.ShouldThrow<ArgumentNullException>()
                 .And

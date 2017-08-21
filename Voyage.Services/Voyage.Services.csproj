@@ -99,6 +99,8 @@
     <Compile Include="PasswordRecovery\PasswordRecoverService.cs" />
     <Compile Include="Phone\IPhoneService.cs" />
     <Compile Include="Phone\PhoneService.cs" />
+    <Compile Include="Profile\IProfileService.cs" />
+    <Compile Include="Profile\ProfileService.cs" />
     <Compile Include="Role\IRoleService.cs" />
     <Compile Include="FileReader\IFileReaderService.cs" />
     <Compile Include="User\IUserService.cs" />

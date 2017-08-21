@@ -1,12 +1,9 @@
-﻿using System.IdentityModel.Claims;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.Owin.Security;
 using Voyage.Api.UserManager.Filters;
 using Voyage.Services.User;
 
@@ -16,12 +13,10 @@ namespace Voyage.Api.UserManager.API.V1
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
-        private readonly IAuthenticationManager _authenticationManager;
 
-        public UserController(IUserService userService, IAuthenticationManager authenticationManager)
+        public UserController(IUserService userService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
-            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
         }
 
         /**
@@ -450,16 +445,6 @@ namespace Voyage.Api.UserManager.API.V1
         {
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
             return Ok(result);
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("users/me")]
-        public async Task<IHttpActionResult> GetCurrentUser()
-        {
-            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var currentUser = await _userService.GetCurrentUser(userId);
-            return Ok(currentUser);
         }
     }
 }

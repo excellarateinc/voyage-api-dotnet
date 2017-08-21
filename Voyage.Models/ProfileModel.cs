@@ -18,7 +18,7 @@ namespace Voyage.Models
         public string LastName { get; set; }
 
         [AntiXss]
-        public string Image { get; set; }
+        public string ProfileImage { get; set; }
 
         public List<UserPhoneModel> Phones { get; set; }
     }

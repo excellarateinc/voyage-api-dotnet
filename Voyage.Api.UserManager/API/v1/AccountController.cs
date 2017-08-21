@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Claims;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using Voyage.Core;
+﻿using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using AutoMapper;
-using Microsoft.Owin.Security;
+using Voyage.Services.Profile;
 using Voyage.Services.User;
 
 namespace Voyage.Api.UserManager.API.V1
@@ -19,12 +11,14 @@ namespace Voyage.Api.UserManager.API.V1
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
-        private readonly IAuthenticationManager _authenticationManager;
+        private readonly IProfileService _profileService;
 
-        public AccountController(IUserService userService, IAuthenticationManager authenticationManager)
+        public AccountController(
+            IUserService userService,
+            IProfileService profileService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
-            _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
+            _profileService = profileService.ThrowIfNull(nameof(profileService));
         }
 
         /**
@@ -73,35 +67,13 @@ namespace Voyage.Api.UserManager.API.V1
         *
         * @apiUse BadRequestError
         */
-
-        [Route("profile")]
+        [Route("accounts")]
         [HttpPost]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            try
-            {
-                var result = await _userService.RegisterAsync(model);
-                return CreatedAtRoute("GetUserAsync", new {userId = result.Id}, result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Updates the user's profile.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [Route("profile")]
-        [Authorize]
-        [HttpPut]
-        public async Task<IHttpActionResult> UpdateProfile(ProfileModel model)
-        {
-            var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var result = await _userService.UpdateProfileAsync(userId, model);
-            return Ok(result);
+            var result = await _userService.RegisterAsync(model);
+            await _profileService.GetInitialProfileImageAsync(result.Id, result.Email);
+            return CreatedAtRoute("GetUserAsync", new { userId = result.Id }, result);
         }
     }
 }
