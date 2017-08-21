@@ -452,7 +452,7 @@ namespace Voyage.Api.UnitTests.API.V1
 
             // Assert
             var message = await result.ExecuteAsync(new CancellationToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
             Mock.VerifyAll();
         }
     }
