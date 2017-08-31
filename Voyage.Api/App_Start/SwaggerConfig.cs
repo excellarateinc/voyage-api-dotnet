@@ -5,9 +5,7 @@ using Swashbuckle.Application;
 using Swashbuckle.Swagger;
 using System.Web.Http.Description;
 using System.Collections.Generic;
-using System;
-using System.Xml.XPath;
-using System.Runtime.InteropServices;
+using System.IO;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -15,10 +13,6 @@ namespace Voyage.Api
 {
     public class SwaggerConfig
     {
-
-        [DllImport("kernel32", SetLastError = true)]
-        static extern IntPtr LoadLibrary(string lpFileName);
-
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;
@@ -29,15 +23,17 @@ namespace Voyage.Api
                     c.SingleApiVersion("v1", "Voyage.Api");
                     c.OperationFilter<AddRequiredHeaderParameter>();
                     c.IncludeXmlComments(GetApiProjectXmlCommentsPath());
-                    if (CheckLibrary("Voyage.Api.UserManager"))
+                    if (CheckIfXMLExists(GetUserManagerXmlCommentsPath()))
+                    {
                         c.IncludeXmlComments(GetUserManagerXmlCommentsPath());
+                    }    
                 })
-                .EnableSwaggerUi(c => {});
+                .EnableSwaggerUi(c => { });
         }
 
-        private static bool CheckLibrary(string fileName)
+        private static bool CheckIfXMLExists(string fileName)
         {
-            return LoadLibrary(fileName) == IntPtr.Zero;
+            return File.Exists(fileName);
         }
 
         private static string GetApiProjectXmlCommentsPath()
