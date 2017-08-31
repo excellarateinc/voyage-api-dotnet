@@ -5,15 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using Voyage.Models;
 using Voyage.Services.Profile;
+using Swashbuckle.Swagger.Annotations;
+using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.V1
 {
+    /// <summary>
+    /// Profile Controller
+    /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class ProfileController : ApiController
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IProfileService _profileService;
 
+        /// <summary>
+        /// ProfileController Constructor
+        /// </summary>
+        /// <param name="authenticationManager"></param>
+        /// <param name="profileService"></param>
         public ProfileController(IAuthenticationManager authenticationManager, IProfileService profileService)
         {
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
@@ -23,7 +33,9 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Gets the current user's profile.
         /// </summary>
-        /// <returns>The current user's profile.</returns>
+        /// <returns></returns>
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         [Authorize]
         [HttpGet]
         [Route("profiles/me")]
@@ -39,6 +51,8 @@ namespace Voyage.Api.API.V1
         /// </summary>
         /// <param name="model"></param>
         /// <returns>The users updated profile.</returns>
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         [Route("profiles/me")]
         [Authorize]
         [HttpPut]

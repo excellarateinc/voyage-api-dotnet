@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Voyage.Api.UserManager</name>
+    </assembly>
+    <members>
+        <member name="M:Voyage.Api.UserManager.API.V1.AccountController.Register(Voyage.Models.RegistrationModel)">
+            <summary>
+            Create profile
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.GetRoleById(System.String)">
+            <summary>
+            Get a role
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.GetRoles">
+            <summary>
+            Get all roles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.CreateRole(Voyage.Models.RoleModel)">
+            <summary>
+            Create a role
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.AddClaim(System.String,Voyage.Models.ClaimModel)">
+            <summary>
+            Create a role permission
+            </summary>
+            <param name="roleId"></param>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.GetClaimById(System.String,System.Int32)">
+            <summary>
+            Get a Permission
+            </summary>
+            <param name="roleId"></param>
+            <param name="permissionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.RemoveClaim(System.String,System.Int32)">
+            <summary>
+            Remove a role permission
+            </summary>
+            <param name="roleId"></param>
+            <param name="permissionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.GetClaims(System.String)">
+            <summary>
+            Get role permissions
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.RoleController.RemoveRole(System.String)">
+            <summary>
+            Delete a role
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.GetUsers">
+            <summary>
+            Get all users
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.UpdateUser(System.String,Voyage.Models.UserModel)">
+            <summary>
+            Update user
+            </summary>
+            <param name="userId"></param>
+            <param name="userModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.DeleteUser(System.String)">
+            <summary>
+            Delete a user
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.CreateUser(Voyage.Models.UserModel)">
+            <summary>
+            Create a user
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.GetUser(System.String)">
+            <summary>
+            Get a user
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.GetUserRoles(System.String)">
+            <summary>
+            Get user roles
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.GetClaims(System.String)">
+            <summary>
+            Get user permissions
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.AssignRole(System.String,Voyage.Models.RoleModel)">
+            <summary>
+            Assign role to user
+            </summary>
+            <param name="userId"></param>
+            <param name="roleModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.GetUserRoleById(System.String,System.String)">
+            <summary>
+            Get role
+            </summary>
+            <param name="userId"></param>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.UserController.RemoveRole(System.String,System.String)">
+            <summary>
+            Remove a role
+            </summary>
+            <param name="userId"></param>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.VerifyController.SendVerificationCode">
+            <summary>
+            Send verify code
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.VerifyController.Verify(Voyage.Models.PhoneSecurityCodeModel)">
+            <summary>
+            Verify user
+            </summary>
+            <param name="phoneSecurityCodeModel"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

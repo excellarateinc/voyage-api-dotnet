@@ -4,37 +4,37 @@ using Voyage.Models;
 using System.Threading.Tasks;
 using Voyage.Api.Filters;
 using Voyage.Services.Admin;
+using Swashbuckle.Swagger.Annotations;
+using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.V1
 {
+    /// <summary>
+    /// Admin Constructor
+    /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AdminController : ApiController
     {
         private readonly IAdminService _adminService;
 
+        /// <summary>
+        /// AdminConstroller Constructor
+        /// </summary>
+        /// <param name="adminService"></param>
         public AdminController(IAdminService adminService)
         {
             _adminService = adminService.ThrowIfNull(nameof(adminService));
         }
 
-        /**
-        * @api {post} /v1/users/{userId}/account-status Update users' account status
-        * @apiVersion 1.0.0
-        * @apiName ToggleAccountStatus
-        * @apiGroup User
-        * 
-        * @apiPermission api.users.update
-        * 
-        * @apiParam {String} userId User ID
-        * @apiParamExample {json} Request-Example:
-        *       {
-        *          "isActive": true,
-        *          "IsVerifyRequired": false
-        *       }
-        * 
-        * @apiUse UserSuccessModel
-        * @apiUse BadRequestError
-        **/
+        /// <summary>
+        /// Update users' account status
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="changeAccountStatusModel"></param>
+        /// <returns>A user record with an HTTP 200, or null with an HTTP 400.</returns>
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(400, "BadRequestException")]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}/account-status")]

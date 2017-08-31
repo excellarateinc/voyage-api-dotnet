@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Voyage.Api.UserManager.Filters;
 using Voyage.Services.User;
+using Swashbuckle.Swagger.Annotations;
+using System.Collections.Generic;
+using Microsoft.AspNet.Identity;
 
 namespace Voyage.Api.UserManager.API.V1
 {
@@ -19,49 +22,12 @@ namespace Voyage.Api.UserManager.API.V1
             _userService = userService.ThrowIfNull(nameof(userService));
         }
 
-        /**
-        * @api {get} /v1/users Get all users
-        * @apiVersion 1.0.0
-        * @apiName GetUsers
-        * @apiGroup User
-        *
-        * @apiPermission api.users.list
-        *
-        * @apiUse AuthHeader
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users
-        * @apiSuccess {Object[]} users List of users
-        * @apiSuccess {String} users.id User ID
-        * @apiSuccess {String} users.userName Username of the user
-        * @apiSuccess {String} users.email Email
-        * @apiSuccess {String} users.firstName First name
-        * @apiSuccess {String} users.lastName Last name
-        * @apiSuccess {Object[]} users.phones User phone numbers
-        * @apiSuccess {String} users.phones.phoneNumber Phone number
-        * @apiSuccess {String} users.phones.phoneType Phone type
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *      {
-        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *          "userName": "admin",
-        *          "email": "admin@admin.com",
-        *          "firstName": "Admin_First",
-        *          "lastName": "Admin_Last",
-        *          "isActive": true,
-        *          "isVerifyRequired": true,
-        *          "phones":
-        *          [
-        *             {
-        *                 "phoneNumber": "123-123-1233",
-        *                 "phoneType": "mobile"
-        *             }
-        *          ]
-        *       }
-        *   ]
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUsers)]
         [HttpGet]
         [Route("users")]
@@ -71,20 +37,14 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(users);
         }
 
-        /**
-        * @api {put} /v1/users/:userId Update user
-        * @apiVersion 1.0.0
-        * @apiName UpdateUserAsync
-        * @apiGroup User
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
-        * @apiPermission api.users.update
-        *
-        * @apiUse AuthHeader
-        *
-        * @apiUse UserRequestModel
-        * @apiUse UserSuccessModel
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Update user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}")]
@@ -94,26 +54,14 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(result);
         }
 
-        /**
-        * @api {delete} /v1/users/:userId Delete a user
-        * @apiVersion 1.0.0
-        * @apiName DeleteUserAsync
-        * @apiGroup User
-        *
-        * @apiPermission api.users.delete
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
-        * @apiUse AuthHeader
-        *
-        * @apiParam {String} userId User ID
-        *
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 204 NO CONTENT
-        *
-        *
-        * @apiUse UnauthorizedError
-        * @apiUse BadRequestError
-        **/
+        /// <summary>
+        /// Delete a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(204)]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteUser)]
         [HttpDelete]
         [Route("users/{userId}")]
@@ -126,61 +74,13 @@ namespace Voyage.Api.UserManager.API.V1
             return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
         }
 
-        /**
-        * @api {post} /v1/users Create user
-        * @apiVersion 1.0.0
-        * @apiName CreateUser
-        * @apiGroup User
-        *
-        * @apiPermission api.users.create
-        * 
-        * @apiParamExample {json} Request-Example:
-        *      {
-        *          "userName": "John",
-        *          "email": "John@John.com",
-        *          "firstName": "John FirstName",
-        *          "lastName": "John LastName",
-        *          "phones":
-        *          [
-        *             {
-        *                 "phoneNumber": "123-123-1233",
-        *                 "phoneType": "mobile"
-        *             }
-        *          ]
-        *       }
-        *
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users
-        * @apiUse AuthHeader
-        *
-        * @apiHeader (Response Headers) {String} location Location of the newly created resource
-        *
-        * @apiHeaderExample {json} Location-Example
-        *   {
-        *       "Location": "http://localhost:52431/api/v1/users/b78ae241-1fa6-498c-aa48-9742245d0d2f"
-        *   }
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *      {
-        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *          "userName": "John",
-        *          "email": "John@John.com",
-        *          "firstName": "John FirstName",
-        *          "lastName": "John LastName",
-        *          "isActive": true,
-        *          "isVerifyRequired": true,
-        *          "phones":
-        *          [
-        *             {
-        *                 "phoneNumber": "123-123-1233",
-        *                 "phoneType": "mobile"
-        *             }
-        *          ]
-        *       }
-        *   ]
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Create a user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [SwaggerResponse(201, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.CreateUser)]
         [HttpPost]
         [Route("users")]
@@ -190,43 +90,14 @@ namespace Voyage.Api.UserManager.API.V1
             return CreatedAtRoute("GetUserAsync", new { UserId = result.Id }, result);
         }
 
-        /**
-        * @api {get} /v1/users/:userId Get user
-        * @apiVersion 1.0.0
-        * @apiName GetUserAsync
-        * @apiGroup User
-        *
-        * @apiPermission api.users.get
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId
-        * @apiUse AuthHeader
-        *
-        * @apiParam {String} userId User ID
-        *
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *      {
-        *          "id": "A8DCF6EA-85A9-4D90-B722-3F4B9DE6642A",
-        *          "userName": "John",
-        *          "email": "John@John.com",
-        *          "firstName": "John FirstName",
-        *          "lastName": "John LastName",
-        *          "isActive": true,
-        *          "isVerifyRequired": true,
-        *          "phones":
-        *          [
-        *             {
-        *                 "phoneNumber": "123-123-1233",
-        *                 "phoneType": "mobile"
-        *             }
-        *          ]
-        *       }
-        *   ]
-        *   
-        * @apiUse UnauthorizedError
-        * @apiUse NotFoundError
-        **/
+        /// <summary>
+        /// Get a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(404, "NotFoundException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ViewUser)]
         [HttpGet]
         [Route("users/{userId}", Name = "GetUserAsync")]
@@ -236,45 +107,13 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(result);
         }
 
-        /**
-        * @api {get} /v1/users/:userId/roles Get user roles
-        * @apiVersion 1.0.0
-        * @apiName User
-        * @apiGroup User Role
-        *
-        * @apiPermission api.users.roles.list
-        *
-        * @apiUse AuthHeader
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles
-        * @apiParam {String} userId ID of the user
-        *
-        * @apiSuccess {Object[]} role List of roles
-        * @apiSuccess {String} role.id Role ID
-        * @apiSuccess {String} role.name Name of the role
-        * @apiSuccess {Object[]} permissions List of permissions
-        * @apiSuccess {String} permissions.permissionType Type of permission
-        * @apiSuccess {String} permissions.permissionValue Value of permission
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *       {
-        *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
-        *           "name": "Basic",
-        *           "permissions": [
-        *               {
-        *                   "permissionType": "authorities",
-        *                   "permissionValue": "api.roles.get"
-        *               },
-        *               {
-        *                   "permissionType": "authorities",
-        *                   "permissionValue": "api.permission.get"
-        *               }
-        *   ]
-        *
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Get user roles
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUserRole)]
         [Route("users/{userId}/roles")]
         [HttpGet]
@@ -284,37 +123,13 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(result);
         }
 
-        /**
-        * @api {get} /v1/users/:userId/permissions Get user permissions
-        * @apiVersion 1.0.0
-        * @apiName Claims
-        * @apiGroup User Permission
-        *
-        * @apiPermission api.users.permissions.list
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/claims
-        * @apiUse AuthHeader
-        *
-        * @apiParam {String} userId Id of user
-        *
-        * @apiSuccess {Object[]} permissions List of user permissions
-        * @apiSuccess {String} permissions.permissionType Type of the permission
-        * @apiSuccess {String} permissions.permissionValue Value of the permission
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *       {
-        *           "permissionType": "authorities",
-        *           "permissionValue": "api.users.create"
-        *       },
-        *       {
-        *           "permissionType": "authorities",
-        *           "permissionValue": "api.users.list"
-        *       }
-        *   ]
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Get user permissions
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IEnumerable<ClaimModel>", typeof(IEnumerable<ClaimModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUserPermissions)]
         [HttpGet]
         [Route("users/{userId}/permissions")]
@@ -324,41 +139,15 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(result);
         }
 
-        /**
-        * @api {post} /v1/users/:userId/roles Assign role to user
-        * @apiVersion 1.0.0
-        * @apiName AssignRole
-        * @apiGroup User Role
-        *
-        * @apiGroup User
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles
-        * @apiPermission api.users.roles.assign
-        *
-        * @apiUse AuthHeader
-        *
-        * @apiHeader (Response Headers) {String} location Location of the newly created resource
-        *
-        * @apiHeaderExample {json} Location-Example
-        *   {
-        *       "Location": "http://localhost:52431/api/v1/users/ceee08c8-9b3b-4fde-a234-86cc04993309/roles/76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6"
-        *   }
-        *
-        * @apiParam {String} userId User ID
-        * @apiParam {Object} role Role for the association
-        * @apiParam {String} role.id Role ID
-        * @apiParam {String} role.name Name of the role
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 201 CREATED
-        *   {
-        *       "id": "76d216ab-cb48-4c5f-a4ba-1e9c3bae1fe6",
-        *       "name": "New Role 1",
-        *       "claims": []
-        *   }
-        * @apiUse UnauthorizedError
-        *
-        * @apiUse BadRequestError
-        **/
+        /// <summary>
+        /// Assign role to user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roleModel"></param>
+        /// <returns></returns>
+        [SwaggerResponse(201, "RoleModel", typeof(RoleModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.AssignUserRole)]
         [HttpPost]
         [Route("users/{userId}/roles")]
@@ -368,45 +157,14 @@ namespace Voyage.Api.UserManager.API.V1
             return CreatedAtRoute("GetUserRoleById", new { UserId = userId, RoleId = result.Id }, result);
         }
 
-        /**
-        * @api {get} /v1/users/:userId/roles/:roleId Get role
-        * @apiVersion 1.0.0
-        * @apiName GetUserRoleById
-        * @apiGroup User Role
-        *
-        * @apiPermission api.users.roles.get
-        *
-        * @apiUse AuthHeader
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles/:roleId
-        * @apiParam {String} userId User ID
-        * @apiParam {String} roleId Role ID
-        *
-        * @apiSuccess {Object} role Role
-        * @apiSuccess {String} role.id Role ID
-        * @apiSuccess {String} role.name Name of the role
-        * @apiSuccess {Object[]} role.claims List of claims
-        * @apiSuccess {String} role.claims.claimType Type of claim
-        * @apiSuccess {String} role.claims.claimValue Value of claim
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *       {
-        *           "id": "7ec91144-a60e-4240-8878-ccba3c4c2ef4",
-        *           "name": "Basic",
-        *           "claims": [
-        *               {
-        *                   "claimType": "app.permission",
-        *                   "claimValue": "login"
-        *               },
-        *               {
-        *                   "claimType": "app.permission",
-        *                   "claimValue": "list.user-claims"
-        *               }
-        *       }
-        *
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Get role
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IEnumerable<RoleModel>", typeof(IEnumerable<RoleModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ViewUserRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
@@ -416,28 +174,15 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok(result);
         }
 
-        /**
-        * @api {delete} /v1/users/:userId/roles/:roleId Remove role from user
-        * @apiVersion 1.0.0
-        * @apiName RevokeRole
-        * @apiGroup User Role
-        *
-        * @apiGroup User
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/users/:userId/roles/:roleId
-        * @apiPermission api.users.roles.delete
-        *
-        * @apiUse AuthHeader
-        *
-        * @apiParam {String} roleId Role ID
-        * @apiParam {String} userId User ID
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *
-        * @apiUse UnauthorizedError
-        *
-        * @apiUse BadRequestError
-        **/
+        /// <summary>
+        /// Remove a role
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IdentityResult", typeof(IdentityResult))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteUserRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]

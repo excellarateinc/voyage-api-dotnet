@@ -1,36 +1,34 @@
 ﻿using Voyage.Core;
 using System.Web.Http;
 using Voyage.Services.ApplicationInfo;
+using Swashbuckle.Swagger.Annotations;
+using Voyage.Models;
 
 namespace Voyage.Api.API.V1
 {
+    /// <summary>
+    /// Application Info Controller
+    /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]
     public class ApplicationInfoController : ApiController
     {
         private readonly IApplicationInfoService _applicationInfoService;
 
+        /// <summary>
+        /// ApplicationInfoConstructorController
+        /// </summary>
+        /// <param name="applicationInfoService"></param>
         public ApplicationInfoController(IApplicationInfoService applicationInfoService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
         }
 
-        /**
-        * @api {get} /v1/statuses Get application info
-        * @apiVersion 1.0.0
-        * @apiName GetStatuses
-        * @apiGroup Status
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/statuses
-        * @apiSuccess {String} version Version Number
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *       {
-        *           "buildNumber": "some_number"
-        *       }
-        *   ]
-        **/
+        /// <summary>
+        /// Get application info
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse(200, "UserModel", typeof(ApplicationInfoModel))]
         [Route("statuses")]
         public IHttpActionResult Get()
         {
