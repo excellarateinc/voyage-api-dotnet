@@ -6,6 +6,7 @@ using Swashbuckle.Swagger;
 using System.Web.Http.Description;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -23,8 +24,10 @@ namespace Voyage.Api
                     c.SingleApiVersion("v1", "Voyage.Api");
                     c.OperationFilter<AddRequiredHeaderParameter>();
                     c.IncludeXmlComments(GetApiProjectXmlCommentsPath());
+                    Console.Write("Here" + CheckIfXMLExists(GetUserManagerXmlCommentsPath()));
                     if (CheckIfXMLExists(GetUserManagerXmlCommentsPath()))
                     {
+                        Console.Write("Inside" + CheckIfXMLExists(GetUserManagerXmlCommentsPath()));
                         c.IncludeXmlComments(GetUserManagerXmlCommentsPath());
                     }    
                 })
@@ -44,7 +47,7 @@ namespace Voyage.Api
 
         private static string GetUserManagerXmlCommentsPath()
         {
-            return string.Format(@"{0}\..\..\Voyage.Api.UserManager\XmlComments.xml",
+            return string.Format(@"{0}\..\Voyage.Api.UserManager\XmlComments.xml",
                 System.AppDomain.CurrentDomain.BaseDirectory);
         }
     }
