@@ -5,55 +5,38 @@ using Voyage.Api.Filters;
 using Voyage.Core;
 using Voyage.Models;
 using Voyage.Services.Notification;
+using System.Collections.Generic;
+using Swashbuckle.Swagger.Annotations;
+using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.v1
 {
+    /// <summary>
+    /// Notification Controller
+    /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class NotificationsController : ApiController
     {
         private readonly INotificationService _notificationService;
         private readonly IAuthenticationManager _authenticationManager;
 
+        /// <summary>
+        /// Notification Controller Constructor
+        /// </summary>
+        /// <param name="notificationService"></param>
+        /// <param name="authenticationManager"></param>
         public NotificationsController(INotificationService notificationService, IAuthenticationManager authenticationManager)
         {
             _notificationService = notificationService.ThrowIfNull(nameof(notificationService));
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
         }
 
-        /**
-        * @api {get} /v1/notifications Get all notifications for current user
-        * @apiVersion 1.0.0
-        * @apiName GetNotifications
-        * @apiGroup Notifications
-        *
-        * @apiPermission api.notifications.list
-        *
-        * @apiUse AuthHeader
-        * @apiSampleRequest http://qa-api-ms.voyageframework.com/api/v1/notifications
-        * @apiSuccess {Object[]} notifications List of notifications
-        * @apiSuccess {String} notifications.subject Subject of the notification
-        * @apiSuccess {String} notifications.description Description of the notification
-        * @apiSuccess {String} notifications assignedToUserId UserId the notification is assigned to
-        * @apiSuccess {String} notifications.isRead Flag indicating if the notification has been marked read
-        * @apiSuccess {String} notifications.createdBy UserId the notification was created by
-        * @apiSuccess {String} notifications.createdDate Date the notification was created on
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 200 OK
-        *   [
-        *      {
-        *        "id": 1,
-        *        "subject": "Test Notification",
-        *        "description": "This is a test for notifications",
-        *        "assignedToUserId": "fb9f65d2-699c-4f08-a2e4-8e6c28190a84",
-        *        "isRead": false,
-        *        "createdBy": "fb9f65d2-699c-4f08-a2e4-8e6c28190a84",
-        *        "createdDate": "2017-07-22T16:45:34.1766667"
-        *       }
-        *   ]
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Get all notifications for current user
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<NotificationModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListNotifications)]
         [HttpGet]
         [Route("notifications")]
@@ -65,10 +48,12 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// TODO: Holding off on ApiDoc until we determine API documentation strategy going forward.
+        /// Mark a nofication as read by id for a user
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [SwaggerResponse(200)]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
         [HttpPut]
         [Route("notifications/{id}")]
@@ -80,9 +65,11 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// TODO: Holding off on ApiDoc until we determine API documentation strategy going forward.
+        /// Mark all nofications as read for a user
         /// </summary>
         /// <returns></returns>
+        [SwaggerResponse(200)]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
         [HttpPut]
         [Route("notifications")]
@@ -94,10 +81,12 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// TODO: Holding off on ApiDoc until we determine API documentation strategy going forward.
+        /// Create notification
         /// </summary>
         /// <param name="notification"></param>
         /// <returns></returns>
+        [SwaggerResponse(200, "NotificationModel", typeof(NotificationModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.CreateNotification)]
         [HttpPost]
         [Route("notifications")]

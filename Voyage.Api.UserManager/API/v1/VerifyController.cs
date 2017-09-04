@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Swashbuckle.Swagger.Annotations;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Voyage.Core;
 using Voyage.Models;
@@ -19,21 +20,12 @@ namespace Voyage.Api.UserManager.API.V1
             _userService = userService.ThrowIfNull(nameof(userService));
         }
 
-        /**
-        * @api {get} /v1/Verify/send Send verify code
-        * @apiVersion 0.1.0
-        * @apiName PostVerifySend
-        * @apiGroup Verify
-        *
-        * @apiPermission authorized
-        *
-        * @apiUse AuthHeader
-        *
-        * @apiSuccessExample Success-Response:
-        *   HTTP/1.1 204 NO CONTENT
-        *
-        * @apiUse UnauthorizedError
-        **/
+        /// <summary>
+        /// Send verify code
+        /// </summary>
+        /// <returns></returns>
+        [SwaggerResponse(204)]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [Authorize]
         [HttpGet]
         [Route("verify/send")]
@@ -43,22 +35,13 @@ namespace Voyage.Api.UserManager.API.V1
             return Ok();
         }
 
-        /**
-       * @api {get} /v1/verify verify user
-       * @apiVersion 0.1.0
-       * @apiName PostVerify
-       * @apiGroup Verify
-       *
-       * @apiPermission authorized
-       *
-       * @apiUse AuthHeader
-       * @apiParam {String} code The code that was delivered to user via the /verify/send method
-       *
-       * @apiSuccessExample Success-Response:
-       *   HTTP/1.1 204 NO CONTENT
-       *
-       * @apiUse UnauthorizedError
-       **/
+        /// <summary>
+        /// Verify user
+        /// </summary>
+        /// <param name="phoneSecurityCodeModel"></param>
+        /// <returns></returns>
+        [SwaggerResponse(204)]
+        [SwaggerResponse(401, "UnauthorizedException")]
         [Authorize]
         [HttpPost]
         [Route("verify")]
