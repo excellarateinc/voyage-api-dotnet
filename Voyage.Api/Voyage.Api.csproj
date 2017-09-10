@@ -314,7 +314,6 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="AuthProviders\IdentityProvider.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\ModelErrorExtensions.cs" />
     <Compile Include="Extensions\ModelStateExtensions.cs" />
     <Compile Include="Extensions\OwinContextExtensions.cs" />
@@ -339,10 +338,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -351,9 +346,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
