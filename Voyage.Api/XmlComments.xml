@@ -100,6 +100,16 @@
             Route registration.
             </summary>
         </member>
+        <member name="T:Voyage.Api.Startup">
+            <summary>
+            Application Startup.
+            </summary>
+        </member>
+        <member name="M:Voyage.Api.Startup.Configuration(Owin.IAppBuilder)">
+            <summary>
+            Configures the middleware.
+            </summary>
+        </member>
         <member name="T:Voyage.Api.WebModule">
             <summary>
             Configures the registrations for Autofac
@@ -111,6 +121,11 @@
             </summary>
             <returns>ILogger interface (this will be registered as a singleton in the container)</returns>
             <remarks>Reference: https://github.com/serilog/serilog-sinks-mssqlserver</remarks>
+        </member>
+        <member name="T:Voyage.Api.Constants">
+            <summary>
+            API Constants
+            </summary>
         </member>
         <member name="T:Voyage.Api.Filters.ValidateModelAttribute">
             <summary>
