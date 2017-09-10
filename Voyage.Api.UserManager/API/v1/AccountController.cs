@@ -29,10 +29,10 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Registers a new user.
         /// </summary>
+        [HttpPost]
+        [Route("accounts")]
         [SwaggerResponse(201, "UserModel", typeof(UserModel))]
         [SwaggerResponse(400, "BadRequestException")]
-        [Route("accounts")]
-        [HttpPost]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
             var result = await _userService.RegisterAsync(model);

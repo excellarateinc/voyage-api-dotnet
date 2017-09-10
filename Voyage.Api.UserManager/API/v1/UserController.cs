@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
-using Voyage.Core;
+﻿using Voyage.Core;
 using Voyage.Models;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -12,11 +10,17 @@ using Microsoft.AspNet.Identity;
 
 namespace Voyage.Api.UserManager.API.V1
 {
+    /// <summary>
+    /// Controller that handles user management.
+    /// </summary>
     [RoutePrefix(RoutePrefixConstants.RoutePrefixes.V1)]
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
 
+        /// <summary>
+        /// Constructor for the User Controller.
+        /// </summary>
         public UserController(IUserService userService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
@@ -25,12 +29,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Get all users
         /// </summary>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUsers)]
         [HttpGet]
         [Route("users")]
+        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public IHttpActionResult GetUsers()
         {
             var users = _userService.GetUsers();
@@ -40,14 +43,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Update user
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="userModel"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}")]
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> UpdateUser([FromUri] string userId, [FromBody] UserModel userModel)
         {
             var result = await _userService.UpdateUserAsync(userId, userModel);
@@ -57,14 +57,12 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Delete a user
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200)]
-        [SwaggerResponse(401, "UnauthorizedException")]
-        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteUser)]
         [HttpDelete]
         [Route("users/{userId}")]
+        [SwaggerResponse(200)]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         public async Task<IHttpActionResult> DeleteUser([FromUri] string userId)
         {
             var result = await _userService.DeleteUserAsync(userId);
@@ -77,13 +75,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Create a user
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        [SwaggerResponse(201, "UserModel", typeof(UserModel))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.CreateUser)]
         [HttpPost]
         [Route("users")]
+        [SwaggerResponse(201, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> CreateUser(UserModel user)
         {
             var result = await _userService.CreateUserAsync(user);
@@ -93,14 +89,12 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Get a user
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
-        [SwaggerResponse(401, "UnauthorizedException")]
-        [SwaggerResponse(404, "NotFoundException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ViewUser)]
         [HttpGet]
         [Route("users/{userId}", Name = "GetUserAsync")]
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> GetUser(string userId)
         {
             var result = await _userService.GetUserAsync(userId);
@@ -110,13 +104,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Get user roles
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUserRole)]
         [Route("users/{userId}/roles")]
         [HttpGet]
+        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> GetUserRoles(string userId)
         {
             var result = await _userService.GetUserRolesAsync(userId);
@@ -126,13 +118,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Get user permissions
         /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IEnumerable<ClaimModel>", typeof(IEnumerable<ClaimModel>))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListUserPermissions)]
         [HttpGet]
         [Route("users/{userId}/permissions")]
+        [SwaggerResponse(200, "IEnumerable<ClaimModel>", typeof(IEnumerable<ClaimModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> GetClaims(string userId)
         {
             var result = await _userService.GetUserClaimsAsync(userId);
@@ -142,15 +132,12 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Assign role to user
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="roleModel"></param>
-        /// <returns></returns>
-        [SwaggerResponse(201, "RoleModel", typeof(RoleModel))]
-        [SwaggerResponse(401, "UnauthorizedException")]
-        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.AssignUserRole)]
         [HttpPost]
         [Route("users/{userId}/roles")]
+        [SwaggerResponse(201, "RoleModel", typeof(RoleModel))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         public async Task<IHttpActionResult> AssignRole([FromUri] string userId, RoleModel roleModel)
         {
             var result = await _userService.AssignUserRoleAsync(userId, roleModel);
@@ -160,14 +147,11 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Get role
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IEnumerable<RoleModel>", typeof(IEnumerable<RoleModel>))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ViewUserRole)]
         [HttpGet]
         [Route("users/{userId}/roles/{roleId}", Name = "GetUserRoleById")]
+        [SwaggerResponse(200, "IEnumerable<RoleModel>", typeof(IEnumerable<RoleModel>))]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public IHttpActionResult GetUserRoleById(string userId, string roleId)
         {
             var result = _userService.GetUserRoleById(userId, roleId);
@@ -177,15 +161,12 @@ namespace Voyage.Api.UserManager.API.V1
         /// <summary>
         /// Remove a role
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IdentityResult", typeof(IdentityResult))]
-        [SwaggerResponse(401, "UnauthorizedException")]
-        [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteUserRole)]
         [HttpDelete]
         [Route("users/{userId}/roles/{roleId}")]
+        [SwaggerResponse(200, "IdentityResult", typeof(IdentityResult))]
+        [SwaggerResponse(401, "UnauthorizedException")]
+        [SwaggerResponse(400, "BadRequestException")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string userId, [FromUri] string roleId)
         {
             var result = await _userService.RemoveUserFromRoleAsync(userId, roleId);
