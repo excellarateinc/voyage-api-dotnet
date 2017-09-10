@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Voyage.Api.Filters;
 using Voyage.Services.Admin;
 using Swashbuckle.Swagger.Annotations;
-using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.V1
 {
@@ -32,12 +31,12 @@ namespace Voyage.Api.API.V1
         /// <param name="userId"></param>
         /// <param name="changeAccountStatusModel"></param>
         /// <returns>A user record with an HTTP 200, or null with an HTTP 400.</returns>
-        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
-        [SwaggerResponse(400, "BadRequestException")]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}/account-status")]
+        [SwaggerResponse(200, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(400, "BadRequestException")]
+        [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> ToggleAccountStatus([FromUri] string userId, [FromBody] ChangeAccountStatusModel changeAccountStatusModel)
         {
             var result = await _adminService.ToggleAccountStatus(userId, changeAccountStatusModel);

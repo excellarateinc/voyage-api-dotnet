@@ -6,12 +6,11 @@ using Microsoft.Owin.Security;
 using Voyage.Models;
 using Voyage.Services.Profile;
 using Swashbuckle.Swagger.Annotations;
-using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.V1
 {
     /// <summary>
-    /// Profile Controller
+    /// Controller that handles user session actions.
     /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class ProfileController : ApiController
@@ -20,10 +19,8 @@ namespace Voyage.Api.API.V1
         private readonly IProfileService _profileService;
 
         /// <summary>
-        /// ProfileController Constructor
+        /// Constructor for the Profile Controller.
         /// </summary>
-        /// <param name="authenticationManager"></param>
-        /// <param name="profileService"></param>
         public ProfileController(IAuthenticationManager authenticationManager, IProfileService profileService)
         {
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
@@ -33,12 +30,11 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Gets the current user's profile.
         /// </summary>
-        /// <returns></returns>
-        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
-        [SwaggerResponse(404, "NotFoundException")]
         [Authorize]
         [HttpGet]
         [Route("profiles/me")]
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> GetCurrentUser()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -49,13 +45,11 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Updates the current user's profile.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns>The users updated profile.</returns>
-        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
-        [SwaggerResponse(404, "NotFoundException")]
-        [Route("profiles/me")]
         [Authorize]
         [HttpPut]
+        [Route("profiles/me")]
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> UpdateProfile(ProfileModel model)
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
