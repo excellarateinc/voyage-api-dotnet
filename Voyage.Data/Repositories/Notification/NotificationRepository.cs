@@ -13,7 +13,7 @@ namespace Voyage.Data.Repositories.Notification
         public override Models.Entities.Notification Add(Models.Entities.Notification model)
         {
             Context.Notifications.Add(model);
-            Context.SaveChanges();
+            SaveChanges();
             return model;
         }
 
@@ -24,7 +24,7 @@ namespace Voyage.Data.Repositories.Notification
                 return;
 
             Context.Notifications.Remove(entity);
-            Context.SaveChanges();
+            SaveChanges();
         }
 
         public override Models.Entities.Notification Get(object id)
@@ -40,7 +40,7 @@ namespace Voyage.Data.Repositories.Notification
         public override Models.Entities.Notification Update(Models.Entities.Notification model)
         {
             Context.Notifications.AddOrUpdate(model);
-            Context.SaveChanges();
+            SaveChanges();
             return model;
         }
     }

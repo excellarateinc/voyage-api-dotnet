@@ -7,7 +7,6 @@ using Voyage.Models;
 using Voyage.Services.Notification;
 using System.Collections.Generic;
 using Swashbuckle.Swagger.Annotations;
-using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.v1
 {
@@ -21,7 +20,7 @@ namespace Voyage.Api.API.v1
         private readonly IAuthenticationManager _authenticationManager;
 
         /// <summary>
-        /// Notification Controller Constructor
+        /// Notifications Controller.
         /// </summary>
         /// <param name="notificationService"></param>
         /// <param name="authenticationManager"></param>
@@ -32,7 +31,7 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Get all notifications for current user
+        /// Get all notifications for the current user
         /// </summary>
         /// <returns></returns>
         [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<NotificationModel>))]
@@ -48,7 +47,7 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Mark a nofication as read by id for a user
+        /// Mark a single notification as read
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -65,7 +64,7 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Mark all nofications as read for a user
+        /// Mark all nofications as read
         /// </summary>
         /// <returns></returns>
         [SwaggerResponse(200)]
@@ -81,7 +80,7 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Create notification
+        /// Create a notification
         /// </summary>
         /// <param name="notification"></param>
         /// <returns></returns>
