@@ -59,7 +59,7 @@ namespace Voyage.Api.UserManager.API.V1
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [SwaggerResponse(204)]
+        [SwaggerResponse(200)]
         [SwaggerResponse(401, "UnauthorizedException")]
         [SwaggerResponse(400, "BadRequestException")]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteUser)]
@@ -71,7 +71,7 @@ namespace Voyage.Api.UserManager.API.V1
             if (!result.Succeeded)
                 return BadRequest();
 
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
+            return Ok();
         }
 
         /// <summary>

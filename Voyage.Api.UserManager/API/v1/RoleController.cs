@@ -155,13 +155,13 @@ namespace Voyage.Api.UserManager.API.V1
         [HttpDelete]
         [ClaimAuthorize(ClaimValue = AppClaims.DeleteRole)]
         [Route("roles/{roleId}")]
-        [SwaggerResponse(204)]
+        [SwaggerResponse(200)]
         [SwaggerResponse(401, "UnauthorizedException")]
         [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> RemoveRole([FromUri] string roleId)
         {
             await _roleService.RemoveRoleAsync(roleId);
-            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
+            return Ok();
         }
     }
 }

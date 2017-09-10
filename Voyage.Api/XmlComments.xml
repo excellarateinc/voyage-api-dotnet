@@ -72,33 +72,33 @@
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.#ctor(Voyage.Services.Notification.INotificationService,Microsoft.Owin.Security.IAuthenticationManager)">
             <summary>
-            Notification Controller Constructor
+            Notifications Controller.
             </summary>
             <param name="notificationService"></param>
             <param name="authenticationManager"></param>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.GetNotifications">
             <summary>
-            Get all notifications for current user
+            Get all notifications for the current user
             </summary>
             <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.MarkNotificationAsRead(System.Int32)">
             <summary>
-            Mark a nofication as read by id for a user
+            Mark a single notification as read
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.MarkAllNotificationsAsRead">
             <summary>
-            Mark all nofications as read for a user
+            Mark all nofications as read
             </summary>
             <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.CreateNotification(Voyage.Models.NotificationModel)">
             <summary>
-            Create notification
+            Create a notification
             </summary>
             <param name="notification"></param>
             <returns></returns>

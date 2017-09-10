@@ -4,12 +4,20 @@
         <name>Voyage.Api.UserManager</name>
     </assembly>
     <members>
+        <member name="T:Voyage.Api.UserManager.API.V1.AccountController">
+            <summary>
+            Controller that handles user registration.
+            </summary>
+        </member>
+        <member name="M:Voyage.Api.UserManager.API.V1.AccountController.#ctor(Voyage.Services.User.IUserService,Voyage.Services.Profile.IProfileService)">
+            <summary>
+            Constructor for Account Controller.
+            </summary>
+        </member>
         <member name="M:Voyage.Api.UserManager.API.V1.AccountController.Register(Voyage.Models.RegistrationModel)">
             <summary>
-            Create profile
+            Registers a new user.
             </summary>
-            <param name="model"></param>
-            <returns></returns>
         </member>
         <member name="M:Voyage.Api.UserManager.API.V1.RoleController.GetRoleById(System.String)">
             <summary>
