@@ -9,7 +9,7 @@ using Swashbuckle.Swagger.Annotations;
 namespace Voyage.Api.API.V1
 {
     /// <summary>
-    /// Admin Constructor
+    /// Controller that handles user administrator functionality.
     /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class AdminController : ApiController
@@ -17,9 +17,8 @@ namespace Voyage.Api.API.V1
         private readonly IAdminService _adminService;
 
         /// <summary>
-        /// AdminConstroller Constructor
+        /// Constructor for the Admin Controller.
         /// </summary>
-        /// <param name="adminService"></param>
         public AdminController(IAdminService adminService)
         {
             _adminService = adminService.ThrowIfNull(nameof(adminService));
@@ -28,9 +27,6 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Update users' account status
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="changeAccountStatusModel"></param>
-        /// <returns>A user record with an HTTP 200, or null with an HTTP 400.</returns>
         [ClaimAuthorize(ClaimValue = AppClaims.UpdateUser)]
         [HttpPut]
         [Route("users/{userId}/account-status")]

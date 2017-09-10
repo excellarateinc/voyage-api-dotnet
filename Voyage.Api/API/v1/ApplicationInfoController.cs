@@ -16,7 +16,7 @@ namespace Voyage.Api.API.V1
         private readonly IApplicationInfoService _applicationInfoService;
 
         /// <summary>
-        /// Constructor for the Application Info controller.
+        /// Constructor for the Application Info Controller.
         /// </summary>
         public ApplicationInfoController(IApplicationInfoService applicationInfoService)
         {

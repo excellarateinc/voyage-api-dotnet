@@ -26,22 +26,18 @@
         </member>
         <member name="T:Voyage.Api.API.V1.AdminController">
             <summary>
-            Admin Constructor
+            Controller that handles user administrator functionality.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.V1.AdminController.#ctor(Voyage.Services.Admin.IAdminService)">
             <summary>
-            AdminConstroller Constructor
+            Constructor for the Admin Controller.
             </summary>
-            <param name="adminService"></param>
         </member>
         <member name="M:Voyage.Api.API.V1.AdminController.ToggleAccountStatus(System.String,Voyage.Models.ChangeAccountStatusModel)">
             <summary>
             Update users' account status
             </summary>
-            <param name="userId"></param>
-            <param name="changeAccountStatusModel"></param>
-            <returns>A user record with an HTTP 200, or null with an HTTP 400.</returns>
         </member>
         <member name="T:Voyage.Api.API.V1.ApplicationInfoController">
             <summary>
@@ -50,7 +46,7 @@
         </member>
         <member name="M:Voyage.Api.API.V1.ApplicationInfoController.#ctor(Voyage.Services.ApplicationInfo.IApplicationInfoService)">
             <summary>
-            Constructor for the Application Info controller.
+            Constructor for the Application Info Controller.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.V1.ApplicationInfoController.Get">
@@ -92,6 +88,16 @@
             <summary>
             This is vanilla autofac configuration based on:
             http://docs.autofac.org/en/latest/integration/webapi.html#quick-start
+            </summary>
+        </member>
+        <member name="T:Voyage.Api.RouteConfig">
+            <summary>
+            Route configuration.
+            </summary>
+        </member>
+        <member name="M:Voyage.Api.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Route registration.
             </summary>
         </member>
         <member name="T:Voyage.Api.WebModule">
