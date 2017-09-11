@@ -7,7 +7,7 @@ using Voyage.Models;
 namespace Voyage.Api.API.V1
 {
     /// <summary>
-    /// Application Info Controller
+    /// Controller that provides information about the application.
     /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     [AllowAnonymous]
@@ -16,18 +16,16 @@ namespace Voyage.Api.API.V1
         private readonly IApplicationInfoService _applicationInfoService;
 
         /// <summary>
-        /// ApplicationInfoConstructorController
+        /// Constructor for the Application Info Controller.
         /// </summary>
-        /// <param name="applicationInfoService"></param>
         public ApplicationInfoController(IApplicationInfoService applicationInfoService)
         {
             _applicationInfoService = applicationInfoService.ThrowIfNull(nameof(applicationInfoService));
         }
 
         /// <summary>
-        /// Get application info
+        /// Retrieves information about the application.
         /// </summary>
-        /// <returns></returns>
         [SwaggerResponse(200, "UserModel", typeof(ApplicationInfoModel))]
         [Route("statuses")]
         public IHttpActionResult Get()

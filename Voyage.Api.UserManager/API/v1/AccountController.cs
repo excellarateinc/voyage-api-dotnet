@@ -8,29 +8,31 @@ using Swashbuckle.Swagger.Annotations;
 
 namespace Voyage.Api.UserManager.API.V1
 {
+    /// <summary>
+    /// Controller that handles user registration.
+    /// </summary>
     [RoutePrefix(RoutePrefixConstants.RoutePrefixes.V1)]
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
         private readonly IProfileService _profileService;
 
-        public AccountController(
-            IUserService userService,
-            IProfileService profileService)
+        /// <summary>
+        /// Constructor for Account Controller.
+        /// </summary>
+        public AccountController(IUserService userService, IProfileService profileService)
         {
             _userService = userService.ThrowIfNull(nameof(userService));
             _profileService = profileService.ThrowIfNull(nameof(profileService));
         }
 
         /// <summary>
-        /// Create profile
+        /// Registers a new user.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        [HttpPost]
+        [Route("accounts")]
         [SwaggerResponse(201, "UserModel", typeof(UserModel))]
         [SwaggerResponse(400, "BadRequestException")]
-        [Route("accounts")]
-        [HttpPost]
         public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
             var result = await _userService.RegisterAsync(model);

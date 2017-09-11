@@ -6,13 +6,13 @@ using Voyage.Core;
 using Voyage.Models;
 using Voyage.Services.Notification;
 using System.Collections.Generic;
+using System.Net;
 using Swashbuckle.Swagger.Annotations;
-using Voyage.Core.Exceptions;
 
 namespace Voyage.Api.API.v1
 {
     /// <summary>
-    /// Notification Controller
+    /// Controller that handles application notifications.
     /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class NotificationsController : ApiController
@@ -21,10 +21,8 @@ namespace Voyage.Api.API.v1
         private readonly IAuthenticationManager _authenticationManager;
 
         /// <summary>
-        /// Notification Controller Constructor
+        /// Constructor for the Notifications Controller.
         /// </summary>
-        /// <param name="notificationService"></param>
-        /// <param name="authenticationManager"></param>
         public NotificationsController(INotificationService notificationService, IAuthenticationManager authenticationManager)
         {
             _notificationService = notificationService.ThrowIfNull(nameof(notificationService));
@@ -32,14 +30,13 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Get all notifications for current user
+        /// Get all notifications for the current user
         /// </summary>
-        /// <returns></returns>
-        [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<NotificationModel>))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.ListNotifications)]
         [HttpGet]
         [Route("notifications")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<NotificationModel>))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized)]
         public IHttpActionResult GetNotifications()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -48,15 +45,13 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Mark a nofication as read by id for a user
+        /// Mark a single notification as read
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200)]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
         [HttpPut]
         [Route("notifications/{id}")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.Unauthorized)]
         public IHttpActionResult MarkNotificationAsRead(int id)
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -65,14 +60,13 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Mark all nofications as read for a user
+        /// Mark all nofications as read
         /// </summary>
-        /// <returns></returns>
-        [SwaggerResponse(200)]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.MarkNotificationsAsRead)]
         [HttpPut]
         [Route("notifications")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.Unauthorized)]
         public IHttpActionResult MarkAllNotificationsAsRead()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -81,15 +75,13 @@ namespace Voyage.Api.API.v1
         }
 
         /// <summary>
-        /// Create notification
+        /// Create a notification
         /// </summary>
-        /// <param name="notification"></param>
-        /// <returns></returns>
-        [SwaggerResponse(200, "NotificationModel", typeof(NotificationModel))]
-        [SwaggerResponse(401, "UnauthorizedException")]
         [ClaimAuthorize(ClaimValue = AppClaims.CreateNotification)]
         [HttpPost]
         [Route("notifications")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(NotificationModel))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized)]
         public IHttpActionResult CreateNotification(NotificationModel notification)
         {
             var createdNotification = _notificationService.CreateNotification(notification);

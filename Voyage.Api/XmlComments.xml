@@ -6,107 +6,108 @@
     <members>
         <member name="T:Voyage.Api.API.V1.ProfileController">
             <summary>
-            Profile Controller
+            Controller that handles user session actions.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.V1.ProfileController.#ctor(Microsoft.Owin.Security.IAuthenticationManager,Voyage.Services.Profile.IProfileService)">
             <summary>
-            ProfileController Constructor
+            Constructor for the Profile Controller.
             </summary>
-            <param name="authenticationManager"></param>
-            <param name="profileService"></param>
         </member>
         <member name="M:Voyage.Api.API.V1.ProfileController.GetCurrentUser">
             <summary>
             Gets the current user's profile.
             </summary>
-            <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.V1.ProfileController.UpdateProfile(Voyage.Models.ProfileModel)">
             <summary>
             Updates the current user's profile.
             </summary>
-            <param name="model"></param>
-            <returns>The users updated profile.</returns>
         </member>
         <member name="T:Voyage.Api.API.V1.AdminController">
             <summary>
-            Admin Constructor
+            Controller that handles user administrator functionality.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.V1.AdminController.#ctor(Voyage.Services.Admin.IAdminService)">
             <summary>
-            AdminConstroller Constructor
+            Constructor for the Admin Controller.
             </summary>
-            <param name="adminService"></param>
         </member>
         <member name="M:Voyage.Api.API.V1.AdminController.ToggleAccountStatus(System.String,Voyage.Models.ChangeAccountStatusModel)">
             <summary>
             Update users' account status
             </summary>
-            <param name="userId"></param>
-            <param name="changeAccountStatusModel"></param>
-            <returns>A user record with an HTTP 200, or null with an HTTP 400.</returns>
         </member>
         <member name="T:Voyage.Api.API.V1.ApplicationInfoController">
             <summary>
-            Application Info Controller
+            Controller that provides information about the application.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.V1.ApplicationInfoController.#ctor(Voyage.Services.ApplicationInfo.IApplicationInfoService)">
             <summary>
-            ApplicationInfoConstructorController
+            Constructor for the Application Info Controller.
             </summary>
-            <param name="applicationInfoService"></param>
         </member>
         <member name="M:Voyage.Api.API.V1.ApplicationInfoController.Get">
             <summary>
-            Get application info
+            Retrieves information about the application.
             </summary>
-            <returns></returns>
         </member>
         <member name="T:Voyage.Api.API.v1.NotificationsController">
             <summary>
-            Notification Controller
+            Controller that handles application notifications.
             </summary>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.#ctor(Voyage.Services.Notification.INotificationService,Microsoft.Owin.Security.IAuthenticationManager)">
             <summary>
-            Notification Controller Constructor
+            Constructor for the Notifications Controller.
             </summary>
-            <param name="notificationService"></param>
-            <param name="authenticationManager"></param>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.GetNotifications">
             <summary>
-            Get all notifications for current user
+            Get all notifications for the current user
             </summary>
-            <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.MarkNotificationAsRead(System.Int32)">
             <summary>
-            Mark a nofication as read by id for a user
+            Mark a single notification as read
             </summary>
-            <param name="id"></param>
-            <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.MarkAllNotificationsAsRead">
             <summary>
-            Mark all nofications as read for a user
+            Mark all nofications as read
             </summary>
-            <returns></returns>
         </member>
         <member name="M:Voyage.Api.API.v1.NotificationsController.CreateNotification(Voyage.Models.NotificationModel)">
             <summary>
-            Create notification
+            Create a notification
             </summary>
-            <param name="notification"></param>
-            <returns></returns>
         </member>
         <member name="T:Voyage.Api.ContainerConfig">
             <summary>
             This is vanilla autofac configuration based on:
             http://docs.autofac.org/en/latest/integration/webapi.html#quick-start
+            </summary>
+        </member>
+        <member name="T:Voyage.Api.RouteConfig">
+            <summary>
+            Route configuration.
+            </summary>
+        </member>
+        <member name="M:Voyage.Api.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Route registration.
+            </summary>
+        </member>
+        <member name="T:Voyage.Api.Startup">
+            <summary>
+            Application Startup.
+            </summary>
+        </member>
+        <member name="M:Voyage.Api.Startup.Configuration(Owin.IAppBuilder)">
+            <summary>
+            Configures the middleware.
             </summary>
         </member>
         <member name="T:Voyage.Api.WebModule">
@@ -120,6 +121,11 @@
             </summary>
             <returns>ILogger interface (this will be registered as a singleton in the container)</returns>
             <remarks>Reference: https://github.com/serilog/serilog-sinks-mssqlserver</remarks>
+        </member>
+        <member name="T:Voyage.Api.Constants">
+            <summary>
+            API Constants
+            </summary>
         </member>
         <member name="T:Voyage.Api.Filters.ValidateModelAttribute">
             <summary>
