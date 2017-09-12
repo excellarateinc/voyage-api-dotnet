@@ -26,8 +26,8 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Retrieves information about the application.
         /// </summary>
-        [SwaggerResponse(200, "UserModel", typeof(ApplicationInfoModel))]
         [Route("statuses")]
+        [SwaggerResponse(200, "UserModel", typeof(ApplicationInfoModel))]
         public IHttpActionResult Get()
         {
             var appInfo = _applicationInfoService.GetApplicationInfo();
