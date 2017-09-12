@@ -16,15 +16,13 @@ namespace Voyage.Api
     {
         public static void Register()
         {
-            var thisAssembly = typeof(SwaggerConfig).Assembly;
-
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "Voyage.Api");
                     c.OperationFilter<AddRequiredHeaderParameter>();
                     c.IncludeXmlComments(GetApiProjectXmlCommentsPath());
-                    if (CheckIfXMLExists($@"{System.AppDomain.CurrentDomain.BaseDirectory}\..\Voyage.Api.UserManager\XmlComments.xml"))
+                    if (CheckIfXMLExists($@"{AppDomain.CurrentDomain.BaseDirectory}\..\Voyage.Api.UserManager\bin\XmlComments.xml"))
                     {
                         c.IncludeXmlComments(GetUserManagerXmlCommentsPath());
                     }
@@ -39,12 +37,12 @@ namespace Voyage.Api
 
         private static string GetApiProjectXmlCommentsPath()
         {
-            return $@"{System.AppDomain.CurrentDomain.BaseDirectory}\XmlComments.xml";
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\bin\XmlComments.xml";
         }
 
         private static string GetUserManagerXmlCommentsPath()
         {
-            return $@"{System.AppDomain.CurrentDomain.BaseDirectory}\..\..\Voyage.Api.UserManager\XmlComments.xml";
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\..\..\Voyage.Api.UserManager\bin\XmlComments.xml";
         }
     }
 
@@ -54,16 +52,19 @@ namespace Voyage.Api
         {
             if (operation.parameters == null)
                 operation.parameters = new List<Parameter>();
-            var headerParam = new List<Parameter>();
 
-            headerParam.Add(new Parameter
+            var headerParam = new List<Parameter>
             {
-                name = "Authorization",
-                @in = "header",
-                type = "string",
-                description = "Bearer JWT",
-                required = true
-            });
+                new Parameter
+                {
+                    name = "Authorization",
+                    @in = "header",
+                    type = "string",
+                    description = "Bearer JWT",
+                    required = true
+                }
+            };
+
 
             headerParam.AddRange(operation.parameters);
 
