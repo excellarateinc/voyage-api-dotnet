@@ -19,6 +19,24 @@ AS (
 			,0
 			,N'admin@admin.com'
 			,0
+			),
+			(
+			N'7E335050-E14D-4769-B2E1-E604CBEA69F2'
+			,N'Support_First'
+			,N'Support_Last'
+			,1
+			,N'support@support.com'
+			,0
+			,N'AGm314lswtDFuAaMlptMbX1xCzz9eF6fIRXuMDFqkhoCV72AqdYEBXQ9HODk608uCA=='
+			,N'cb31329f-bb59-4803-a1c7-67adc3dc8871'
+			,NULL
+			,0
+			,0
+			,NULL
+			,0
+			,0
+			,N'CustomerSupport'
+			,0
 			)
 		) AS UserSeed([Id], [FirstName], [LastName], [IsActive], [Email], [EmailConfirmed], [PasswordHash], [SecurityStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEndDateUtc], [LockoutEnabled], [AccessFailedCount], [UserName], [Deleted])
 	)

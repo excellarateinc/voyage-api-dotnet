@@ -10,11 +10,15 @@ using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
+using Newtonsoft.Json;
 using Voyage.Api.AuthProviders;
 using Voyage.Api.Middleware;
 using Voyage.Api.Middleware.Processors;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
+using Voyage.Services.Notification.Push;
 
 namespace Voyage.Api
 {
@@ -46,6 +50,8 @@ namespace Voyage.Api
             ConfigureIdentityServices(builder);
 
             ConfigureMiddleware(builder);
+
+            ConfigureSignalR(builder);
         }
 
         private void ConfigureMiddleware(ContainerBuilder builder)
@@ -121,6 +127,20 @@ namespace Voyage.Api
 
             Log.Logger = log; // Configure the global static logger
             return log;
+        }
+
+        private static void ConfigureSignalR(ContainerBuilder builder)
+        {
+            // Configure a contract resolver to ensure objects are serialized with camel case.
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new SignalRContractResolver()
+            };
+            var serializer = JsonSerializer.Create(settings);
+            builder.Register(c => serializer).As<JsonSerializer>();
+
+            // Custom user id provider to map connections to the user.
+            builder.Register(c => new SignalRUserIdProvider(HttpContext.Current.GetOwinContext().Authentication)).As<IUserIdProvider>();
         }
     }
 }

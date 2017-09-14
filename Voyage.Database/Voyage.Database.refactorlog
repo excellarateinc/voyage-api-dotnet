@@ -14,6 +14,55 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CreatedBy" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ff757700-3160-4178-920b-236ae82c48f7" ChangeDateTime="07/27/2017 18:59:22">
+    <Property Name="ElementName" Value="[dbo].[Account].[Subject]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AccountNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d3272dbb-dbc4-4481-b270-25ffd8e5d7fe" ChangeDateTime="07/27/2017 18:59:36">
+    <Property Name="ElementName" Value="[dbo].[Account].[Description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Name" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7b859a7c-0eab-4cf2-9c8c-4fce1421e59f" ChangeDateTime="07/27/2017 18:59:52">
+    <Property Name="ElementName" Value="[dbo].[Account].[AssignedToUserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Type" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b7f9e7db-a3be-4c7b-83dd-4045b24c948c" ChangeDateTime="07/27/2017 18:59:58">
+    <Property Name="ElementName" Value="[dbo].[Account].[IsRead]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Balance" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4741984e-4c1c-44ef-a2d0-80937df838e7" ChangeDateTime="07/27/2017 19:01:08">
+    <Property Name="ElementName" Value="[dbo].[Account].[AccountId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TransactionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3b4eef30-9fcd-49ca-9426-5087eb9c7e18" ChangeDateTime="07/27/2017 19:01:14">
+    <Property Name="ElementName" Value="[dbo].[Account].[AccountNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AccountId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7353f457-4eec-4577-805e-dee90ebbf067" ChangeDateTime="07/27/2017 19:01:29">
+    <Property Name="ElementName" Value="[dbo].[Account].[Name]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Date" />
+  </Operation>
   <Operation Name="Rename Refactor" Key="66e6b8da-f0f7-41b0-9e16-67ec6370d0d6" ChangeDateTime="08/20/2017 16:36:11">
     <Property Name="ElementName" Value="[dbo].[ProfileImage].[Id]" />
     <Property Name="ElementType" Value="SqlSimpleColumn" />
@@ -27,5 +76,33 @@
     <Property Name="ParentElementName" Value="[dbo].[ProfileImage]" />
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ProfileImageId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="471c0dd5-d00c-40dc-af74-7cef20cce7f0" ChangeDateTime="09/04/2017 14:33:06">
+    <Property Name="ElementName" Value="[dbo].[ChatChannel].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ChatChannel]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChannelId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="90fa9871-898a-4ac9-b193-588d812e6075" ChangeDateTime="09/04/2017 14:33:32">
+    <Property Name="ElementName" Value="[dbo].[ChatMessage].[CreateTime]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ChatMessage]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="39ce1940-4b49-4100-8b6d-30e70d781f8c" ChangeDateTime="09/04/2017 14:41:49">
+    <Property Name="ElementName" Value="[dbo].[ChatMessage].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ChatMessage]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChatMessageId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3e99234b-904b-49fb-a7aa-b55af5a1c96b" ChangeDateTime="09/04/2017 14:42:08">
+    <Property Name="ElementName" Value="[dbo].[ChatMessage].[ChatMessageId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ChatMessage]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageId" />
   </Operation>
 </Operations>

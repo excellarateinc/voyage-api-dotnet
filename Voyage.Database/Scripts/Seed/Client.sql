@@ -40,6 +40,25 @@ AS (
 			,'Jan 1 2017 1:29PM'
 			,N'FirstName3@app.com'
 			,'Jan 1 2017 1:29PM'
+			,0),
+			(N'26C092FC-64DB-4334-87B5-09428F029B9C'
+			,N'Client3'
+			,N'client-super-qa'
+			,N'secret'
+			,N'http://qa-app-ms.voyageframework.com'
+			,1
+			,1
+			,1
+			,86400
+			,86400
+			,NULL
+			,NULL
+			,1
+			,0
+			,N'FirstName3@app.com'
+			,'Jan 1 2017 1:29PM'
+			,N'FirstName3@app.com'
+			,'Jan 1 2017 1:29PM'
 			,0)
 		) AS ClientSeed(
 			[Id]

@@ -5,6 +5,7 @@ using Voyage.Core;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.Notification;
 using Voyage.Models;
+using Voyage.Services.Notification.Push;
 
 namespace Voyage.Services.Notification
 {
@@ -12,11 +13,16 @@ namespace Voyage.Services.Notification
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly IMapper _mapper;
+        private readonly IPushService _pushService;
 
-        public NotificationService(INotificationRepository notificationRepository, IMapper mapper)
+        public NotificationService(
+            INotificationRepository notificationRepository,
+            IMapper mapper,
+            IPushService pushService)
         {
             _notificationRepository = notificationRepository.ThrowIfNull(nameof(notificationRepository));
             _mapper = mapper.ThrowIfNull(nameof(mapper));
+            _pushService = pushService.ThrowIfNull(nameof(pushService));
         }
 
         public IEnumerable<Models.NotificationModel> GetNotifications(string userId)
@@ -31,7 +37,9 @@ namespace Voyage.Services.Notification
         public NotificationModel CreateNotification(NotificationModel notification)
         {
             var notificationEntity = _mapper.Map<Models.Entities.Notification>(notification);
-            return _mapper.Map<Models.NotificationModel>(_notificationRepository.Add(notificationEntity));
+            var model = _mapper.Map<Models.NotificationModel>(_notificationRepository.Add(notificationEntity));
+            _pushService.PushNotification(model);
+            return model;
         }
 
         public void MarkNotificationAsRead(string userId, int notificationId)

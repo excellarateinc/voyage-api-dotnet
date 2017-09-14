@@ -4,7 +4,8 @@ AS (
 	FROM (
 		VALUES 
 			 (N'1cd39193-1f83-4d44-ab45-68c85be2acc8', N'Administrator')
-			,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'Basic')			 
+			,(N'927fe4a9-4e27-4635-a208-eb5afc953294', N'Basic')
+			,(N'149DF98B-8B2D-4AE6-AD3B-7A3EF3C7CF0E', N'Support')		 
 		) AS RoleSeed([Id], [RoleName])
 	)
 -- Reference Data for Role 

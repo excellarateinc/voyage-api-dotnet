@@ -69,7 +69,12 @@ namespace Voyage.Api.UserManager.Filters
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
                     .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+                var requestErrorModel = new ResponseErrorModel
+                {
+                    Error = Core.Constants.ErrorCodes.Unauthorized,
+                    ErrorDescription = "not authorized for request"
+                };
+                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, new List<ResponseErrorModel> { requestErrorModel });
             }
 
             // Implicit authentication will need to verify if user is either locked or need verification

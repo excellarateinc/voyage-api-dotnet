@@ -19,4 +19,4 @@ Post-Deployment Script Template
 :r .\Seed\ClientScopeType.sql
 :r .\Seed\ClientScope.sql
 :r .\Seed\Notification.sql
-
+:r .\Seed\Chat.sql

@@ -27,7 +27,10 @@ namespace Voyage.Security.BasicToken
                 AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"]),
 
                 // Authorization server provider which controls the lifecycle of Authorization Server
-                Provider = new VoyageBasicTokenProvider()
+                Provider = new VoyageBasicTokenProvider(),
+
+                // Jwt custom format
+                AccessTokenFormat = new VoyageJwtFormat(configuration.Container),
             });
 
             return app;
