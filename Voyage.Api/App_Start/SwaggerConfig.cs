@@ -22,12 +22,12 @@ namespace Voyage.Api
                     c.SingleApiVersion("v1", "Voyage.Api");
                     c.OperationFilter<AddRequiredHeaderParameter>();
                     c.IncludeXmlComments(GetApiProjectXmlCommentsPath());
-                    if (CheckIfXMLExists($@"{AppDomain.CurrentDomain.BaseDirectory}\..\Voyage.Api.UserManager\bin\XmlComments.xml"))
+                    if (CheckIfXMLExists($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\UserManagerXmlComments.xml"))
                     {
                         c.IncludeXmlComments(GetUserManagerXmlCommentsPath());
                     }
                 })
-                .EnableSwaggerUi(c => { });
+                .EnableSwaggerUi();
         }
 
         private static bool CheckIfXMLExists(string fileName)
@@ -42,7 +42,7 @@ namespace Voyage.Api
 
         private static string GetUserManagerXmlCommentsPath()
         {
-            return $@"{AppDomain.CurrentDomain.BaseDirectory}\..\..\Voyage.Api.UserManager\bin\XmlComments.xml";
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\bin\UserManagerXmlComments.xml";
         }
     }
 
