@@ -16,7 +16,7 @@
     <RootNamespace>Voyage.Web</RootNamespace>
     <AssemblyName>Voyage.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -49,8 +49,8 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -334,6 +334,10 @@
     <ProjectReference Include="..\Voyage.Models\Voyage.Models.csproj">
       <Project>{d2013160-5e92-4eb0-8a10-3b89c44e8572}</Project>
       <Name>Voyage.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Voyage.Security.BasicToken\Voyage.Security.BasicToken.csproj">
+      <Project>{c3b0291d-5400-4339-8d36-62ef3c5182a9}</Project>
+      <Name>Voyage.Security.BasicToken</Name>
     </ProjectReference>
     <ProjectReference Include="..\Voyage.Security.Oauth2\Voyage.Security.Oauth2.csproj">
       <Project>{120b86b5-34b8-4304-a826-89e938e4319a}</Project>

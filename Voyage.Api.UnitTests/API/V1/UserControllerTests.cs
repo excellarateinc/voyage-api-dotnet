@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;

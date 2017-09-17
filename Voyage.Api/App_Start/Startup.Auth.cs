@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Web.Http;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Jwt;
+using Voyage.Api.AuthProviders;
 using Voyage.Api.Middleware;
 using Voyage.Services.KeyContainer;
 
@@ -49,11 +50,15 @@ namespace Voyage.Api
             var jwtTokenOptions = new JwtBearerAuthenticationOptions
             {
                 AuthenticationMode = AuthenticationMode.Active,
-                TokenValidationParameters = tokenParam
+                TokenValidationParameters = tokenParam,
+                Provider = new QueryStringOAuthBearerProvider()
             };
             app.UseJwtBearerAuthentication(jwtTokenOptions);
 
-            // 6. Add web api to pipeline
+            // 6. Add SignalR support.
+            app.MapSignalR(ContainerConfig.HubConfiguration);
+
+            // 7. Add web api to pipeline
             app.UseWebApi(httpConfig);
         }
     }

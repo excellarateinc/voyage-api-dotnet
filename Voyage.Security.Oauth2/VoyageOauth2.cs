@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;

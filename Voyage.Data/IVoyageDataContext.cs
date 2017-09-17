@@ -27,6 +27,12 @@ namespace Voyage.Data
 
         IDbSet<ProfileImage> ProfileImages { get; set; }
 
+        IDbSet<ChatChannel> ChatChannels { get; set; }
+
+        IDbSet<ChatMessage> ChatMessages { get; set; }
+
+        IDbSet<ChatChannelMember> ChatChannelMembers { get; set; }
+
         int SaveChanges();
     }
 }

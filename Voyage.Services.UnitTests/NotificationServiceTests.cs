@@ -6,6 +6,7 @@ using Moq;
 using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.Notification;
 using Voyage.Services.Notification;
+using Voyage.Services.Notification.Push;
 using Voyage.Services.UnitTests.Common;
 using Voyage.Services.UnitTests.Common.AutoMapperFixture;
 using Xunit;
@@ -19,13 +20,15 @@ namespace Voyage.Services.UnitTests
         private readonly NotificationService _notificationService;
         private readonly Mock<INotificationRepository> _mockNotificationRepository;
         private readonly AutoMapperFixture _mapperFixture;
+        private readonly Mock<IPushService> _mockPushService;
 
         public NotificationServiceTests(AutoMapperFixture mapperFixture)
         {
             _mockNotificationRepository = Mock.Create<INotificationRepository>();
+            _mockPushService = Mock.Create<IPushService>();
             _mapperFixture = mapperFixture;
 
-            _notificationService = new NotificationService(_mockNotificationRepository.Object, _mapperFixture.MapperInstance);
+            _notificationService = new NotificationService(_mockNotificationRepository.Object, _mapperFixture.MapperInstance, _mockPushService.Object);
         }
 
         [Fact]
@@ -56,6 +59,8 @@ namespace Voyage.Services.UnitTests
             // Arrange
             _mockNotificationRepository.Setup(_ => _.Add(It.IsAny<Models.Entities.Notification>()))
                 .Returns(new Models.Entities.Notification { Id = 1 });
+
+            _mockPushService.Setup(_ => _.PushNotification(It.IsAny<Models.NotificationModel>()));
 
             // Act
             var notification = new Models.NotificationModel();

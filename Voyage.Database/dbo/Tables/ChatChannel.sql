@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ChatChannel]
+(
+	[ChannelId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1),
+	[Name] NVARCHAR(100) NOT NULL,
+	[CreatedBy] NVARCHAR(128) NOT NULL,
+	[CreateDate] DATETIME2 NOT NULL DEFAULT GETDATE(),
+	CONSTRAINT [FK_ChatChannel_User] FOREIGN KEY ([CreatedBy]) REFERENCES [User]([Id])
+)
