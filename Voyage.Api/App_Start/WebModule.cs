@@ -79,10 +79,6 @@ namespace Voyage.Api
                .AsImplementedInterfaces()
                .InstancePerRequest();
 
-            // builder.RegisterType<ApplicationJwtProvider>()
-            //    .AsSelf()
-            //    .SingleInstance();
-
             //// Options
             builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
             {
