@@ -34,7 +34,7 @@ If you are extending this API to build a new app, then replace this section with
 ### Security
 * __[OWASP](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project) Hacker Proof__
   - Tested nightly against OWASP common hacks (particularly the top 10)
-  - Tested nightly using 3rd party penetration testing services to ensure entperprise grade security!
+  - Tested nightly using 3rd party penetration testing services to ensure enterprise grade security.
 * __[OAuth2](https://oauth.net/2/) Authentication__
   - Bearer Token authentication configuraiton
   - SHA2 hash encrypted user password (when authenticating using the database)
