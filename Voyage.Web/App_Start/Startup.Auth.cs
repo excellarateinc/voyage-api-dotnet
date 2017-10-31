@@ -1,10 +1,9 @@
-﻿using System.Configuration;
-using FluentValidation.WebApi;
+﻿using FluentValidation.WebApi;
 using Voyage.Web.Middleware;
 using Microsoft.Owin.Cors;
 using Owin;
 using System.Web.Http;
-using Voyage.Security.Oauth2;
+using Voyage.Security.BasicToken;
 
 namespace Voyage.Web
 {
@@ -32,11 +31,9 @@ namespace Voyage.Web
             // 4. Register the activty auditing here so that anonymous activity is captured
             app.UseMiddlewareFromContainer<ActivityAuditMiddleware>();
 
-            app.UseVoyageOauth2(new VoyageOauth2Configuration
+            app.UseVoyageOauth2(new VoyageBasicTokenConfiguration
             {
-                Container = ContainerConfig.Container,
-                TokenExpireSeconds = ConfigurationManager.AppSettings["oAuth:TokenExpireSeconds"],
-                AllowInsecureHttp = bool.Parse(ConfigurationManager.AppSettings["oAuth:AllowInsecureHttp"])
+                Container = ContainerConfig.Container
             });
         }
     }

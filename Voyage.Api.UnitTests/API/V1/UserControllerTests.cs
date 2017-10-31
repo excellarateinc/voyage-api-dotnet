@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
@@ -152,7 +153,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var result = await _userController.DeleteUser(id);
 
             var message = await result.ExecuteAsync(CreateCancelToken());
-            message.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]

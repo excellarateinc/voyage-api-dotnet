@@ -55,6 +55,12 @@ namespace Voyage.Data
 
         public IDbSet<ProfileImage> ProfileImages { get; set; }
 
+        public IDbSet<ChatChannel> ChatChannels { get; set; }
+
+        public IDbSet<ChatMessage> ChatMessages { get; set; }
+
+        public IDbSet<ChatChannelMember> ChatChannelMembers { get; set; }
+
         public override async Task<int> SaveChangesAsync()
         {
             try

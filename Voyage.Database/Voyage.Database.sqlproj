@@ -89,6 +89,9 @@
     <None Include="Scripts\Seed\ClientScopeType.sql" />
     <Build Include="dbo\Tables\Notification.sql" />
     <Build Include="dbo\Tables\ProfileImage.sql" />
+    <Build Include="dbo\Tables\ChatChannel.sql" />
+    <Build Include="dbo\Tables\ChatMessage.sql" />
+    <Build Include="dbo\Tables\ChatChannelMember.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Seed\RoleClaim.sql" />
@@ -97,6 +100,7 @@
     <None Include="Scripts\Seed\UserPhone.sql" />
     <None Include="localhost.publish.xml" />
     <None Include="Scripts\Seed\Notification.sql" />
+    <None Include="Scripts\Seed\Chat.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Voyage.Database.refactorlog" />

@@ -5,6 +5,8 @@ using Swashbuckle.Application;
 using Swashbuckle.Swagger;
 using System.Web.Http.Description;
 using System.Collections.Generic;
+using System.IO;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -14,15 +16,33 @@ namespace Voyage.Api
     {
         public static void Register()
         {
-            var thisAssembly = typeof(SwaggerConfig).Assembly;
-
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "Voyage.Api");
                     c.OperationFilter<AddRequiredHeaderParameter>();
+                    c.IncludeXmlComments(GetApiProjectXmlCommentsPath());
+                    if (CheckIfXMLExists($@"{AppDomain.CurrentDomain.BaseDirectory}\bin\UserManagerXmlComments.xml"))
+                    {
+                        c.IncludeXmlComments(GetUserManagerXmlCommentsPath());
+                    }
                 })
-                .EnableSwaggerUi(c => {});
+                .EnableSwaggerUi();
+        }
+
+        private static bool CheckIfXMLExists(string fileName)
+        {
+            return File.Exists(fileName);
+        }
+
+        private static string GetApiProjectXmlCommentsPath()
+        {
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\bin\XmlComments.xml";
+        }
+
+        private static string GetUserManagerXmlCommentsPath()
+        {
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\bin\UserManagerXmlComments.xml";
         }
     }
 
@@ -32,16 +52,19 @@ namespace Voyage.Api
         {
             if (operation.parameters == null)
                 operation.parameters = new List<Parameter>();
-            var headerParam = new List<Parameter>();
 
-            headerParam.Add(new Parameter
+            var headerParam = new List<Parameter>
             {
-                name = "Authorization",
-                @in = "header",
-                type = "string",
-                description = "Bearer JWT",
-                required = true
-            });
+                new Parameter
+                {
+                    name = "Authorization",
+                    @in = "header",
+                    type = "string",
+                    description = "Bearer JWT",
+                    required = true
+                }
+            };
+
 
             headerParam.AddRange(operation.parameters);
 

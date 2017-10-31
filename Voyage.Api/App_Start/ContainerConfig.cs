@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Http;
 using Autofac;
+using Autofac.Integration.SignalR;
 using Autofac.Integration.WebApi;
+using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Voyage.Data;
 using Voyage.Models.Map;
 using Voyage.Services;
-
 
 namespace Voyage.Api
 {
@@ -19,6 +21,8 @@ namespace Voyage.Api
     public class ContainerConfig
     {
         public static IContainer Container { get; private set; }
+
+        public static HubConfiguration HubConfiguration { get; private set; }
 
         public static void Register(HttpConfiguration httpConfig)
         {
@@ -45,6 +49,23 @@ namespace Voyage.Api
             Container = builder.Build();
 
             httpConfig.DependencyResolver = new AutofacWebApiDependencyResolver(Container);
+
+            // Configure Autofac for SignalR.
+            var resolver = new AutofacDependencyResolver(Container);
+            HubConfiguration = new HubConfiguration
+            {
+                Resolver = resolver
+            };
+
+            AddSignalRInjection(Container, resolver);
+        }
+
+        private static void AddSignalRInjection(IContainer container, IDependencyResolver resolver)
+        {
+            var updater = new ContainerBuilder();
+
+            updater.RegisterInstance(resolver.Resolve<IConnectionManager>());
+            updater.Update(container);
         }
     }
 }

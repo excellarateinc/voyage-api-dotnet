@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Voyage.Core;
 using Serilog;
 using System.Net;
@@ -41,10 +40,9 @@ namespace Voyage.Web.Filters
             }
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
-                // Check if the user has the correct claim
                 Log.Logger
-                      .ForContext<ClaimAuthorizeAttribute>()
-                      .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
+                    .ForContext<ClaimAuthorizeAttribute>()
+                    .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
                 actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Forbidden);
             }
         }
@@ -65,7 +63,6 @@ namespace Voyage.Web.Filters
             }
             else if (identity != null && !identity.HasClaim(ClaimType, ClaimValue))
             {
-                // Check if the user has the correct claim
                 Log.Logger
                     .ForContext<ClaimAuthorizeAttribute>()
                     .Information("({eventCode:l}) {user} does not have claim {claimType}.{claimValue}", EventCodes.Authorization, identity.Name, ClaimType, ClaimValue);
@@ -79,9 +76,11 @@ namespace Voyage.Web.Filters
             }
         }
 
+        /// <summary>
+        /// Check if log in user needs to be verify or inactive
+        /// </summary>
         private async Task ValidateUser(HttpActionContext context, ClaimsIdentity identity)
         {
-            // Check if log in user needs to be verify or inactive
             var container = context.Request.GetOwinContext().GetAutofacLifetimeScope();
             var userService = container.Resolve<IUserService>();
             var user = await userService.GetUserByNameAsync(identity.Name);

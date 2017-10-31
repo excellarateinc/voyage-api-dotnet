@@ -37,5 +37,14 @@
         public const string ListNotifications = "api.notifications.list";
         public const string MarkNotificationsAsRead = "api.notifications.mark.read";
         public const string CreateNotification = "api.notifications.create";
+
+        // Chat
+        public const string ListChannels = "api.channels.list";
+        public const string CreateChannel = "api.channels.create";
+        public const string ListMessages = "api.messages.list";
+        public const string CreateMessage = "api.messages.create";
+
+        // Banking
+        public const string GetAccounts = "api.accounts.list";
     }
 }

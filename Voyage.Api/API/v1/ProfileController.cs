@@ -5,15 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using Voyage.Models;
 using Voyage.Services.Profile;
+using Swashbuckle.Swagger.Annotations;
 
 namespace Voyage.Api.API.V1
 {
+    /// <summary>
+    /// Controller that handles user session actions.
+    /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
     public class ProfileController : ApiController
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IProfileService _profileService;
 
+        /// <summary>
+        /// Constructor for the Profile Controller.
+        /// </summary>
         public ProfileController(IAuthenticationManager authenticationManager, IProfileService profileService)
         {
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
@@ -23,10 +30,11 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Gets the current user's profile.
         /// </summary>
-        /// <returns>The current user's profile.</returns>
         [Authorize]
         [HttpGet]
         [Route("profiles/me")]
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> GetCurrentUser()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
@@ -37,11 +45,11 @@ namespace Voyage.Api.API.V1
         /// <summary>
         /// Updates the current user's profile.
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns>The users updated profile.</returns>
-        [Route("profiles/me")]
         [Authorize]
         [HttpPut]
+        [Route("profiles/me")]
+        [SwaggerResponse(200, "CurrentUserModel", typeof(CurrentUserModel))]
+        [SwaggerResponse(404, "NotFoundException")]
         public async Task<IHttpActionResult> UpdateProfile(ProfileModel model)
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
