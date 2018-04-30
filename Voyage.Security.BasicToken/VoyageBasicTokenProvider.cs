@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Voyage.Services.Client;
 using Voyage.Services.User;
 
 namespace Voyage.Security.BasicToken
@@ -20,16 +20,21 @@ namespace Voyage.Security.BasicToken
             }
         }
 
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            var grantType = context.Request.Headers.Get("grant_type");
-
-            if (!string.IsNullOrWhiteSpace(grantType) && string.Equals(grantType, "password", StringComparison.InvariantCultureIgnoreCase))
+            string clientId;
+            string clientSecret;
+            if (context.TryGetBasicCredentials(out clientId, out clientSecret) ||
+                context.TryGetFormCredentials(out clientId, out clientSecret))
             {
-                context.Validated();
-            }
+                var scope = context.OwinContext.GetAutofacLifetimeScope();
+                var clientService = scope.Resolve<IClientService>();
 
-            return Task.FromResult<object>(null);
+                if (await clientService.IsValidClientAsync(clientId, clientSecret))
+                {
+                    context.Validated();
+                }
+            }
         }
     }
 }
