@@ -14,6 +14,7 @@ using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using System.Configuration;
+using Voyage.Models.Enum;
 
 namespace Voyage.Services.User
 {
@@ -118,7 +119,7 @@ namespace Voyage.Services.User
                 Phones = model.Phones.Select(phone => new UserPhone
                 {
                     PhoneNumber = _phoneRepository.GetE164Format(phone.PhoneNumber),
-                    PhoneType = phone.PhoneType,
+                    PhoneType = (PhoneType)Enum.Parse(typeof(PhoneType), phone.PhoneType),
                     UserId = new ApplicationUser().Id
                 }).ToList(),
                 IsActive = true,

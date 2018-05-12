@@ -15,7 +15,7 @@ namespace Voyage.Models.Validators
 
             RuleFor(_ => _.PhoneType)
                 .NotEmpty()
-                .Must(type => new List<string> { PhoneType.Mobile, PhoneType.Office, PhoneType.Home, PhoneType.Other }.Contains(type))
+                .Must(type => new List<string> { PhoneType.Mobile.ToString(), PhoneType.Office.ToString(), PhoneType.Home.ToString(), PhoneType.Other.ToString() }.Contains(type))
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPhoneNumber, "Invalid phone type. Must be one of 'Mobile', 'Office', 'Home', 'Other'.");
         }
     }

@@ -34,7 +34,7 @@ namespace Voyage.Models.UnitTests.Map.Profiles
             model.Id.Should().Be(userPhone.Id);
             model.UserId.Should().Be(userPhone.UserId);
             model.PhoneNumber.Should().Be(userPhone.PhoneNumber);
-            model.PhoneType.Should().Be(userPhone.PhoneType);
+            model.PhoneType.Should().Be(userPhone.PhoneType.ToString());
         }
     }
 }
