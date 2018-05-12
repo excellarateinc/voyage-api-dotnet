@@ -115,7 +115,7 @@ namespace Voyage.Services.User
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Phones = model.Phones.Select(phone => new UserPhone()
+                Phones = model.Phones.Select(phone => new UserPhone
                 {
                     PhoneNumber = _phoneRepository.GetE164Format(phone.PhoneNumber),
                     PhoneType = phone.PhoneType,

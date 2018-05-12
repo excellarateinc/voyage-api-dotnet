@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Voyage.Models.Enum;
 
 namespace Voyage.Models.Entities
 {
@@ -22,7 +21,7 @@ namespace Voyage.Models.Entities
         public string PhoneNumber { get; set; }
 
         [Required]
-        public PhoneType PhoneType { get; set; }
+        public string PhoneType { get; set; }
 
         public string VerificationCode { get; set; }
     }

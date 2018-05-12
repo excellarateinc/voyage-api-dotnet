@@ -1,10 +1,10 @@
 ﻿namespace Voyage.Models.Enum
 {
-    public enum PhoneType
+    public static class PhoneType
     {
-        Mobile,
-        Office,
-        Home,
-        Other
+        public const string Mobile = "Mobile";
+        public const string Office = "Office";
+        public const string Home = "Home";
+        public const string Other = "Other";
     }
 }
