@@ -9,7 +9,6 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using FluentAssertions;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 using Moq;
 using Ploeh.AutoFixture;
 using Voyage.Api.UserManager;
@@ -399,18 +398,6 @@ namespace Voyage.Api.UnitTests.API.V1
             ReflectionHelper.GetMethod<UserController>(_ => _.AssignRole("userId", new RoleModel()))
                 .Should().BeDecoratedWith<RouteAttribute>(_ => _.Template == "users/{userId}/roles");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        }
-
-        [Fact]
-        public void Ctor_Should_Throw_ArgumentNullException_When_UserService_IsNull()
-        {
-            Action throwAction = () => new AccountController(null, null);
-
-            throwAction.ShouldThrow<ArgumentNullException>()
-                .And
-                .ParamName
-                .Should()
-                .Be("userService");
         }
 
         [Fact]

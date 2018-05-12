@@ -843,7 +843,7 @@ namespace Voyage.Services.UnitTests
                 .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
-                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                .With(_ => _.Phones, new List<UserPhoneModel>
                 {
                     new UserPhoneModel
                     {

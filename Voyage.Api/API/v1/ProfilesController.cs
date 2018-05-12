@@ -6,6 +6,7 @@ using Microsoft.Owin.Security;
 using Voyage.Models;
 using Voyage.Services.Profile;
 using Swashbuckle.Swagger.Annotations;
+using Voyage.Services.User;
 
 namespace Voyage.Api.API.V1
 {
@@ -13,18 +14,23 @@ namespace Voyage.Api.API.V1
     /// Controller that handles user session actions.
     /// </summary>
     [RoutePrefix(Constants.RoutePrefixes.V1)]
-    public class ProfileController : ApiController
+    public class ProfilesController : ApiController
     {
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IProfileService _profileService;
+        private readonly IUserService _userService;
 
         /// <summary>
         /// Constructor for the Profile Controller.
         /// </summary>
-        public ProfileController(IAuthenticationManager authenticationManager, IProfileService profileService)
+        public ProfilesController(
+            IAuthenticationManager authenticationManager,
+            IProfileService profileService,
+            IUserService userService)
         {
             _authenticationManager = authenticationManager.ThrowIfNull(nameof(authenticationManager));
             _profileService = profileService.ThrowIfNull(nameof(profileService));
+            _userService = userService.ThrowIfNull(nameof(userService));
         }
 
         /// <summary>
@@ -55,6 +61,20 @@ namespace Voyage.Api.API.V1
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
             var result = await _profileService.UpdateProfileAsync(userId, model);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        [HttpPost]
+        [Route("profiles/register")]
+        [SwaggerResponse(201, "UserModel", typeof(UserModel))]
+        [SwaggerResponse(400, "BadRequestException")]
+        public async Task<IHttpActionResult> Register(RegistrationModel model)
+        {
+            var result = await _userService.RegisterAsync(model);
+            await _profileService.GetInitialProfileImageAsync(result.Id, result.Email);
+            return CreatedAtRoute("GetUserAsync", new { userId = result.Id }, result);
         }
     }
 }
