@@ -1,8 +1,5 @@
 ﻿using FluentValidation.Attributes;
-using Voyage.Models.Enum;
 using Voyage.Models.Validators;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Embarr.WebAPI.AntiXss;
 
 namespace Voyage.Models
@@ -18,8 +15,8 @@ namespace Voyage.Models
         [AntiXss]
         public string PhoneNumber { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public PhoneType PhoneType { get; set; }
+        [AntiXss]
+        public string PhoneType { get; set; }
 
         [AntiXss]
         public string VerificationCode { get; set; }

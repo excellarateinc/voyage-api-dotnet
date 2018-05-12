@@ -1,5 +1,7 @@
-﻿using FluentValidation;
+﻿using System.Collections.Generic;
+using FluentValidation;
 using Voyage.Core;
+using Voyage.Models.Enum;
 
 namespace Voyage.Models.Validators
 {
@@ -10,6 +12,11 @@ namespace Voyage.Models.Validators
             RuleFor(_ => _.PhoneNumber)
                 .NotEmpty()
                 .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Phone number is a required field");
+
+            RuleFor(_ => _.PhoneType)
+                .NotEmpty()
+                .Must(type => new List<string> { PhoneType.Mobile.ToString(), PhoneType.Office.ToString(), PhoneType.Home.ToString(), PhoneType.Other.ToString() }.Contains(type))
+                .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPhoneNumber, "Invalid phone type. Must be one of 'Mobile', 'Office', 'Home', 'Other'.");
         }
     }
 }

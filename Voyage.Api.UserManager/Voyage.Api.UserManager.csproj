@@ -90,7 +90,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\v1\AccountController.cs" />
     <Compile Include="API\v1\RoleController.cs" />
     <Compile Include="API\v1\UserController.cs" />
     <Compile Include="API\v1\VerifyController.cs" />

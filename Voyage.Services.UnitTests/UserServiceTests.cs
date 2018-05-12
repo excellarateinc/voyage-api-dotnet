@@ -217,7 +217,7 @@ namespace Voyage.Services.UnitTests
         public async void UpdateUser_Should_Update_Existing_Phone_Numbers()
         {
             var id = Fixture.Create<string>();
-            var phoneModel = Fixture.Create<UserPhoneModel>();
+            var phoneModel = new UserPhoneModel { PhoneType = "Mobile" };
 
             var phone = Fixture.Build<UserPhone>()
                 .With(_ => _.User, null)
@@ -269,7 +269,7 @@ namespace Voyage.Services.UnitTests
         public async void UpdateUser_Should_Add_New_Phone_Numbers()
         {
             var id = Fixture.Create<string>();
-            var phone = Fixture.Create<UserPhoneModel>();
+            var phone = new UserPhoneModel { PhoneType = "Mobile" };
 
             var userModel = new UserModel
             {
@@ -843,12 +843,12 @@ namespace Voyage.Services.UnitTests
                 .With(_ => _.UserName, "testUserName")
                 .With(_ => _.Email, "test@test.com")
                 .With(_ => _.Password, "cool1Password!!")
-                .With(_ => _.PhoneNumbers, new List<UserPhoneModel>
+                .With(_ => _.Phones, new List<UserPhoneModel>
                 {
                     new UserPhoneModel
                     {
                         PhoneNumber = "(202) 555-0100",
-                        PhoneType = Voyage.Models.Enum.PhoneType.Mobile
+                        PhoneType = Voyage.Models.Enum.PhoneType.Mobile.ToString()
                     }
                 })
                 .Create();

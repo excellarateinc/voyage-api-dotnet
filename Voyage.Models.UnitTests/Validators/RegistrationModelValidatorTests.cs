@@ -76,7 +76,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "notpassword!!",
-                    PhoneNumbers = new List<UserPhoneModel>
+                    Phones = new List<UserPhoneModel>
                                     {
                                         new UserPhoneModel
                                         {
@@ -98,7 +98,7 @@ namespace Voyage.Models.UnitTests.Validators
                     Email = "first.last@firstlast.com",
                     Password = "password!!!",
                     ConfirmPassword = "password!!!",
-                    PhoneNumbers = new List<UserPhoneModel>
+                    Phones = new List<UserPhoneModel>
                                     {
                                         new UserPhoneModel
                                         {
@@ -129,7 +129,7 @@ namespace Voyage.Models.UnitTests.Validators
         [Fact]
         public void Should_Have_Error_when_PhoneNumber_Is_Null()
         {
-            _validator.ShouldHaveValidationErrorFor(model => model.PhoneNumbers, new List<UserPhoneModel>());
+            _validator.ShouldHaveValidationErrorFor(model => model.Phones, new List<UserPhoneModel>());
         }
 
         [Fact]
