@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Voyage.Core;
+using Voyage.Core.Exceptions;
 using Voyage.Data.Repositories.ProfileImage;
 using Voyage.Models;
 using Voyage.Models.Entities;
@@ -50,8 +51,19 @@ namespace Voyage.Services.Profile
             userModel.Phones = model.Phones;
             await _userService.UpdateUserAsync(userId, userModel);
 
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                var result = await _userService.ChangePassword(userId, model.CurrentPassword, model.NewPassword);
+                if (result.Errors.Any())
+                {
+                    throw new BadRequestException(Constants.ErrorCodes.InvalidPassword, result.Errors.First());
+                }
+            }
+
             if (string.IsNullOrEmpty(model.ProfileImage))
+            {
                 return await GetCurrentUserAync(userId);
+            }
 
             var currentImage = _profileImageRepository.GetAll()
                 .FirstOrDefault(_ => _.UserId == userId);

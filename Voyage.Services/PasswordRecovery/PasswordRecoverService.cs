@@ -157,7 +157,7 @@ namespace Voyage.Services.PasswordRecovery
             }
 
             var user = await _userService.GetUserAsync(appUser.UserId);
-            var identity = await _userService.ChangePassword(user.Id, user.PasswordRecoveryToken, newPassword);
+            var identity = await _userService.ResetPassword(user.Id, user.PasswordRecoveryToken, newPassword);
             if (!identity.Errors.Any())
             {
                 user.PasswordRecoveryToken = string.Empty;

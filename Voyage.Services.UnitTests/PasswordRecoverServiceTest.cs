@@ -199,7 +199,7 @@ namespace Voyage.Services.UnitTests
             var identityResult = new IdentityResult(errors);
             var newPassword = "NewPassword";
             _userServiceMock.Setup(c => c.GetUserAsync(It.IsAny<string>())).ReturnsAsync(new UserModel());
-            _userServiceMock.Setup(c => c.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(identityResult);
+            _userServiceMock.Setup(c => c.ResetPassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(identityResult);
 
             var model = await GetPasswordRecoverService().ResetPasswordAsync(new UserApplicationSession(), newPassword, newPassword);
 
@@ -221,7 +221,7 @@ namespace Voyage.Services.UnitTests
                 PasswordRecoveryToken = passwordToken
             };
             _userServiceMock.Setup(c => c.GetUserAsync(It.IsAny<string>())).ReturnsAsync(userModel);
-            _userServiceMock.Setup(c => c.ChangePassword(userId, passwordToken, newPassword)).ReturnsAsync(identityResult);
+            _userServiceMock.Setup(c => c.ResetPassword(userId, passwordToken, newPassword)).ReturnsAsync(identityResult);
 
             var model = await GetPasswordRecoverService().ResetPasswordAsync(new UserApplicationSession(), newPassword, "ConfirmNewPassword");
 
