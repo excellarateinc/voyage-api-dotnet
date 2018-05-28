@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using Microsoft.AspNet.Identity;
 using Moq;
 using Voyage.Data.Repositories.ProfileImage;
 using Voyage.Data.Repositories.UserPhone;
@@ -10,6 +13,8 @@ using Voyage.Services.UnitTests.Common;
 using Voyage.Services.UnitTests.Common.AutoMapperFixture;
 using Voyage.Services.User;
 using Xunit;
+using Ploeh.AutoFixture;
+using Voyage.Models;
 
 namespace Voyage.Services.UnitTests
 {
@@ -40,13 +45,85 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void InsertSecurityCode_Should_Set_Collect_values()
+        public async void GetCurrentUserAync_Should_Return_User_For_UserId()
         {
+            var userId = Fixture.Create<string>();
+            _userServiceMock.Setup(_ => _.GetUserAsync(userId)).ReturnsAsync(new UserModel
+            {
+                Id = userId,
+                Email = "test@test.com"
+            });
+            _userServiceMock.Setup(_ => _.GetUserRolesAsync(userId)).ReturnsAsync(new List<RoleModel>()
+            {
+                new RoleModel
+                {
+                    Id = "role1",
+                    Name = "role1"
+                }
+            });
+            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(new List<ProfileImage>
+            {
+                new ProfileImage
+                {
+                    UserId = userId,
+                    ImageData = "ImageData"
+                }
+            }.AsQueryable());
+            var result = await _profileService.GetCurrentUserAync(userId);
+            result.Id.Should().Be(userId);
+            result.Email.Should().Be("test@test.com");
+            result.ProfileImage.Should().Be("ImageData");
+            result.Roles.Count().Should().Be(1);
         }
 
         [Fact]
-        public void ResetSecurityCode_Should_Call_All_Require_Parameters()
+        public async void UpdateProfileAsync_Should_Update_Users_Profile()
         {
+            var userId = Fixture.Create<string>();
+            var userModel = Fixture.Create<UserModel>();
+            userModel.Id = userId;
+            _userServiceMock.Setup(_ => _.GetUserAsync(userId)).ReturnsAsync(userModel);
+
+            _userServiceMock.Setup(_ => _.GetUserRolesAsync(userId)).ReturnsAsync(new List<RoleModel>()
+            {
+                new RoleModel
+                {
+                    Id = "role1",
+                    Name = "role1"
+                }
+            });
+
+            _userServiceMock.Setup(_ => _.UpdateUserAsync(userId, userModel)).ReturnsAsync(userModel);
+
+            _userServiceMock.Setup(_ => _.ChangePassword(userId, "Password", "NewPassword"))
+                .ReturnsAsync(new IdentityResult());
+
+            var images = new List<ProfileImage>
+            {
+                new ProfileImage
+                {
+                    UserId = userId,
+                    ImageData = "ImageData"
+                }
+            };
+            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable());
+
+            var image = images.First();
+            _profileImageRepositoryMock.Setup(_ => _.Update(image)).Returns(new ProfileImage());
+
+            var result = await _profileService.UpdateProfileAsync(userId, new ProfileModel
+            {
+                ProfileImage = "TestImage",
+                NewPassword = "NewPassword",
+                ConfirmNewPassword = "NewPassword",
+                CurrentPassword = "Password",
+                Email = "test@test.com",
+                FirstName = "test",
+                LastName = "tester",
+                Phones = new List<UserPhoneModel>()
+            });
+
+            result.Id.Should().Be(userId);
         }
     }
 }
