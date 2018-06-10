@@ -115,7 +115,6 @@ namespace Voyage.Services.UnitTests
             {
                 ProfileImage = "TestImage",
                 NewPassword = "NewPassword",
-                ConfirmNewPassword = "NewPassword",
                 CurrentPassword = "Password",
                 Email = "test@test.com",
                 FirstName = "test",

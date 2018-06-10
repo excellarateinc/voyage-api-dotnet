@@ -27,8 +27,5 @@ namespace Voyage.Models
 
         [AntiXss]
         public string NewPassword { get; set; }
-
-        [AntiXss]
-        public string ConfirmNewPassword { get; set; }
     }
 }

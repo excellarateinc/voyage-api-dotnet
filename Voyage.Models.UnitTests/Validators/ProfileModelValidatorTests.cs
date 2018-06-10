@@ -81,50 +81,6 @@ namespace Voyage.Models.UnitTests.Validators
         }
 
         [Fact]
-        public void Should_Have_Error_When_ConfirmPassword_Does_Not_Match_Password()
-        {
-            _validator.ShouldHaveValidationErrorFor(
-                model => model.ConfirmNewPassword,
-                new ProfileModel
-                {
-                    FirstName = "first",
-                    LastName = "last",
-                    Email = "first.last@firstlast.com",
-                    NewPassword = "password!!!",
-                    ConfirmNewPassword = "notpassword!!",
-                    Phones = new List<UserPhoneModel>
-                                    {
-                                        new UserPhoneModel
-                                        {
-                                            PhoneNumber=string.Empty
-                                        }
-                                    }
-                });
-        }
-
-        [Fact]
-        public void Should_Not_Have_Error_When_ConfirmPassword_Matches_Password()
-        {
-            _validator.ShouldNotHaveValidationErrorFor(
-                model => model.ConfirmNewPassword,
-                new ProfileModel
-                {
-                    FirstName = "first",
-                    LastName = "last",
-                    Email = "first.last@firstlast.com",
-                    NewPassword = "password!!!",
-                    ConfirmNewPassword = "password!!!",
-                    Phones = new List<UserPhoneModel>
-                                    {
-                                        new UserPhoneModel
-                                        {
-                                            PhoneNumber=string.Empty
-                                        }
-                                    }
-                });
-        }
-
-        [Fact]
         public void Should_Have_Error_When_FirstName_Is_Null()
         {
             _validator.ShouldHaveValidationErrorFor(model => model.FirstName, null as string);

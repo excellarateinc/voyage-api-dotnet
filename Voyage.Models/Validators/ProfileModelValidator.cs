@@ -40,13 +40,6 @@ namespace Voyage.Models.Validators
                 .Matches(@"(?=.*[0-9])")
                 .WithErrorCodeMessage(Constants.ErrorCodes.InvalidPassword, "New Password must have one digit")
                 .When(_ => !string.IsNullOrEmpty(_.NewPassword));
-
-            RuleFor(_ => _.ConfirmNewPassword)
-                .NotEmpty()
-                .WithErrorCodeMessage(Constants.ErrorCodes.MissingField, "Confirm New Password is a required field")
-                .Must((model, value) => !string.IsNullOrEmpty(model.NewPassword) && model.NewPassword.Equals(value))
-                .WithErrorCodeMessage(Constants.ErrorCodes.InvalidDependentRule, "Confirm New Password must match New Password")
-                .When(_ => !string.IsNullOrEmpty(_.NewPassword));
         }
     }
 }
