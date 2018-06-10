@@ -1214,10 +1214,10 @@ User Verification is an independent component within the Voyage API and can be t
    - Set user.isVerifyRequired = true
    - Call the UserService.save(...) method to persist the changes to the database
 
-When an authenticated user makes a call to the API, their user profile is examined to see if they require User Verification. If the User.isVerifyRequired = true, then the API returns an HTTP 403 Forbidden response with JSON body:
+When an authenticated user makes a call to the API, their user profile is examined to see if they require User Verification. If the User.isVerifyRequired = true, then the API returns an HTTP 401 Unauthorized response with JSON body:
 ```
 {
-   error:'403_verify_user',
+   error:'401_verify_user',
    errorDescription:'User verification is required',
 }
 ```
