@@ -121,6 +121,7 @@
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="IdentityManagers\ApplicationUserManagerTests.cs" />
     <Compile Include="PasswordRecoverServiceTest.cs" />
+    <Compile Include="ProfileServiceTests.cs" />
     <Compile Include="PhoneServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleServiceTests.cs" />

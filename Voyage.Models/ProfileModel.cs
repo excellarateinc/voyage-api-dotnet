@@ -21,5 +21,11 @@ namespace Voyage.Models
         public string ProfileImage { get; set; }
 
         public List<UserPhoneModel> Phones { get; set; }
+
+        [AntiXss]
+        public string CurrentPassword { get; set; }
+
+        [AntiXss]
+        public string NewPassword { get; set; }
     }
 }

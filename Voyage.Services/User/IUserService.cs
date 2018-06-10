@@ -41,7 +41,9 @@ namespace Voyage.Services.User
 
         Task<UserModel> UpdateUserAsync(string userId, UserModel model);
 
-        Task<IdentityResult> ChangePassword(string userId, string token, string newPassword);
+        Task<IdentityResult> ChangePassword(string userId, string currentPassword, string newPassword);
+
+        Task<IdentityResult> ResetPassword(string userId, string token, string newPassword);
 
         Task<string> GeneratePasswordResetTokenAsync(string userName);
 

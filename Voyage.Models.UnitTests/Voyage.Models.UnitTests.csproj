@@ -124,6 +124,7 @@
     <Compile Include="RoleModelTests.cs" />
     <Compile Include="UserModelTests.cs" />
     <Compile Include="Validators\ClaimModelValidatorTests.cs" />
+    <Compile Include="Validators\ProfileModelValidatorTests.cs" />
     <Compile Include="Validators\RegistrationModelValidatorTests.cs" />
     <Compile Include="Validators\RoleModelValidatorTests.cs" />
     <Compile Include="Validators\UserModelValidatorTests.cs" />

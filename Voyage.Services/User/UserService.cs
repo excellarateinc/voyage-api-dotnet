@@ -270,7 +270,12 @@ namespace Voyage.Services.User
             return _mapper.Map<UserModel>(appUser);
         }
 
-        public async Task<IdentityResult> ChangePassword(string userId, string token, string newPassword)
+        public async Task<IdentityResult> ChangePassword(string userId, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(userId, currentPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> ResetPassword(string userId, string token, string newPassword)
         {
             return await _userManager.ResetPasswordAsync(userId, token, newPassword);
         }
