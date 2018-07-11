@@ -47,7 +47,7 @@ public IHttpActionResult Get(MonitorType id)
   _log.Information("Request for MonitorType -> {id}", id);
   return Ok(_statusCollector.Collect(id));
 }
-```
+````
 
 ### Creating Good Log Messages
 Logging is only as useful as the content of the messages. With structured logging, searching and reading log messages can be made easy. Use the following guidelines to create good error messages:
