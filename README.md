@@ -4,12 +4,48 @@ A foundational set of web services that implement industry standard guidelines, 
 If you are extending this API to build a new app, then replace this section with a detailed overview of the new app. Include as much or as little detail as necessary to convey to the developers what this project is about. Often times less is more. 
 
 ## Topics
+* [5 Minute Test](#5-minute-test)
 * [Features](#features)
 * [Development](readme_docs/DEVELOPMENT.md)
 * [Development Recipes](readme_docs/DEVELOPMENT-RECIPES.md)
 * [Testing](readme_docs/STANDARDS-TESTING.md)
 * [Deploy](readme_docs/DEPLOY.md)
 
+## 5 Minute Test
+Run the Voyage API and execute a JSON API request within 5 minutes
+
+1. Prerequisites 
+   - Ensure you have the latest versions of [Visual Studio](https://www.visualstudio.com/vs/), [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-editions-express) (default instance), and [IIS Express](https://www.microsoft.com/en-us/download/details.aspx?id=48264) installed.
+2. Open Visual Studio with administrator privileges.
+   - Right-click on the Visual Studio icon and select "Run as administrator".
+3. Download source via Visual Studio GitHub extension
+   - Open Visual Studio's "Team Explorer" tab and click the "Manage Connections" button. 
+   - Under the GitHub section, click "Clone" and enter your GitHub credentials.
+   - Choose "voyage-dotnet-api" from the list of repositories.
+     * The official repository is located here https://github.com/lssinc/voyage-api-dotnet
+   - Click "Clone". When done cloning, open the "Voyage.API" solution.
+4. Create the database
+   - Double-click the localhost.publish.xml file.
+   - Once the dialog appears, click the Publish button.
+5. Run the applications
+   - In Visual Studio, with the Voyage.Web project selected, press Ctrl + F5 to launch the Authentication website with IIS Express.
+   - Now, with the Voyage.Api selected, press Ctrl + F5 to launch the Web API website with IIS Express.
+6. Get an access token
+   - Using [Postman](https://www.getpostman.com/apps), create a new "POST" request.
+   - Set the url to http://localhost:52431/oauth/token
+   - In the "Body", use x-www-form-urlencoded and fill in the following key/value pairs:
+     - "grant_type" : "Client Credentials"
+     - "username" : "admin@admin.com"
+     - "password" : "Hello123!"
+     - "client_id" : "123456"
+     - "client_secret"" : "abcdef"
+   - Click "Send". You should receive an access token back.
+7. Test the API
+   - Using [Postman](https://www.getpostman.com/apps), create a new "GET" request.
+   - Set the url to http://localhost:55850/api/v1/users
+   - Add a header where the key is "Authorization" and the value is "Bearer `<token>`". Replace `<token>` with the full token string from the previous request.
+   - Click "Send".
+   
 ## Features
 
 ### Web Services
