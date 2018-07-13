@@ -311,6 +311,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="File.txt" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
