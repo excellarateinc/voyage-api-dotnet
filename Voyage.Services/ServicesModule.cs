@@ -15,6 +15,7 @@ using Voyage.Services.Admin;
 using Voyage.Services.Chat;
 using Voyage.Services.Notification.Push;
 using Voyage.Services.Profile;
+using Voyage.Services.Ant;
 
 namespace Voyage.Services
 {
@@ -89,6 +90,10 @@ namespace Voyage.Services
 
             builder.RegisterType<ChatService>()
                 .As<IChatService>()
+                .InstancePerRequest();
+
+            builder.RegisterType<AntService>()
+                .As<IAntService>()
                 .InstancePerRequest();
         }
     }

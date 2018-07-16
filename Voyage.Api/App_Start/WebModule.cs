@@ -64,10 +64,6 @@ namespace Voyage.Api
             builder.RegisterType<ActivityAuditMiddleware>()
                 .InstancePerRequest()
                 .AsSelf();
-
-            builder.RegisterType<IAntFactory>()
-                .InstancePerRequest()
-                .As<Ant>();
         }
 
         private void ConfigureIdentityServices(ContainerBuilder builder)

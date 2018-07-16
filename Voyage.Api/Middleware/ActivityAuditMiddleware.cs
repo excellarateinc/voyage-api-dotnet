@@ -9,6 +9,7 @@ using AntPathMatching;
 using System.Configuration;
 using Voyage.Models;
 using System.Linq;
+using Voyage.Services.Ant;
 
 namespace Voyage.Api.Middleware
 {
@@ -18,12 +19,12 @@ namespace Voyage.Api.Middleware
         private readonly ErrorResponseProcessor _processor;
         private readonly IAnt[] _excludePaths;
 
-        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor, IAntFactory antFactory)
+        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor, IAntService antService)
             : base(next)
         {
             _processor = processor.ThrowIfNull(nameof(processor));
             _auditService = auditService.ThrowIfNull(nameof(auditService));
-            _excludePaths = ConfigurationManager.AppSettings["ActionLoggingExcludePaths"].Split(',').Select(x => antFactory.CreateNew(x)).ToArray();
+            _excludePaths = antService.GetAntPaths(ConfigurationManager.AppSettings["ActionLoggingExcludePaths"].Split(','));
         }
 
         public override async Task Invoke(IOwinContext context)
