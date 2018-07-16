@@ -5,6 +5,11 @@ using Voyage.Web.Extensions;
 using System;
 using Voyage.Web.Middleware.Processors;
 using Voyage.Services.Audit;
+using Voyage.Services.Ant;
+using AntPathMatching;
+using Voyage.Models;
+using System.Linq;
+using System.Configuration;
 
 namespace Voyage.Web.Middleware
 {
@@ -12,12 +17,14 @@ namespace Voyage.Web.Middleware
     {
         private readonly IAuditService _auditService;
         private readonly ErrorResponseProcessor _processor;
+        private readonly IAnt[] _excludePaths;
 
-        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor)
+        public ActivityAuditMiddleware(OwinMiddleware next, IAuditService auditService, ErrorResponseProcessor processor, IAntService antService)
             : base(next)
         {
             _processor = processor.ThrowIfNull(nameof(processor));
             _auditService = auditService.ThrowIfNull(nameof(auditService));
+            _excludePaths = antService.GetAntPaths(ConfigurationManager.AppSettings["ActionLoggingExcludePaths"]?.Split(','));
         }
 
         public override async Task Invoke(IOwinContext context)
@@ -28,7 +35,15 @@ namespace Voyage.Web.Middleware
 
             // Record the request
             var requestAudit = context.ToAuditModel(requestId);
-            await _auditService.RecordAsync(requestAudit);
+
+            // Check if path should be excluded
+            var exclude = IsExcludedPath(requestAudit);
+
+            // Record the request
+            if (!exclude)
+            {
+                await _auditService.RecordAsync(requestAudit);
+            }
 
             // Continue pipeline execution
             await Next.Invoke(context);
@@ -42,7 +57,15 @@ namespace Voyage.Web.Middleware
                 responseAudit.Error = await _processor.GetResponseStringAsync(context.Response);
             }
 
-            await _auditService.RecordAsync(responseAudit);
+            if (!exclude)
+            {
+                await _auditService.RecordAsync(responseAudit);
+            }
+        }
+
+        private bool IsExcludedPath(ActivityAuditModel model)
+        {
+            return _excludePaths?.Any(x => x.IsMatch(model.Path)) ?? false;
         }
     }
 }

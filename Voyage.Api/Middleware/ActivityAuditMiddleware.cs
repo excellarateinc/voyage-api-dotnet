@@ -24,7 +24,7 @@ namespace Voyage.Api.Middleware
         {
             _processor = processor.ThrowIfNull(nameof(processor));
             _auditService = auditService.ThrowIfNull(nameof(auditService));
-            _excludePaths = antService.GetAntPaths(ConfigurationManager.AppSettings["ActionLoggingExcludePaths"].Split(','));
+            _excludePaths = antService.GetAntPaths(ConfigurationManager.AppSettings["ActionLoggingExcludePaths"]?.Split(','));
         }
 
         public override async Task Invoke(IOwinContext context)
@@ -64,7 +64,7 @@ namespace Voyage.Api.Middleware
 
         private bool IsExcludedPath(ActivityAuditModel model)
         {
-            return _excludePaths.Any(x => x.IsMatch(model.Path));
+            return _excludePaths?.Any(x => x.IsMatch(model.Path)) ?? false;
         }
     }
 }
