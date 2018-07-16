@@ -19,6 +19,7 @@ using Voyage.Api.Middleware.Processors;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Voyage.Services.Notification.Push;
+using AntPathMatching;
 
 namespace Voyage.Api
 {
@@ -63,6 +64,10 @@ namespace Voyage.Api
             builder.RegisterType<ActivityAuditMiddleware>()
                 .InstancePerRequest()
                 .AsSelf();
+
+            builder.RegisterType<IAntFactory>()
+                .InstancePerRequest()
+                .As<Ant>();
         }
 
         private void ConfigureIdentityServices(ContainerBuilder builder)
