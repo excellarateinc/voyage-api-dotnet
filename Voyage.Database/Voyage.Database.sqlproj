@@ -63,6 +63,7 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Seed" />
+    <Folder Include="dbo\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\ApplicationLog.sql" />
@@ -92,6 +93,7 @@
     <Build Include="dbo\Tables\ChatChannel.sql" />
     <Build Include="dbo\Tables\ChatMessage.sql" />
     <Build Include="dbo\Tables\ChatChannelMember.sql" />
+    <Build Include="dbo\Stored Procedures\ActivityAuditInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Seed\RoleClaim.sql" />
