@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace Voyage.Data.Repositories.ActivityAudit
@@ -12,8 +14,17 @@ namespace Voyage.Data.Repositories.ActivityAudit
 
         public override Models.Entities.ActivityAudit Add(Models.Entities.ActivityAudit model)
         {
-            Context.ActivityAudits.Add(model);
-            Context.SaveChanges();
+            ((DbContext)Context).Database.ExecuteSqlCommand(
+                "dbo.ActivityAuditInsert @RequestId, @Method, @Path, @IpAddress, @Date, @StatusCode, @Error, @UserName",
+                new SqlParameter("@RequestId", model.RequestId ?? (object)DBNull.Value),
+                new SqlParameter("@Method", model.Method ?? (object)DBNull.Value),
+                new SqlParameter("@Path", model.Path ?? (object)DBNull.Value),
+                new SqlParameter("@IpAddress", model.IpAddress ?? (object)DBNull.Value),
+                new SqlParameter("@Date", model.Date),
+                new SqlParameter("@StatusCode", model.StatusCode),
+                new SqlParameter("@Error", model.Error ?? (object)DBNull.Value),
+                new SqlParameter("@UserName", model.UserName ?? (object)DBNull.Value));
+
             return model;
         }
 
