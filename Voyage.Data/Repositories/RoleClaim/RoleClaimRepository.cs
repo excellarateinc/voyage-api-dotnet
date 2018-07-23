@@ -44,10 +44,10 @@ namespace Voyage.Data.Repositories.RoleClaim
             return Context.RoleClaims;
         }
 
-        public Models.Entities.RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue)
+        public async Task<Models.Entities.RoleClaim> GetByRoleAndClaimAsync(string roleName, string claimType, string claimValue)
         {
-            return Context.RoleClaims
-                     .FirstOrDefault(_ => _.Role.Name == roleName && _.ClaimType == claimType && _.ClaimValue == claimValue);
+            return await Context.RoleClaims
+                     .FirstOrDefaultAsync(_ => _.Role.Name == roleName && _.ClaimType == claimType && _.ClaimValue == claimValue);
         }
 
         public IQueryable<Models.Entities.RoleClaim> GetClaimsByRole(string roleName)

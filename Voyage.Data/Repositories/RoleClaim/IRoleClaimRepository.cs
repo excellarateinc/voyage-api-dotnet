@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.RoleClaim
 {
@@ -6,6 +7,6 @@ namespace Voyage.Data.Repositories.RoleClaim
     {
         IQueryable<Models.Entities.RoleClaim> GetClaimsByRole(string roleName);
 
-        Models.Entities.RoleClaim GetByRoleAndClaim(string roleName, string claimType, string claimValue);
+        Task<Models.Entities.RoleClaim> GetByRoleAndClaimAsync(string roleName, string claimType, string claimValue);
     }
 }
