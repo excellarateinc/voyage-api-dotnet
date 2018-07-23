@@ -111,20 +111,20 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void NotificationsController_CreateNotification_ShouldCallServiceToCreateNotification()
+        public async void NotificationsController_CreateNotification_ShouldCallServiceToCreateNotification()
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.CreateNotification(It.IsAny<NotificationModel>()))
                 .Returns(Task.FromResult(new NotificationModel { Id = 1 }));
 
             // Act
-            var result = _controller.CreateNotification(new NotificationModel());
+            var result = await _controller.CreateNotification(new NotificationModel());
 
             // Assert
-            result.Should().BeOfType<OkNegotiatedContentResult<Task<NotificationModel>>>();
+            result.Should().BeOfType<OkNegotiatedContentResult<NotificationModel>>();
 
-            var resultContent = result.As<OkNegotiatedContentResult<Task<NotificationModel>>>();
-            resultContent.Content.Result.Id.Should().Be(1);
+            var resultContent = result.As<OkNegotiatedContentResult<NotificationModel>>();
+            resultContent.Content.Id.Should().Be(1);
 
             Mock.VerifyAll();
         }

@@ -19,30 +19,9 @@ namespace Voyage.Data.Repositories.UserPhone
         {
         }
 
-        public override Models.Entities.UserPhone Add(Models.Entities.UserPhone model)
-        {
-            throw new NotImplementedException("Phone numbers are added via user object");
-        }
-
         public override Task<Models.Entities.UserPhone> AddAsync(Models.Entities.UserPhone model)
         {
             throw new NotImplementedException("Phone numbers are added via user object");
-        }
-
-        /// <summary>
-        /// Deletes a phone number from the database
-        /// </summary>
-        /// <param name="id">Phone number ID</param>
-        public override int Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity != null)
-            {
-                Context.UserPhones.Remove(entity);
-                return Context.SaveChanges();
-            }
-
-            return 0;
         }
 
         /// <summary>
@@ -66,16 +45,6 @@ namespace Voyage.Data.Repositories.UserPhone
         /// </summary>
         /// <param name="id">Phone number ID</param>
         /// <returns>Phone Number</returns>
-        public override Models.Entities.UserPhone Get(object id)
-        {
-            return Context.UserPhones.Find(id);
-        }
-
-        /// <summary>
-        /// Fetch a phone number ID
-        /// </summary>
-        /// <param name="id">Phone number ID</param>
-        /// <returns>Phone Number</returns>
         public async override Task<Models.Entities.UserPhone> GetAsync(object id)
         {
             if (Context.UserPhones is DbSet<Models.Entities.UserPhone> dbSet)
@@ -89,13 +58,6 @@ namespace Voyage.Data.Repositories.UserPhone
         public override IQueryable<Models.Entities.UserPhone> GetAll()
         {
             throw new NotImplementedException("Phone numbers are loaded via the user object");
-        }
-
-        public override Models.Entities.UserPhone Update(Models.Entities.UserPhone model)
-        {
-            Context.UserPhones.AddOrUpdate(model);
-            Context.SaveChanges();
-            return model;
         }
 
         public async override Task<Models.Entities.UserPhone> UpdateAsync(Models.Entities.UserPhone model)

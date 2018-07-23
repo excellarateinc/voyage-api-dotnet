@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Voyage.Data.Repositories.ApplicationLog;
 using Voyage.Data.UnitTests.Common;
@@ -20,14 +21,14 @@ namespace Voyage.Data.UnitTests
         [Fact]
         public void Add_Should_Throw_NotImplementedException()
         {
-            Action throwAction = () => _repository.Add(new ApplicationLog());
+            Func<Task> throwAction = async () => await _repository.AddAsync(new ApplicationLog());
             throwAction.ShouldThrow<NotImplementedException>();
         }
 
         [Fact]
         public void Delete_hould_Throw_NotImplementedException()
         {
-            Action throwAction = () => _repository.Delete(1);
+            Func<Task> throwAction = async () => await _repository.DeleteAsync(1);
             throwAction.ShouldThrow<NotImplementedException>();
         }
 
@@ -41,7 +42,7 @@ namespace Voyage.Data.UnitTests
         [Fact]
         public void Get_Should_Throw_NotImplementedException()
         {
-            Action throwAction = () => _repository.Get(1);
+            Func<Task> throwAction = async () => await _repository.GetAsync(1);
             throwAction.ShouldThrow<NotImplementedException>();
         }
     }

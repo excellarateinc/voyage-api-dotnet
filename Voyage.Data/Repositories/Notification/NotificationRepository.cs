@@ -12,28 +12,11 @@ namespace Voyage.Data.Repositories.Notification
         {
         }
 
-        public override Models.Entities.Notification Add(Models.Entities.Notification model)
-        {
-            Context.Notifications.Add(model);
-            SaveChanges();
-            return model;
-        }
-
         public async override Task<Models.Entities.Notification> AddAsync(Models.Entities.Notification model)
         {
             Context.Notifications.Add(model);
             await SaveChangesAsync();
             return model;
-        }
-
-        public override int Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity == null)
-                return 0;
-
-            Context.Notifications.Remove(entity);
-            return SaveChanges();
         }
 
         public async override Task<int> DeleteAsync(object id)
@@ -44,11 +27,6 @@ namespace Voyage.Data.Repositories.Notification
 
             Context.Notifications.Remove(entity);
             return await SaveChangesAsync();
-        }
-
-        public override Models.Entities.Notification Get(object id)
-        {
-            return Context.Notifications.Find(id);
         }
 
         public async override Task<Models.Entities.Notification> GetAsync(object id)
@@ -64,13 +42,6 @@ namespace Voyage.Data.Repositories.Notification
         public override IQueryable<Models.Entities.Notification> GetAll()
         {
             return Context.Notifications;
-        }
-
-        public override Models.Entities.Notification Update(Models.Entities.Notification model)
-        {
-            Context.Notifications.AddOrUpdate(model);
-            SaveChanges();
-            return model;
         }
 
         public async override Task<Models.Entities.Notification> UpdateAsync(Models.Entities.Notification model)

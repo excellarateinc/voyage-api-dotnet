@@ -1,15 +1,17 @@
-﻿namespace Voyage.Data.Repositories.Client
+﻿using System.Threading.Tasks;
+
+namespace Voyage.Data.Repositories.Client
 {
     public interface IClientRepository : IRepository<Voyage.Models.Entities.Client>
     {
-        bool ValidateClient(string clientIdentifier, string clientSecret);
+        Task<bool> ValidateClientAsync(string clientIdentifier, string clientSecret);
 
-        Models.Entities.Client GetByName(string clientIdentifier);
+        Task<Models.Entities.Client> GetByNameAsync(string clientIdentifier);
 
-        void UpdateFailedLoginAttempts(string id, bool isIncrement);
+        Task UpdateFailedLoginAttemptsAsync(string id, bool isIncrement);
 
-        bool IsLockedOut(string id);
+        Task<bool> IsLockedOutAsync(string id);
 
-        void UnlockClient(string id);
+        Task UnlockClientAsync(string id);
     }
 }

@@ -12,28 +12,11 @@ namespace Voyage.Data.Repositories.Chat
         {
         }
 
-        public override Models.Entities.ChatChannel Add(Models.Entities.ChatChannel model)
-        {
-            Context.ChatChannels.Add(model);
-            Context.SaveChanges();
-            return model;
-        }
-
         public async override Task<Models.Entities.ChatChannel> AddAsync(Models.Entities.ChatChannel model)
         {
             Context.ChatChannels.Add(model);
             await Context.SaveChangesAsync();
             return model;
-        }
-
-        public override int Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity == null)
-                return 0;
-
-            Context.ChatChannels.Remove(entity);
-            return Context.SaveChanges();
         }
 
         public async override Task<int> DeleteAsync(object id)
@@ -44,11 +27,6 @@ namespace Voyage.Data.Repositories.Chat
 
             Context.ChatChannels.Remove(entity);
             return await Context.SaveChangesAsync();
-        }
-
-        public override Models.Entities.ChatChannel Get(object id)
-        {
-            return Context.ChatChannels.Find(id);
         }
 
         public async override Task<Models.Entities.ChatChannel> GetAsync(object id)
@@ -64,13 +42,6 @@ namespace Voyage.Data.Repositories.Chat
         public override IQueryable<Models.Entities.ChatChannel> GetAll()
         {
             return Context.ChatChannels;
-        }
-
-        public override Models.Entities.ChatChannel Update(Models.Entities.ChatChannel model)
-        {
-            Context.ChatChannels.AddOrUpdate(model);
-            Context.SaveChanges();
-            return model;
         }
 
         public async override Task<Models.Entities.ChatChannel> UpdateAsync(Models.Entities.ChatChannel model)

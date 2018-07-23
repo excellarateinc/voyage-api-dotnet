@@ -12,28 +12,11 @@ namespace Voyage.Data.Repositories.RoleClaim
         {
         }
 
-        public override Models.Entities.RoleClaim Add(Models.Entities.RoleClaim model)
-        {
-            Context.RoleClaims.Add(model);
-            Context.SaveChanges();
-            return model;
-        }
-
         public async override Task<Models.Entities.RoleClaim> AddAsync(Models.Entities.RoleClaim model)
         {
             Context.RoleClaims.Add(model);
             await Context.SaveChangesAsync();
             return model;
-        }
-
-        public override int Delete(object id)
-        {
-            var entity = Get(id);
-            if (entity == null)
-                return 0;
-
-            Context.RoleClaims.Remove(entity);
-            return Context.SaveChanges();
         }
 
         public async override Task<int> DeleteAsync(object id)
@@ -44,11 +27,6 @@ namespace Voyage.Data.Repositories.RoleClaim
 
             Context.RoleClaims.Remove(entity);
             return await Context.SaveChangesAsync();
-        }
-
-        public override Models.Entities.RoleClaim Get(object id)
-        {
-            return Context.RoleClaims.Find(id);
         }
 
         public async override Task<Models.Entities.RoleClaim> GetAsync(object id)
@@ -76,13 +54,6 @@ namespace Voyage.Data.Repositories.RoleClaim
         {
             return Context.RoleClaims
                      .Where(_ => _.Role.Name == roleName);
-        }
-
-        public override Models.Entities.RoleClaim Update(Models.Entities.RoleClaim model)
-        {
-            Context.RoleClaims.AddOrUpdate(model);
-            Context.SaveChanges();
-            return model;
         }
 
         public async override Task<Models.Entities.RoleClaim> UpdateAsync(Models.Entities.RoleClaim model)

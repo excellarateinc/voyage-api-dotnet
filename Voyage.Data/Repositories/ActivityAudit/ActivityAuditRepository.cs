@@ -13,22 +13,6 @@ namespace Voyage.Data.Repositories.ActivityAudit
         {
         }
 
-        public override Models.Entities.ActivityAudit Add(Models.Entities.ActivityAudit model)
-        {
-            ((DbContext)Context).Database.ExecuteSqlCommand(
-                "dbo.ActivityAuditInsert @RequestId, @Method, @Path, @IpAddress, @Date, @StatusCode, @Error, @UserName",
-                new SqlParameter("@RequestId", model.RequestId ?? (object)DBNull.Value),
-                new SqlParameter("@Method", model.Method ?? (object)DBNull.Value),
-                new SqlParameter("@Path", model.Path ?? (object)DBNull.Value),
-                new SqlParameter("@IpAddress", model.IpAddress ?? (object)DBNull.Value),
-                new SqlParameter("@Date", model.Date),
-                new SqlParameter("@StatusCode", model.StatusCode),
-                new SqlParameter("@Error", model.Error ?? (object)DBNull.Value),
-                new SqlParameter("@UserName", model.UserName ?? (object)DBNull.Value));
-
-            return model;
-        }
-
         public async override Task<Models.Entities.ActivityAudit> AddAsync(Models.Entities.ActivityAudit model)
         {
             await ((DbContext)Context).Database.ExecuteSqlCommandAsync(
@@ -45,19 +29,9 @@ namespace Voyage.Data.Repositories.ActivityAudit
             return model;
         }
 
-        public override int Delete(object id)
-        {
-            throw new NotImplementedException("No requirement for deleting an activity audit record");
-        }
-
         public override Task<int> DeleteAsync(object id)
         {
             throw new NotImplementedException("No requirement for deleting an activity audit record");
-        }
-
-        public override Models.Entities.ActivityAudit Get(object id)
-        {
-            return Context.ActivityAudits.Find(id);
         }
 
         public async override Task<Models.Entities.ActivityAudit> GetAsync(object id)
@@ -73,11 +47,6 @@ namespace Voyage.Data.Repositories.ActivityAudit
         public override IQueryable<Models.Entities.ActivityAudit> GetAll()
         {
             return Context.ActivityAudits;
-        }
-
-        public override Models.Entities.ActivityAudit Update(Models.Entities.ActivityAudit model)
-        {
-            throw new NotImplementedException("No requirement for updating an activity audit record");
         }
 
         public override Task<Models.Entities.ActivityAudit> UpdateAsync(Models.Entities.ActivityAudit model)

@@ -17,44 +17,35 @@ namespace Voyage.Services.Client
 
         public async Task<bool> IsValidClientAsync(string clientId, string clientSecret)
         {
-            return await Task.Run(() => _clientRepository.ValidateClient(clientId, clientSecret));
+            return await _clientRepository.ValidateClientAsync(clientId, clientSecret);
         }
 
         public async Task<ClientModel> GetClientAsync(string clientId)
         {
-            return await Task.Run(() =>
+            var client = await _clientRepository.GetByNameAsync(clientId);
+            return new ClientModel
             {
-                var client = _clientRepository.GetByName(clientId);
-                return new ClientModel
-                {
-                    Id = client.Id,
-                    Identifier = client.ClientIdentifier,
-                    Secret = client.ClientSecret,
-                    RedirectUrl = client.RedirectUri,
-                    AllowedScopes = client.ClientScopes.Select(c => c.ClientScopeType.Name).ToList()
-                };
-            });
+                Id = client.Id,
+                Identifier = client.ClientIdentifier,
+                Secret = client.ClientSecret,
+                RedirectUrl = client.RedirectUri,
+                AllowedScopes = client.ClientScopes.Select(c => c.ClientScopeType.Name).ToList()
+            };
         }
 
         public async Task<bool> IsLockedOutAsync(string clientId)
         {
-            return await Task.Run(() => _clientRepository.IsLockedOut(clientId));
+            return await _clientRepository.IsLockedOutAsync(clientId);
         }
 
         public async Task UpdateFailedLoginAttemptsAsync(string clientId, bool isIncrement)
         {
-            await Task.Run(() =>
-            {
-                _clientRepository.UpdateFailedLoginAttempts(clientId, isIncrement);
-            });
+            await _clientRepository.UpdateFailedLoginAttemptsAsync(clientId, isIncrement);
         }
 
         public async Task UnlockClientAsync(string clientId)
         {
-            await Task.Run(() =>
-            {
-                _clientRepository.UnlockClient(clientId);
-            });
+            await _clientRepository.UnlockClientAsync(clientId);
         }
 
         public async Task<IList<string>> GetScopeListByClientId(string clientId)
