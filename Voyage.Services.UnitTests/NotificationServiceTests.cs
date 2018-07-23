@@ -59,7 +59,7 @@ namespace Voyage.Services.UnitTests
         {
             // Arrange
             _mockNotificationRepository.Setup(_ => _.AddAsync(It.IsAny<Models.Entities.Notification>()))
-                .Returns(Task.FromResult(new Models.Entities.Notification { Id = 1 }));
+                .ReturnsAsync(new Models.Entities.Notification { Id = 1 });
 
             _mockPushService.Setup(_ => _.PushNotification(It.IsAny<Models.NotificationModel>()));
 
@@ -83,8 +83,8 @@ namespace Voyage.Services.UnitTests
                 AssignedToUserId = userId,
                 IsRead = false
             };
-            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(notification));
-            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).Returns(Task.FromResult(1));
+            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).ReturnsAsync(notification);
+            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
             await _notificationService.MarkNotificationAsRead(userId, notificationId);
@@ -105,7 +105,7 @@ namespace Voyage.Services.UnitTests
                 AssignedToUserId = "OtherUser",
                 IsRead = false
             };
-            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(notification));
+            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).ReturnsAsync(notification);
 
             // Act
             Func<Task> throwAction = async () => await _notificationService.MarkNotificationAsRead(userId, notificationId);
@@ -142,7 +142,7 @@ namespace Voyage.Services.UnitTests
                 }
             };
             _mockNotificationRepository.Setup(_ => _.GetAll()).Returns(notifications.AsQueryable());
-            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).Returns(Task.FromResult(1));
+            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
             await _notificationService.MarkAllNotificationsAsRead(userId);

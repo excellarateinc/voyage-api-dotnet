@@ -110,7 +110,7 @@ namespace Voyage.Services.UnitTests
             _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable());
 
             var image = images.First();
-            _profileImageRepositoryMock.Setup(_ => _.UpdateAsync(image)).Returns(Task.FromResult(new ProfileImage()));
+            _profileImageRepositoryMock.Setup(_ => _.UpdateAsync(image)).ReturnsAsync(new ProfileImage());
 
             var result = await _profileService.UpdateProfileAsync(userId, new ProfileModel
             {

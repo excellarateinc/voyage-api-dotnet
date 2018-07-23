@@ -72,7 +72,7 @@ namespace Voyage.Services.UnitTests
             };
 
             _mockRepository.Setup(_ => _.GetAsync(id))
-                .Returns(Task.FromResult(repoClaim));
+                .ReturnsAsync(repoClaim);
 
             var entityResult = await _roleService.GetClaimById(roleId, id);
 
@@ -243,7 +243,7 @@ namespace Voyage.Services.UnitTests
                 value => value.RoleId == appRole.Id &&
                   value.ClaimType == claim.ClaimType &&
                   value.ClaimValue == claim.ClaimValue)))
-            .Returns(Task.FromResult(new RoleClaim()));
+            .ReturnsAsync(new RoleClaim());
 
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
 

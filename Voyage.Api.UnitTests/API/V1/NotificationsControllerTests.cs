@@ -92,7 +92,7 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void NotificationsController_MarkAllNotificationsAsRead_ShouldCallServiceToMarkNotificationsAllAsRead()
+        public async void NotificationsController_MarkAllNotificationsAsRead_ShouldCallServiceToMarkNotificationsAllAsRead()
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.MarkAllNotificationsAsRead(It.IsAny<string>())).Returns(Task.Delay(0));
@@ -104,7 +104,7 @@ namespace Voyage.Api.UnitTests.API.V1
             _mockAuthenticationManager.SetupGet(_ => _.User).Returns(principal);
 
             // Act
-            _controller.MarkAllNotificationsAsRead();
+            await _controller.MarkAllNotificationsAsRead();
 
             // Assert
             Mock.VerifyAll();
@@ -115,7 +115,7 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.CreateNotification(It.IsAny<NotificationModel>()))
-                .Returns(Task.FromResult(new NotificationModel { Id = 1 }));
+                .ReturnsAsync(new NotificationModel { Id = 1 });
 
             // Act
             var result = await _controller.CreateNotification(new NotificationModel());

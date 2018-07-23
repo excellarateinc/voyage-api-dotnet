@@ -321,7 +321,7 @@ namespace Voyage.Api.UnitTests.API.V1
 
             _mockRoleService
                 .Setup(_ => _.GetClaimById(roleId, claimId))
-                .Returns(Task.FromResult(claim));
+                .ReturnsAsync(claim);
 
             // ACT
             var result = _roleController.GetClaimById(roleId, claimId);
