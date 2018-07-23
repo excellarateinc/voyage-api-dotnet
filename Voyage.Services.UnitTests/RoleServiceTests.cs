@@ -60,7 +60,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetClaimById_Should_Call_Repository()
+        public async void GetClaimById_Should_Call_Repository()
         {
             var roleId = Fixture.Create<string>();
             int id = 1;
@@ -71,10 +71,10 @@ namespace Voyage.Services.UnitTests
                 Id = Fixture.Create<int>()
             };
 
-            _mockRepository.Setup(_ => _.Get(id))
-                .Returns(repoClaim);
+            _mockRepository.Setup(_ => _.GetAsync(id))
+                .Returns(Task.FromResult(repoClaim));
 
-            var entityResult = _roleService.GetClaimById(roleId, id);
+            var entityResult = await _roleService.GetClaimById(roleId, id);
 
             Mock.VerifyAll();
             entityResult.Id.Should().Be(repoClaim.Id);
@@ -83,15 +83,15 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetClaimById_Should_Return_Failed_EntityResult_When_Not_Found()
+        public async void GetClaimById_Should_Return_Failed_EntityResult_When_Not_Found()
         {
             string roleId = Fixture.Create<string>();
             int id = 1;
 
-            _mockRepository.Setup(_ => _.Get(id))
-                .Returns((RoleClaim)null);
+            _mockRepository.Setup(_ => _.GetAsync(id))
+                .ReturnsAsync(null);
 
-            Assert.Throws<NotFoundException>(() => { _roleService.GetClaimById(roleId, id); });
+            await Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.GetClaimById(roleId, id); });
             Mock.VerifyAll();
         }
 
@@ -186,15 +186,15 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void RemoveClaim_Calls_Repository()
+        public async void RemoveClaim_Calls_Repository()
         {
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRepository.Setup(_ => _.Delete(claimId));
+            _mockRepository.Setup(_ => _.DeleteAsync(claimId)).ReturnsAsync(1);
 
             // act
-            _roleService.RemoveClaim(roleId, claimId);
+            await _roleService.RemoveClaim(roleId, claimId);
 
             Mock.VerifyAll();
         }
@@ -239,11 +239,11 @@ namespace Voyage.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(appRole);
 
-            _mockRepository.Setup(_ => _.Add(It.Is<RoleClaim>(
+            _mockRepository.Setup(_ => _.AddAsync(It.Is<RoleClaim>(
                 value => value.RoleId == appRole.Id &&
                   value.ClaimType == claim.ClaimType &&
                   value.ClaimValue == claim.ClaimValue)))
-            .Returns(new RoleClaim());
+            .Returns(Task.FromResult(new RoleClaim()));
 
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
 

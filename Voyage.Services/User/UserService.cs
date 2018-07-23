@@ -58,7 +58,7 @@ namespace Voyage.Services.User
                 source: model.Phones,
                 destination: appUser.Phones,
                 predicate: (s, d) => s.Id == d.Id,
-                deleteAction: entity => _phoneRepository.Delete(entity.Id));
+                deleteAction: async entity => await _phoneRepository.DeleteAsync(entity.Id));
 
             await _userManager.UpdateAsync(appUser);
             return _mapper.Map<UserModel>(appUser);

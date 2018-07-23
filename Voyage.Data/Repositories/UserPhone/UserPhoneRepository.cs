@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,18 +24,41 @@ namespace Voyage.Data.Repositories.UserPhone
             throw new NotImplementedException("Phone numbers are added via user object");
         }
 
+        public override Task<Models.Entities.UserPhone> AddAsync(Models.Entities.UserPhone model)
+        {
+            throw new NotImplementedException("Phone numbers are added via user object");
+        }
+
         /// <summary>
         /// Deletes a phone number from the database
         /// </summary>
         /// <param name="id">Phone number ID</param>
-        public override void Delete(object id)
+        public override int Delete(object id)
         {
             var entity = Get(id);
             if (entity != null)
             {
                 Context.UserPhones.Remove(entity);
-                Context.SaveChanges();
+                return Context.SaveChanges();
             }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Deletes a phone number from the database
+        /// </summary>
+        /// <param name="id">Phone number ID</param>
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = await GetAsync(id);
+            if (entity != null)
+            {
+                Context.UserPhones.Remove(entity);
+                return await Context.SaveChangesAsync();
+            }
+
+            return 0;
         }
 
         /// <summary>
@@ -47,6 +71,21 @@ namespace Voyage.Data.Repositories.UserPhone
             return Context.UserPhones.Find(id);
         }
 
+        /// <summary>
+        /// Fetch a phone number ID
+        /// </summary>
+        /// <param name="id">Phone number ID</param>
+        /// <returns>Phone Number</returns>
+        public async override Task<Models.Entities.UserPhone> GetAsync(object id)
+        {
+            if (Context.UserPhones is DbSet<Models.Entities.UserPhone> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
+            return Context.UserPhones.Find(id);
+        }
+
         public override IQueryable<Models.Entities.UserPhone> GetAll()
         {
             throw new NotImplementedException("Phone numbers are loaded via the user object");
@@ -56,6 +95,13 @@ namespace Voyage.Data.Repositories.UserPhone
         {
             Context.UserPhones.AddOrUpdate(model);
             Context.SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.UserPhone> UpdateAsync(Models.Entities.UserPhone model)
+        {
+            Context.UserPhones.AddOrUpdate(model);
+            await Context.SaveChangesAsync();
             return model;
         }
 

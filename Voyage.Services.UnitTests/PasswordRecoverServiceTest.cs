@@ -121,7 +121,7 @@ namespace Voyage.Services.UnitTests
             _userServiceMock.Setup(c => c.GeneratePasswordResetTokenAsync(It.IsAny<string>())).ReturnsAsync("PasswordToken");
             _userServiceMock.Setup(c => c.UpdateUserAsync(userId, It.IsAny<UserModel>())).ReturnsAsync(new UserModel());
             _phoneServiceMock.Setup(c => c.GenerateSecurityCode()).Returns(securityCode);
-            _phoneServiceMock.Setup(c => c.InsertSecurityCode(It.IsAny<int>(), securityCode));
+            _phoneServiceMock.Setup(c => c.InsertSecurityCodeAsync(It.IsAny<int>(), securityCode)).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.SendSecurityCodeAsync(It.IsAny<string>(), securityCode)).Returns(Task.Delay(0));
 
             var model = await GetPasswordRecoverService().ValidateUserInfoAsync(userName, phoneNum);

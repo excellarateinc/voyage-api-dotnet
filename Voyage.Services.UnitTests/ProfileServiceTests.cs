@@ -15,6 +15,7 @@ using Voyage.Services.User;
 using Xunit;
 using Ploeh.AutoFixture;
 using Voyage.Models;
+using System.Threading.Tasks;
 
 namespace Voyage.Services.UnitTests
 {
@@ -109,7 +110,7 @@ namespace Voyage.Services.UnitTests
             _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable());
 
             var image = images.First();
-            _profileImageRepositoryMock.Setup(_ => _.Update(image)).Returns(new ProfileImage());
+            _profileImageRepositoryMock.Setup(_ => _.UpdateAsync(image)).Returns(Task.FromResult(new ProfileImage()));
 
             var result = await _profileService.UpdateProfileAsync(userId, new ProfileModel
             {

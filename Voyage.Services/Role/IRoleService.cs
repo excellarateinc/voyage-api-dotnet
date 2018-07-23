@@ -23,8 +23,8 @@ namespace Voyage.Services.Role
 
         Task<IdentityResult> RemoveRoleAsync(string roleId);
 
-        void RemoveClaim(string roleId, int claimId);
+        Task RemoveClaim(string roleId, int claimId);
 
-        ClaimModel GetClaimById(string roleId, int claimId);
+        Task<ClaimModel> GetClaimById(string roleId, int claimId);
     }
 }

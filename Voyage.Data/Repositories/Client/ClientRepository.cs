@@ -2,6 +2,8 @@
 using System.Linq;
 using Voyage.Core.Exceptions;
 using System.Configuration;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Voyage.Data.Repositories.Client
 {
@@ -19,19 +21,46 @@ namespace Voyage.Data.Repositories.Client
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<Models.Entities.Client> AddAsync(Models.Entities.Client model)
+        {
+            Context.Clients.Add(model);
+            await Context.SaveChangesAsync();
+            return model;
+        }
+
+        public override int Delete(object id)
         {
             var entity = Get(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.Clients.Remove(entity);
-            Context.SaveChanges();
+            return Context.SaveChanges();
+        }
+
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = Get(id);
+            if (entity == null)
+                return 0;
+
+            Context.Clients.Remove(entity);
+            return await Context.SaveChangesAsync();
         }
 
         public override Models.Entities.Client Get(object id)
         {
             return Context.Clients.Find(id);
+        }
+
+        public async override Task<Models.Entities.Client> GetAsync(object id)
+        {
+            if (Context.Clients is DbSet<Models.Entities.Client> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
+            return Get(id);
         }
 
         public override IQueryable<Models.Entities.Client> GetAll()
@@ -43,6 +72,13 @@ namespace Voyage.Data.Repositories.Client
         {
             Context.Clients.AddOrUpdate(model);
             Context.SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.Client> UpdateAsync(Models.Entities.Client model)
+        {
+            Context.Clients.AddOrUpdate(model);
+            await Context.SaveChangesAsync();
             return model;
         }
 

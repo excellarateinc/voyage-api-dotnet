@@ -1,5 +1,7 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.Notification
 {
@@ -17,18 +19,45 @@ namespace Voyage.Data.Repositories.Notification
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<Models.Entities.Notification> AddAsync(Models.Entities.Notification model)
+        {
+            Context.Notifications.Add(model);
+            await SaveChangesAsync();
+            return model;
+        }
+
+        public override int Delete(object id)
         {
             var entity = Get(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.Notifications.Remove(entity);
-            SaveChanges();
+            return SaveChanges();
+        }
+
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = await GetAsync(id);
+            if (entity == null)
+                return 0;
+
+            Context.Notifications.Remove(entity);
+            return await SaveChangesAsync();
         }
 
         public override Models.Entities.Notification Get(object id)
         {
+            return Context.Notifications.Find(id);
+        }
+
+        public async override Task<Models.Entities.Notification> GetAsync(object id)
+        {
+            if (Context.Notifications is DbSet<Models.Entities.Notification> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.Notifications.Find(id);
         }
 
@@ -41,6 +70,13 @@ namespace Voyage.Data.Repositories.Notification
         {
             Context.Notifications.AddOrUpdate(model);
             SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.Notification> UpdateAsync(Models.Entities.Notification model)
+        {
+            Context.Notifications.AddOrUpdate(model);
+            await SaveChangesAsync();
             return model;
         }
     }

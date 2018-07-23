@@ -71,7 +71,7 @@ namespace Voyage.Services.PasswordRecovery
                     var securityCode = _phoneService.GenerateSecurityCode();
 
                     // save to our database
-                    _phoneService.InsertSecurityCode(userPhoneNumber.Id, securityCode);
+                    await _phoneService.InsertSecurityCodeAsync(userPhoneNumber.Id, securityCode);
 
                     // send text to user using amazon SNS
                     await _phoneService.SendSecurityCodeAsync(formatedPhoneNumber, securityCode);

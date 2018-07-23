@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.ClientScope
 {
@@ -18,18 +20,45 @@ namespace Voyage.Data.Repositories.ClientScope
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<Models.Entities.ClientScope> AddAsync(Models.Entities.ClientScope model)
+        {
+            Context.ClientScopes.Add(model);
+            await Context.SaveChangesAsync();
+            return model;
+        }
+
+        public override int Delete(object id)
         {
             var entity = Get(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.ClientScopes.Remove(entity);
-            Context.SaveChanges();
+            return Context.SaveChanges();
+        }
+
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = await GetAsync(id);
+            if (entity == null)
+                return 0;
+
+            Context.ClientScopes.Remove(entity);
+            return await Context.SaveChangesAsync();
         }
 
         public override Models.Entities.ClientScope Get(object id)
         {
+            return Context.ClientScopes.Find(id);
+        }
+
+        public async override Task<Models.Entities.ClientScope> GetAsync(object id)
+        {
+            if (Context.ClientScopes is DbSet<Models.Entities.ClientScope> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.ClientScopes.Find(id);
         }
 
@@ -42,6 +71,13 @@ namespace Voyage.Data.Repositories.ClientScope
         {
             Context.ClientScopes.AddOrUpdate(model);
             Context.SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.ClientScope> UpdateAsync(Models.Entities.ClientScope model)
+        {
+            Context.ClientScopes.AddOrUpdate(model);
+            await Context.SaveChangesAsync();
             return model;
         }
     }

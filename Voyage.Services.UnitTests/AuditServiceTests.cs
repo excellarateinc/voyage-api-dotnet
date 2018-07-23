@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Ploeh.AutoFixture;
@@ -26,14 +27,14 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void Record_Should_Call_Repository()
+        public async void Record_Should_Call_Repository()
         {
             var model = Fixture.Create<ActivityAuditModel>();
 
-            _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
-                .Returns<ActivityAudit>(t => t);
+            _mockAuditRepository.Setup(_ => _.AddAsync(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
+                .Returns<ActivityAudit>(t => Task.FromResult(t));
 
-            _auditService.Record(model);
+            await _auditService.RecordAsync(model);
 
             Mock.VerifyAll();
         }
@@ -43,8 +44,8 @@ namespace Voyage.Services.UnitTests
         {
             var model = Fixture.Create<ActivityAuditModel>();
 
-            _mockAuditRepository.Setup(_ => _.Add(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
-                .Returns<ActivityAudit>(t => t);
+            _mockAuditRepository.Setup(_ => _.AddAsync(It.Is<ActivityAudit>(t => t.RequestId == model.RequestId)))
+                .Returns<ActivityAudit>(t => Task.FromResult(t));
 
             await _auditService.RecordAsync(model);
 

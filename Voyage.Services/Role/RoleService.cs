@@ -47,7 +47,7 @@ namespace Voyage.Services.Role
                 ClaimValue = claim.ClaimValue,
                 ClaimType = claim.ClaimType
             };
-            _roleClaimRepository.Add(roleClaim);
+            await _roleClaimRepository.AddAsync(roleClaim);
             return _mapper.Map<ClaimModel>(roleClaim);
         }
 
@@ -96,17 +96,17 @@ namespace Voyage.Services.Role
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public void RemoveClaim(string roleId, int claimId)
+        public async Task RemoveClaim(string roleId, int claimId)
         {
             // With the current model, the claim id uniquely identifies the RoleClaim
             // It is not normalized - the record contains the RoleId and the complete definition of the claim
             // This means something like a "login" claim is repeated for each role
-            _roleClaimRepository.Delete(claimId);
+            await _roleClaimRepository.DeleteAsync(claimId);
         }
 
-        public ClaimModel GetClaimById(string roleId, int claimId)
+        public async Task<ClaimModel> GetClaimById(string roleId, int claimId)
         {
-            var claim = _roleClaimRepository.Get(claimId);
+            var claim = await _roleClaimRepository.GetAsync(claimId);
             if (claim == null)
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
 

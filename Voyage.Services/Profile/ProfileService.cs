@@ -81,7 +81,7 @@ namespace Voyage.Services.Profile
                 };
             }
 
-            _profileImageRepository.Update(currentImage);
+            await _profileImageRepository.UpdateAsync(currentImage);
 
             return await GetCurrentUserAync(userId);
         }
@@ -117,7 +117,7 @@ namespace Voyage.Services.Profile
                             if (string.IsNullOrEmpty(base64ImageRepresentation))
                                 return;
 
-                            _profileImageRepository.Add(new ProfileImage
+                            await _profileImageRepository.AddAsync(new ProfileImage
                             {
                                 UserId = userId,
                                 ImageData = $"data:image/jpeg;base64,{base64ImageRepresentation}"

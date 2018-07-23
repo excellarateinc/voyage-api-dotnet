@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Voyage.Core;
 
 namespace Voyage.Data.Repositories
@@ -22,17 +23,30 @@ namespace Voyage.Data.Repositories
 
         public abstract TModel Add(TModel model);
 
+        public abstract Task<TModel> AddAsync(TModel model);
+
         public abstract TModel Update(TModel model);
+
+        public abstract Task<TModel> UpdateAsync(TModel model);
 
         public abstract IQueryable<TModel> GetAll();
 
         public abstract TModel Get(object id);
 
-        public abstract void Delete(object id);
+        public abstract Task<TModel> GetAsync(object id);
+
+        public abstract int Delete(object id);
+
+        public abstract Task<int> DeleteAsync(object id);
 
         public int SaveChanges()
         {
             return Context.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Context.SaveChangesAsync();
         }
     }
 }

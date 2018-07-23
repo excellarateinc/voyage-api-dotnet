@@ -21,15 +21,10 @@ namespace Voyage.Services.Audit
             _mapper = mapper.ThrowIfNull(nameof(mapper));
         }
 
-        public void Record(ActivityAuditModel model)
+        public async Task RecordAsync(ActivityAuditModel model)
         {
             var auditRecord = _mapper.Map<ActivityAudit>(model);
-            _activityRepository.Add(auditRecord);
-        }
-
-        public Task RecordAsync(ActivityAuditModel model)
-        {
-            return Task.Run(() => Record(model));
+            await _activityRepository.AddAsync(auditRecord);
         }
 
         public IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes)

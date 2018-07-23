@@ -1,5 +1,7 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.Chat
 {
@@ -17,18 +19,45 @@ namespace Voyage.Data.Repositories.Chat
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<Models.Entities.ChatMessage> AddAsync(Models.Entities.ChatMessage model)
+        {
+            Context.ChatMessages.Add(model);
+            await Context.SaveChangesAsync();
+            return model;
+        }
+
+        public override int Delete(object id)
         {
             var entity = Get(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.ChatMessages.Remove(entity);
-            Context.SaveChanges();
+            return Context.SaveChanges();
+        }
+
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = await GetAsync(id);
+            if (entity == null)
+                return 0;
+
+            Context.ChatMessages.Remove(entity);
+            return await Context.SaveChangesAsync();
         }
 
         public override Models.Entities.ChatMessage Get(object id)
         {
+            return Context.ChatMessages.Find(id);
+        }
+
+        public async override Task<Models.Entities.ChatMessage> GetAsync(object id)
+        {
+            if (Context.ChatMessages is DbSet<Models.Entities.ChatMessage> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.ChatMessages.Find(id);
         }
 
@@ -41,6 +70,13 @@ namespace Voyage.Data.Repositories.Chat
         {
             Context.ChatMessages.AddOrUpdate(model);
             Context.SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.ChatMessage> UpdateAsync(Models.Entities.ChatMessage model)
+        {
+            Context.ChatMessages.AddOrUpdate(model);
+            await Context.SaveChangesAsync();
             return model;
         }
     }

@@ -41,20 +41,12 @@ namespace Voyage.Services.Phone
         /// </summary>
         /// <param name="phoneId"></param>
         /// <param name="code"></param>
-        public void InsertSecurityCode(int phoneId, string code)
-        {
-            var userPhone = _phoneRepository.Get(phoneId);
-            userPhone.VerificationCode = code;
-            _phoneRepository.Update(userPhone);
-            _phoneRepository.SaveChanges();
-        }
-
         public async Task InsertSecurityCodeAsync(int phoneId, string code)
         {
-            await Task.Run(() =>
-            {
-                InsertSecurityCode(phoneId, code);
-            });
+            var userPhone = await _phoneRepository.GetAsync(phoneId);
+            userPhone.VerificationCode = code;
+            await _phoneRepository.UpdateAsync(userPhone);
+            await _phoneRepository.SaveChangesAsync();
         }
 
         /// <summary>
@@ -94,7 +86,7 @@ namespace Voyage.Services.Phone
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public async Task SendSecurityCodeToUserPhoneNumber(string userName)
+        public async Task SendSecurityCodeToUserPhoneNumberAsync(string userName)
         {
             try
             {
@@ -192,7 +184,7 @@ namespace Voyage.Services.Phone
                 source: model.Phones,
                 destination: appUser.Phones,
                 predicate: (s, d) => s.Id == d.Id,
-                deleteAction: entity => _phoneRepository.Delete(entity.Id));
+                deleteAction: async entity => await _phoneRepository.DeleteAsync(entity.Id));
 
             await _userManager.UpdateAsync(appUser);
             return _mapper.Map<UserModel>(appUser);

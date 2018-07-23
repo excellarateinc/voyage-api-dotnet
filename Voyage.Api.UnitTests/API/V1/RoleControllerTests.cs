@@ -16,6 +16,7 @@ using Voyage.Core.Exceptions;
 using Voyage.Models;
 using Voyage.Services.Role;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace Voyage.Api.UnitTests.API.V1
 {
@@ -320,7 +321,7 @@ namespace Voyage.Api.UnitTests.API.V1
 
             _mockRoleService
                 .Setup(_ => _.GetClaimById(roleId, claimId))
-                .Returns(claim);
+                .Returns(Task.FromResult(claim));
 
             // ACT
             var result = _roleController.GetClaimById(roleId, claimId);
@@ -328,7 +329,7 @@ namespace Voyage.Api.UnitTests.API.V1
             // ASSERT
             Mock.VerifyAll();
 
-            var message = await result.ExecuteAsync(new CancellationToken());
+            var message = await result.Result.ExecuteAsync(new CancellationToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             ClaimModel resultModel;
@@ -427,13 +428,13 @@ namespace Voyage.Api.UnitTests.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId));
+            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId)).Returns(Task.FromResult((int?)null));
 
             // Act
             var result = _roleController.RemoveClaim(roleId, claimId);
 
             // Assert
-            var message = await result.ExecuteAsync(new CancellationToken());
+            var message = await result.Result.ExecuteAsync(new CancellationToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);
             Mock.VerifyAll();
         }

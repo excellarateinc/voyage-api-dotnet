@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Data.Entity.Migrations;
 
 namespace Voyage.Data.Repositories.RoleClaim
 {
@@ -16,18 +19,45 @@ namespace Voyage.Data.Repositories.RoleClaim
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<Models.Entities.RoleClaim> AddAsync(Models.Entities.RoleClaim model)
+        {
+            Context.RoleClaims.Add(model);
+            await Context.SaveChangesAsync();
+            return model;
+        }
+
+        public override int Delete(object id)
         {
             var entity = Get(id);
-            if (entity != null)
-            {
-                Context.RoleClaims.Remove(entity);
-                Context.SaveChanges();
-            }
+            if (entity == null)
+                return 0;
+
+            Context.RoleClaims.Remove(entity);
+            return Context.SaveChanges();
+        }
+
+        public async override Task<int> DeleteAsync(object id)
+        {
+            var entity = await GetAsync(id);
+            if (entity == null)
+                return 0;
+
+            Context.RoleClaims.Remove(entity);
+            return await Context.SaveChangesAsync();
         }
 
         public override Models.Entities.RoleClaim Get(object id)
         {
+            return Context.RoleClaims.Find(id);
+        }
+
+        public async override Task<Models.Entities.RoleClaim> GetAsync(object id)
+        {
+            if (Context.RoleClaims is DbSet<Models.Entities.RoleClaim> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.RoleClaims.Find(id);
         }
 
@@ -50,7 +80,15 @@ namespace Voyage.Data.Repositories.RoleClaim
 
         public override Models.Entities.RoleClaim Update(Models.Entities.RoleClaim model)
         {
+            Context.RoleClaims.AddOrUpdate(model);
             Context.SaveChanges();
+            return model;
+        }
+
+        public async override Task<Models.Entities.RoleClaim> UpdateAsync(Models.Entities.RoleClaim model)
+        {
+            Context.RoleClaims.AddOrUpdate(model);
+            await Context.SaveChangesAsync();
             return model;
         }
     }

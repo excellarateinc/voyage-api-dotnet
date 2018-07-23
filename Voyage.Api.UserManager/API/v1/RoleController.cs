@@ -101,9 +101,9 @@ namespace Voyage.Api.UserManager.API.V1
         [SwaggerResponse(200, "ClaimModel", typeof(ClaimModel))]
         [SwaggerResponse(401, "UnauthorizedException")]
         [SwaggerResponse(404, "NotFoundException")]
-        public IHttpActionResult GetClaimById(string roleId, int permissionId)
+        public async Task<IHttpActionResult> GetClaimById(string roleId, int permissionId)
         {
-            var result = _roleService.GetClaimById(roleId, permissionId);
+            var result = await _roleService.GetClaimById(roleId, permissionId);
             return Ok(result);
         }
 
@@ -115,9 +115,9 @@ namespace Voyage.Api.UserManager.API.V1
         [Route("roles/{roleId}/permissions/{permissionId}")]
         [SwaggerResponse(200)]
         [SwaggerResponse(401, "UnauthorizedException")]
-        public IHttpActionResult RemoveClaim(string roleId, int permissionId)
+        public async Task<IHttpActionResult> RemoveClaim(string roleId, int permissionId)
         {
-            _roleService.RemoveClaim(roleId, permissionId);
+            await _roleService.RemoveClaim(roleId, permissionId);
             return Ok();
         }
 

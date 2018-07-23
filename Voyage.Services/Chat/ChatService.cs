@@ -62,9 +62,9 @@ namespace Voyage.Services.Chat
                 CreatedBy = userId,
                 CreateDate = DateTime.Now
             };
-            _chatChannelRepository.Add(channel);
+            await _chatChannelRepository.AddAsync(channel);
 
-            _chatChannelMemberRepository.Add(new ChatChannelMember
+            await _chatChannelMemberRepository.AddAsync(new ChatChannelMember
             {
                 ChannelId = channel.ChannelId,
                 UserId = userId,
@@ -75,7 +75,7 @@ namespace Voyage.Services.Chat
             var support = await _userService.GetUserByNameAsync("CustomerSupport");
             if (support.Id != userId)
             {
-                _chatChannelMemberRepository.Add(new ChatChannelMember
+                await _chatChannelMemberRepository.AddAsync(new ChatChannelMember
                 {
                     ChannelId = channel.ChannelId,
                     UserId = support.Id,
@@ -122,7 +122,7 @@ namespace Voyage.Services.Chat
             model.CreateDate = DateTime.UtcNow;
 
             var message = _mapper.Map<ChatMessage>(model);
-            _chatMessageRepository.Add(message);
+            await _chatMessageRepository.AddAsync(message);
 
             var createdMessage = _mapper.Map<ChatMessageModel>(message);
 
@@ -131,7 +131,7 @@ namespace Voyage.Services.Chat
 
             foreach (var member in otherMembers)
             {
-                _notificationService.CreateNotification(new NotificationModel
+                await _notificationService.CreateNotification(new NotificationModel
                 {
                     Subject = $"New message from {user.Username}",
                     Description = $"{createdMessage.Message}",

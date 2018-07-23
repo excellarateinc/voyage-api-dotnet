@@ -197,7 +197,7 @@ namespace Voyage.Services.UnitTests
                 Phones = new List<UserPhone> { phone }
             };
 
-            _mockPhoneRepository.Setup(_ => _.Delete(phone.Id));
+            _mockPhoneRepository.Setup(_ => _.DeleteAsync(phone.Id)).ReturnsAsync(1);
 
             _mockStore.Setup(_ => _.FindByIdAsync(id))
                 .ReturnsAsync(appUser);

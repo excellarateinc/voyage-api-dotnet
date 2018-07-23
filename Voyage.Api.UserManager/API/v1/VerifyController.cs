@@ -37,7 +37,7 @@ namespace Voyage.Api.UserManager.API.V1
         [SwaggerResponse(401, "UnauthorizedException")]
         public async Task<IHttpActionResult> SendVerificationCode()
         {
-            await _phoneService.SendSecurityCodeToUserPhoneNumber(User.Identity.Name); 
+            await _phoneService.SendSecurityCodeToUserPhoneNumberAsync(User.Identity.Name); 
             return Ok();
         }
 

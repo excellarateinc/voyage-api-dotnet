@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using FluentAssertions;
@@ -75,7 +76,7 @@ namespace Voyage.Api.UnitTests.API.V1
         public void NotificationsController_MarkNotificationAsRead_ShouldCallServiceToMarkNotificationAsRead()
         {
             // Arrange
-            _mockNotificationService.Setup(_ => _.MarkNotificationAsRead(It.IsAny<string>(), It.IsAny<int>()));
+            _mockNotificationService.Setup(_ => _.MarkNotificationAsRead(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult((int?)null));
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
@@ -94,7 +95,7 @@ namespace Voyage.Api.UnitTests.API.V1
         public void NotificationsController_MarkAllNotificationsAsRead_ShouldCallServiceToMarkNotificationsAllAsRead()
         {
             // Arrange
-            _mockNotificationService.Setup(_ => _.MarkAllNotificationsAsRead(It.IsAny<string>()));
+            _mockNotificationService.Setup(_ => _.MarkAllNotificationsAsRead(It.IsAny<string>())).Returns(Task.FromResult((int?)null));
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
@@ -114,16 +115,16 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.CreateNotification(It.IsAny<NotificationModel>()))
-                .Returns(new NotificationModel { Id = 1 });
+                .Returns(Task.FromResult(new NotificationModel { Id = 1 }));
 
             // Act
             var result = _controller.CreateNotification(new NotificationModel());
 
             // Assert
-            result.Should().BeOfType<OkNegotiatedContentResult<NotificationModel>>();
+            result.Should().BeOfType<OkNegotiatedContentResult<Task<NotificationModel>>>();
 
-            var resultContent = result.As<OkNegotiatedContentResult<NotificationModel>>();
-            resultContent.Content.Id.Should().Be(1);
+            var resultContent = result.As<OkNegotiatedContentResult<Task<NotificationModel>>>();
+            resultContent.Content.Result.Id.Should().Be(1);
 
             Mock.VerifyAll();
         }
