@@ -76,7 +76,7 @@ namespace Voyage.Api.UnitTests.API.V1
         public void NotificationsController_MarkNotificationAsRead_ShouldCallServiceToMarkNotificationAsRead()
         {
             // Arrange
-            _mockNotificationService.Setup(_ => _.MarkNotificationAsRead(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult((int?)null));
+            _mockNotificationService.Setup(_ => _.MarkNotificationAsRead(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.Delay(0));
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
@@ -95,7 +95,7 @@ namespace Voyage.Api.UnitTests.API.V1
         public void NotificationsController_MarkAllNotificationsAsRead_ShouldCallServiceToMarkNotificationsAllAsRead()
         {
             // Arrange
-            _mockNotificationService.Setup(_ => _.MarkAllNotificationsAsRead(It.IsAny<string>())).Returns(Task.FromResult((int?)null));
+            _mockNotificationService.Setup(_ => _.MarkAllNotificationsAsRead(It.IsAny<string>())).Returns(Task.Delay(0));
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {

@@ -428,7 +428,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId)).Returns(Task.FromResult((int?)null));
+            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId)).Returns(Task.Delay(0));
 
             // Act
             var result = _roleController.RemoveClaim(roleId, claimId);
