@@ -42,7 +42,7 @@ namespace Voyage.Services.PasswordRecovery
             }
 
             // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
-            var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
+            var attempts = await _auditService.GetAuditActivityWithinTimeAsync(userName, "/passwordRecovery", 20);
 
             // 3. insert audit log
             await WriteAuditLog(userName);

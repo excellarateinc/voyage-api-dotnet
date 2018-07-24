@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,11 +27,12 @@ namespace Voyage.Services.Notification
             _pushService = pushService.ThrowIfNull(nameof(pushService));
         }
 
-        public IEnumerable<Models.NotificationModel> GetNotifications(string userId)
+        public async Task<IEnumerable<Models.NotificationModel>> GetNotifications(string userId)
         {
-            var notifications = _notificationRepository.GetAll()
+            var notifications = await _notificationRepository.GetAll()
                 .Where(_ => _.AssignedToUserId == userId && !_.IsRead)
-                .OrderByDescending(_ => _.CreatedDate);
+                .OrderByDescending(_ => _.CreatedDate)
+                .ToListAsync();
 
             return _mapper.Map<IEnumerable<Models.NotificationModel>>(notifications);
         }

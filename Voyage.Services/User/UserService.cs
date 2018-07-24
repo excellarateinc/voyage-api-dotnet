@@ -15,6 +15,7 @@ using Voyage.Services.IdentityManagers;
 using Voyage.Services.Role;
 using System.Configuration;
 using Voyage.Models.Enum;
+using System.Data.Entity;
 
 namespace Voyage.Services.User
 {
@@ -82,16 +83,16 @@ namespace Voyage.Services.User
             if (!identityResult.Succeeded)
                 throw new BadRequestException();
 
-            return _roleService.GetRoleByName(roleModel.Name);
+            return await _roleService.GetRoleByNameAsync(roleModel.Name);
         }
 
-        public IEnumerable<UserModel> GetUsers()
+        public async Task<IEnumerable<UserModel>> GetUsersAsync()
         {
-            var users = _userManager.Users.Where(user => !user.Deleted).ToList();
+            var users = await _userManager.Users.Where(user => !user.Deleted).ToListAsync();
             return _mapper.Map<IEnumerable<UserModel>>(users);
         }
 
-        public async Task<bool> IsValidCredential(string userName, string password)
+        public async Task<bool> IsValidCredentialAsync(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
             return user != null && user.IsActive && !user.Deleted;
@@ -168,8 +169,8 @@ namespace Voyage.Services.User
 
             // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                .SelectMany(_ => _)
+            var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
+                .SelectManyAsync(_ => _))
                 .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
             userIdentity.AddClaims(roleClaims);
 
@@ -186,8 +187,8 @@ namespace Voyage.Services.User
 
             // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                .SelectMany(_ => _)
+            var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
+                .SelectManyAsync(_ => _))
                 .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
             identity.AddClaims(roleClaims);
 
@@ -201,32 +202,29 @@ namespace Voyage.Services.User
         /// <returns></returns>
         public async Task<ClaimsIdentity> CreateClientClaimsIdentityAsync(string clientId)
         {
-            return await Task.Run(() =>
+            // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
+            var identity = new ClaimsIdentity("JWT");
+            if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
             {
-                // TODO: This create client claims based on test data.Your application will need to create claim based on your business rule
-                var identity = new ClaimsIdentity("JWT");
-                if (Clients.Client2.Id == clientId || Clients.Client1.Id == clientId)
-                {
-                    // Add in role claims
-                    var userRoles = new List<string> { "Administrator" };
-                    var roleClaims = userRoles.Select(_ => _roleService.GetRoleClaims(_))
-                        .SelectMany(_ => _)
-                        .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-                    identity.AddClaims(roleClaims);
+                // Add in role claims
+                var userRoles = new List<string> { "Administrator" };
+                var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
+                    .SelectManyAsync(_ => _))
+                    .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
+                identity.AddClaims(roleClaims);
 
-                    var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
-                    identity.AddClaim(new Claim("client_id", client.Id));
-                    identity.AddClaim(new Claim("client_secret", client.Secret));
-                }
+                var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
+                identity.AddClaim(new Claim("client_id", client.Id));
+                identity.AddClaim(new Claim("client_secret", client.Secret));
+            }
 
-                return identity;
-            });
+            return identity;
         }
 
         public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string userId)
         {
             var roles = await _userManager.GetRolesAsync(userId);
-            var roleModels = _roleService.GetRoles().Where(_ => roles.Contains(_.Name));
+            var roleModels = (await _roleService.GetRolesAsync()).Where(_ => roles.Contains(_.Name));
             return roleModels;
         }
 

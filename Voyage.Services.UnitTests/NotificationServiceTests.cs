@@ -33,7 +33,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void NotificationService_GetNotifications_ShouldReturnUnreadNotificationsForUser()
+        public async void NotificationService_GetNotifications_ShouldReturnUnreadNotificationsForUser()
         {
             // Arrange
             const string userId = "TestUser";
@@ -42,11 +42,16 @@ namespace Voyage.Services.UnitTests
                 new Models.Entities.Notification { AssignedToUserId = userId, IsRead = false },
                 new Models.Entities.Notification { AssignedToUserId = "Other", IsRead = false },
                 new Models.Entities.Notification { AssignedToUserId = userId, IsRead = true }
-            };
-            _mockNotificationRepository.Setup(_ => _.GetAll()).Returns(notificationsList.AsQueryable());
+            }
+            .AsQueryable()
+            .BuildMockDbSet();
+
+            _mockNotificationRepository
+                .Setup(_ => _.GetAll())
+                .Returns(notificationsList);
 
             // Act
-            var result = _notificationService.GetNotifications(userId);
+            var result = await _notificationService.GetNotifications(userId);
 
             // Assert
             result.Count().Should().Be(1);

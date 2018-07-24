@@ -63,10 +63,10 @@ namespace Voyage.Api.UnitTests.API.V1
             var id = Fixture.Create<string>();
             var claims = Fixture.CreateMany<ClaimModel>();
 
-            _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleId(id))
-                .Returns(claims);
+            _mockRoleService.Setup(_ => _.GetRoleClaimsByRoleIdAsync(id))
+                .ReturnsAsync(claims);
 
-            var result = _roleController.GetClaims(id);
+            var result = await _roleController.GetClaims(id);
 
             Mock.VerifyAll();
             var message = await result.ExecuteAsync(CreateCancelToken());
@@ -320,7 +320,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var claim = Fixture.Create<ClaimModel>();
 
             _mockRoleService
-                .Setup(_ => _.GetClaimById(roleId, claimId))
+                .Setup(_ => _.GetClaimByIdAsync(roleId, claimId))
                 .ReturnsAsync(claim);
 
             // ACT
@@ -343,10 +343,10 @@ namespace Voyage.Api.UnitTests.API.V1
         {
             var roles = Fixture.CreateMany<RoleModel>();
 
-            _mockRoleService.Setup(_ => _.GetRoles())
-                .Returns(roles);
+            _mockRoleService.Setup(_ => _.GetRolesAsync())
+                .ReturnsAsync(roles);
 
-            var result = _roleController.GetRoles();
+            var result = await _roleController.GetRoles();
 
             var message = await result.ExecuteAsync(new CancellationToken());
 
@@ -428,7 +428,7 @@ namespace Voyage.Api.UnitTests.API.V1
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRoleService.Setup(_ => _.RemoveClaim(roleId, claimId)).Returns(Task.Delay(0));
+            _mockRoleService.Setup(_ => _.RemoveClaimAsync(roleId, claimId)).Returns(Task.Delay(0));
 
             // Act
             var result = _roleController.RemoveClaim(roleId, claimId);

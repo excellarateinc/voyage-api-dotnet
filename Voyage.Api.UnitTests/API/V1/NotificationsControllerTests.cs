@@ -45,11 +45,11 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void NotificationsController_GetNotifications_ShouldCallServiceToGetNotifications()
+        public async void NotificationsController_GetNotifications_ShouldCallServiceToGetNotifications()
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.GetNotifications(It.IsAny<string>()))
-                .Returns(new List<NotificationModel>
+                .ReturnsAsync(new List<NotificationModel>
                 {
                     new NotificationModel()
                 });
@@ -61,7 +61,7 @@ namespace Voyage.Api.UnitTests.API.V1
             _mockAuthenticationManager.SetupGet(_ => _.User).Returns(principal);
 
             // Act
-            var result = _controller.GetNotifications();
+            var result = await _controller.GetNotifications();
 
             // Assert
             result.Should().BeOfType<OkNegotiatedContentResult<IEnumerable<NotificationModel>>>();
@@ -73,7 +73,7 @@ namespace Voyage.Api.UnitTests.API.V1
         }
 
         [Fact]
-        public void NotificationsController_MarkNotificationAsRead_ShouldCallServiceToMarkNotificationAsRead()
+        public async void NotificationsController_MarkNotificationAsRead_ShouldCallServiceToMarkNotificationAsRead()
         {
             // Arrange
             _mockNotificationService.Setup(_ => _.MarkNotificationAsRead(It.IsAny<string>(), It.IsAny<int>())).Returns(Task.Delay(0));
@@ -85,7 +85,7 @@ namespace Voyage.Api.UnitTests.API.V1
             _mockAuthenticationManager.SetupGet(_ => _.User).Returns(principal);
 
             // Act
-            _controller.MarkNotificationAsRead(1);
+            await _controller.MarkNotificationAsRead(1);
 
             // Assert
             Mock.VerifyAll();

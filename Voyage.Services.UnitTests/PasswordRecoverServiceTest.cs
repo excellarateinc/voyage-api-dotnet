@@ -41,7 +41,7 @@ namespace Voyage.Services.UnitTests
             CreateNewMockServices();
             var phoneNumber = string.Empty;
             var audits = new List<ActivityAudit> { new ActivityAudit(), new ActivityAudit(), new ActivityAudit(), new ActivityAudit(), new ActivityAudit(), new ActivityAudit() };
-            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTime("TestUserName", "/passwordRecovery", 20)).Returns(audits);
+            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTimeAsync("TestUserName", "/passwordRecovery", 20)).ReturnsAsync(audits);
             _auditServiceMock.Setup(c => c.RecordAsync(It.IsAny<ActivityAuditModel>())).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out phoneNumber)).Returns(false);
 
@@ -56,7 +56,7 @@ namespace Voyage.Services.UnitTests
         {
             CreateNewMockServices();
             var phoneNumber = string.Empty;
-            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTime("TestUserName", "/passwordRecovery", 20)).Returns(new List<ActivityAudit>());
+            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTimeAsync("TestUserName", "/passwordRecovery", 20)).ReturnsAsync(new List<ActivityAudit>());
             _auditServiceMock.Setup(c => c.RecordAsync(It.IsAny<ActivityAuditModel>())).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.IsValidPhoneNumber("InvalidPhone", out phoneNumber)).Returns(false);
 
@@ -82,7 +82,7 @@ namespace Voyage.Services.UnitTests
                 Phones = phones
             };
             var phoneNumber = string.Empty;
-            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTime(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new List<ActivityAudit>());
+            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTimeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(new List<ActivityAudit>());
             _auditServiceMock.Setup(c => c.RecordAsync(It.IsAny<ActivityAuditModel>())).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out phoneNumber)).Returns(true);
             _userServiceMock.Setup(c => c.GetUserByNameAsync("TestUserName")).ReturnsAsync(user);
@@ -114,7 +114,7 @@ namespace Voyage.Services.UnitTests
                 Phones = phones,
                 Id = userId
             };
-            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTime(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new List<ActivityAudit>());
+            _auditServiceMock.Setup(c => c.GetAuditActivityWithinTimeAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(new List<ActivityAudit>());
             _auditServiceMock.Setup(c => c.RecordAsync(It.IsAny<ActivityAuditModel>())).Returns(Task.Delay(0));
             _phoneServiceMock.Setup(c => c.IsValidPhoneNumber(It.IsAny<string>(), out phoneNumberOut)).Returns(true);
             _userServiceMock.Setup(c => c.GetUserByNameAsync(userName)).ReturnsAsync(user);

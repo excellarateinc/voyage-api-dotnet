@@ -38,10 +38,10 @@ namespace Voyage.Api.API.v1
         [Route("notifications")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<NotificationModel>))]
         [SwaggerResponse(HttpStatusCode.Unauthorized)]
-        public IHttpActionResult GetNotifications()
+        public async Task<IHttpActionResult> GetNotifications()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var notifications = _notificationService.GetNotifications(userId);
+            var notifications = await _notificationService.GetNotifications(userId);
             return Ok(notifications);
         }
 

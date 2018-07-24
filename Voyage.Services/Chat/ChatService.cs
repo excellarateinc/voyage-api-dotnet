@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,7 +43,7 @@ namespace Voyage.Services.Chat
             _pushService = pushService.ThrowIfNull(nameof(pushService));
         }
 
-        public IEnumerable<ChatChannelModel> GetChannels(string userId)
+        public async Task<IEnumerable<ChatChannelModel>> GetChannels(string userId)
         {
             var channels = from channel in _chatChannelRepository.GetAll()
                            join member in _chatChannelMemberRepository.GetAll() on channel.ChannelId equals member.ChannelId
@@ -50,7 +51,7 @@ namespace Voyage.Services.Chat
                            orderby channel.CreateDate descending
                            select channel;
 
-            return _mapper.Map<IEnumerable<ChatChannelModel>>(channels.ToList());
+            return _mapper.Map<IEnumerable<ChatChannelModel>>(await channels.ToListAsync());
         }
 
         public async Task<ChatChannelModel> CreateChannel(string userId)
@@ -86,21 +87,21 @@ namespace Voyage.Services.Chat
             return _mapper.Map<ChatChannelModel>(channel);
         }
 
-        public IEnumerable<ChatMessageModel> GetMessagesByChannel(string userId, int channelId)
+        public async Task<IEnumerable<ChatMessageModel>> GetMessagesByChannelAsync(string userId, int channelId)
         {
-            var channel = (from c in _chatChannelRepository.GetAll()
-                           join member in _chatChannelMemberRepository.GetAll() on c.ChannelId equals member.ChannelId
-                           where member.UserId == userId && c.ChannelId == channelId
-                           select c).FirstOrDefault();
+            var channel = await (from c in _chatChannelRepository.GetAll()
+                                 join member in _chatChannelMemberRepository.GetAll() on c.ChannelId equals member.ChannelId
+                                 where member.UserId == userId && c.ChannelId == channelId
+                                 select c).FirstOrDefaultAsync();
 
             if (channel == null)
             {
                 throw new NotFoundException("Channel not found or user doesn't have access.");
             }
 
-            var messages = _chatMessageRepository.GetAll()
+            var messages = await _chatMessageRepository.GetAll()
                 .Where(_ => _.ChannelId == channelId)
-                .ToList();
+                .ToListAsync();
 
             return _mapper.Map<IEnumerable<ChatMessageModel>>(messages);
         }
@@ -110,7 +111,7 @@ namespace Voyage.Services.Chat
             var members = _chatChannelMemberRepository.GetAll()
                 .Where(_ => _.ChannelId == model.ChannelId);
 
-            if (!members.Any(_ => _.UserId == userId))
+            if (!await members.AnyAsync(_ => _.UserId == userId))
             {
                 throw new NotFoundException("Channel not found or user doesn't have access.");
             }
@@ -126,8 +127,8 @@ namespace Voyage.Services.Chat
 
             var createdMessage = _mapper.Map<ChatMessageModel>(message);
 
-            var otherMembers = members.Where(_ => _.UserId != userId)
-                .Select(_ => _.UserId).ToList();
+            var otherMembers = await members.Where(_ => _.UserId != userId)
+                .Select(_ => _.UserId).ToListAsync();
 
             foreach (var member in otherMembers)
             {

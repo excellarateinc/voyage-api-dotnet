@@ -65,10 +65,10 @@ namespace Voyage.Api.API.v1
         [HttpGet]
         [Route("chats/channels/{channelId}/messages")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<ChatMessageModel>))]
-        public IHttpActionResult GetMessagesByChannel(int channelId)
+        public async Task<IHttpActionResult> GetMessagesByChannel(int channelId)
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var messages = _chatService.GetMessagesByChannel(userId, channelId);
+            var messages = await _chatService.GetMessagesByChannelAsync(userId, channelId);
             return Ok(messages);
         }
 

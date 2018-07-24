@@ -37,7 +37,7 @@ namespace Voyage.Security.Oauth2.Controllers
                             throw new NotFoundException("User Locked Out");
                         }
 
-                        var isValidCredential = await userService.IsValidCredential(Request.Form["username"], Request.Form["password"]);
+                        var isValidCredential = await userService.IsValidCredentialAsync(Request.Form["username"], Request.Form["password"]);
                         if (!isValidCredential)
                         {
                             await userService.AccessFailedAsync(user.Id);

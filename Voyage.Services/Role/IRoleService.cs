@@ -7,24 +7,24 @@ namespace Voyage.Services.Role
 {
     public interface IRoleService
     {
-        IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id);
+        Task<IEnumerable<ClaimModel>> GetRoleClaimsByRoleIdAsync(string id);
 
-        RoleModel GetRoleByName(string name);
+        Task<RoleModel> GetRoleByNameAsync(string name);
 
         RoleModel GetRoleById(string id);
 
         Task<RoleModel> CreateRoleAsync(RoleModel model);
 
-        IEnumerable<RoleModel> GetRoles();
+        Task<IEnumerable<RoleModel>> GetRolesAsync();
 
-        IEnumerable<ClaimModel> GetRoleClaims(string name);
+        Task<IEnumerable<ClaimModel>> GetRoleClaimsAsync(string name);
 
         Task<ClaimModel> AddClaimAsync(string roleId, ClaimModel claim);
 
         Task<IdentityResult> RemoveRoleAsync(string roleId);
 
-        Task RemoveClaim(string roleId, int claimId);
+        Task RemoveClaimAsync(string roleId, int claimId);
 
-        Task<ClaimModel> GetClaimById(string roleId, int claimId);
+        Task<ClaimModel> GetClaimByIdAsync(string roleId, int claimId);
     }
 }

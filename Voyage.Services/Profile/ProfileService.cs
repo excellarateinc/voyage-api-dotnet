@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,7 +29,7 @@ namespace Voyage.Services.Profile
         {
             var user = await _userService.GetUserAsync(userId);
             var roles = await _userService.GetUserRolesAsync(userId);
-            var profileImage = GetProfileImage(userId);
+            var profileImage = await GetProfileImage(userId);
             return new CurrentUserModel
             {
                 Id = user.Id,
@@ -65,8 +66,8 @@ namespace Voyage.Services.Profile
                 return await GetCurrentUserAync(userId);
             }
 
-            var currentImage = _profileImageRepository.GetAll()
-                .FirstOrDefault(_ => _.UserId == userId);
+            var currentImage = await _profileImageRepository.GetAll()
+                .FirstOrDefaultAsync(_ => _.UserId == userId);
 
             if (currentImage != null)
             {
@@ -86,10 +87,10 @@ namespace Voyage.Services.Profile
             return await GetCurrentUserAync(userId);
         }
 
-        public string GetProfileImage(string userId)
+        public async Task<string> GetProfileImage(string userId)
         {
-            var currentImage = _profileImageRepository.GetAll()
-                .FirstOrDefault(_ => _.UserId == userId);
+            var currentImage = await _profileImageRepository.GetAll()
+                .FirstOrDefaultAsync(_ => _.UserId == userId);
             return currentImage?.ImageData;
         }
 

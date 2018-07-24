@@ -9,7 +9,7 @@ namespace Voyage.Services.Profile
 
         Task<CurrentUserModel> UpdateProfileAsync(string userId, ProfileModel model);
 
-        string GetProfileImage(string userId);
+        Task<string> GetProfileImage(string userId);
 
         Task GetInitialProfileImageAsync(string userId, string emailAddress);
     }

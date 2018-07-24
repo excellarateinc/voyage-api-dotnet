@@ -9,6 +9,7 @@ using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity;
 
 namespace Voyage.Services.Role
 {
@@ -72,31 +73,31 @@ namespace Voyage.Services.Role
             }
 
             // Get the role to return as part of the response
-            var roleModel = GetRoleByName(role.Name);
+            var roleModel = await GetRoleByNameAsync(role.Name);
             return roleModel;
         }
 
-        public IEnumerable<RoleModel> GetRoles()
+        public async Task<IEnumerable<RoleModel>> GetRolesAsync()
         {
-            var roles = _roleManager.Roles.ToList();
+            var roles = await _roleManager.Roles.ToListAsync();
             return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaims(string name)
+        public async Task<IEnumerable<ClaimModel>> GetRoleClaimsAsync(string name)
         {
-            var claims = _roleClaimRepository.GetClaimsByRole(name);
+            var claims = await _roleClaimRepository.GetClaimsByRole(name).ToListAsync();
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
+        public async Task<IEnumerable<ClaimModel>> GetRoleClaimsByRoleIdAsync(string id)
         {
-            var claims = _roleClaimRepository.GetAll()
+            var claims = await _roleClaimRepository.GetAll()
                 .Where(_ => _.RoleId == id)
-                .ToList();
+                .ToListAsync();
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public async Task RemoveClaim(string roleId, int claimId)
+        public async Task RemoveClaimAsync(string roleId, int claimId)
         {
             // With the current model, the claim id uniquely identifies the RoleClaim
             // It is not normalized - the record contains the RoleId and the complete definition of the claim
@@ -104,7 +105,7 @@ namespace Voyage.Services.Role
             await _roleClaimRepository.DeleteAsync(claimId);
         }
 
-        public async Task<ClaimModel> GetClaimById(string roleId, int claimId)
+        public async Task<ClaimModel> GetClaimByIdAsync(string roleId, int claimId)
         {
             var claim = await _roleClaimRepository.GetAsync(claimId);
             if (claim == null)
@@ -113,9 +114,9 @@ namespace Voyage.Services.Role
             return _mapper.Map<ClaimModel>(claim);
         }
 
-        public RoleModel GetRoleByName(string name)
+        public async Task<RoleModel> GetRoleByNameAsync(string name)
         {
-            var role = _roleManager.FindByName(name);
+            var role = await _roleManager.FindByNameAsync(name);
             if (role == null)
                 throw new NotFoundException($"Could not locate entity with Id {name}");
 

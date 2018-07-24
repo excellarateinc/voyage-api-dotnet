@@ -5,7 +5,7 @@ namespace Voyage.Services.Notification
 {
     public interface INotificationService
     {
-        IEnumerable<Models.NotificationModel> GetNotifications(string userId);
+        Task<IEnumerable<Models.NotificationModel>> GetNotifications(string userId);
 
         Task<Models.NotificationModel> CreateNotification(Models.NotificationModel notification);
 

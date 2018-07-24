@@ -10,6 +10,6 @@ namespace Voyage.Services.Audit
     {
         Task RecordAsync(ActivityAuditModel model);
 
-        IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes);
+        Task<IList<ActivityAudit>> GetAuditActivityWithinTimeAsync(string userName, string path, int timeInMinutes);
     }
 }

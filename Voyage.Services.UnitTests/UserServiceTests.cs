@@ -413,8 +413,8 @@ namespace Voyage.Services.UnitTests
                 .Setup(_ => _.GetRolesAsync(appUser))
                 .ReturnsAsync(assignedRoles);
 
-            _mockRoleService.Setup(_ => _.GetRoles())
-                .Returns(fakeRoles);
+            _mockRoleService.Setup(_ => _.GetRolesAsync())
+                .ReturnsAsync(fakeRoles);
 
             var entityResult = await _userService.GetUserRolesAsync(userId);
 
@@ -464,8 +464,8 @@ namespace Voyage.Services.UnitTests
                 .Setup(_ => _.GetClaimsAsync(appUser))
                 .ReturnsAsync(new List<Claim>());
 
-            _mockRoleService.Setup(_ => _.GetRoleClaims(roles[0]))
-                .Returns(roleClaims);
+            _mockRoleService.Setup(_ => _.GetRoleClaimsAsync(roles[0]))
+                .ReturnsAsync(roleClaims);
 
             // Act
             var entityResult = await _userService.GetUserClaimsAsync(id);
@@ -558,8 +558,8 @@ namespace Voyage.Services.UnitTests
             _mockStore.Setup(_ => _.UpdateAsync(applicationUser))
                 .Returns(Task.Delay(0));
 
-            _mockRoleService.Setup(_ => _.GetRoleByName(roleModel.Name))
-                .Returns(serviceModel);
+            _mockRoleService.Setup(_ => _.GetRoleByNameAsync(roleModel.Name))
+                .ReturnsAsync(serviceModel);
 
             // act
             var entityResult = await _userService.AssignUserRoleAsync(userModel.Id, roleModel);
@@ -639,8 +639,8 @@ namespace Voyage.Services.UnitTests
         {
             var roleClaims = new[] { new ClaimModel { ClaimType = "permission", ClaimValue = "delete.test" } };
 
-            _mockRoleService.Setup(_ => _.GetRoleClaims("Admin"))
-             .Returns(roleClaims);
+            _mockRoleService.Setup(_ => _.GetRoleClaimsAsync("Admin"))
+             .ReturnsAsync(roleClaims);
 
             string user = "bob@bob.com";
             var model = new ApplicationUser { UserName = user };
@@ -696,7 +696,7 @@ namespace Voyage.Services.UnitTests
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
                 .Setup(_ => _.GetPasswordHashAsync(model))
                 .ReturnsAsync(hpw);
-            var result = await _userService.IsValidCredential(user, password);
+            var result = await _userService.IsValidCredentialAsync(user, password);
 
             Mock.VerifyAll();
             result.Should().BeTrue();
@@ -714,7 +714,7 @@ namespace Voyage.Services.UnitTests
             _mockStore.As<IUserPasswordStore<ApplicationUser>>()
                 .Setup(_ => _.GetPasswordHashAsync(model))
                 .ReturnsAsync(hpw);
-            var result = await _userService.IsValidCredential(user, password);
+            var result = await _userService.IsValidCredentialAsync(user, password);
 
             Mock.VerifyAll();
             result.Should().BeFalse();
@@ -733,7 +733,7 @@ namespace Voyage.Services.UnitTests
                 .Setup(_ => _.GetPasswordHashAsync(model))
                 .ReturnsAsync(hash);
 
-            var result = await _userService.IsValidCredential(user, password);
+            var result = await _userService.IsValidCredentialAsync(user, password);
 
             Mock.VerifyAll();
             result.Should().BeFalse();
@@ -789,7 +789,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetUsers_Should_Not_Return_Deleted()
+        public async void GetUsers_Should_Not_Return_Deleted()
         {
             var user1 = new ApplicationUser
             {
@@ -802,16 +802,16 @@ namespace Voyage.Services.UnitTests
 
             _mockStore.As<IQueryableUserStore<ApplicationUser>>()
                 .Setup(_ => _.Users)
-                .Returns(userResults.AsQueryable());
+                .Returns(userResults.AsQueryable().BuildMockDbSet());
 
-            var entityResult = _userService.GetUsers();
+            var entityResult = await _userService.GetUsersAsync();
 
             Mock.VerifyAll();
             entityResult.Should().BeEmpty();
         }
 
         [Fact]
-        public void GetUsers_Should_Call_UserManager()
+        public async void GetUsers_Should_Call_UserManager()
         {
             var user1 = new ApplicationUser
             {
@@ -823,9 +823,9 @@ namespace Voyage.Services.UnitTests
 
             _mockStore.As<IQueryableUserStore<ApplicationUser>>()
                 .Setup(_ => _.Users)
-                .Returns(userResults.AsQueryable());
+                .Returns(userResults.AsQueryable().BuildMockDbSet());
 
-            var entityResult = _userService.GetUsers();
+            var entityResult = await _userService.GetUsersAsync();
 
             Mock.VerifyAll();
             entityResult.Should().HaveSameCount(userResults);

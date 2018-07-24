@@ -311,10 +311,10 @@ namespace Voyage.Api.UnitTests.API.V1
             // Arrange
             var users = Fixture.CreateMany<UserModel>();
 
-            _mockUserService.Setup(_ => _.GetUsers())
-                .Returns(users);
+            _mockUserService.Setup(_ => _.GetUsersAsync())
+                .ReturnsAsync(users);
 
-            var result = _userController.GetUsers();
+            var result = await _userController.GetUsers();
 
             var message = await result.ExecuteAsync(new CancellationToken());
             message.StatusCode.Should().Be(HttpStatusCode.OK);

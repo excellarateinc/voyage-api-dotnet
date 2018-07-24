@@ -69,7 +69,9 @@ namespace Voyage.Services.UnitTests
                     UserId = userId,
                     ImageData = "ImageData"
                 }
-            }.AsQueryable());
+            }
+            .AsQueryable()
+            .BuildMockDbSet());
             var result = await _profileService.GetCurrentUserAync(userId);
             result.Id.Should().Be(userId);
             result.Email.Should().Be("test@test.com");
@@ -107,7 +109,7 @@ namespace Voyage.Services.UnitTests
                     ImageData = "ImageData"
                 }
             };
-            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable());
+            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable().BuildMockDbSet());
 
             var image = images.First();
             _profileImageRepositoryMock.Setup(_ => _.UpdateAsync(image)).ReturnsAsync(new ProfileImage());

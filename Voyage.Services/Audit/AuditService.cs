@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -27,10 +28,10 @@ namespace Voyage.Services.Audit
             await _activityRepository.AddAsync(auditRecord);
         }
 
-        public IList<ActivityAudit> GetAuditActivityWithinTime(string userName, string path, int timeInMinutes)
+        public async Task<IList<ActivityAudit>> GetAuditActivityWithinTimeAsync(string userName, string path, int timeInMinutes)
         {
             var twentyMinutesFromNow = DateTime.UtcNow.AddMinutes(-20);
-            var lastAuditRecord = _activityRepository.GetAll().Where(c => c.UserName == userName && c.Path == path).OrderByDescending(c => c.Date).Take(10);
+            var lastAuditRecord = await _activityRepository.GetAll().Where(c => c.UserName == userName && c.Path == path).OrderByDescending(c => c.Date).Take(10).ToListAsync();
 
             var activityWithin20Minutes = new List<ActivityAudit>();
             foreach (var activityAudit in lastAuditRecord)
