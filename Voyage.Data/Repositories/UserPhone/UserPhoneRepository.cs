@@ -28,7 +28,7 @@ namespace Voyage.Data.Repositories.UserPhone
         /// Deletes a phone number from the database
         /// </summary>
         /// <param name="id">Phone number ID</param>
-        public async override Task<int> DeleteAsync(object id)
+        public override async Task<int> DeleteAsync(object id)
         {
             var entity = await GetAsync(id);
             if (entity != null)
@@ -40,12 +40,24 @@ namespace Voyage.Data.Repositories.UserPhone
             return 0;
         }
 
+        public int Delete(object id)
+        {
+            var entity = Context.UserPhones.Find(id);
+            if (entity != null)
+            {
+                Context.UserPhones.Remove(entity);
+                return Context.SaveChanges();
+            }
+
+            return 0;
+        }
+
         /// <summary>
         /// Fetch a phone number ID
         /// </summary>
         /// <param name="id">Phone number ID</param>
         /// <returns>Phone Number</returns>
-        public async override Task<Models.Entities.UserPhone> GetAsync(object id)
+        public override async Task<Models.Entities.UserPhone> GetAsync(object id)
         {
             if (Context.UserPhones is DbSet<Models.Entities.UserPhone> dbSet)
             {
@@ -60,7 +72,7 @@ namespace Voyage.Data.Repositories.UserPhone
             throw new NotImplementedException("Phone numbers are loaded via the user object");
         }
 
-        public async override Task<Models.Entities.UserPhone> UpdateAsync(Models.Entities.UserPhone model)
+        public override async Task<Models.Entities.UserPhone> UpdateAsync(Models.Entities.UserPhone model)
         {
             Context.UserPhones.AddOrUpdate(model);
             await Context.SaveChangesAsync();

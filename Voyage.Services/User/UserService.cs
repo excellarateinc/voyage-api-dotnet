@@ -59,7 +59,7 @@ namespace Voyage.Services.User
                 source: model.Phones,
                 destination: appUser.Phones,
                 predicate: (s, d) => s.Id == d.Id,
-                deleteAction: async entity => await _phoneRepository.DeleteAsync(entity.Id));
+                deleteAction: entity => _phoneRepository.Delete(entity.Id));
 
             await _userManager.UpdateAsync(appUser);
             return _mapper.Map<UserModel>(appUser);
@@ -169,10 +169,11 @@ namespace Voyage.Services.User
 
             // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
-                .SelectManyAsync(_ => _))
-                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-            userIdentity.AddClaims(roleClaims);
+            foreach (var role in userRoles)
+            {
+                var claims = await _roleService.GetRoleClaimsAsync(role);
+                userIdentity.AddClaims(claims.Select(_ => new Claim(_.ClaimType, _.ClaimValue)));
+            }
 
             return userIdentity;
         }
@@ -187,10 +188,11 @@ namespace Voyage.Services.User
 
             // Add in role claims
             var userRoles = _userManager.GetRoles(user.Id);
-            var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
-                .SelectManyAsync(_ => _))
-                .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-            identity.AddClaims(roleClaims);
+            foreach (var role in userRoles)
+            {
+                var claims = await _roleService.GetRoleClaimsAsync(role);
+                identity.AddClaims(claims.Select(_ => new Claim(_.ClaimType, _.ClaimValue)));
+            }
 
             return identity;
         }
@@ -208,10 +210,11 @@ namespace Voyage.Services.User
             {
                 // Add in role claims
                 var userRoles = new List<string> { "Administrator" };
-                var roleClaims = (await userRoles.Select(async _ => await _roleService.GetRoleClaimsAsync(_))
-                    .SelectManyAsync(_ => _))
-                    .Select(_ => new Claim(_.ClaimType, _.ClaimValue));
-                identity.AddClaims(roleClaims);
+                foreach (var role in userRoles)
+                {
+                    var claims = await _roleService.GetRoleClaimsAsync(role);
+                    identity.AddClaims(claims.Select(_ => new Claim(_.ClaimType, _.ClaimValue)));
+                }
 
                 var client = Clients.Client1.Id == clientId ? Clients.Client1 : Clients.Client2;
                 identity.AddClaim(new Claim("client_id", client.Id));

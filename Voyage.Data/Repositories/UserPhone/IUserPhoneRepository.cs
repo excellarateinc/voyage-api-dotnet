@@ -9,5 +9,7 @@ namespace Voyage.Data.Repositories.UserPhone
         string GetE164Format(string phoneNumber);
 
         Task SendSecurityCode(string phoneNumber, string securityCode);
+
+        int Delete(object id);
     }
 }
