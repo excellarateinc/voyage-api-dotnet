@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Voyage.Services.Notification
 {
     public interface INotificationService
     {
-        IEnumerable<Models.NotificationModel> GetNotifications(string userId);
+        Task<IEnumerable<Models.NotificationModel>> GetNotifications(string userId);
 
-        Models.NotificationModel CreateNotification(Models.NotificationModel notification);
+        Task<Models.NotificationModel> CreateNotification(Models.NotificationModel notification);
 
-        void MarkNotificationAsRead(string userId, int notificationId);
+        Task MarkNotificationAsRead(string userId, int notificationId);
 
-        void MarkAllNotificationsAsRead(string userId);
+        Task MarkAllNotificationsAsRead(string userId);
     }
 }

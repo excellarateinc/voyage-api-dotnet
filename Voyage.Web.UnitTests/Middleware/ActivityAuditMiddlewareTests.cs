@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AntPathMatching;
 using Microsoft.Owin;
 using Microsoft.Owin.Testing;
 using Moq;
 using Owin;
 using Voyage.Models;
+using Voyage.Services.Ant;
 using Voyage.Services.Audit;
 using Voyage.Web.Middleware;
 using Voyage.Web.Middleware.Processors;
@@ -19,11 +21,13 @@ namespace Voyage.Web.UnitTests.Middleware
     {
         private readonly Mock<IAuditService> _mockAuditService;
         private readonly Mock<ErrorResponseProcessor> _mockProcessor;
+        private readonly Mock<IAntService> _mockAntService;
 
         public ActivityAuditMiddlewareTests()
         {
             _mockAuditService = Mock.Create<IAuditService>();
             _mockProcessor = Mock.Create<ErrorResponseProcessor>();
+            _mockAntService = Mock.Create<IAntService>();
         }
 
         [Fact]
@@ -38,6 +42,9 @@ namespace Voyage.Web.UnitTests.Middleware
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id)))
                 .Returns(Task.FromResult(0));
 
+            _mockAntService.Setup(_ => _.GetAntPaths(It.IsAny<IEnumerable<string>>()))
+                .Returns(new Ant[0]);
+
             using (var server = TestServer.Create(app =>
             {
                 // Use the test environment middleware to setup an context.Environment variables
@@ -47,7 +54,8 @@ namespace Voyage.Web.UnitTests.Middleware
                 app.Use(
                     typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
-                    _mockProcessor.Object);
+                    _mockProcessor.Object,
+                    _mockAntService.Object);
 
                 app.Run(context =>
                 {
@@ -83,6 +91,9 @@ namespace Voyage.Web.UnitTests.Middleware
                 _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId == id && m.Error == error)))
                 .Returns(Task.FromResult(0));
 
+            _mockAntService.Setup(_ => _.GetAntPaths(It.IsAny<IEnumerable<string>>()))
+                .Returns(new Ant[0]);
+
             using (var server = TestServer.Create(app =>
             {
                 // Use the test environment middleware to setup an context.Environment variables
@@ -92,7 +103,8 @@ namespace Voyage.Web.UnitTests.Middleware
                 app.Use(
                     typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
-                    _mockProcessor.Object);
+                    _mockProcessor.Object,
+                    _mockAntService.Object);
 
                 app.Run(context =>
                 {
@@ -118,6 +130,9 @@ namespace Voyage.Web.UnitTests.Middleware
             _mockAuditService.Setup(_ => _.RecordAsync(It.Is<ActivityAuditModel>(m => m.RequestId != id)))
                 .Returns(Task.FromResult(0));
 
+            _mockAntService.Setup(_ => _.GetAntPaths(It.IsAny<IEnumerable<string>>()))
+                .Returns(new Ant[0]);
+
             using (var server = TestServer.Create(app =>
             {
                 // Use the test environment middleware to setup an context.Environment variables
@@ -127,7 +142,8 @@ namespace Voyage.Web.UnitTests.Middleware
                 app.Use(
                     typeof(ActivityAuditMiddleware),
                     _mockAuditService.Object,
-                    _mockProcessor.Object);
+                    _mockProcessor.Object,
+                    _mockAntService.Object);
 
                 app.Run(context =>
                 {

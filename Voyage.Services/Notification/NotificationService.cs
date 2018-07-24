@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Voyage.Core;
 using Voyage.Core.Exceptions;
@@ -25,36 +27,37 @@ namespace Voyage.Services.Notification
             _pushService = pushService.ThrowIfNull(nameof(pushService));
         }
 
-        public IEnumerable<Models.NotificationModel> GetNotifications(string userId)
+        public async Task<IEnumerable<Models.NotificationModel>> GetNotifications(string userId)
         {
-            var notifications = _notificationRepository.GetAll()
+            var notifications = await _notificationRepository.GetAll()
                 .Where(_ => _.AssignedToUserId == userId && !_.IsRead)
-                .OrderByDescending(_ => _.CreatedDate);
+                .OrderByDescending(_ => _.CreatedDate)
+                .ToListAsync();
 
             return _mapper.Map<IEnumerable<Models.NotificationModel>>(notifications);
         }
 
-        public NotificationModel CreateNotification(NotificationModel notification)
+        public async Task<NotificationModel> CreateNotification(NotificationModel notification)
         {
             var notificationEntity = _mapper.Map<Models.Entities.Notification>(notification);
-            var model = _mapper.Map<Models.NotificationModel>(_notificationRepository.Add(notificationEntity));
+            var model = _mapper.Map<Models.NotificationModel>(await _notificationRepository.AddAsync(notificationEntity));
             _pushService.PushNotification(model);
             return model;
         }
 
-        public void MarkNotificationAsRead(string userId, int notificationId)
+        public async Task MarkNotificationAsRead(string userId, int notificationId)
         {
-            var notification = _notificationRepository.Get(notificationId);
+            var notification = await _notificationRepository.GetAsync(notificationId);
             if (notification.AssignedToUserId != userId)
             {
                 throw new UnauthorizedException();
             }
 
             notification.IsRead = true;
-            _notificationRepository.SaveChanges();
+            await _notificationRepository.SaveChangesAsync();
         }
 
-        public void MarkAllNotificationsAsRead(string userId)
+        public async Task MarkAllNotificationsAsRead(string userId)
         {
             var notifications = _notificationRepository.GetAll()
                 .Where(_ => _.AssignedToUserId == userId && !_.IsRead);
@@ -64,7 +67,7 @@ namespace Voyage.Services.Notification
                 notification.IsRead = true;
             }
 
-            _notificationRepository.SaveChanges();
+            await _notificationRepository.SaveChangesAsync();
         }
     }
 }

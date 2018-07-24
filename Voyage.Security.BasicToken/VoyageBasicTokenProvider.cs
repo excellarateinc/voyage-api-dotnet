@@ -14,7 +14,7 @@ namespace Voyage.Security.BasicToken
             var scope = context.OwinContext.GetAutofacLifetimeScope();
             var userService = scope.Resolve<IUserService>();
 
-            if (await userService.IsValidCredential(context.UserName, context.Password))
+            if (await userService.IsValidCredentialAsync(context.UserName, context.Password))
             {
                 context.Validated(await userService.CreateClaimsIdentityAsync(context.UserName, "OAuth"));
             }

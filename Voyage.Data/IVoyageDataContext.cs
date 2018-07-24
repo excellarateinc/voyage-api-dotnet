@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Threading.Tasks;
 using Voyage.Models.Entities;
 
 namespace Voyage.Data
@@ -34,5 +35,7 @@ namespace Voyage.Data
         IDbSet<ChatChannelMember> ChatChannelMembers { get; set; }
 
         int SaveChanges();
+
+        Task<int> SaveChangesAsync();
     }
 }

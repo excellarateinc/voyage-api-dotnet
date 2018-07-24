@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories
 {
@@ -7,7 +8,7 @@ namespace Voyage.Data.Repositories
     /// </summary>
     public interface IRepository
     {
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 
     /// <summary>
@@ -16,14 +17,14 @@ namespace Voyage.Data.Repositories
     /// <typeparam name="TModel">Type of the model that the repository will return</typeparam>
     public interface IRepository<TModel> : IRepository
     {
+        Task<TModel> AddAsync(TModel model);
+
+        Task<TModel> UpdateAsync(TModel model);
+
         IQueryable<TModel> GetAll();
 
-        TModel Get(object key);
+        Task<TModel> GetAsync(object id);
 
-        TModel Add(TModel model);
-
-        TModel Update(TModel model);
-
-        void Delete(object key);
+        Task<int> DeleteAsync(object id);
     }
 }

@@ -13,13 +13,13 @@ namespace Voyage.Services.User
 
         Task<UserModel> CreateUserAsync(UserModel model);
 
-        Task<bool> IsValidCredential(string userName, string password);
+        Task<bool> IsValidCredentialAsync(string userName, string password);
 
         Task<ClaimsIdentity> CreateClaimsIdentityAsync(string userName, string authenticationType);
 
         Task<ClaimsIdentity> CreateJwtClaimsIdentityAsync(string userName);
 
-        IEnumerable<UserModel> GetUsers();
+        Task<IEnumerable<UserModel>> GetUsersAsync();
 
         Task<RoleModel> AssignUserRoleAsync(string userId, RoleModel roleModel);
 

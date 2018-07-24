@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.ActivityAudit
 {
@@ -12,9 +13,9 @@ namespace Voyage.Data.Repositories.ActivityAudit
         {
         }
 
-        public override Models.Entities.ActivityAudit Add(Models.Entities.ActivityAudit model)
+        public async override Task<Models.Entities.ActivityAudit> AddAsync(Models.Entities.ActivityAudit model)
         {
-            ((DbContext)Context).Database.ExecuteSqlCommand(
+            await ((DbContext)Context).Database.ExecuteSqlCommandAsync(
                 "dbo.ActivityAuditInsert @RequestId, @Method, @Path, @IpAddress, @Date, @StatusCode, @Error, @UserName",
                 new SqlParameter("@RequestId", model.RequestId ?? (object)DBNull.Value),
                 new SqlParameter("@Method", model.Method ?? (object)DBNull.Value),
@@ -28,13 +29,18 @@ namespace Voyage.Data.Repositories.ActivityAudit
             return model;
         }
 
-        public override void Delete(object id)
+        public override Task<int> DeleteAsync(object id)
         {
             throw new NotImplementedException("No requirement for deleting an activity audit record");
         }
 
-        public override Models.Entities.ActivityAudit Get(object id)
+        public async override Task<Models.Entities.ActivityAudit> GetAsync(object id)
         {
+            if (Context.ActivityAudits is DbSet<Models.Entities.ActivityAudit> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.ActivityAudits.Find(id);
         }
 
@@ -43,7 +49,7 @@ namespace Voyage.Data.Repositories.ActivityAudit
             return Context.ActivityAudits;
         }
 
-        public override Models.Entities.ActivityAudit Update(Models.Entities.ActivityAudit model)
+        public override Task<Models.Entities.ActivityAudit> UpdateAsync(Models.Entities.ActivityAudit model)
         {
             throw new NotImplementedException("No requirement for updating an activity audit record");
         }

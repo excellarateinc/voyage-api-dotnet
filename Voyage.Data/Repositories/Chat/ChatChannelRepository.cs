@@ -1,5 +1,7 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.Chat
 {
@@ -10,25 +12,30 @@ namespace Voyage.Data.Repositories.Chat
         {
         }
 
-        public override Models.Entities.ChatChannel Add(Models.Entities.ChatChannel model)
+        public async override Task<Models.Entities.ChatChannel> AddAsync(Models.Entities.ChatChannel model)
         {
             Context.ChatChannels.Add(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<int> DeleteAsync(object id)
         {
-            var entity = Get(id);
+            var entity = await GetAsync(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.ChatChannels.Remove(entity);
-            Context.SaveChanges();
+            return await Context.SaveChangesAsync();
         }
 
-        public override Models.Entities.ChatChannel Get(object id)
+        public async override Task<Models.Entities.ChatChannel> GetAsync(object id)
         {
+            if (Context.ChatChannels is DbSet<Models.Entities.ChatChannel> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.ChatChannels.Find(id);
         }
 
@@ -37,10 +44,10 @@ namespace Voyage.Data.Repositories.Chat
             return Context.ChatChannels;
         }
 
-        public override Models.Entities.ChatChannel Update(Models.Entities.ChatChannel model)
+        public async override Task<Models.Entities.ChatChannel> UpdateAsync(Models.Entities.ChatChannel model)
         {
             Context.ChatChannels.AddOrUpdate(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
     }

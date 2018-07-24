@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Moq;
+using System.Threading.Tasks;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
@@ -34,29 +35,31 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void InsertSecurityCode_Should_Set_Collect_values()
+        public async void InsertSecurityCode_Should_Set_Collect_values()
         {
             _userPhoneRepositoryMock = new Mock<IUserPhoneRepository>();
-            _userPhoneRepositoryMock.Setup(c => c.Get(1234)).Returns(new UserPhone());
-            _userPhoneRepositoryMock.Setup(c => c.Update(It.IsAny<UserPhone>()));
-            _userPhoneRepositoryMock.Setup(c => c.SaveChanges());
+            var userPhone = new UserPhone();
+            _userPhoneRepositoryMock.Setup(c => c.GetAsync(1234)).ReturnsAsync(userPhone);
+            _userPhoneRepositoryMock.Setup(c => c.UpdateAsync(It.IsAny<UserPhone>())).ReturnsAsync(userPhone);
+            _userPhoneRepositoryMock.Setup(c => c.SaveChangesAsync()).ReturnsAsync(1);
             _phoneService = new PhoneService(_userManager, _mapperFixture.MapperInstance, _userPhoneRepositoryMock.Object);
 
-            _phoneService.InsertSecurityCode(1234, "code");
+            await _phoneService.InsertSecurityCodeAsync(1234, "code");
 
             _userPhoneRepositoryMock.VerifyAll();
         }
 
         [Fact]
-        public void ResetSecurityCode_Should_Call_All_Require_Parameters()
+        public async void ResetSecurityCode_Should_Call_All_Require_Parameters()
         {
             _userPhoneRepositoryMock = new Mock<IUserPhoneRepository>();
-            _userPhoneRepositoryMock.Setup(c => c.Get(1234)).Returns(new UserPhone());
-            _userPhoneRepositoryMock.Setup(c => c.Update(It.IsAny<UserPhone>()));
-            _userPhoneRepositoryMock.Setup(c => c.SaveChanges());
+            var userPhone = new UserPhone();
+            _userPhoneRepositoryMock.Setup(c => c.GetAsync(1234)).ReturnsAsync(userPhone);
+            _userPhoneRepositoryMock.Setup(c => c.UpdateAsync(It.IsAny<UserPhone>())).ReturnsAsync(userPhone);
+            _userPhoneRepositoryMock.Setup(c => c.SaveChangesAsync()).ReturnsAsync(1);
             _phoneService = new PhoneService(_userManager, _mapperFixture.MapperInstance, _userPhoneRepositoryMock.Object);
 
-            _phoneService.InsertSecurityCode(1234, "code");
+            await _phoneService.InsertSecurityCodeAsync(1234, "code");
 
             _userPhoneRepositoryMock.VerifyAll();
         }

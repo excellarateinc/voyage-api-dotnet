@@ -15,6 +15,7 @@ using Voyage.Services.User;
 using Xunit;
 using Ploeh.AutoFixture;
 using Voyage.Models;
+using System.Threading.Tasks;
 
 namespace Voyage.Services.UnitTests
 {
@@ -68,7 +69,9 @@ namespace Voyage.Services.UnitTests
                     UserId = userId,
                     ImageData = "ImageData"
                 }
-            }.AsQueryable());
+            }
+            .AsQueryable()
+            .BuildMockDbSet());
             var result = await _profileService.GetCurrentUserAync(userId);
             result.Id.Should().Be(userId);
             result.Email.Should().Be("test@test.com");
@@ -106,10 +109,10 @@ namespace Voyage.Services.UnitTests
                     ImageData = "ImageData"
                 }
             };
-            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable());
+            _profileImageRepositoryMock.Setup(_ => _.GetAll()).Returns(images.AsQueryable().BuildMockDbSet());
 
             var image = images.First();
-            _profileImageRepositoryMock.Setup(_ => _.Update(image)).Returns(new ProfileImage());
+            _profileImageRepositoryMock.Setup(_ => _.UpdateAsync(image)).ReturnsAsync(new ProfileImage());
 
             var result = await _profileService.UpdateProfileAsync(userId, new ProfileModel
             {

@@ -9,6 +9,7 @@ using Voyage.Models;
 using Voyage.Models.Entities;
 using Voyage.Services.IdentityManagers;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity;
 
 namespace Voyage.Services.Role
 {
@@ -47,7 +48,7 @@ namespace Voyage.Services.Role
                 ClaimValue = claim.ClaimValue,
                 ClaimType = claim.ClaimType
             };
-            _roleClaimRepository.Add(roleClaim);
+            await _roleClaimRepository.AddAsync(roleClaim);
             return _mapper.Map<ClaimModel>(roleClaim);
         }
 
@@ -72,50 +73,50 @@ namespace Voyage.Services.Role
             }
 
             // Get the role to return as part of the response
-            var roleModel = GetRoleByName(role.Name);
+            var roleModel = await GetRoleByNameAsync(role.Name);
             return roleModel;
         }
 
-        public IEnumerable<RoleModel> GetRoles()
+        public async Task<IEnumerable<RoleModel>> GetRolesAsync()
         {
-            var roles = _roleManager.Roles.ToList();
+            var roles = await _roleManager.Roles.ToListAsync();
             return _mapper.Map<IEnumerable<RoleModel>>(roles);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaims(string name)
+        public async Task<IEnumerable<ClaimModel>> GetRoleClaimsAsync(string name)
         {
-            var claims = _roleClaimRepository.GetClaimsByRole(name);
+            var claims = await _roleClaimRepository.GetClaimsByRole(name).ToListAsync();
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public IEnumerable<ClaimModel> GetRoleClaimsByRoleId(string id)
+        public async Task<IEnumerable<ClaimModel>> GetRoleClaimsByRoleIdAsync(string id)
         {
-            var claims = _roleClaimRepository.GetAll()
+            var claims = await _roleClaimRepository.GetAll()
                 .Where(_ => _.RoleId == id)
-                .ToList();
+                .ToListAsync();
             return _mapper.Map<IEnumerable<ClaimModel>>(claims);
         }
 
-        public void RemoveClaim(string roleId, int claimId)
+        public async Task RemoveClaimAsync(string roleId, int claimId)
         {
             // With the current model, the claim id uniquely identifies the RoleClaim
             // It is not normalized - the record contains the RoleId and the complete definition of the claim
             // This means something like a "login" claim is repeated for each role
-            _roleClaimRepository.Delete(claimId);
+            await _roleClaimRepository.DeleteAsync(claimId);
         }
 
-        public ClaimModel GetClaimById(string roleId, int claimId)
+        public async Task<ClaimModel> GetClaimByIdAsync(string roleId, int claimId)
         {
-            var claim = _roleClaimRepository.Get(claimId);
+            var claim = await _roleClaimRepository.GetAsync(claimId);
             if (claim == null)
                 throw new NotFoundException($"Could not locate entity with Id {roleId}");
 
             return _mapper.Map<ClaimModel>(claim);
         }
 
-        public RoleModel GetRoleByName(string name)
+        public async Task<RoleModel> GetRoleByNameAsync(string name)
         {
-            var role = _roleManager.FindByName(name);
+            var role = await _roleManager.FindByNameAsync(name);
             if (role == null)
                 throw new NotFoundException($"Could not locate entity with Id {name}");
 

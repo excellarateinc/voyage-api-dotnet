@@ -112,6 +112,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminServiceTests.cs" />
+    <Compile Include="Common\QueryableExtensions.cs" />
+    <Compile Include="Common\TestDbAsyncEnumerable.cs" />
+    <Compile Include="Common\TestDbAsyncEnumerator.cs" />
+    <Compile Include="Common\TestDbAsyncQueryProvider.cs" />
     <Compile Include="NotificationServiceTests.cs" />
     <Compile Include="ApplicationInfoServiceTests.cs" />
     <Compile Include="AuditServiceTests.cs" />

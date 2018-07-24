@@ -34,9 +34,9 @@ namespace Voyage.Api.UserManager.API.V1
         [Route("users")]
         [SwaggerResponse(200, "IEnumerable<UserModel>", typeof(IEnumerable<UserModel>))]
         [SwaggerResponse(401, "UnauthorizedException")]
-        public IHttpActionResult GetUsers()
+        public async Task<IHttpActionResult> GetUsers()
         {
-            var users = _userService.GetUsers();
+            var users = await _userService.GetUsersAsync();
             return Ok(users);
         }
 

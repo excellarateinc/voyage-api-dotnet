@@ -2,6 +2,8 @@
 using System.Linq;
 using Voyage.Core.Exceptions;
 using System.Configuration;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Voyage.Data.Repositories.Client
 {
@@ -12,25 +14,30 @@ namespace Voyage.Data.Repositories.Client
         {
         }
 
-        public override Models.Entities.Client Add(Models.Entities.Client model)
+        public async override Task<Models.Entities.Client> AddAsync(Models.Entities.Client model)
         {
             Context.Clients.Add(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<int> DeleteAsync(object id)
         {
-            var entity = Get(id);
+            var entity = await GetAsync(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.Clients.Remove(entity);
-            Context.SaveChanges();
+            return await Context.SaveChangesAsync();
         }
 
-        public override Models.Entities.Client Get(object id)
+        public async override Task<Models.Entities.Client> GetAsync(object id)
         {
+            if (Context.Clients is DbSet<Models.Entities.Client> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.Clients.Find(id);
         }
 
@@ -39,21 +46,21 @@ namespace Voyage.Data.Repositories.Client
             return Context.Clients;
         }
 
-        public override Models.Entities.Client Update(Models.Entities.Client model)
+        public async override Task<Models.Entities.Client> UpdateAsync(Models.Entities.Client model)
         {
             Context.Clients.AddOrUpdate(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
 
-        public bool ValidateClient(string clientIdentifier, string clientSecret)
+        public async Task<bool> ValidateClientAsync(string clientIdentifier, string clientSecret)
         {
-            return Context.Clients.Any(k => k.ClientIdentifier.Equals(clientIdentifier) && k.ClientSecret.Equals(clientSecret) && !k.IsDeleted);
+            return await Context.Clients.AnyAsync(k => k.ClientIdentifier.Equals(clientIdentifier) && k.ClientSecret.Equals(clientSecret) && !k.IsDeleted);
         }
 
-        public Models.Entities.Client GetByName(string clientIdentifier)
+        public async Task<Models.Entities.Client> GetByNameAsync(string clientIdentifier)
         {
-            return Context.Clients.FirstOrDefault(k => k.ClientIdentifier.Equals(clientIdentifier));
+            return await Context.Clients.FirstOrDefaultAsync(k => k.ClientIdentifier.Equals(clientIdentifier));
         }
 
         /// <summary>
@@ -62,9 +69,9 @@ namespace Voyage.Data.Repositories.Client
         /// </summary>
         /// <param name="id"></param>
         /// <param name="isIncrement"></param>
-        public void UpdateFailedLoginAttempts(string id, bool isIncrement)
+        public async Task UpdateFailedLoginAttemptsAsync(string id, bool isIncrement)
         {
-            var client = Get(id);
+            var client = await GetAsync(id);
             if (client == null)
                 throw new NotFoundException();
 
@@ -94,7 +101,7 @@ namespace Voyage.Data.Repositories.Client
                 client.FailedLoginAttempts = 0;
             }
 
-            Update(client);
+            await UpdateAsync(client);
         }
 
         /// <summary>
@@ -102,9 +109,9 @@ namespace Voyage.Data.Repositories.Client
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool IsLockedOut(string id)
+        public async Task<bool> IsLockedOutAsync(string id)
         {
-            var client = Get(id);
+            var client = await GetAsync(id);
             if (client == null)
                 throw new NotFoundException();
             return client.IsAccountLocked;
@@ -114,14 +121,14 @@ namespace Voyage.Data.Repositories.Client
         /// Unlock the client if invoked.
         /// </summary>
         /// <param name="id"></param>
-        public void UnlockClient(string id)
+        public async Task UnlockClientAsync(string id)
         {
-            var client = Get(id);
+            var client = await GetAsync(id);
             if (client == null)
                 return;
 
             client.IsAccountLocked = true;
-            Update(client);
+            await UpdateAsync(client);
         }
     }
 }

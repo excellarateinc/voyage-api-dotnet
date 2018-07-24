@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.ApplicationLog
 {
@@ -13,17 +14,17 @@ namespace Voyage.Data.Repositories.ApplicationLog
         {
         }
 
-        public override Models.Entities.ApplicationLog Add(Models.Entities.ApplicationLog model)
+        public override Task<Models.Entities.ApplicationLog> AddAsync(Models.Entities.ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }
 
-        public override void Delete(object id)
+        public override Task<int> DeleteAsync(object id)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }
 
-        public override Models.Entities.ApplicationLog Get(object id)
+        public override Task<Models.Entities.ApplicationLog> GetAsync(object id)
         {
             throw new NotImplementedException("No current use case for retrieving a message by id");
         }
@@ -38,7 +39,7 @@ namespace Voyage.Data.Repositories.ApplicationLog
             return Context.Logs.Take(maxEvents);
         }
 
-        public override Models.Entities.ApplicationLog Update(Models.Entities.ApplicationLog model)
+        public override Task<Models.Entities.ApplicationLog> UpdateAsync(Models.Entities.ApplicationLog model)
         {
             throw new NotImplementedException("Log messages managed by logging interface");
         }

@@ -42,7 +42,7 @@ namespace Voyage.Services.PasswordRecovery
             }
 
             // 1. get records from audit to check if password attapmt within the last 20 minutes is more than 5 times
-            var attempts = _auditService.GetAuditActivityWithinTime(userName, "/passwordRecovery", 20);
+            var attempts = await _auditService.GetAuditActivityWithinTimeAsync(userName, "/passwordRecovery", 20);
 
             // 3. insert audit log
             await WriteAuditLog(userName);
@@ -71,7 +71,7 @@ namespace Voyage.Services.PasswordRecovery
                     var securityCode = _phoneService.GenerateSecurityCode();
 
                     // save to our database
-                    _phoneService.InsertSecurityCode(userPhoneNumber.Id, securityCode);
+                    await _phoneService.InsertSecurityCodeAsync(userPhoneNumber.Id, securityCode);
 
                     // send text to user using amazon SNS
                     await _phoneService.SendSecurityCodeAsync(formatedPhoneNumber, securityCode);

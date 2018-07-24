@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Voyage.Data.Repositories.UserPhone;
 using Voyage.Data.UnitTests.Common;
@@ -20,7 +21,7 @@ namespace Voyage.Data.UnitTests
         [Fact]
         public void Add_Should_Throw_NotImplementedException()
         {
-            Action throwAction = () => _phoneRepository.Add(new UserPhone());
+            Func<Task> throwAction = async () => await _phoneRepository.AddAsync(new UserPhone());
             throwAction
                 .ShouldThrow<NotImplementedException>();
         }

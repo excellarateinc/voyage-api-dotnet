@@ -1,5 +1,7 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Voyage.Data.Repositories.Chat
 {
@@ -10,25 +12,30 @@ namespace Voyage.Data.Repositories.Chat
         {
         }
 
-        public override Models.Entities.ChatChannelMember Add(Models.Entities.ChatChannelMember model)
+        public async override Task<Models.Entities.ChatChannelMember> AddAsync(Models.Entities.ChatChannelMember model)
         {
             Context.ChatChannelMembers.Add(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
 
-        public override void Delete(object id)
+        public async override Task<int> DeleteAsync(object id)
         {
-            var entity = Get(id);
+            var entity = await GetAsync(id);
             if (entity == null)
-                return;
+                return 0;
 
             Context.ChatChannelMembers.Remove(entity);
-            Context.SaveChanges();
+            return await Context.SaveChangesAsync();
         }
 
-        public override Models.Entities.ChatChannelMember Get(object id)
+        public async override Task<Models.Entities.ChatChannelMember> GetAsync(object id)
         {
+            if (Context.ChatChannelMembers is DbSet<Models.Entities.ChatChannelMember> dbSet)
+            {
+                return await dbSet.FindAsync(id);
+            }
+
             return Context.ChatChannelMembers.Find(id);
         }
 
@@ -37,10 +44,10 @@ namespace Voyage.Data.Repositories.Chat
             return Context.ChatChannelMembers;
         }
 
-        public override Models.Entities.ChatChannelMember Update(Models.Entities.ChatChannelMember model)
+        public async override Task<Models.Entities.ChatChannelMember> UpdateAsync(Models.Entities.ChatChannelMember model)
         {
             Context.ChatChannelMembers.AddOrUpdate(model);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return model;
         }
     }

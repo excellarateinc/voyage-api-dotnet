@@ -8,6 +8,7 @@ using Voyage.Services.Notification;
 using System.Collections.Generic;
 using System.Net;
 using Swashbuckle.Swagger.Annotations;
+using System.Threading.Tasks;
 
 namespace Voyage.Api.API.v1
 {
@@ -37,10 +38,10 @@ namespace Voyage.Api.API.v1
         [Route("notifications")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<NotificationModel>))]
         [SwaggerResponse(HttpStatusCode.Unauthorized)]
-        public IHttpActionResult GetNotifications()
+        public async Task<IHttpActionResult> GetNotifications()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            var notifications = _notificationService.GetNotifications(userId);
+            var notifications = await _notificationService.GetNotifications(userId);
             return Ok(notifications);
         }
 
@@ -52,10 +53,10 @@ namespace Voyage.Api.API.v1
         [Route("notifications/{id}")]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.Unauthorized)]
-        public IHttpActionResult MarkNotificationAsRead(int id)
+        public async Task<IHttpActionResult> MarkNotificationAsRead(int id)
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            _notificationService.MarkNotificationAsRead(userId, id);
+            await _notificationService.MarkNotificationAsRead(userId, id);
             return Ok(new { });
         }
 
@@ -67,10 +68,10 @@ namespace Voyage.Api.API.v1
         [Route("notifications")]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.Unauthorized)]
-        public IHttpActionResult MarkAllNotificationsAsRead()
+        public async Task<IHttpActionResult> MarkAllNotificationsAsRead()
         {
             var userId = _authenticationManager.User.FindFirst(_ => _.Type == ClaimTypes.NameIdentifier).Value;
-            _notificationService.MarkAllNotificationsAsRead(userId);
+            await _notificationService.MarkAllNotificationsAsRead(userId);
             return Ok(new { });
         }
 
@@ -82,9 +83,9 @@ namespace Voyage.Api.API.v1
         [Route("notifications")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(NotificationModel))]
         [SwaggerResponse(HttpStatusCode.Unauthorized)]
-        public IHttpActionResult CreateNotification(NotificationModel notification)
+        public async Task<IHttpActionResult> CreateNotification(NotificationModel notification)
         {
-            var createdNotification = _notificationService.CreateNotification(notification);
+            var createdNotification = await _notificationService.CreateNotification(notification);
             return Ok(createdNotification);
         }
     }

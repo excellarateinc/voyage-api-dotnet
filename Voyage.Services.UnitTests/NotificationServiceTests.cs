@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Voyage.Core.Exceptions;
@@ -32,7 +33,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void NotificationService_GetNotifications_ShouldReturnUnreadNotificationsForUser()
+        public async void NotificationService_GetNotifications_ShouldReturnUnreadNotificationsForUser()
         {
             // Arrange
             const string userId = "TestUser";
@@ -41,11 +42,16 @@ namespace Voyage.Services.UnitTests
                 new Models.Entities.Notification { AssignedToUserId = userId, IsRead = false },
                 new Models.Entities.Notification { AssignedToUserId = "Other", IsRead = false },
                 new Models.Entities.Notification { AssignedToUserId = userId, IsRead = true }
-            };
-            _mockNotificationRepository.Setup(_ => _.GetAll()).Returns(notificationsList.AsQueryable());
+            }
+            .AsQueryable()
+            .BuildMockDbSet();
+
+            _mockNotificationRepository
+                .Setup(_ => _.GetAll())
+                .Returns(notificationsList);
 
             // Act
-            var result = _notificationService.GetNotifications(userId);
+            var result = await _notificationService.GetNotifications(userId);
 
             // Assert
             result.Count().Should().Be(1);
@@ -54,24 +60,24 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void NotificationService_CreateNotification_ShouldCreateNotificationForUser()
+        public async void NotificationService_CreateNotification_ShouldCreateNotificationForUser()
         {
             // Arrange
-            _mockNotificationRepository.Setup(_ => _.Add(It.IsAny<Models.Entities.Notification>()))
-                .Returns(new Models.Entities.Notification { Id = 1 });
+            _mockNotificationRepository.Setup(_ => _.AddAsync(It.IsAny<Models.Entities.Notification>()))
+                .ReturnsAsync(new Models.Entities.Notification { Id = 1 });
 
             _mockPushService.Setup(_ => _.PushNotification(It.IsAny<Models.NotificationModel>()));
 
             // Act
             var notification = new Models.NotificationModel();
-            var result = _notificationService.CreateNotification(notification);
+            var result = await _notificationService.CreateNotification(notification);
 
             // Assert
             result.Id.Should().Be(1);
         }
 
         [Fact]
-        public void NotificationService_MarkNotificationAsRead_ShouldMarkNotificationAsRead()
+        public async void NotificationService_MarkNotificationAsRead_ShouldMarkNotificationAsRead()
         {
             // Arrange
             const string userId = "TestUser";
@@ -82,11 +88,11 @@ namespace Voyage.Services.UnitTests
                 AssignedToUserId = userId,
                 IsRead = false
             };
-            _mockNotificationRepository.Setup(_ => _.Get(It.IsAny<int>())).Returns(notification);
-            _mockNotificationRepository.Setup(_ => _.SaveChanges()).Returns(1);
+            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).ReturnsAsync(notification);
+            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
-            _notificationService.MarkNotificationAsRead(userId, notificationId);
+            await _notificationService.MarkNotificationAsRead(userId, notificationId);
 
             // Assert
             notification.IsRead.Should().BeTrue();
@@ -104,17 +110,17 @@ namespace Voyage.Services.UnitTests
                 AssignedToUserId = "OtherUser",
                 IsRead = false
             };
-            _mockNotificationRepository.Setup(_ => _.Get(It.IsAny<int>())).Returns(notification);
+            _mockNotificationRepository.Setup(_ => _.GetAsync(It.IsAny<int>())).ReturnsAsync(notification);
 
             // Act
-            Action throwAction = () => _notificationService.MarkNotificationAsRead(userId, notificationId);
+            Func<Task> throwAction = async () => await _notificationService.MarkNotificationAsRead(userId, notificationId);
 
             // Assert
             throwAction.ShouldThrow<UnauthorizedException>();
         }
 
         [Fact]
-        public void NotificationService_MarkAllNotificationsAsRead_ShouldMarkAllNotificationAsReadForUser()
+        public async void NotificationService_MarkAllNotificationsAsRead_ShouldMarkAllNotificationAsReadForUser()
         {
             // Arrange
             const string userId = "TestUser";
@@ -141,10 +147,10 @@ namespace Voyage.Services.UnitTests
                 }
             };
             _mockNotificationRepository.Setup(_ => _.GetAll()).Returns(notifications.AsQueryable());
-            _mockNotificationRepository.Setup(_ => _.SaveChanges()).Returns(1);
+            _mockNotificationRepository.Setup(_ => _.SaveChangesAsync()).ReturnsAsync(1);
 
             // Act
-            _notificationService.MarkAllNotificationsAsRead(userId);
+            await _notificationService.MarkAllNotificationsAsRead(userId);
 
             // Assert
             notifications.Where(_ => _.IsRead).Should().HaveCount(2);

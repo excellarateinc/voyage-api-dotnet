@@ -43,24 +43,24 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetRoleClaimsByRoleId_Should_Call_Repostiory()
+        public async void GetRoleClaimsByRoleId_Should_Call_Repostiory()
         {
             var targetId = Fixture.Create<string>();
             var roleClaim1 = new RoleClaim { RoleId = targetId, ClaimType = "target-type" };
             var roleClaim2 = new RoleClaim { RoleId = Fixture.Create<string>() };
-            var repoResult = new[] { roleClaim1, roleClaim2 }.AsQueryable();
+            var repoResult = new[] { roleClaim1, roleClaim2 }.AsQueryable().BuildMockDbSet();
 
             _mockRepository.Setup(_ => _.GetAll())
                 .Returns(repoResult);
 
-            var result = _roleService.GetRoleClaimsByRoleId(targetId);
+            var result = await _roleService.GetRoleClaimsByRoleIdAsync(targetId);
 
             result.Should().NotBeNullOrEmpty().And.HaveCount(1);
             result.First().ClaimType.Should().Be("target-type");
         }
 
         [Fact]
-        public void GetClaimById_Should_Call_Repository()
+        public async void GetClaimById_Should_Call_Repository()
         {
             var roleId = Fixture.Create<string>();
             int id = 1;
@@ -71,10 +71,10 @@ namespace Voyage.Services.UnitTests
                 Id = Fixture.Create<int>()
             };
 
-            _mockRepository.Setup(_ => _.Get(id))
-                .Returns(repoClaim);
+            _mockRepository.Setup(_ => _.GetAsync(id))
+                .ReturnsAsync(repoClaim);
 
-            var entityResult = _roleService.GetClaimById(roleId, id);
+            var entityResult = await _roleService.GetClaimByIdAsync(roleId, id);
 
             Mock.VerifyAll();
             entityResult.Id.Should().Be(repoClaim.Id);
@@ -83,15 +83,15 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetClaimById_Should_Return_Failed_EntityResult_When_Not_Found()
+        public async void GetClaimById_Should_Return_Failed_EntityResult_When_Not_Found()
         {
             string roleId = Fixture.Create<string>();
             int id = 1;
 
-            _mockRepository.Setup(_ => _.Get(id))
-                .Returns((RoleClaim)null);
+            _mockRepository.Setup(_ => _.GetAsync(id))
+                .ReturnsAsync(null);
 
-            Assert.Throws<NotFoundException>(() => { _roleService.GetClaimById(roleId, id); });
+            await Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.GetClaimByIdAsync(roleId, id); });
             Mock.VerifyAll();
         }
 
@@ -129,7 +129,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetRoleByName_Should_Call_Role_Manager()
+        public async void GetRoleByName_Should_Call_Role_Manager()
         {
             var name = Fixture.Create<string>();
 
@@ -143,7 +143,7 @@ namespace Voyage.Services.UnitTests
                 .ReturnsAsync(role);
 
             // act
-            var result = _roleService.GetRoleByName(name);
+            var result = await _roleService.GetRoleByNameAsync(name);
 
             result.Should().NotBeNull();
             result.Should().NotBeNull();
@@ -151,14 +151,14 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetRoleByName_Should_Return_Failed_Result_When_Not_Found()
+        public async void GetRoleByName_Should_Return_Failed_Result_When_Not_Found()
         {
             var name = Fixture.Create<string>();
 
             _mockRoleStore.Setup(_ => _.FindByNameAsync(name))
                .ReturnsAsync(null);
 
-            Assert.Throws<NotFoundException>(() => { _roleService.GetRoleByName(name); });
+            await Assert.ThrowsAsync<NotFoundException>(async () => { await _roleService.GetRoleByNameAsync(name); });
         }
 
         [Fact]
@@ -186,15 +186,15 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void RemoveClaim_Calls_Repository()
+        public async void RemoveClaim_Calls_Repository()
         {
             var roleId = Fixture.Create<string>();
             var claimId = Fixture.Create<int>();
 
-            _mockRepository.Setup(_ => _.Delete(claimId));
+            _mockRepository.Setup(_ => _.DeleteAsync(claimId)).ReturnsAsync(1);
 
             // act
-            _roleService.RemoveClaim(roleId, claimId);
+            await _roleService.RemoveClaimAsync(roleId, claimId);
 
             Mock.VerifyAll();
         }
@@ -212,15 +212,15 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetRoleClaims_Should_Call_Repository()
+        public async void GetRoleClaims_Should_Call_Repository()
         {
             var roleName = "admin";
             var claims = new[] { new RoleClaim { ClaimType = "type", ClaimValue = "value" } };
 
             _mockRepository.Setup(_ => _.GetClaimsByRole(roleName))
-                .Returns(claims.AsQueryable());
+                .Returns(claims.AsQueryable().BuildMockDbSet());
 
-            var entityResult = _roleService.GetRoleClaims(roleName);
+            var entityResult = await _roleService.GetRoleClaimsAsync(roleName);
 
             Mock.VerifyAll();
 
@@ -239,11 +239,11 @@ namespace Voyage.Services.UnitTests
             _mockRoleStore.Setup(_ => _.FindByIdAsync(model.Id))
               .ReturnsAsync(appRole);
 
-            _mockRepository.Setup(_ => _.Add(It.Is<RoleClaim>(
+            _mockRepository.Setup(_ => _.AddAsync(It.Is<RoleClaim>(
                 value => value.RoleId == appRole.Id &&
                   value.ClaimType == claim.ClaimType &&
                   value.ClaimValue == claim.ClaimValue)))
-            .Returns(new RoleClaim());
+            .ReturnsAsync(new RoleClaim());
 
             var entityResult = await _roleService.AddClaimAsync(model.Id, claim);
 
@@ -326,7 +326,7 @@ namespace Voyage.Services.UnitTests
         }
 
         [Fact]
-        public void GetRoles_Should_Return_All_Roles()
+        public async void GetRoles_Should_Return_All_Roles()
         {
             var roles = new[]
             {
@@ -336,9 +336,9 @@ namespace Voyage.Services.UnitTests
 
             _mockRoleStore.As<IQueryableRoleStore<ApplicationRole>>()
                 .Setup(_ => _.Roles)
-                .Returns(roles.AsQueryable());
+                .Returns(roles.AsQueryable().BuildMockDbSet());
 
-            var result = _roleService.GetRoles();
+            var result = await _roleService.GetRolesAsync();
 
             Mock.Verify();
             result.Should().NotBeNull();
