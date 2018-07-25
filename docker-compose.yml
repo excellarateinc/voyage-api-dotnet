@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  voyage.api:
+    image: voyage.api
+    build:
+      context: .\Voyage.Api
+      dockerfile: Dockerfile
+
+  voyage.web:
+    image: voyage.web
+    build:
+      context: .\Voyage.Web
+      dockerfile: Dockerfile
+

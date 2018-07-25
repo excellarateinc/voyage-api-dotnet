@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  voyage.api:
+    ports:
+      - "55850"
+  voyage.web:
+    ports:
+      - "52431"
+networks:
+  default:
+    external:
+      name: nat
+
