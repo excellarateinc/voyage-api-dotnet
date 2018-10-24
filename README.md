@@ -25,20 +25,26 @@ Run the Voyage API and execute a JSON API request within 5 minutes
      * The official repository is located here https://github.com/lssinc/voyage-api-dotnet
    - Click "Clone". When done cloning, open the "Voyage.API" solution.
 4. Create the database
-   - Double-click the localhost.publish.xml file.
-   - Once the dialog appears, click the Publish button.
-5. Run the applications
-   - In Visual Studio, with the Voyage.Web project selected, press Ctrl + F5 to launch the Authentication website with IIS Express.
-   - Now, with the Voyage.Api selected, press Ctrl + F5 to launch the Web API website with IIS Express.
+   - Open the Database project within the Voyage solution
+   - Double-click the localhost.publish.xml file within the root project folder
+   - Once the publish script builts, a Publish dialog box will appear
+   - Click the Publish button within the Publish dialog box to create the database and execute the scripts.
+   - Upon seeing "Publish completed successfully" within the console output, the database will be created and populated. 
+5. Start the Authentication service
+   - Select the Voyage.Web project
+   - Choose the Visual Studio menu option Debug > Start Without Debugging (Ctrl + F5) to execute within IIS Express.
+5. Start the Web API service
+   - Select the Voyage.Api project
+   - Choose the Visual Studio menu option Debug > Start Without Debugging (Ctrl + F5) to execute within IIS Express.
 6. Get an access token
    - Using [Postman](https://www.getpostman.com/apps), create a new "POST" request.
    - Set the url to http://localhost:52431/oauth/token
    - In the "Body", use x-www-form-urlencoded and fill in the following key/value pairs:
-     - "grant_type" : "Client Credentials"
-     - "username" : "admin@admin.com"
-     - "password" : "Hello123!"
-     - "client_id" : "123456"
-     - "client_secret"" : "abcdef"
+     - grant_type: password
+     - username: admin@admin.com
+     - password: Hello123!
+     - client_id: 123456
+     - client_secret: abcdef
    - Click "Send". You should receive an access token back.
 7. Test the API
    - Using [Postman](https://www.getpostman.com/apps), create a new "GET" request.
