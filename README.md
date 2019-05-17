@@ -1,4 +1,4 @@
-Test Change For Documentation
+Test Change For Documentation.
 
 ## Overview
 A foundational set of web services that implement industry standard guidelines, common best practices, and the experienced insights afforded to Lighthouse Software thru decades of enterprise business software development. 
