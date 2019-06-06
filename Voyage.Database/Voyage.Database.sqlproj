@@ -12,8 +12,8 @@
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>Voyage.DatabaseNew</RootNamespace>
-    <AssemblyName>Voyage.DatabaseNew</AssemblyName>
+    <RootNamespace>Voyage.Database</RootNamespace>
+    <AssemblyName>Voyage.Database</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
