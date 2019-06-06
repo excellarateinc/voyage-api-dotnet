@@ -7,24 +7,22 @@
     <Name>Voyage.Database</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{5f68702b-28cf-4e1f-9d58-1092785c3106}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{01325305-db2b-4aef-a8f4-59e5a485b218}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>Voyage.Database</RootNamespace>
-    <AssemblyName>Voyage.Database</AssemblyName>
-    <ModelCollation>1033,CI</ModelCollation>
+    <RootNamespace>Voyage.DatabaseNew</RootNamespace>
+    <AssemblyName>Voyage.DatabaseNew</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
-    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -50,61 +48,80 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
-    <!-- Default to the v14.0 targets path if the targets file for the current VS version is not found -->
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
-    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">14.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="dbo\" />
-    <Folder Include="dbo\Tables\" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Seed" />
+    <Folder Include="dbo" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\ApplicationLog.sql" />
-    <Build Include="dbo\Tables\RoleClaim.sql" />
-    <Build Include="dbo\Tables\Role.sql" />
-    <Build Include="dbo\Tables\UserRole.sql" />
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\UserClaim.sql" />
-    <Build Include="dbo\Tables\UserLogin.sql" />
-    <Build Include="dbo\Tables\UserPhone.sql" />
+    <None Include="Scripts\Seed\Chat.sql" />
+    <None Include="local.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\Client.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\ClientRole.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\ClientScope.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\ClientScopeType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\Notification.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\Role.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\RoleClaim.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\User.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\UserPhone.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Seed\UserRole.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\ActivityAuditInsert.sql" />
     <Build Include="dbo\Tables\ActivityAudit.sql" />
+    <Build Include="dbo\Tables\ApplicationLog.sql" />
     <Build Include="dbo\Tables\AuditLog.sql" />
     <Build Include="dbo\Tables\AuditLogDetail.sql" />
-    <Build Include="dbo\Tables\LogMetadata.sql" />
-    <None Include="Scripts\Seed\User.sql" />
-    <PostDeploy Include="Scripts\Post-Deployment.sql" />
+    <Build Include="dbo\Tables\ChatChannel.sql" />
+    <Build Include="dbo\Tables\ChatChannelMember.sql" />
+    <Build Include="dbo\Tables\ChatMessage.sql" />
     <Build Include="dbo\Tables\Client.sql" />
     <Build Include="dbo\Tables\ClientRole.sql" />
     <Build Include="dbo\Tables\ClientScope.sql" />
     <Build Include="dbo\Tables\ClientScopeType.sql" />
-    <None Include="Scripts\Seed\Client.sql" />
-    <None Include="Scripts\Seed\ClientRole.sql" />
-    <None Include="Scripts\Seed\ClientScope.sql" />
-    <None Include="Scripts\Seed\ClientScopeType.sql" />
+    <Build Include="dbo\Tables\LogMetadata.sql" />
     <Build Include="dbo\Tables\Notification.sql" />
     <Build Include="dbo\Tables\ProfileImage.sql" />
-    <Build Include="dbo\Tables\ChatChannel.sql" />
-    <Build Include="dbo\Tables\ChatMessage.sql" />
-    <Build Include="dbo\Tables\ChatChannelMember.sql" />
-    <Build Include="dbo\Stored Procedures\ActivityAuditInsert.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Scripts\Seed\RoleClaim.sql" />
-    <None Include="Scripts\Seed\Role.sql" />
-    <None Include="Scripts\Seed\UserRole.sql" />
-    <None Include="Scripts\Seed\UserPhone.sql" />
-    <None Include="localhost.publish.xml" />
-    <None Include="Scripts\Seed\Notification.sql" />
-    <None Include="Scripts\Seed\Chat.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Voyage.Database.refactorlog" />
+    <Build Include="dbo\Tables\Role.sql" />
+    <Build Include="dbo\Tables\RoleClaim.sql" />
+    <Build Include="dbo\Tables\User.sql" />
+    <Build Include="dbo\Tables\UserClaim.sql" />
+    <Build Include="dbo\Tables\UserLogin.sql" />
+    <Build Include="dbo\Tables\UserPhone.sql" />
+    <Build Include="dbo\Tables\UserRole.sql" />
   </ItemGroup>
 </Project>
